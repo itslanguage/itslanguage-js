@@ -573,7 +573,7 @@ class Sdk {
     var self = this;
     connection.onerror = function(e) {
       console.log('WebSocket error: ' + e);
-      self.fireEvent('websocketError');
+      self.fireEvent('websocketError', [e]);
     };
     connection.onopen = function(session) {
       console.log('WebSocket connection opened');
