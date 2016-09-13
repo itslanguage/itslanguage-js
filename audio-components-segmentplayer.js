@@ -39,14 +39,14 @@ class BaseSegmentPlayer {
     this.events = {};
 
     var self = this;
-    this.addEventListener = function (name, handler) {
+    this.addEventListener = function(name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
         self.events[name] = [handler];
       }
     };
-    this.removeEventListener = function (name, handler) {
+    this.removeEventListener = function(name, handler) {
       /* This is a bit tricky, because how would you identify functions?
        This simple solution should work if you pass THE SAME handler. */
       if (!self.events.hasOwnProperty(name)) {
@@ -59,7 +59,7 @@ class BaseSegmentPlayer {
       }
     };
 
-    this._fireEvent = function (name, args) {
+    this._fireEvent = function(name, args) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -68,7 +68,7 @@ class BaseSegmentPlayer {
       }
 
       var evs = self.events[name];
-      evs.forEach(function (ev) {
+      evs.forEach(function(ev) {
         ev.apply(null, args);
       });
     };
@@ -102,15 +102,15 @@ class BaseSegmentPlayer {
     }
     var self = this;
 
-    this.player.addEventListener('playing', function () {
+    this.player.addEventListener('playing', function() {
       self._setPlaying();
       self._startPollingForPosition(self.settings.pollFreq);
       self._fireEvent('playing', []);
     });
-    this.player.addEventListener('timeupdate', function () {
+    this.player.addEventListener('timeupdate', function() {
       self._getNextSegmentReady();
     });
-    this.player.addEventListener('canplay', function () {
+    this.player.addEventListener('canplay', function() {
       self._setPlayable();
     });
     // The `canplay` event may have been fired already when the audio
@@ -118,7 +118,7 @@ class BaseSegmentPlayer {
     if (this.player.canPlay()) {
       self._setPlayable();
     }
-    this.player.addEventListener('ended', function () {
+    this.player.addEventListener('ended', function() {
       if (self.players.length === (self.currentSegment + 1)) {
         // This is the last of all segments.
         self._setNotPlaying();
@@ -132,7 +132,7 @@ class BaseSegmentPlayer {
         self.player.play(0);
       }
     });
-    this.player.addEventListener('pause', function () {
+    this.player.addEventListener('pause', function() {
       self._setNotPlaying();
       self._stopPollingForPosition();
       self._fireEvent('pause', []);
@@ -142,7 +142,7 @@ class BaseSegmentPlayer {
     // });
     // // In case the event was already fired, try to update audio stats.
     // self._loadingUpdate();
-    this.player.addEventListener('error', function () {
+    this.player.addEventListener('error', function() {
       self._setError();
     });
   }
@@ -209,7 +209,7 @@ class SegmentPlayer extends BaseSegmentPlayer {
     }
 
     var self = this;
-    this.players.forEach(function (player, i) {
+    this.players.forEach(function(player, i) {
       var duration = player.getDuration();
       if (duration) {
         self.durations[i] = duration;
@@ -217,7 +217,7 @@ class SegmentPlayer extends BaseSegmentPlayer {
     });
 
     this.totalDuration = 0;
-    this.durations.forEach(function (duration, i) {
+    this.durations.forEach(function(duration, i) {
       if (typeof duration !== 'number') {
         throw new Error(
           'All durations need to be known in advance. Segment index ' + i +
@@ -244,10 +244,10 @@ class SegmentPlayer extends BaseSegmentPlayer {
     super._nextSegment(index);
 
     var self = this;
-    this.player.addEventListener('timeupdate', function () {
+    this.player.addEventListener('timeupdate', function() {
       self._getTimeUpdate();
     });
-    this.player.addEventListener('progress', function () {
+    this.player.addEventListener('progress', function() {
       self._loadingUpdate();
     });
     // In case the event was already fired, try to update audio stats.
@@ -289,7 +289,7 @@ class SegmentPlayer extends BaseSegmentPlayer {
     this.timeindication = document.getElementById(id + 'timeindication');
 
     var self = this;
-    this.playtoggle.onclick = function () {
+    this.playtoggle.onclick = function() {
       self.player.togglePlayback();
     };
 
@@ -335,7 +335,7 @@ class SegmentPlayer extends BaseSegmentPlayer {
     var secondsInGlobal = (this.totalDuration * pct) / 100;
     var localPct = null;
     var segmentIndex = null;
-    this.durations.some(function (duration, i) {
+    this.durations.some(function(duration, i) {
       if (secondsInGlobal > duration) {
         // Not scrubbed in this segment.
         secondsInGlobal -= duration;
@@ -370,7 +370,7 @@ class SegmentPlayer extends BaseSegmentPlayer {
 
     var segments = '';
     var self = this;
-    this.durations.forEach(function (duration, i) {
+    this.durations.forEach(function(duration, i) {
       var pct = (duration * 100) / self.totalDuration;
       segments += '<span id="' + id + 'segment" class="segment ' + self.origins[i] +
         '" style="width: ' + pct + '%">' +
@@ -561,7 +561,7 @@ class MiniSegmentPlayer extends BaseSegmentPlayer {
     this.playtoggle = document.getElementById(id + 'playtoggle');
 
     var self = this;
-    this.playtoggle.onclick = function () {
+    this.playtoggle.onclick = function() {
       self.player.togglePlayback();
     };
   }

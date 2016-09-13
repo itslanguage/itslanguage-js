@@ -35,37 +35,37 @@ module.exports = class WebAudioPlayer {
     // HTML5 Audio element itself, therefore, just bubble up all events.
     var self = this;
 
-    this.sound.addEventListener('playing', function () {
+    this.sound.addEventListener('playing', function() {
       if (self.settings.playingCb) {
         self.settings.playingCb();
       }
     });
 
-    this.sound.addEventListener('timeupdate', function () {
+    this.sound.addEventListener('timeupdate', function() {
       if (self.settings.timeupdateCb) {
         self.settings.timeupdateCb();
       }
     });
 
-    this.sound.addEventListener('durationchange', function () {
+    this.sound.addEventListener('durationchange', function() {
       if (self.settings.durationchangeCb) {
         self.settings.durationchangeCb();
       }
     });
 
-    this.sound.addEventListener('canplay', function () {
+    this.sound.addEventListener('canplay', function() {
       if (self.settings.canplayCb) {
         self.settings.canplayCb();
       }
     });
 
-    this.sound.addEventListener('ended', function () {
+    this.sound.addEventListener('ended', function() {
       if (self.settings.endedCb) {
         self.settings.endedCb();
       }
     });
 
-    this.sound.addEventListener('pause', function () {
+    this.sound.addEventListener('pause', function() {
       // The HTML5 audio player only has a pause(), no stop().
       // To differentiate between the two, a flag is set in case the user
       // explicitly stopped (not paused) the audio.
@@ -77,13 +77,13 @@ module.exports = class WebAudioPlayer {
       }
     });
 
-    this.sound.addEventListener('progress', function () {
+    this.sound.addEventListener('progress', function() {
       if (self.settings.progressCb) {
         self.settings.progressCb();
       }
     });
 
-    this.sound.addEventListener('error', function (e) {
+    this.sound.addEventListener('error', function(e) {
       switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
           console.error('You aborted the playback.');
@@ -140,7 +140,7 @@ module.exports = class WebAudioPlayer {
 
     var self = this;
     if (loadedCb) {
-      this.sound.addEventListener('durationchange', function () {
+      this.sound.addEventListener('durationchange', function() {
         console.log('Duration change for ' + url + ' to : ' +
           self.sound.duration);
         loadedCb(self.sound);

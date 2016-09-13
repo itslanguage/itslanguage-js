@@ -105,13 +105,13 @@ module.exports = class CordovaMediaPlayer {
     console.debug('Loading media: ' + filepath);
     var self = this;
     // Cordova Media can only be loaded during instantiation.
-    this.sound = new window.Media(filepath, function () {
+    this.sound = new window.Media(filepath, function() {
         console.debug('Playback ended successfully.');
       },
-      function (e) {
+      function(e) {
         console.debug('Playback failed: ' + e.code);
       },
-      function (mediaStatus) {
+      function(mediaStatus) {
         console.debug('Playback status update: ' + mediaStatus);
         if (mediaStatus === window.Media.MEDIA_STARTING) {
           console.debug('Metadata is being loaded.');
@@ -158,15 +158,15 @@ module.exports = class CordovaMediaPlayer {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'blob';
-    xhr.onload = function (e) {
+    xhr.onload = function(e) {
       if (this.status === 200) {
         var blob = this.response;
         console.debug('Downloaded blob');
 
         console.debug('Writing blob to file');
-        self._writeFile(self.filename, function (file) {
-          file.createWriter(function (writer) {
-            writer.onwriteend = function (e) {
+        self._writeFile(self.filename, function(file) {
+          file.createWriter(function(writer) {
+            writer.onwriteend = function(e) {
               // File has been written, now load it.
               self._loadMedia(self.filepath, self, loadedCb);
             };

@@ -55,12 +55,12 @@ module.exports = class CordovaMediaRecorder {
 
     this.mediaRecorder = new Media(filepath,
       // success callback
-      function () {
+      function() {
         console.log('Final recording written to: ' + filepath);
       },
 
       // error callback
-      function (err) {
+      function(err) {
         console.debug('recordAudio(): Audio Error: ' + err.code);
       }
     );
@@ -142,7 +142,7 @@ module.exports = class CordovaMediaRecorder {
 
     function readDataUrl(file) {
       var reader = new FileReader();
-      reader.onloadend = function (evt) {
+      reader.onloadend = function(evt) {
         var arraybuffer = evt.target.result;
         var b = new Blob([arraybuffer], {
           type: this.mimetype

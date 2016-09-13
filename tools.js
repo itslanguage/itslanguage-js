@@ -32,7 +32,7 @@ class Stopwatch {
     console.debug('Start counting');
     // Tick every 100ms (0.1s)
     var self = this;
-    this.interval = setInterval(function () {
+    this.interval = setInterval(function() {
       self.update();
     }, 100);
   }

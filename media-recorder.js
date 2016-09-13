@@ -24,7 +24,7 @@ module.exports = class MediaRecorder {
   constructor(mediaStream) {
     var self = this;
     this.mediaRecorder = new window.MediaRecorder(mediaStream);
-    this.mediaRecorder.ondataavailable = function (e) {
+    this.mediaRecorder.ondataavailable = function(e) {
       self.recordedBlob = new Blob([e.data], {
         type: 'audio/ogg'
       });

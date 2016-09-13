@@ -51,7 +51,7 @@ module.exports = class WebAudioRecorder {
     this.recorder = recorder;
 
     var self = this;
-    recorder.onaudioprocess = function (e) {
+    recorder.onaudioprocess = function(e) {
       if (!self.recording) {
         return;
       }

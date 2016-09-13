@@ -40,28 +40,28 @@ class AudioPlayer {
     this._playbackCompatibility();
 
     var callbacks = {
-      playingCb: function () {
+      playingCb: function() {
         self.fireEvent('playing', []);
       },
-      timeupdateCb: function () {
+      timeupdateCb: function() {
         self.fireEvent('timeupdate', []);
       },
-      durationchangeCb: function () {
+      durationchangeCb: function() {
         self.fireEvent('durationchange', []);
       },
-      canplayCb: function () {
+      canplayCb: function() {
         self.fireEvent('canplay', []);
       },
-      endedCb: function () {
+      endedCb: function() {
         self.fireEvent('ended', []);
       },
-      pauseCb: function () {
+      pauseCb: function() {
         self.fireEvent('pause', []);
       },
-      progressCb: function () {
+      progressCb: function() {
         self.fireEvent('progress', []);
       },
-      errorCb: function () {
+      errorCb: function() {
         self.fireEvent('error', []);
       }
     };
@@ -78,11 +78,11 @@ class AudioPlayer {
     var self = this;
     this.events = {};
 
-    this.resetEventListeners = function () {
+    this.resetEventListeners = function() {
       self.events = {};
     };
 
-    this.addEventListener = function (name, handler) {
+    this.addEventListener = function(name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
@@ -90,7 +90,7 @@ class AudioPlayer {
       }
     };
 
-    this.removeEventListener = function (name, handler) {
+    this.removeEventListener = function(name, handler) {
       /* This is a bit tricky, because how would you identify functions?
        This simple solution should work if you pass THE SAME handler. */
       if (!self.events.hasOwnProperty(name)) {
@@ -103,7 +103,7 @@ class AudioPlayer {
       }
     };
 
-    this.fireEvent = function (name, args) {
+    this.fireEvent = function(name, args) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -112,7 +112,7 @@ class AudioPlayer {
       }
 
       var evs = self.events[name];
-      evs.forEach(function (ev) {
+      evs.forEach(function(ev) {
         ev.apply(null, args);
       });
     };
@@ -360,7 +360,7 @@ class AudioRecorder {
     this.events = {};
 
     var self = this;
-    this.addEventListener = function (name, handler) {
+    this.addEventListener = function(name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
@@ -368,7 +368,7 @@ class AudioRecorder {
       }
     };
 
-    this.removeEventListener = function (name, handler) {
+    this.removeEventListener = function(name, handler) {
       /* This is a bit tricky, because how would you identify functions?
        This simple solution should work if you pass THE SAME handler. */
       if (!self.events.hasOwnProperty(name)) {
@@ -385,7 +385,7 @@ class AudioRecorder {
       }
     };
 
-    this.fireEvent = function (name, args) {
+    this.fireEvent = function(name, args) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -394,7 +394,7 @@ class AudioRecorder {
       }
 
       var evs = self.events[name];
-      evs.forEach(function (ev) {
+      evs.forEach(function(ev) {
         ev.apply(null, args);
       });
     };
@@ -591,7 +591,7 @@ class AudioRecorder {
     } else if (this.canGetUserMedia) {
       // Fall back to raw (WAVE) audio encoding.
       var self = this;
-      recorder = new WebAudioRecorder(micInputGain, function (data) {
+      recorder = new WebAudioRecorder(micInputGain, function(data) {
         self.streamCallback(data);
       });
     } else {
@@ -708,7 +708,7 @@ class AudioRecorder {
     console.log('Stopped recording for id: ' + this.activeRecordingId);
 
     var self = this;
-    this.recorder.getEncodedAudio(function (blob) {
+    this.recorder.getEncodedAudio(function(blob) {
       console.log('Received encoded audio of type: ' + blob.type);
       // Allow direct playback from local blob.
       self.fireEvent('recorded', [self.activeRecordingId, blob, Boolean(forced)]);

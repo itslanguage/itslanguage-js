@@ -153,7 +153,7 @@ class VolumeMeter {
 
       var args = [averageVolume].concat(volumeIndicationCallbackArgs);
       // Fire all callbacks.
-      volumeIndicationCallback.forEach(function (cb) {
+      volumeIndicationCallback.forEach(function(cb) {
         // This kludge prevents firing an averageVolume of zero
         // right away. The buffer probably needs filling before useful
         // values become available. 5 seems to be the magic number.

@@ -47,19 +47,19 @@ class Player {
     this.player = this.settings.player;
     var self = this;
 
-    this.player.addEventListener('playing', function () {
+    this.player.addEventListener('playing', function() {
       self._setPlaying();
       self._startPollingForPosition(self.settings.pollFreq);
     });
-    this.player.addEventListener('timeupdate', function () {
+    this.player.addEventListener('timeupdate', function() {
       self._getTimeUpdate();
     });
     // In case the event was already fired, try to update audio stats.
     this._timeUpdate();
-    this.player.addEventListener('durationchange', function () {
+    this.player.addEventListener('durationchange', function() {
       self._timeUpdate();
     });
-    this.player.addEventListener('canplay', function () {
+    this.player.addEventListener('canplay', function() {
       self._setPlayable();
     });
     // The `canplay` event may have been fired already when the audio
@@ -67,22 +67,22 @@ class Player {
     if (this.player.canPlay()) {
       self._setPlayable();
     }
-    this.player.addEventListener('ended', function () {
+    this.player.addEventListener('ended', function() {
       self._setNotPlaying();
       self._stopPollingForPosition();
     });
-    this.player.addEventListener('pause', function () {
+    this.player.addEventListener('pause', function() {
       self._setNotPlaying();
       self._stopPollingForPosition();
     });
-    this.player.addEventListener('progress', function () {
+    this.player.addEventListener('progress', function() {
       self._loadingUpdate();
     });
-    this.player.addEventListener('error', function () {
+    this.player.addEventListener('error', function() {
       self._stopPollingForPosition();
       self._setError();
     });
-    this.player.addEventListener('unloaded', function () {
+    this.player.addEventListener('unloaded', function() {
       self._stopPollingForPosition();
       self._setNotPlayable();
       // Sets the time to 0:00.0 / 0:00.0 when no audio is loaded.
@@ -119,17 +119,17 @@ class Player {
      */
 
     var self = this;
-    range.addEventListener('mousedown', function (e) {
+    range.addEventListener('mousedown', function(e) {
       self.draggerDown = true;
       updateDragger(e);
       return false;
     });
 
-    document.addEventListener('mousemove', function (e) {
+    document.addEventListener('mousemove', function(e) {
       updateDragger(e);
     });
 
-    document.addEventListener('mouseup', function (e) {
+    document.addEventListener('mouseup', function(e) {
       // This event fires on all slider instances listening on document
       // mousup, therefore stop executing if this slider was not the
       // one starting the drag.
@@ -196,7 +196,7 @@ class Player {
     this.timeindication = document.getElementById(id + 'timeindication');
 
     var self = this;
-    this.playtoggle.onclick = function () {
+    this.playtoggle.onclick = function() {
       self.player.togglePlayback();
     };
 
@@ -346,7 +346,7 @@ class Player {
     }
 
     console.log('Start polling for audio position.');
-    this.pollInterval = setInterval(function () {
+    this.pollInterval = setInterval(function() {
       self._getTimeUpdate();
     }, pollFreq);
   }
@@ -535,11 +535,11 @@ class Recorder extends Player {
     }
     // .. or an event will trigger soon.
     var self = this;
-    this.recorder.addEventListener('ready', function () {
+    this.recorder.addEventListener('ready', function() {
       self._permitRecorder();
     });
 
-    this.stopwatch = new Tools.Stopwatch(function (elapsed) {
+    this.stopwatch = new Tools.Stopwatch(function(elapsed) {
       var seconds = elapsed / 10;
       self._updateTimer(seconds);
       if (self.settings.maxRecordingDuration &&
@@ -547,13 +547,13 @@ class Recorder extends Player {
         self.recorder.stop(true);
       }
     });
-    this.recorder.addEventListener('recording', function () {
+    this.recorder.addEventListener('recording', function() {
       self.dot.classList.remove('off');
       self.stopwatch.reset();
       self.stopwatch.start();
     });
 
-    this.recorder.addEventListener('recorded', function (id, blob) {
+    this.recorder.addEventListener('recorded', function(id, blob) {
       self.stopwatch.stop();
       self.dot.classList.add('off');
 
@@ -569,7 +569,7 @@ class Recorder extends Player {
     // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
     this.events = {};
 
-    this.addEventListener = function (name, handler) {
+    this.addEventListener = function(name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
@@ -577,7 +577,7 @@ class Recorder extends Player {
       }
     };
 
-    this.removeEventListener = function (name, handler) {
+    this.removeEventListener = function(name, handler) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -588,7 +588,7 @@ class Recorder extends Player {
       }
     };
 
-    this.fireEvent = function (name, args) {
+    this.fireEvent = function(name, args) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -597,7 +597,7 @@ class Recorder extends Player {
       }
 
       var evs = self.events[name];
-      evs.forEach(function (ev) {
+      evs.forEach(function(ev) {
         ev.apply(null, args);
       });
     };
@@ -635,7 +635,7 @@ class Recorder extends Player {
     this.timeindication = document.getElementById(id + 'timeindication');
 
     var self = this;
-    this.recordtoggle.onclick = function () {
+    this.recordtoggle.onclick = function() {
       if (self.recorder.hasUserMediaApproval()) {
         self.recorder.toggleRecording();
         if (self.recorder.isRecording()) {
@@ -702,7 +702,7 @@ class Recorder extends Player {
    */
   attachVolumeMeter(vu) {
     var self = this;
-    vu.getVolumeIndication(function (volume) {
+    vu.getVolumeIndication(function(volume) {
       // Convert 1..100 scale to 0..1
       self.canvas.draw(volume / 100);
     });

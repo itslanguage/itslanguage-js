@@ -19,8 +19,8 @@ class ColouredSentence {
     // Empty the element, in case any previous sentences were shown.
     this.settings.element.innerHTML = '';
     var self = this;
-    words.forEach(function (word) {
-      word.chunks.forEach(function (chunk) {
+    words.forEach(function(word) {
+      word.chunks.forEach(function(chunk) {
         var newElement = document.createElement('span');
         newElement.innerHTML = chunk.graphemes;
         if (chunk.verdict === 'good') {
@@ -32,7 +32,7 @@ class ColouredSentence {
         } else {
           newElement.className = 'punctuation';
         }
-        chunk.phonemes.forEach(function (phoneme) {
+        chunk.phonemes.forEach(function(phoneme) {
           newElement.setAttribute('title', phoneme.confidenceScore);
         });
         self.settings.element.appendChild(newElement);
@@ -52,7 +52,7 @@ class ColouredSentence {
     // Convert to iterable array.
     spans = [].slice.call(spans);
     // Remove all markup classes.
-    spans.forEach(function (span) {
+    spans.forEach(function(span) {
       span.classList.remove('good');
       span.classList.remove('moderate');
       span.classList.remove('bad');
@@ -117,9 +117,9 @@ class DetailedScores {
     table.appendChild(row);
 
     var lastEnd = 0;
-    words.forEach(function (word, i) {
-      word.chunks.forEach(function (chunk, j) {
-        chunk.phonemes.forEach(function (phoneme, k) {
+    words.forEach(function(word, i) {
+      word.chunks.forEach(function(chunk, j) {
+        chunk.phonemes.forEach(function(phoneme, k) {
           var refPhoneme = refWords[i].chunks[j].phonemes[k];
           var refDuration = refPhoneme.end - refPhoneme.start;
 
