@@ -1,8 +1,8 @@
 /* eslint-disable
-  max-len,
-  no-unused-vars,
-  no-use-before-define
-*/
+ max-len,
+ no-unused-vars,
+ no-use-before-define
+ */
 
 
 /**
@@ -14,9 +14,9 @@
  */
 
 /**
-@module its
-ITSLanguage Audio module.
-*/
+ @module its
+ ITSLanguage Audio module.
+ */
 
 const CordovaMediaPlayer = require('./cordova-media-player');
 const CordovaMediaRecorder = require('./cordova-media-recorder');
@@ -40,28 +40,28 @@ class AudioPlayer {
     this._playbackCompatibility();
 
     var callbacks = {
-      playingCb: function() {
+      playingCb: function () {
         self.fireEvent('playing', []);
       },
-      timeupdateCb: function() {
+      timeupdateCb: function () {
         self.fireEvent('timeupdate', []);
       },
-      durationchangeCb: function() {
+      durationchangeCb: function () {
         self.fireEvent('durationchange', []);
       },
-      canplayCb: function() {
+      canplayCb: function () {
         self.fireEvent('canplay', []);
       },
-      endedCb: function() {
+      endedCb: function () {
         self.fireEvent('ended', []);
       },
-      pauseCb: function() {
+      pauseCb: function () {
         self.fireEvent('pause', []);
       },
-      progressCb: function() {
+      progressCb: function () {
         self.fireEvent('progress', []);
       },
-      errorCb: function() {
+      errorCb: function () {
         self.fireEvent('error', []);
       }
     };
@@ -78,11 +78,11 @@ class AudioPlayer {
     var self = this;
     this.events = {};
 
-    this.resetEventListeners = function() {
+    this.resetEventListeners = function () {
       self.events = {};
     };
 
-    this.addEventListener = function(name, handler) {
+    this.addEventListener = function (name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
@@ -90,9 +90,9 @@ class AudioPlayer {
       }
     };
 
-    this.removeEventListener = function(name, handler) {
+    this.removeEventListener = function (name, handler) {
       /* This is a bit tricky, because how would you identify functions?
-         This simple solution should work if you pass THE SAME handler. */
+       This simple solution should work if you pass THE SAME handler. */
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -103,7 +103,7 @@ class AudioPlayer {
       }
     };
 
-    this.fireEvent = function(name, args) {
+    this.fireEvent = function (name, args) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -112,7 +112,7 @@ class AudioPlayer {
       }
 
       var evs = self.events[name];
-      evs.forEach(function(ev) {
+      evs.forEach(function (ev) {
         ev.apply(null, args);
       });
     };
@@ -151,15 +151,15 @@ class AudioPlayer {
     }
 
     var canPlayOggVorbis = _audio.canPlayType(
-      'audio/ogg; codecs="vorbis"') !== '';
+        'audio/ogg; codecs="vorbis"') !== '';
     var canPlayOggOpus = _audio.canPlayType(
-      'audio/ogg; codecs="opus"') !== '';
+        'audio/ogg; codecs="opus"') !== '';
     var canPlayWave = _audio.canPlayType('audio/wav') !== '';
     var canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
     var canPlayAAC = _audio.canPlayType(
-      'audio/mp4; codecs="mp4a.40.2"') !== '';
+        'audio/mp4; codecs="mp4a.40.2"') !== '';
     var canPlay3GPP = _audio.canPlayType(
-      'audio/3gpp; codecs="samr"') !== '';
+        'audio/3gpp; codecs="samr"') !== '';
 
     console.log('Native Vorbis audio in Ogg container playback capability: ' +
       canPlayOggVorbis);
@@ -326,11 +326,11 @@ class AudioPlayer {
 }
 
 /**
-@module its.AudioRecorder
-Audio recording component.
+ @module its.AudioRecorder
+ Audio recording component.
 
-Note the several events to subscribe to.
-*/
+ Note the several events to subscribe to.
+ */
 
 class AudioRecorder {
   /**
@@ -360,7 +360,7 @@ class AudioRecorder {
     this.events = {};
 
     var self = this;
-    this.addEventListener = function(name, handler) {
+    this.addEventListener = function (name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
@@ -368,9 +368,9 @@ class AudioRecorder {
       }
     };
 
-    this.removeEventListener = function(name, handler) {
+    this.removeEventListener = function (name, handler) {
       /* This is a bit tricky, because how would you identify functions?
-         This simple solution should work if you pass THE SAME handler. */
+       This simple solution should work if you pass THE SAME handler. */
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -385,7 +385,7 @@ class AudioRecorder {
       }
     };
 
-    this.fireEvent = function(name, args) {
+    this.fireEvent = function (name, args) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -394,7 +394,7 @@ class AudioRecorder {
       }
 
       var evs = self.events[name];
-      evs.forEach(function(ev) {
+      evs.forEach(function (ev) {
         ev.apply(null, args);
       });
     };
@@ -414,7 +414,8 @@ class AudioRecorder {
    * @param {AudioContext} audioContext The active AudioContext object.
    * @param {AudioStream} audioStream The microphone AudioStream.
    */
-  ready(audioContext, audioStream) {}
+  ready(audioContext, audioStream) {
+  }
 
   /**
    * Check if the user has already given permission to access the microphone.
@@ -434,9 +435,9 @@ class AudioRecorder {
     // http://caniuse.com/#feat=stream
     // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
     navigator.getUserMedia = (navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia);
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia);
     this.canGetUserMedia = Boolean(navigator.getUserMedia);
     console.log('Native deprecated navigator.getUserMedia API capability: ' +
       this.canGetUserMedia);
@@ -501,6 +502,7 @@ class AudioRecorder {
    */
   requestUserMedia() {
     var self = this;
+
     function success(stream) {
       console.log('Got getUserMedia stream');
 
@@ -517,6 +519,7 @@ class AudioRecorder {
       var micInputGain = self._startUserMedia(stream);
       self.fireEvent('ready', [self.audioContext, micInputGain]);
     }
+
     function failure(e) {
       console.log(e);
       throw new Error('No live audio input available or permitted');
@@ -588,7 +591,7 @@ class AudioRecorder {
     } else if (this.canGetUserMedia) {
       // Fall back to raw (WAVE) audio encoding.
       var self = this;
-      recorder = new WebAudioRecorder(micInputGain, function(data) {
+      recorder = new WebAudioRecorder(micInputGain, function (data) {
         self.streamCallback(data);
       });
     } else {
@@ -641,7 +644,8 @@ class AudioRecorder {
    * @callback Sdk~recordDataAvailableCallback
    * @param {arraybuffer} buffer A chunk of recorded audio.
    */
-  recordDataAvailableCallback(buffer) {}
+  recordDataAvailableCallback(buffer) {
+  }
 
   /**
    * Event fired by record.
@@ -649,7 +653,8 @@ class AudioRecorder {
    * @event AudioRecorder~recording
    * @param {number} id Recording session (if any was defined).
    */
-  recording(id) {}
+  recording(id) {
+  }
 
   /**
    * Start recording microphone input until stopped.
@@ -684,7 +689,8 @@ class AudioRecorder {
    * @param {Blob} blob The recorded audio as Blob (including the mime type).
    * @param {bool} forced true when the reason for the stopped recording was reaching the maximum recording duration.
    */
-  recorded(id, blob, forced) {}
+  recorded(id, blob, forced) {
+  }
 
   /**
    * Stop recording microphone input.
@@ -702,7 +708,7 @@ class AudioRecorder {
     console.log('Stopped recording for id: ' + this.activeRecordingId);
 
     var self = this;
-    this.recorder.getEncodedAudio(function(blob) {
+    this.recorder.getEncodedAudio(function (blob) {
       console.log('Received encoded audio of type: ' + blob.type);
       // Allow direct playback from local blob.
       self.fireEvent('recorded', [self.activeRecordingId, blob, Boolean(forced)]);

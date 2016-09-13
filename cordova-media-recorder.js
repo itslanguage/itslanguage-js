@@ -1,7 +1,7 @@
 /* global
-  device,
-  Media
-*/
+ device,
+ Media
+ */
 
 /*
  * Use the Cordova Media recorder for recording and encoding audio
@@ -55,12 +55,12 @@ module.exports = class CordovaMediaRecorder {
 
     this.mediaRecorder = new Media(filepath,
       // success callback
-      function() {
+      function () {
         console.log('Final recording written to: ' + filepath);
       },
 
       // error callback
-      function(err) {
+      function (err) {
         console.debug('recordAudio(): Audio Error: ' + err.code);
       }
     );
@@ -93,8 +93,7 @@ module.exports = class CordovaMediaRecorder {
     }
   }
 
-  _requestFilepath(
-    filename, callback) {
+  _requestFilepath(filename, callback) {
     // org.apache.cordova.file provides the HTML5 Filesystem API.
 
     // var fs = window.TEMPORARY;
@@ -111,8 +110,8 @@ module.exports = class CordovaMediaRecorder {
       // By setting options to create:false, only a lookup will be performed.
       console.debug('Calling getFile in read mode: ' + filename);
       fileSystem.root.getFile(filename, {
-        create: false
-      },
+          create: false
+        },
         entryCallback, entryErrorCallback);
     }
 
@@ -143,7 +142,7 @@ module.exports = class CordovaMediaRecorder {
 
     function readDataUrl(file) {
       var reader = new FileReader();
-      reader.onloadend = function(evt) {
+      reader.onloadend = function (evt) {
         var arraybuffer = evt.target.result;
         var b = new Blob([arraybuffer], {
           type: this.mimetype

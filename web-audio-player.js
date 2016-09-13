@@ -1,6 +1,6 @@
 /* eslint-disable
-  max-len
-*/
+ max-len
+ */
 
 
 /**
@@ -35,37 +35,37 @@ module.exports = class WebAudioPlayer {
     // HTML5 Audio element itself, therefore, just bubble up all events.
     var self = this;
 
-    this.sound.addEventListener('playing', function() {
+    this.sound.addEventListener('playing', function () {
       if (self.settings.playingCb) {
         self.settings.playingCb();
       }
     });
 
-    this.sound.addEventListener('timeupdate', function() {
+    this.sound.addEventListener('timeupdate', function () {
       if (self.settings.timeupdateCb) {
         self.settings.timeupdateCb();
       }
     });
 
-    this.sound.addEventListener('durationchange', function() {
+    this.sound.addEventListener('durationchange', function () {
       if (self.settings.durationchangeCb) {
         self.settings.durationchangeCb();
       }
     });
 
-    this.sound.addEventListener('canplay', function() {
+    this.sound.addEventListener('canplay', function () {
       if (self.settings.canplayCb) {
         self.settings.canplayCb();
       }
     });
 
-    this.sound.addEventListener('ended', function() {
+    this.sound.addEventListener('ended', function () {
       if (self.settings.endedCb) {
         self.settings.endedCb();
       }
     });
 
-    this.sound.addEventListener('pause', function() {
+    this.sound.addEventListener('pause', function () {
       // The HTML5 audio player only has a pause(), no stop().
       // To differentiate between the two, a flag is set in case the user
       // explicitly stopped (not paused) the audio.
@@ -77,32 +77,32 @@ module.exports = class WebAudioPlayer {
       }
     });
 
-    this.sound.addEventListener('progress', function() {
+    this.sound.addEventListener('progress', function () {
       if (self.settings.progressCb) {
         self.settings.progressCb();
       }
     });
 
-    this.sound.addEventListener('error', function(e) {
+    this.sound.addEventListener('error', function (e) {
       switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
           console.error('You aborted the playback.');
           break;
         case e.target.error.MEDIA_ERR_NETWORK:
           console.error(
-          'A network error caused the audio download to fail.');
+            'A network error caused the audio download to fail.');
           break;
         case e.target.error.MEDIA_ERR_DECODE:
           console.error(
-          'The audio playback was aborted due to a corruption ' +
-          'problem or because the media used features your ' +
-          'browser did not support.');
+            'The audio playback was aborted due to a corruption ' +
+            'problem or because the media used features your ' +
+            'browser did not support.');
           break;
         case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
           console.error(
-          'The audio could not be loaded, either because the ' +
-          'server or network failed or because the format is ' +
-          'not supported.');
+            'The audio could not be loaded, either because the ' +
+            'server or network failed or because the format is ' +
+            'not supported.');
           break;
         default:
           console.error('An unknown error occurred.');
@@ -140,7 +140,7 @@ module.exports = class WebAudioPlayer {
 
     var self = this;
     if (loadedCb) {
-      this.sound.addEventListener('durationchange', function() {
+      this.sound.addEventListener('durationchange', function () {
         console.log('Duration change for ' + url + ' to : ' +
           self.sound.duration);
         loadedCb(self.sound);
@@ -308,6 +308,6 @@ module.exports = class WebAudioPlayer {
     // Either the player is in a valid readyState (preloaded), or
     // the player has a source attached and doesn't show any loading error (non-preloaded).
     return (this.sound.readyState >= this.sound.HAVE_METADATA ||
-      (this.sound.src && !this.sound.error));
+    (this.sound.src && !this.sound.error));
   }
 };

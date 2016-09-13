@@ -1,19 +1,19 @@
 /* eslint-disable
-  camelcase,
-  new-cap
-*/
+ camelcase,
+ new-cap
+ */
 
 /* global
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  jasmine,
-  spyOn,
-  window,
-  FormData
-*/
+ afterEach,
+ beforeEach,
+ describe,
+ expect,
+ it,
+ jasmine,
+ spyOn,
+ window,
+ FormData
+ */
 
 require('jasmine-ajax');
 const autobahn = require('autobahn');
@@ -21,24 +21,24 @@ const autobahn = require('autobahn');
 const its = require('..');
 
 
-describe('Secure GET test', function() {
-  beforeEach(function() {
+describe('Secure GET test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should throw error on required auth credentials', function() {
+  it('should throw error on required auth credentials', function () {
     var api = new its.Sdk();
 
-    expect(function() {
+    expect(function () {
       api._secureAjaxGet();
     }).toThrowError('Please set authPrincipal and authCredentials');
   });
 
-  it('should correctly assemble the Authorization header', function() {
+  it('should correctly assemble the Authorization header', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authCredentials: 'secret'
@@ -54,24 +54,24 @@ describe('Secure GET test', function() {
   });
 });
 
-describe('Secure POST test', function() {
-  beforeEach(function() {
+describe('Secure POST test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should throw error on required auth credentials', function() {
+  it('should throw error on required auth credentials', function () {
     var api = new its.Sdk();
 
-    expect(function() {
+    expect(function () {
       api._secureAjaxPost();
     }).toThrowError('Please set authPrincipal and authCredentials');
   });
 
-  it('should correctly assemble the Authorization header', function() {
+  it('should correctly assemble the Authorization header', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authCredentials: 'secret'
@@ -88,31 +88,31 @@ describe('Secure POST test', function() {
 });
 
 
-describe('BasicAuth object test', function() {
-  it('should require all required fields in constructor', function() {
-    [0, 4, undefined, false, null].map(function(v) {
-      expect(function() {
+describe('BasicAuth object test', function () {
+  it('should require all required fields in constructor', function () {
+    [0, 4, undefined, false, null].map(function (v) {
+      expect(function () {
         new its.BasicAuth(v);
       }).toThrowError(
         'tenantId parameter of type "string" is required');
     });
 
-    [0, 4, false].map(function(v) {
-      expect(function() {
+    [0, 4, false].map(function (v) {
+      expect(function () {
         new its.BasicAuth('tenantId', v);
       }).toThrowError(
         'principal parameter of type "string|null|undefined" is required');
     });
 
-    [0, 4, false].map(function(v) {
-      expect(function() {
+    [0, 4, false].map(function (v) {
+      expect(function () {
         new its.BasicAuth('tenantId', 'principal', v);
       }).toThrowError(
         'credentials parameter of type "string|null|undefined" is required');
     });
   });
 
-  it('should instantiate an BasicAuth with tenantId', function() {
+  it('should instantiate an BasicAuth with tenantId', function () {
     var o = new its.BasicAuth('tenantId');
     expect(o).toBeDefined();
     expect(o.tenantId).toBe('tenantId');
@@ -120,7 +120,7 @@ describe('BasicAuth object test', function() {
     expect(o.credentials).toBeUndefined();
   });
 
-  it('should instantiate a full BasicAuth', function() {
+  it('should instantiate a full BasicAuth', function () {
     var o = new its.BasicAuth('tenantId', 'principal', 'creds');
     expect(o).toBeDefined();
     expect(o.tenantId).toBe('tenantId');
@@ -129,16 +129,16 @@ describe('BasicAuth object test', function() {
   });
 });
 
-describe('BasicAuth API interaction test', function() {
-  beforeEach(function() {
+describe('BasicAuth API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new BasicAuth through API', function() {
+  it('should create a new BasicAuth through API', function () {
     var basicauth = new its.BasicAuth('4', 'principal');
     var api = new its.Sdk({
       authPrincipal: 'principal',
@@ -173,7 +173,7 @@ describe('BasicAuth API interaction test', function() {
     expect(basicauth.credentials).toBe('secret');
   });
 
-  it('should handle errors while creating a new basicauth', function() {
+  it('should handle errors while creating a new basicauth', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -219,15 +219,15 @@ describe('BasicAuth API interaction test', function() {
 });
 
 
-describe('Organisation object test', function() {
-  it('should instantiate an Organisation without id', function() {
+describe('Organisation object test', function () {
+  it('should instantiate an Organisation without id', function () {
     var o = new its.Organisation();
     expect(o).toBeDefined();
     expect(o.id).toBeUndefined();
     expect(o.name).toBeUndefined();
   });
 
-  it('should instantiate an Organisation with id and metadata', function() {
+  it('should instantiate an Organisation with id and metadata', function () {
     var o = new its.Organisation('test', 'School of silly walks');
     expect(o).toBeDefined();
     expect(o.id).toBe('test');
@@ -235,16 +235,16 @@ describe('Organisation object test', function() {
   });
 });
 
-describe('Organisation API interaction test', function() {
-  beforeEach(function() {
+describe('Organisation API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new organisation through API', function() {
+  it('should create a new organisation through API', function () {
     var organisation = new its.Organisation('1', 'School of silly walks');
     var api = new its.Sdk({
       authPrincipal: 'principal',
@@ -282,7 +282,7 @@ describe('Organisation API interaction test', function() {
     expect(organisation.name).toBe('School of silly walks');
   });
 
-  it('should handle errors while creating a new organisation', function() {
+  it('should handle errors while creating a new organisation', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -326,7 +326,7 @@ describe('Organisation API interaction test', function() {
     expect(output).toBeUndefined();
   });
 
-  it('should get an existing organisation through API', function() {
+  it('should get an existing organisation through API', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -360,7 +360,7 @@ describe('Organisation API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(organisation);
   });
 
-  it('should get a list of existing organisations through API', function() {
+  it('should get a list of existing organisations through API', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -396,8 +396,8 @@ describe('Organisation API interaction test', function() {
 });
 
 
-describe('Student object test', function() {
-  it('should instantiate a Student without id', function() {
+describe('Student object test', function () {
+  it('should instantiate a Student without id', function () {
     var s = new its.Student();
     expect(s).toBeDefined();
     expect(s.id).toBeUndefined();
@@ -408,7 +408,7 @@ describe('Student object test', function() {
     expect(s.birthYear).toBeUndefined();
   });
 
-  it('should instantiate a Student with id and metadata', function() {
+  it('should instantiate a Student with id and metadata', function () {
     var s = new its.Student('fb', 'test', 'Mark', 'Zuckerberg', 'male', 1984);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
@@ -420,16 +420,16 @@ describe('Student object test', function() {
   });
 });
 
-describe('Student API interaction test', function() {
-  beforeEach(function() {
+describe('Student API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new student through API', function() {
+  it('should create a new student through API', function () {
     var student = new its.Student('fb', '1', 'Mark');
     var api = new its.Sdk({
       authPrincipal: 'principal',
@@ -444,9 +444,11 @@ describe('Student API interaction test', function() {
     var url = 'https://api.itslanguage.nl/organisations/fb/students';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {id: '1',
-                    organisationId: 'fb',
-                    firstName: 'Mark'};
+    var expected = {
+      id: '1',
+      organisationId: 'fb',
+      firstName: 'Mark'
+    };
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -469,7 +471,7 @@ describe('Student API interaction test', function() {
     expect(student.firstName).toBe('Mark');
   });
 
-  it('should handle errors while creating a new student', function() {
+  it('should handle errors while creating a new student', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -484,9 +486,11 @@ describe('Student API interaction test', function() {
     var url = 'https://api.itslanguage.nl/organisations/fb/students';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {id: '1',
-                    organisationId: 'fb',
-                    firstName: 'Mark'};
+    var expected = {
+      id: '1',
+      organisationId: 'fb',
+      firstName: 'Mark'
+    };
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -515,7 +519,7 @@ describe('Student API interaction test', function() {
     expect(output).toBeUndefined();
   });
 
-  it('should get an existing student through API', function() {
+  it('should get an existing student through API', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -549,7 +553,7 @@ describe('Student API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(student);
   });
 
-  it('should get a list of existing students through API', function() {
+  it('should get a list of existing students through API', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -585,22 +589,22 @@ describe('Student API interaction test', function() {
 });
 
 
-describe('SpeechChallenge object test', function() {
-  it('should require all required fields in constructor', function() {
-    expect(function() {
+describe('SpeechChallenge object test', function () {
+  it('should require all required fields in constructor', function () {
+    expect(function () {
       new its.SpeechChallenge(4);
     }).toThrowError(
       'organisationId parameter of type "string|null" is required');
 
-    expect(function() {
+    expect(function () {
       new its.SpeechChallenge(null, 4);
     }).toThrowError('id parameter of type "string|null" is required');
 
-    expect(function() {
+    expect(function () {
       new its.SpeechChallenge('fb', null, 'hi', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
-  it('should instantiate a SpeechChallenge with referenceAudio', function() {
+  it('should instantiate a SpeechChallenge with referenceAudio', function () {
     var blob = new Blob(['1234567890']);
 
     var s = new its.SpeechChallenge('fb', 'test', 'hi', blob);
@@ -610,7 +614,7 @@ describe('SpeechChallenge object test', function() {
     expect(s.topic).toBe('hi');
     expect(s.referenceAudio).toBe(blob);
   });
-  it('should instantiate a SpeechChallenge', function() {
+  it('should instantiate a SpeechChallenge', function () {
     var s = new its.SpeechChallenge('fb', 'test', 'hi');
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
@@ -620,8 +624,8 @@ describe('SpeechChallenge object test', function() {
   });
 });
 
-describe('SpeechChallenge API interaction test', function() {
-  beforeEach(function() {
+describe('SpeechChallenge API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
 
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
@@ -630,11 +634,11 @@ describe('SpeechChallenge API interaction test', function() {
     spyOn(FormData.prototype, 'append');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new challenge', function() {
+  it('should create a new challenge', function () {
     var challenge = new its.SpeechChallenge('fb', '1', 'Hi');
     var api = new its.Sdk({
       authPrincipal: 'principal',
@@ -671,7 +675,7 @@ describe('SpeechChallenge API interaction test', function() {
     outChallenge.updated = new Date(stringDate);
     expect(cb).toHaveBeenCalledWith(outChallenge);
   });
-  it('should create a new challenge with referenceAudio', function() {
+  it('should create a new challenge with referenceAudio', function () {
     var blob = new Blob(['1234567890']);
     var challenge = new its.SpeechChallenge('fb', '1', 'Hi', blob);
     var api = new its.Sdk({
@@ -694,7 +698,7 @@ describe('SpeechChallenge API interaction test', function() {
     expect(FormData.prototype.append.calls.count()).toEqual(3);
 
     var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
-                '/YsjdG37bUGseu8-bsJ';
+      '/YsjdG37bUGseu8-bsJ';
     var content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
@@ -717,7 +721,7 @@ describe('SpeechChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(outChallenge);
   });
 
-  it('should handle errors while creating a new challenge', function() {
+  it('should handle errors while creating a new challenge', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -753,14 +757,16 @@ describe('SpeechChallenge API interaction test', function() {
     });
 
     expect(cb).not.toHaveBeenCalled();
-    var errors = [{resource: 'SpeechChallenge',
-            field: 'topic',
-            code: 'missing'}];
+    var errors = [{
+      resource: 'SpeechChallenge',
+      field: 'topic',
+      code: 'missing'
+    }];
     expect(ecb).toHaveBeenCalledWith(errors, challenge);
     expect(output).toBeUndefined();
   });
 
-  it('should get an existing speech challenge', function() {
+  it('should get an existing speech challenge', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -795,7 +801,7 @@ describe('SpeechChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(challenge);
   });
 
-  it('should get a list of existing challenges', function() {
+  it('should get a list of existing challenges', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -831,37 +837,37 @@ describe('SpeechChallenge API interaction test', function() {
 });
 
 
-describe('SpeechRecording object test', function() {
-  it('should require all required fields in constructor', function() {
-    expect(function() {
+describe('SpeechRecording object test', function () {
+  it('should require all required fields in constructor', function () {
+    expect(function () {
       new its.SpeechRecording();
     }).toThrowError(
       'challenge parameter of type "SpeechChallenge" is required');
-    expect(function() {
+    expect(function () {
       new its.SpeechRecording(1);
     }).toThrowError(
       'challenge parameter of type "SpeechChallenge" is required');
 
     var challenge = new its.SpeechChallenge('fb');
-    expect(function() {
+    expect(function () {
       new its.SpeechRecording(challenge);
     }).toThrowError(
       'student parameter of type "Student" is required');
-    expect(function() {
+    expect(function () {
       new its.SpeechRecording(challenge, 1);
     }).toThrowError(
       'student parameter of type "Student" is required');
 
     var student = new its.Student('org');
-    expect(function() {
+    expect(function () {
       new its.SpeechRecording(challenge, student, 1);
     }).toThrowError('id parameter of type "string|null" is required');
 
-    expect(function() {
+    expect(function () {
       new its.SpeechRecording(challenge, student, '1', 'foo');
     }).toThrowError('audio parameter of type "Blob|null" is required');
   });
-  it('should instantiate a SpeechRecording', function() {
+  it('should instantiate a SpeechRecording', function () {
     var blob = new Blob(['1234567890']);
     var challenge = new its.SpeechChallenge('fb');
     var student = new its.Student('org');
@@ -893,8 +899,8 @@ describe('SpeechRecording object test', function() {
 });
 
 
-describe('SpeechRecording API interaction test', function() {
-  beforeEach(function() {
+describe('SpeechRecording API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
 
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
@@ -903,11 +909,11 @@ describe('SpeechRecording API interaction test', function() {
     spyOn(FormData.prototype, 'append');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should get an existing speech recording', function() {
+  it('should get an existing speech recording', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -948,7 +954,7 @@ describe('SpeechRecording API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(recording);
   });
 
-  it('should get a list of existing speech recordings', function() {
+  it('should get a list of existing speech recordings', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -991,21 +997,21 @@ describe('SpeechRecording API interaction test', function() {
 });
 
 
-describe('Speech Recording Websocket API interaction test', function() {
-  beforeEach(function() {
+describe('Speech Recording Websocket API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should fail streaming when websocket connection is closed', function() {
+  it('should fail streaming when websocket connection is closed', function () {
     var api = new its.Sdk();
 
     // Mock the audio recorder
     function RecorderMock() {
-      this.getAudioSpecs = function() {
+      this.getAudioSpecs = function () {
         return {
           audioFormat: 'audio/wave',
           audioParameters: {
@@ -1027,7 +1033,7 @@ describe('Speech Recording Websocket API interaction test', function() {
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    expect(function() {
+    expect(function () {
       api.startStreamingSpeechRecording(
         challenge, student, recorder, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
@@ -1036,7 +1042,7 @@ describe('Speech Recording Websocket API interaction test', function() {
     window.WebSocket = old;
   });
 
-  it('should start streaming a new speech recording', function() {
+  it('should start streaming a new speech recording', function () {
     var api = new its.Sdk({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar'
@@ -1044,7 +1050,7 @@ describe('Speech Recording Websocket API interaction test', function() {
 
     // Mock the audio recorder
     function RecorderMock() {
-      this.getAudioSpecs = function() {
+      this.getAudioSpecs = function () {
         return {
           audioFormat: 'audio/wave',
           audioParameters: {
@@ -1054,10 +1060,11 @@ describe('Speech Recording Websocket API interaction test', function() {
           }
         };
       };
-      this.isRecording = function() {
+      this.isRecording = function () {
         return false;
       };
-      this.addEventListener = function() {};
+      this.addEventListener = function () {
+      };
     }
 
     var challenge = new its.SpeechChallenge('fb', '4');
@@ -1067,11 +1074,12 @@ describe('Speech Recording Websocket API interaction test', function() {
     var ecb = jasmine.createSpy('callback');
 
     function SessionMock() {
-      this.call = function() {
+      this.call = function () {
         var d = autobahn.when.defer();
         return d.promise;
       };
     }
+
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
 
@@ -1086,23 +1094,23 @@ describe('Speech Recording Websocket API interaction test', function() {
 });
 
 
-describe('PronunciationChallenge object test', function() {
-  it('should require all required fields in constructor', function() {
-    expect(function() {
+describe('PronunciationChallenge object test', function () {
+  it('should require all required fields in constructor', function () {
+    expect(function () {
       new its.PronunciationChallenge(4);
     }).toThrowError(
       'organisationId parameter of type "string|null" is required');
 
-    expect(function() {
+    expect(function () {
       new its.PronunciationChallenge(null, 4);
     }).toThrowError('id parameter of type "string|null" is required');
 
-    expect(function() {
+    expect(function () {
       new its.PronunciationChallenge('fb', null, 'hi', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
   it('should instantiate a PronunciationChallenge ' +
-      'without referenceAudio', function() {
+    'without referenceAudio', function () {
     var s = new its.PronunciationChallenge('fb', 'test', 'hi');
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
@@ -1110,7 +1118,7 @@ describe('PronunciationChallenge object test', function() {
     expect(s.transcription).toBe('hi');
     expect(s.referenceAudio).toBeUndefined();
   });
-  it('should instantiate a PronunciationChallenge', function() {
+  it('should instantiate a PronunciationChallenge', function () {
     var blob = new Blob(['1234567890']);
 
     var s = new its.PronunciationChallenge('fb', 'test', 'hi', blob);
@@ -1123,8 +1131,8 @@ describe('PronunciationChallenge object test', function() {
 });
 
 
-describe('PronunciationChallenge API interaction test', function() {
-  beforeEach(function() {
+describe('PronunciationChallenge API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
 
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
@@ -1133,11 +1141,11 @@ describe('PronunciationChallenge API interaction test', function() {
     spyOn(FormData.prototype, 'append');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should check for required referenceAudio field', function() {
+  it('should check for required referenceAudio field', function () {
     // Because referenceAudio is not available when fetching existing
     // PronunciationChallenges from the server, the domain model doesn't
     // require the field, but the createPronunciationChallenge() should.
@@ -1148,17 +1156,17 @@ describe('PronunciationChallenge API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new its.PronunciationChallenge('fb', '1', 'test');
-    expect(function() {
+    expect(function () {
       api.createPronunciationChallenge(challenge, cb);
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
 
     challenge = new its.PronunciationChallenge('fb', '1', 'test', null);
-    expect(function() {
+    expect(function () {
       api.createPronunciationChallenge(challenge, cb);
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
 
-  it('should create a new pronunciation challenge through API', function() {
+  it('should create a new pronunciation challenge through API', function () {
     var blob = new Blob(['1234567890']);
     var challenge = new its.PronunciationChallenge('fb', '1', 'test', blob);
     var cb = jasmine.createSpy('callback');
@@ -1183,7 +1191,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(FormData.prototype.append.calls.count()).toEqual(3);
 
     var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
-                '/YsjdG37bUGseu8-bsJ';
+      '/YsjdG37bUGseu8-bsJ';
     var content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
@@ -1208,7 +1216,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(outChallenge);
   });
 
-  it('should handle errors while creating a new challenge', function() {
+  it('should handle errors while creating a new challenge', function () {
     var blob = new Blob(['1234567890']);
     var challenge = new its.PronunciationChallenge('fb', 'test', 'hi', blob);
     var cb = jasmine.createSpy('callback');
@@ -1249,14 +1257,16 @@ describe('PronunciationChallenge API interaction test', function() {
     });
 
     expect(cb).not.toHaveBeenCalled();
-    var errors = [{resource: 'PronunciationChallenge',
-            field: 'transcription',
-            code: 'missing'}];
+    var errors = [{
+      resource: 'PronunciationChallenge',
+      field: 'transcription',
+      code: 'missing'
+    }];
     expect(ecb).toHaveBeenCalledWith(errors, challenge);
     expect(output).toBeUndefined();
   });
 
-  it('should get an existing pronunciation challenge', function() {
+  it('should get an existing pronunciation challenge', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -1273,7 +1283,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(request.method).toBe('GET');
 
     var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
-                '/YsjdG37bUGseu8-bsJ';
+      '/YsjdG37bUGseu8-bsJ';
     var content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',
@@ -1297,7 +1307,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(challenge);
   });
 
-  it('should get a list of existing challenges', function() {
+  it('should get a list of existing challenges', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -1314,7 +1324,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(request.method).toBe('GET');
 
     var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
-                '/YsjdG37bUGseu8-bsJ';
+      '/YsjdG37bUGseu8-bsJ';
     var content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
@@ -1338,7 +1348,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith([challenge]);
   });
 
-  it('should delete a an existing challenge', function() {
+  it('should delete a an existing challenge', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -1365,7 +1375,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(challenge);
   });
 
-  it('should not delete a non existing challenge', function() {
+  it('should not delete a non existing challenge', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -1402,566 +1412,568 @@ describe('PronunciationChallenge API interaction test', function() {
     });
 
     expect(cb).not.toHaveBeenCalled();
-    var errors = [{resource: 'PronunciationChallenge',
-            field: 'id',
-            code: 'missing'}];
+    var errors = [{
+      resource: 'PronunciationChallenge',
+      field: 'id',
+      code: 'missing'
+    }];
     expect(ecb).toHaveBeenCalledWith(errors, challenge);
     expect(output).toBeUndefined();
   });
 });
 
 /*
-Non streaming, move to streaming
-describe('PronunciationAnalyses API interaction test', function() {
-  beforeEach(function() {
-    jasmine.Ajax.install();
+ Non streaming, move to streaming
+ describe('PronunciationAnalyses API interaction test', function() {
+ beforeEach(function() {
+ jasmine.Ajax.install();
 
-    // XXX: jasmine-ajax doesn't support asserting FormData yet.
-    // Workaround by attaching a spy while appending to FormData.
-    // https://github.com/pivotal/jasmine-ajax/issues/51
-    spyOn(FormData.prototype, 'append');
-  });
+ // XXX: jasmine-ajax doesn't support asserting FormData yet.
+ // Workaround by attaching a spy while appending to FormData.
+ // https://github.com/pivotal/jasmine-ajax/issues/51
+ spyOn(FormData.prototype, 'append');
+ });
 
-  afterEach(function() {
-    jasmine.Ajax.uninstall();
-  });
+ afterEach(function() {
+ jasmine.Ajax.uninstall();
+ });
 
-  it('should create a new pronunciation analysis', function() {
-    var blob = new Blob(['1234567890']);
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var student = new its.Student('fb', '6');
-    var recording = new its.SpeechRecording(challenge, student, '1', blob);
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
+ it('should create a new pronunciation analysis', function() {
+ var blob = new Blob(['1234567890']);
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var student = new its.Student('fb', '6');
+ var recording = new its.SpeechRecording(challenge, student, '1', blob);
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
 
-    var output = api.createPronunciationAnalysis(recording, false, cb);
-    expect(output).toBeUndefined();
+ var output = api.createPronunciationAnalysis(recording, false, cb);
+ expect(output).toBeUndefined();
 
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('detailed', false);
-    expect(FormData.prototype.append).toHaveBeenCalledWith('audio', blob);
-    expect(FormData.prototype.append).toHaveBeenCalledWith('studentId', '6');
-    expect(FormData.prototype.append.calls.count()).toEqual(4);
+ var request = jasmine.Ajax.requests.mostRecent();
+ var url = 'https://api.itslanguage.nl/organisations/fb' +
+ '/challenges/pronunciation/4/analyses';
+ expect(request.url).toBe(url);
+ expect(request.method).toBe('POST');
+ expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
+ expect(FormData.prototype.append).toHaveBeenCalledWith('detailed', false);
+ expect(FormData.prototype.append).toHaveBeenCalledWith('audio', blob);
+ expect(FormData.prototype.append).toHaveBeenCalledWith('studentId', '6');
+ expect(FormData.prototype.append.calls.count()).toEqual(4);
 
-    var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
-    var content = {
-      id: '34',
-      created: '2014-12-31T23:59:59Z',
-      updated: '2014-12-31T23:59:59Z',
-      audioUrl: audioUrl,
-      studentId: '24',
-      score: 7.5,
-      words: [
-        [
-          {
-            graphemes: 'B',
-            score: 0.9,
-            verdict: 'good'
-          },
-          {
-            graphemes: 'o',
-            score: 0.4,
-            verdict: 'bad'
-          },
-          {
-            graphemes: 'b',
-            score: 0.6,
-            verdict: 'moderate'
-          },
-          {
-            graphemes: '\''
-          },
-          {
-            graphemes: 's',
-            score: 0.6,
-            verdict: 'moderate'
-          }
-        ],
-        [
-          {
-            graphemes: 'y',
-            score: 0.9,
-            verdict: 'good'
-          },
-          {
-            graphemes: 'ou',
-            score: 0.4,
-            verdict: 'bad'
-          },
-          {
-            graphemes: 'r',
-            score: 0.6,
-            verdict: 'moderate'
-          }
-        ]
-      ]
-    };
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
-    var chunk = [
-      new its.WordChunk('B', 0.9, 'good', []),
-      new its.WordChunk('o', 0.4, 'bad', []),
-      new its.WordChunk('b', 0.6, 'moderate', []),
-      new its.WordChunk('\''),
-      new its.WordChunk('s', 0.6, 'moderate', [])
-    ];
-    var chunk2 = [
-      new its.WordChunk('y', 0.9, 'good', []),
-      new its.WordChunk('ou', 0.4, 'bad', []),
-      new its.WordChunk('r', 0.6, 'moderate', []),
-    ];
-    var word = new its.Word(chunk);
-    var word2 = new its.Word(chunk2);
-    var words = [word, word2];
+ var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+ var content = {
+ id: '34',
+ created: '2014-12-31T23:59:59Z',
+ updated: '2014-12-31T23:59:59Z',
+ audioUrl: audioUrl,
+ studentId: '24',
+ score: 7.5,
+ words: [
+ [
+ {
+ graphemes: 'B',
+ score: 0.9,
+ verdict: 'good'
+ },
+ {
+ graphemes: 'o',
+ score: 0.4,
+ verdict: 'bad'
+ },
+ {
+ graphemes: 'b',
+ score: 0.6,
+ verdict: 'moderate'
+ },
+ {
+ graphemes: '\''
+ },
+ {
+ graphemes: 's',
+ score: 0.6,
+ verdict: 'moderate'
+ }
+ ],
+ [
+ {
+ graphemes: 'y',
+ score: 0.9,
+ verdict: 'good'
+ },
+ {
+ graphemes: 'ou',
+ score: 0.4,
+ verdict: 'bad'
+ },
+ {
+ graphemes: 'r',
+ score: 0.6,
+ verdict: 'moderate'
+ }
+ ]
+ ]
+ };
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 201,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
+ var chunk = [
+ new its.WordChunk('B', 0.9, 'good', []),
+ new its.WordChunk('o', 0.4, 'bad', []),
+ new its.WordChunk('b', 0.6, 'moderate', []),
+ new its.WordChunk('\''),
+ new its.WordChunk('s', 0.6, 'moderate', [])
+ ];
+ var chunk2 = [
+ new its.WordChunk('y', 0.9, 'good', []),
+ new its.WordChunk('ou', 0.4, 'bad', []),
+ new its.WordChunk('r', 0.6, 'moderate', []),
+ ];
+ var word = new its.Word(chunk);
+ var word2 = new its.Word(chunk2);
+ var words = [word, word2];
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    var analysis = new its.PronunciationAnalysis(
-      '4', '24', '34', new Date(stringDate), new Date(stringDate), audioUrl);
-    analysis.audio = recording.audio;
-    analysis.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
-    analysis.score = 7.5;
-    analysis.words = words;
-    expect(cb).toHaveBeenCalledWith(analysis);
-  });
+ var stringDate = '2014-12-31T23:59:59Z';
+ var analysis = new its.PronunciationAnalysis(
+ '4', '24', '34', new Date(stringDate), new Date(stringDate), audioUrl);
+ analysis.audio = recording.audio;
+ analysis.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
+ analysis.score = 7.5;
+ analysis.words = words;
+ expect(cb).toHaveBeenCalledWith(analysis);
+ });
 
-  it('should handle alignment failure', function() {
-    var blob = new Blob(['1234567890']);
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var student = new its.Student('fb', '6');
-    var recording = new its.SpeechRecording(challenge, student, '1', blob);
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
+ it('should handle alignment failure', function() {
+ var blob = new Blob(['1234567890']);
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var student = new its.Student('fb', '6');
+ var recording = new its.SpeechRecording(challenge, student, '1', blob);
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
+ var ecb = jasmine.createSpy('callback');
 
-    var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
-    expect(output).toBeUndefined();
+ var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
+ expect(output).toBeUndefined();
 
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('detailed', false);
-    expect(FormData.prototype.append).toHaveBeenCalledWith('audio', blob);
-    expect(FormData.prototype.append).toHaveBeenCalledWith('studentId', '6');
-    expect(FormData.prototype.append.calls.count()).toEqual(4);
+ var request = jasmine.Ajax.requests.mostRecent();
+ var url = 'https://api.itslanguage.nl/organisations/fb' +
+ '/challenges/pronunciation/4/analyses';
+ expect(request.url).toBe(url);
+ expect(request.method).toBe('POST');
+ expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
+ expect(FormData.prototype.append).toHaveBeenCalledWith('detailed', false);
+ expect(FormData.prototype.append).toHaveBeenCalledWith('audio', blob);
+ expect(FormData.prototype.append).toHaveBeenCalledWith('studentId', '6');
+ expect(FormData.prototype.append.calls.count()).toEqual(4);
 
-    var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
-    var content = {
-      id: '34',
-      created: '2014-12-31T23:59:59Z',
-      updated: '2014-12-31T23:59:59Z',
-      audioUrl: audioUrl,
-      studentId: '24'
-    };
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
+ var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+ var content = {
+ id: '34',
+ created: '2014-12-31T23:59:59Z',
+ updated: '2014-12-31T23:59:59Z',
+ audioUrl: audioUrl,
+ studentId: '24'
+ };
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 422,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    var outRecording = new its.SpeechRecording(challenge, student, '1', blob);
-    outRecording.created = new Date(stringDate);
-    outRecording.updated = new Date(stringDate);
-    outRecording.audio = recording.audio;
-    outRecording.audioUrl = audioUrl;
-    outRecording.audioUrl += '?access_token=cHJpbmNpcGFsOm51bGw%3D';
-    var errors = {status: 422};
-    expect(ecb).toHaveBeenCalledWith(errors, outRecording);
-    expect(cb).not.toHaveBeenCalled();
-  });
+ var stringDate = '2014-12-31T23:59:59Z';
+ var outRecording = new its.SpeechRecording(challenge, student, '1', blob);
+ outRecording.created = new Date(stringDate);
+ outRecording.updated = new Date(stringDate);
+ outRecording.audio = recording.audio;
+ outRecording.audioUrl = audioUrl;
+ outRecording.audioUrl += '?access_token=cHJpbmNpcGFsOm51bGw%3D';
+ var errors = {status: 422};
+ expect(ecb).toHaveBeenCalledWith(errors, outRecording);
+ expect(cb).not.toHaveBeenCalled();
+ });
 
-  it('should handle a locked challenge', function() {
-    var blob = new Blob(['1234567890']);
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var student = new its.Student('fb', '6');
-    var recording = new its.SpeechRecording(challenge, student, '1', blob);
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
+ it('should handle a locked challenge', function() {
+ var blob = new Blob(['1234567890']);
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var student = new its.Student('fb', '6');
+ var recording = new its.SpeechRecording(challenge, student, '1', blob);
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
+ var ecb = jasmine.createSpy('callback');
 
-    var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
-    expect(output).toBeUndefined();
+ var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
+ expect(output).toBeUndefined();
 
-    var content = {};
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 423,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
+ var content = {};
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 423,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
 
-    var errors = {status: 423};
-    expect(ecb).toHaveBeenCalledWith(errors, recording);
-    expect(cb).not.toHaveBeenCalled();
-  });
+ var errors = {status: 423};
+ expect(ecb).toHaveBeenCalledWith(errors, recording);
+ expect(cb).not.toHaveBeenCalled();
+ });
 
-  it('should handle an unprepared challenge', function() {
-    var blob = new Blob(['1234567890']);
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var student = new its.Student('fb', '6');
-    var recording = new its.SpeechRecording(challenge, student, '1', blob);
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
+ it('should handle an unprepared challenge', function() {
+ var blob = new Blob(['1234567890']);
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var student = new its.Student('fb', '6');
+ var recording = new its.SpeechRecording(challenge, student, '1', blob);
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
+ var ecb = jasmine.createSpy('callback');
 
-    var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
-    expect(output).toBeUndefined();
+ var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
+ expect(output).toBeUndefined();
 
-    var content = {};
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 523,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
+ var content = {};
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 523,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
 
-    var errors = {status: 523};
-    expect(ecb).toHaveBeenCalledWith(errors, recording);
-    expect(cb).not.toHaveBeenCalled();
-  });
+ var errors = {status: 523};
+ expect(ecb).toHaveBeenCalledWith(errors, recording);
+ expect(cb).not.toHaveBeenCalled();
+ });
 
-  it('should handle errors creating a pronunciation analysis', function() {
-    var blob = new Blob(['1234567890']);
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var student = new its.Student('fb', '6');
-    var recording = new its.SpeechRecording(challenge, student, '1', blob);
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
+ it('should handle errors creating a pronunciation analysis', function() {
+ var blob = new Blob(['1234567890']);
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var student = new its.Student('fb', '6');
+ var recording = new its.SpeechRecording(challenge, student, '1', blob);
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
+ var ecb = jasmine.createSpy('callback');
 
-    var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
-    expect(output).toBeUndefined();
+ var output = api.createPronunciationAnalysis(recording, false, cb, ecb);
+ expect(output).toBeUndefined();
 
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('detailed', false);
-    expect(FormData.prototype.append).toHaveBeenCalledWith('audio', blob);
-    expect(FormData.prototype.append).toHaveBeenCalledWith('studentId', '6');
-    expect(FormData.prototype.append.calls.count()).toEqual(4);
+ var request = jasmine.Ajax.requests.mostRecent();
+ var url = 'https://api.itslanguage.nl/organisations/fb' +
+ '/challenges/pronunciation/4/analyses';
+ expect(request.url).toBe(url);
+ expect(request.method).toBe('POST');
+ expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
+ expect(FormData.prototype.append).toHaveBeenCalledWith('detailed', false);
+ expect(FormData.prototype.append).toHaveBeenCalledWith('audio', blob);
+ expect(FormData.prototype.append).toHaveBeenCalledWith('studentId', '6');
+ expect(FormData.prototype.append.calls.count()).toEqual(4);
 
-    var content = {
-      message: 'Validation failed',
-      errors: [
-        {
-          resource: 'PronunciationAnalysis',
-          field: 'studentId',
-          code: 'missing'
-        }
-      ]
-    };
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
+ var content = {
+ message: 'Validation failed',
+ errors: [
+ {
+ resource: 'PronunciationAnalysis',
+ field: 'studentId',
+ code: 'missing'
+ }
+ ]
+ };
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 422,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
 
-    expect(cb).not.toHaveBeenCalled();
-    var errors = [{resource: 'PronunciationAnalysis',
-            field: 'studentId',
-            code: 'missing'}];
-    expect(ecb).toHaveBeenCalledWith(errors, recording);
-    expect(output).toBeUndefined();
-  });
+ expect(cb).not.toHaveBeenCalled();
+ var errors = [{resource: 'PronunciationAnalysis',
+ field: 'studentId',
+ code: 'missing'}];
+ expect(ecb).toHaveBeenCalledWith(errors, recording);
+ expect(output).toBeUndefined();
+ });
 
-  it('should get an existing pronunciation analysis', function() {
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
+ it('should get an existing pronunciation analysis', function() {
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.getPronunciationAnalysis(challenge, '5', cb);
-    expect(output).toBeUndefined();
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var output = api.getPronunciationAnalysis(challenge, '5', cb);
+ expect(output).toBeUndefined();
 
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses/5';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
+ var request = jasmine.Ajax.requests.mostRecent();
+ var url = 'https://api.itslanguage.nl/organisations/fb' +
+ '/challenges/pronunciation/4/analyses/5';
+ expect(request.url).toBe(url);
+ expect(request.method).toBe('GET');
 
-    var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
-    var content = {
-      id: '5',
-      created: '2014-12-31T23:59:59Z',
-      updated: '2014-12-31T23:59:59Z',
-      audioUrl: audioUrl,
-      studentId: '6'
-    };
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
+ var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+ var content = {
+ id: '5',
+ created: '2014-12-31T23:59:59Z',
+ updated: '2014-12-31T23:59:59Z',
+ audioUrl: audioUrl,
+ studentId: '6'
+ };
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 200,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var analysis = new its.PronunciationAnalysis(challenge, student,
-      '5', new Date(stringDate), new Date(stringDate));
-    analysis.audioUrl = audioUrl;
-    expect(cb).toHaveBeenCalledWith(analysis);
-  });
+ var stringDate = '2014-12-31T23:59:59Z';
+ var student = new its.Student('fb', '6');
+ var analysis = new its.PronunciationAnalysis(challenge, student,
+ '5', new Date(stringDate), new Date(stringDate));
+ analysis.audioUrl = audioUrl;
+ expect(cb).toHaveBeenCalledWith(analysis);
+ });
 
-  it('should get a list of existing pronunciation analyses', function() {
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
+ it('should get a list of existing pronunciation analyses', function() {
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.listPronunciationAnalyses(challenge, false, cb);
-    expect(output).toBeUndefined();
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var output = api.listPronunciationAnalyses(challenge, false, cb);
+ expect(output).toBeUndefined();
 
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
+ var request = jasmine.Ajax.requests.mostRecent();
+ var url = 'https://api.itslanguage.nl/organisations/fb' +
+ '/challenges/pronunciation/4/analyses';
+ expect(request.url).toBe(url);
+ expect(request.method).toBe('GET');
 
-    var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
-    var content = [{
-      id: '5',
-      created: '2014-12-31T23:59:59Z',
-      updated: '2014-12-31T23:59:59Z',
-      audioUrl: audioUrl,
-      studentId: '6'
-    }, {
-      id: '6',
-      created: '2014-12-31T23:59:59Z',
-      updated: '2014-12-31T23:59:59Z',
-      audioUrl: audioUrl,
-      studentId: '24',
-      score: 7.5,
-      words: [
-        [
-          {
-            graphemes: 'b',
-            score: 0.9,
-            verdict: 'good'
-          },
-          {
-            graphemes: 'o',
-            score: 0.4,
-            verdict: 'bad'
-          },
-          {
-            graphemes: 'x',
-            score: 0.5,
-            verdict: 'moderate'
-          }
-        ]
-      ]
-    }];
+ var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+ var content = [{
+ id: '5',
+ created: '2014-12-31T23:59:59Z',
+ updated: '2014-12-31T23:59:59Z',
+ audioUrl: audioUrl,
+ studentId: '6'
+ }, {
+ id: '6',
+ created: '2014-12-31T23:59:59Z',
+ updated: '2014-12-31T23:59:59Z',
+ audioUrl: audioUrl,
+ studentId: '24',
+ score: 7.5,
+ words: [
+ [
+ {
+ graphemes: 'b',
+ score: 0.9,
+ verdict: 'good'
+ },
+ {
+ graphemes: 'o',
+ score: 0.4,
+ verdict: 'bad'
+ },
+ {
+ graphemes: 'x',
+ score: 0.5,
+ verdict: 'moderate'
+ }
+ ]
+ ]
+ }];
 
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 200,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var analysis = new its.PronunciationAnalysis(challenge, student,
-      '5', new Date(stringDate), new Date(stringDate));
-    analysis.audioUrl = audioUrl;
+ var stringDate = '2014-12-31T23:59:59Z';
+ var student = new its.Student('fb', '6');
+ var analysis = new its.PronunciationAnalysis(challenge, student,
+ '5', new Date(stringDate), new Date(stringDate));
+ analysis.audioUrl = audioUrl;
 
-    var student2 = new its.Student('fb', '24');
-    var analysis2 = new its.PronunciationAnalysis(challenge, student2,
-      '6', new Date(stringDate), new Date(stringDate));
-    analysis2.audioUrl = audioUrl;
-    analysis2.score = 7.5;
-    var chunk = [
-      new its.WordChunk('b', 0.9, 'good', []),
-      new its.WordChunk('o', 0.4, 'bad', []),
-      new its.WordChunk('x', 0.5, 'moderate', []),
-    ];
-    var word = new its.Word(chunk);
-    var words = [word];
-    analysis2.words = words;
-    expect(cb).toHaveBeenCalledWith([analysis, analysis2]);
-  });
+ var student2 = new its.Student('fb', '24');
+ var analysis2 = new its.PronunciationAnalysis(challenge, student2,
+ '6', new Date(stringDate), new Date(stringDate));
+ analysis2.audioUrl = audioUrl;
+ analysis2.score = 7.5;
+ var chunk = [
+ new its.WordChunk('b', 0.9, 'good', []),
+ new its.WordChunk('o', 0.4, 'bad', []),
+ new its.WordChunk('x', 0.5, 'moderate', []),
+ ];
+ var word = new its.Word(chunk);
+ var words = [word];
+ analysis2.words = words;
+ expect(cb).toHaveBeenCalledWith([analysis, analysis2]);
+ });
 
-  it('should get a detailed list of pronunciation analyses', function() {
-    var api = new its.Sdk({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    var cb = jasmine.createSpy('callback');
+ it('should get a detailed list of pronunciation analyses', function() {
+ var api = new its.Sdk({
+ authPrincipal: 'principal',
+ authPassword: 'secret'
+ });
+ var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.listPronunciationAnalyses(challenge, true, cb);
-    expect(output).toBeUndefined();
+ var challenge = new its.SpeechChallenge('fb', '4');
+ var output = api.listPronunciationAnalyses(challenge, true, cb);
+ expect(output).toBeUndefined();
 
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses?detailed=true';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
+ var request = jasmine.Ajax.requests.mostRecent();
+ var url = 'https://api.itslanguage.nl/organisations/fb' +
+ '/challenges/pronunciation/4/analyses?detailed=true';
+ expect(request.url).toBe(url);
+ expect(request.method).toBe('GET');
 
-    var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
-    var content = [{
-      id: '5',
-      created: '2014-12-31T23:59:59Z',
-      updated: '2014-12-31T23:59:59Z',
-      audioUrl: audioUrl,
-      studentId: '6'
-    }, {
-      id: '6',
-      created: '2014-12-31T23:59:59Z',
-      updated: '2014-12-31T23:59:59Z',
-      audioUrl: audioUrl,
-      studentId: '24',
-      score: 7.5,
-      words: [
-        [
-          {
-            graphemes: 'b',
-            phonemes: [
-              {
-                ipa: 'b',
-                score: 0.9,
-                verdict: 'good',
-                start: 0.11,
-                end: 0.22
-              }
-            ],
-            score: 0.9,
-            verdict: 'good'
-          },
-          {
-            graphemes: 'o',
-            phonemes: [
-              {
-                ipa: '\u0251',
-                score: 0.4,
-                verdict: 'bad'
-              }
-            ],
-            score: 0.4,
-            verdict: 'bad'
-          },
-          {
-            graphemes: 'x',
-            phonemes: [
-              {
-                ipa: 'k',
-                score: 0.4,
-                verdict: 'bad'
-              },
-              {
-                ipa: 's',
-                score: 0.6,
-                verdict: 'moderate'
-              }
-            ],
-            score: 0.5,
-            verdict: 'moderate'
-          }
-        ]
-      ]
-    }];
+ var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+ var content = [{
+ id: '5',
+ created: '2014-12-31T23:59:59Z',
+ updated: '2014-12-31T23:59:59Z',
+ audioUrl: audioUrl,
+ studentId: '6'
+ }, {
+ id: '6',
+ created: '2014-12-31T23:59:59Z',
+ updated: '2014-12-31T23:59:59Z',
+ audioUrl: audioUrl,
+ studentId: '24',
+ score: 7.5,
+ words: [
+ [
+ {
+ graphemes: 'b',
+ phonemes: [
+ {
+ ipa: 'b',
+ score: 0.9,
+ verdict: 'good',
+ start: 0.11,
+ end: 0.22
+ }
+ ],
+ score: 0.9,
+ verdict: 'good'
+ },
+ {
+ graphemes: 'o',
+ phonemes: [
+ {
+ ipa: '\u0251',
+ score: 0.4,
+ verdict: 'bad'
+ }
+ ],
+ score: 0.4,
+ verdict: 'bad'
+ },
+ {
+ graphemes: 'x',
+ phonemes: [
+ {
+ ipa: 'k',
+ score: 0.4,
+ verdict: 'bad'
+ },
+ {
+ ipa: 's',
+ score: 0.6,
+ verdict: 'moderate'
+ }
+ ],
+ score: 0.5,
+ verdict: 'moderate'
+ }
+ ]
+ ]
+ }];
 
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
+ jasmine.Ajax.requests.mostRecent().respondWith({
+ status: 200,
+ contentType: 'application/json',
+ responseText: JSON.stringify(content)
+ });
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var analysis = new its.PronunciationAnalysis(challenge, student,
-      '5', new Date(stringDate), new Date(stringDate));
-    analysis.audioUrl = audioUrl;
+ var stringDate = '2014-12-31T23:59:59Z';
+ var student = new its.Student('fb', '6');
+ var analysis = new its.PronunciationAnalysis(challenge, student,
+ '5', new Date(stringDate), new Date(stringDate));
+ analysis.audioUrl = audioUrl;
 
-    var student2 = new its.Student('fb', '24');
-    var analysis2 = new its.PronunciationAnalysis(challenge, student2,
-      '6', new Date(stringDate), new Date(stringDate));
-    analysis2.audioUrl = audioUrl;
-    analysis2.score = 7.5;
-    var phoneme1 = new its.Phoneme('b', 0.9, 'good');
-    phoneme1.start = 0.11;
-    phoneme1.end = 0.22;
-    var phonemes1 = [phoneme1];
-    var phonemes2 = [
-      new its.Phoneme('\u0251', 0.4, 'bad')
-    ];
-    var phonemes3 = [
-      new its.Phoneme('k', 0.4, 'bad'),
-      new its.Phoneme('s', 0.6, 'moderate')
-    ];
-    var chunk = [
-      new its.WordChunk('b', 0.9, 'good', phonemes1),
-      new its.WordChunk('o', 0.4, 'bad', phonemes2),
-      new its.WordChunk('x', 0.5, 'moderate', phonemes3),
-    ];
-    var word = new its.Word(chunk);
-    var words = [word];
-    analysis2.words = words;
-    expect(cb).toHaveBeenCalledWith([analysis, analysis2]);
-  });
-});
-*/
+ var student2 = new its.Student('fb', '24');
+ var analysis2 = new its.PronunciationAnalysis(challenge, student2,
+ '6', new Date(stringDate), new Date(stringDate));
+ analysis2.audioUrl = audioUrl;
+ analysis2.score = 7.5;
+ var phoneme1 = new its.Phoneme('b', 0.9, 'good');
+ phoneme1.start = 0.11;
+ phoneme1.end = 0.22;
+ var phonemes1 = [phoneme1];
+ var phonemes2 = [
+ new its.Phoneme('\u0251', 0.4, 'bad')
+ ];
+ var phonemes3 = [
+ new its.Phoneme('k', 0.4, 'bad'),
+ new its.Phoneme('s', 0.6, 'moderate')
+ ];
+ var chunk = [
+ new its.WordChunk('b', 0.9, 'good', phonemes1),
+ new its.WordChunk('o', 0.4, 'bad', phonemes2),
+ new its.WordChunk('x', 0.5, 'moderate', phonemes3),
+ ];
+ var word = new its.Word(chunk);
+ var words = [word];
+ analysis2.words = words;
+ expect(cb).toHaveBeenCalledWith([analysis, analysis2]);
+ });
+ });
+ */
 
 /*
-describe('SDK is created without WebSocket browser support', function() {
-  beforeEach(function() {
-    // Browser has no support for WebSocket
-    spyOn(window, 'WebSocket').and.returnValue(undefined);
-  });
+ describe('SDK is created without WebSocket browser support', function() {
+ beforeEach(function() {
+ // Browser has no support for WebSocket
+ spyOn(window, 'WebSocket').and.returnValue(undefined);
+ });
 
-  it('should fail when no WebSocket object exists', function() {
-    expect(function() {
-      its.Sdk();
-    }).toThrowError('No WebSocket capabilities');
-  });
-});
-*/
+ it('should fail when no WebSocket object exists', function() {
+ expect(function() {
+ its.Sdk();
+ }).toThrowError('No WebSocket capabilities');
+ });
+ });
+ */
 
 
-describe('Pronunciation Analyisis Websocket API interaction test', function() {
-  beforeEach(function() {
+describe('Pronunciation Analyisis Websocket API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should fail streaming when websocket connection is closed', function() {
+  it('should fail streaming when websocket connection is closed', function () {
     var api = new its.Sdk();
 
     // Mock the audio recorder
     function RecorderMock() {
-      this.getAudioSpecs = function() {
+      this.getAudioSpecs = function () {
         return {
           audioFormat: 'audio/wave',
           audioParameters: {
@@ -1979,13 +1991,13 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    expect(function() {
+    expect(function () {
       api.startStreamingPronunciationAnalysis(
         challenge, recorder, prepareCb, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
   });
 
-  it('should start streaming a new pronunciation analysis', function() {
+  it('should start streaming a new pronunciation analysis', function () {
     var api = new its.Sdk({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar'
@@ -1993,7 +2005,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
 
     // Mock the audio recorder
     function RecorderMock() {
-      this.getAudioSpecs = function() {
+      this.getAudioSpecs = function () {
         return {
           audioFormat: 'audio/wave',
           audioParameters: {
@@ -2003,10 +2015,11 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
           }
         };
       };
-      this.isRecording = function() {
+      this.isRecording = function () {
         return false;
       };
-      this.addEventListener = function() {};
+      this.addEventListener = function () {
+      };
     }
 
     var challenge = new its.PronunciationChallenge('fb', '4', 'foo');
@@ -2016,11 +2029,12 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
     var prepareCb = jasmine.createSpy('callback');
 
     function SessionMock() {
-      this.call = function() {
+      this.call = function () {
         var d = autobahn.when.defer();
         return d.promise;
       };
     }
+
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
 
@@ -2030,46 +2044,46 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
     expect(api._session.call).toHaveBeenCalled();
     expect(api._session.call).toHaveBeenCalledWith(
       'nl.itslanguage.pronunciation.init_analysis', [],
-        {trimStart: 0.15, trimEnd: 0.0});
+      {trimStart: 0.15, trimEnd: 0.0});
     expect(output).toBeUndefined();
   });
 });
 
 
-describe('ChoiceChallenge object test', function() {
-  it('should require all required fields in constructor', function() {
-    [0, 4, undefined, false, null].map(function(v) {
-      expect(function() {
+describe('ChoiceChallenge object test', function () {
+  it('should require all required fields in constructor', function () {
+    [0, 4, undefined, false, null].map(function (v) {
+      expect(function () {
         new its.ChoiceChallenge(v);
       }).toThrowError(
         'organisationId parameter of type "string" is required');
     });
 
-    [0, 4, false].map(function(v) {
-      expect(function() {
+    [0, 4, false].map(function (v) {
+      expect(function () {
         new its.ChoiceChallenge('org', v);
       }).toThrowError(
         'id parameter of type "string|null|undefined" is required');
     });
-    expect(function() {
+    expect(function () {
       new its.ChoiceChallenge('org', '');
     }).toThrowError(
       'id parameter should not be an empty string');
 
-    [0, 4, false].map(function(v) {
-      expect(function() {
+    [0, 4, false].map(function (v) {
+      expect(function () {
         new its.ChoiceChallenge('org', null, v);
       }).toThrowError(
         'question parameter of type "string|null|undefined" is required');
     });
 
-    [0, 4, undefined, false].map(function(v) {
-      expect(function() {
+    [0, 4, undefined, false].map(function (v) {
+      expect(function () {
         new its.ChoiceChallenge('org', null, 'question', v);
       }).toThrowError('choices parameter of type "Array" is required');
     });
   });
-  it('should instantiate a ChoiceChallenge', function() {
+  it('should instantiate a ChoiceChallenge', function () {
     var s = new its.ChoiceChallenge('fb', 'test', 'q', ['a', 'a2']);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
@@ -2080,8 +2094,8 @@ describe('ChoiceChallenge object test', function() {
 });
 
 
-describe('ChoiceChallenge API interaction test', function() {
-  beforeEach(function() {
+describe('ChoiceChallenge API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
 
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
@@ -2090,11 +2104,11 @@ describe('ChoiceChallenge API interaction test', function() {
     spyOn(FormData.prototype, 'append');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new choice challenge through API', function() {
+  it('should create a new choice challenge through API', function () {
     var challenge = new its.ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
     var cb = jasmine.createSpy('callback');
 
@@ -2140,7 +2154,7 @@ describe('ChoiceChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(challenge);
   });
 
-  it('should handle errors while creating a new challenge', function() {
+  it('should handle errors while creating a new challenge', function () {
     var challenge = new its.ChoiceChallenge('fb', '1', 'q', ['a']);
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
@@ -2178,14 +2192,16 @@ describe('ChoiceChallenge API interaction test', function() {
     });
 
     expect(cb).not.toHaveBeenCalled();
-    var errors = [{resource: 'ChoiceChallenge',
-            field: 'question',
-            code: 'missing'}];
+    var errors = [{
+      resource: 'ChoiceChallenge',
+      field: 'question',
+      code: 'missing'
+    }];
     expect(ecb).toHaveBeenCalledWith(errors, challenge);
     expect(output).toBeUndefined();
   });
 
-  it('should get an existing choice challenge', function() {
+  it('should get an existing choice challenge', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -2226,7 +2242,7 @@ describe('ChoiceChallenge API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(challenge);
   });
 
-  it('should get a list of existing challenges', function() {
+  it('should get a list of existing challenges', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -2272,21 +2288,21 @@ describe('ChoiceChallenge API interaction test', function() {
 });
 
 
-describe('ChoiceRecognition Websocket API interaction test', function() {
-  beforeEach(function() {
+describe('ChoiceRecognition Websocket API interaction test', function () {
+  beforeEach(function () {
     jasmine.Ajax.install();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.Ajax.uninstall();
   });
 
-  it('should fail streaming when websocket connection is closed', function() {
+  it('should fail streaming when websocket connection is closed', function () {
     var api = new its.Sdk();
 
     // Mock the audio recorder
     function RecorderMock() {
-      this.getAudioSpecs = function() {
+      this.getAudioSpecs = function () {
         return {
           audioFormat: 'audio/wave',
           audioParameters: {
@@ -2307,7 +2323,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     var preparedcb = jasmine.createSpy('callback');
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
-    expect(function() {
+    expect(function () {
       api.startStreamingChoiceRecognition(
         challenge, recorder, preparedcb, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
@@ -2316,7 +2332,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     window.WebSocket = old;
   });
 
-  it('should start streaming a new choice recognition', function() {
+  it('should start streaming a new choice recognition', function () {
     var api = new its.Sdk({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar'
@@ -2324,7 +2340,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
     // Mock the audio recorder
     function RecorderMock() {
-      this.getAudioSpecs = function() {
+      this.getAudioSpecs = function () {
         return {
           audioFormat: 'audio/wave',
           audioParameters: {
@@ -2334,10 +2350,11 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
           }
         };
       };
-      this.isRecording = function() {
+      this.isRecording = function () {
         return false;
       };
-      this.addEventListener = function() {};
+      this.addEventListener = function () {
+      };
     }
 
     var challenge = new its.ChoiceChallenge('fb', '4', null, []);
@@ -2347,11 +2364,12 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     var ecb = jasmine.createSpy('callback');
 
     function SessionMock() {
-      this.call = function() {
+      this.call = function () {
         var d = autobahn.when.defer();
         return d.promise;
       };
     }
+
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
 
@@ -2361,11 +2379,11 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     expect(api._session.call).toHaveBeenCalled();
     expect(api._session.call).toHaveBeenCalledWith(
       'nl.itslanguage.choice.init_recognition', [],
-        {trimStart: 0.15, trimEnd: 0});
+      {trimStart: 0.15, trimEnd: 0});
     expect(output).toBeUndefined();
   });
 
-  it('should get an existing choice recognition', function() {
+  it('should get an existing choice recognition', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'
@@ -2404,7 +2422,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     expect(cb).toHaveBeenCalledWith(recognition);
   });
 
-  it('should get a list of existing choice recognitions', function() {
+  it('should get a list of existing choice recognitions', function () {
     var api = new its.Sdk({
       authPrincipal: 'principal',
       authPassword: 'secret'

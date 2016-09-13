@@ -11,10 +11,10 @@ module.exports = class WavePacker {
 
     this.sampleRate = sampleRate;
     if ([
-      this.recordingSampleRate,
-      this.recordingSampleRate / 2,
-      this.recordingSampleRate / 4
-    ].indexOf(this.sampleRate) === -1) {
+        this.recordingSampleRate,
+        this.recordingSampleRate / 2,
+        this.recordingSampleRate / 4
+      ].indexOf(this.sampleRate) === -1) {
       console.warn(
         'sampleRate must be equal, half or a quarter of the ' +
         'recording sample rate');
@@ -46,6 +46,7 @@ module.exports = class WavePacker {
       }
       return buf.buffer;
     }
+
     // Both the left and right channel's data is a view (Float32Array)
     // on top of the buffer (ArrayBuffer). Each buffer's element should
     // have value between -1 and 1.

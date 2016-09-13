@@ -26,12 +26,12 @@ module.exports = class WebAudioRecorder {
     this.sampleRate = this.recordedSampleRate / 2;
     // Streaming doesn't yet downsample: #1302.
     this.sampleRate = (streamingCallback ? this.recordedSampleRate :
-                        this.sampleRate);
+      this.sampleRate);
 
     // Always record audio in mono.
     this.channels = 1;
     console.log('Recording at: ' +
-                  this.getAudioSpecs().audioParameters.sampleRate);
+      this.getAudioSpecs().audioParameters.sampleRate);
 
     this.packer = new WavePacker();
     this.packer.init(this.recordedSampleRate, this.sampleRate, this.channels);
@@ -51,7 +51,7 @@ module.exports = class WebAudioRecorder {
     this.recorder = recorder;
 
     var self = this;
-    recorder.onaudioprocess = function(e) {
+    recorder.onaudioprocess = function (e) {
       if (!self.recording) {
         return;
       }
