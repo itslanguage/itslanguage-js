@@ -7,7 +7,7 @@ env:
 
 rules:
   no-console: 0  # This project purposely uses console.
-  space-before-function-paren: ["error",{"anonymous": "never", "named": "always"}]
+  space-before-function-paren: ["error","never"]
   # The code base is not yet compliant with these rules:
   no-extra-parens: 0
   no-shadow: 0
