@@ -497,12 +497,14 @@ class Sdk {
 
     var self = this;
     this.addEventListener = function (name, handler) {
+
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
         self.events[name] = [handler];
       }
     };
+
     this.removeEventListener = function (name, handler) {
       /* This is a bit tricky, because how would you identify functions?
        This simple solution should work if you pass THE SAME handler. */
@@ -648,7 +650,7 @@ class Sdk {
   /**
    * Perform a HTTP POST to the API.
    *
-   * @param {string} URL to submit to.
+   * @param {string} url to submit to.
    * @param {FormData|string} formdata FormData or stringified JSON to POST.
    * @param {callback} [cb] The callback that handles the response.
    * @param {callback} [ecb] The callback that handles the error response.
