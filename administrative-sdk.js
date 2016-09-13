@@ -494,7 +494,6 @@ class Sdk {
     // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener
     // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
     this.events = {};
-
     var self = this;
     this.addEventListener = function (name, handler) {
 
