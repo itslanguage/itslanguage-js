@@ -495,7 +495,7 @@ class Sdk {
     // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
     this.events = {};
     var self = this;
-    this.addEventListener = function (name, handler) {
+    this.addEventListener = function(name, handler) {
 
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
@@ -504,7 +504,7 @@ class Sdk {
       }
     };
 
-    this.removeEventListener = function (name, handler) {
+    this.removeEventListener = function(name, handler) {
       /* This is a bit tricky, because how would you identify functions?
        This simple solution should work if you pass THE SAME handler. */
       if (!self.events.hasOwnProperty(name)) {
@@ -517,7 +517,7 @@ class Sdk {
       }
     };
 
-    this.fireEvent = function (name, args) {
+    this.fireEvent = function(name, args) {
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -526,7 +526,7 @@ class Sdk {
       }
 
       var evs = self.events[name];
-      evs.forEach(function (ev) {
+      evs.forEach(function(ev) {
         ev.apply(null, args);
       });
     };
@@ -572,21 +572,21 @@ class Sdk {
       return;
     }
     var self = this;
-    connection.onerror = function (e) {
+    connection.onerror = function(e) {
       console.log('WebSocket error: ' + e);
       self.fireEvent('websocketError', [e]);
     };
-    connection.onopen = function (session) {
+    connection.onopen = function(session) {
       console.log('WebSocket connection opened');
       self._session = session;
       var _call = self._session.call;
-      self._session.call = function (url) {
+      self._session.call = function(url) {
         console.debug('Calling RPC: ' + url);
         return _call.apply(this, arguments);
       };
       self.fireEvent('websocketOpened');
     };
-    connection.onclose = function (e) {
+    connection.onclose = function(e) {
       console.log('WebSocket disconnected');
       self._session = null;
       self.fireEvent('websocketClosed');
@@ -623,7 +623,7 @@ class Sdk {
     var request = new XMLHttpRequest();
     var response = null;
     request.open('GET', url);
-    request.onreadystatechange = function () {
+    request.onreadystatechange = function() {
       if (request.readyState === 4) {
         if (request.status >= 100 && request.status < 300) {
           // Perfect!
@@ -660,7 +660,7 @@ class Sdk {
     var request = new XMLHttpRequest();
     var response = null;
     request.open('POST', url);
-    request.onreadystatechange = function () {
+    request.onreadystatechange = function() {
       if (request.readyState === 4) {
         // The response is received
         if (request.status >= 100 && request.status < 300) {
@@ -710,7 +710,7 @@ class Sdk {
     var request = new XMLHttpRequest();
     var response = null;
     request.open('DELETE', url);
-    request.onreadystatechange = function () {
+    request.onreadystatechange = function() {
       if (request.readyState === 4) {
         // The response is received
         if (request.status >= 100 && request.status < 300) {
@@ -835,7 +835,7 @@ class Sdk {
    * @param {Sdk~tenantCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
   createTenant(tenant, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
       tenant.id = data.id;
       tenant.created = new Date(data.created);
@@ -845,7 +845,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, tenant);
       }
@@ -884,7 +884,7 @@ class Sdk {
    * @param {Sdk~basicAuthCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
   createBasicAuth(basicauth, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       basicauth.principal = data.principal;
       basicauth.created = new Date(data.created);
       basicauth.updated = new Date(data.updated);
@@ -897,7 +897,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, basicauth);
       }
@@ -935,7 +935,7 @@ class Sdk {
    * @param {Sdk~organisationCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
   createOrganisation(organisation, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
       organisation.id = data.id;
       organisation.created = new Date(data.created);
@@ -945,7 +945,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, organisation);
       }
@@ -982,7 +982,7 @@ class Sdk {
    * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
   getOrganisation(organisationId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var organisation = new Organisation(data.id, data.name);
       organisation.created = new Date(data.created);
       organisation.updated = new Date(data.updated);
@@ -1020,9 +1020,9 @@ class Sdk {
    * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
   listOrganisations(cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var organisations = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var organisation = new Organisation(datum.id, datum.name);
         organisation.created = new Date(datum.created);
         organisation.updated = new Date(datum.updated);
@@ -1065,7 +1065,7 @@ class Sdk {
    * @param {Sdk~studentCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
   createStudent(student, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
       student.id = data.id;
       student.created = new Date(data.created);
@@ -1075,7 +1075,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, student);
       }
@@ -1118,7 +1118,7 @@ class Sdk {
    * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
   getStudent(organisationId, studentId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var student = new Student(organisationId, data.id, data.firstName,
         data.lastName, data.gender, data.birthYear);
       student.created = new Date(data.created);
@@ -1159,9 +1159,9 @@ class Sdk {
    * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
   listStudents(organisationId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var students = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var student = new Student(organisationId, datum.id,
           datum.firstName, datum.lastName, datum.gender, datum.birthYear);
         student.created = new Date(datum.created);
@@ -1206,7 +1206,7 @@ class Sdk {
    * @param {Sdk~speechChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
   createSpeechChallenge(challenge, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
       challenge.id = data.id;
       challenge.created = new Date(data.created);
@@ -1217,7 +1217,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, challenge);
       }
@@ -1269,7 +1269,7 @@ class Sdk {
    * @param {Sdk~getSpeechChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
   getSpeechChallenge(organisationId, challengeId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
       challenge.created = new Date(data.created);
       challenge.updated = new Date(data.updated);
@@ -1309,9 +1309,9 @@ class Sdk {
    * @param {Sdk~listSpeechChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
   listSpeechChallenges(organisationId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var challenges = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var challenge = new SpeechChallenge(organisationId, datum.id,
           datum.topic);
         challenge.created = new Date(datum.created);
@@ -1357,11 +1357,11 @@ class Sdk {
     this._session.call('nl.itslanguage.recording.init_challenge',
       [self._recordingId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
-      function (recordingId) {
+      function(recordingId) {
         console.log('Challenge initialised for recordingId: ' + self._recordingId);
       },
       // RPC error callback
-      function (res) {
+      function(res) {
         self.logRPCError(res);
       }
     );
@@ -1381,13 +1381,13 @@ class Sdk {
     this._session.call('nl.itslanguage.recording.init_audio',
       [self._recordingId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
-      function (recordingId) {
+      function(recordingId) {
         console.log('Accepted audio parameters for recordingId after init_audio: ' + self._recordingId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
       },
       // RPC error callback
-      function (res) {
+      function(res) {
         self.logRPCError(res);
       }
     );
@@ -1404,7 +1404,7 @@ class Sdk {
    */
   startStreamingSpeechRecording(challenge, recorder, preparedCb, cb, ecb) {
     var self = this;
-    var _cb = function (data) {
+    var _cb = function(data) {
       var student = new Student(challenge.organisationId, data.studentId);
       var recording = new SpeechRecording(
         challenge, student, data.id);
@@ -1416,7 +1416,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors, recording) {
+    var _ecb = function(errors, recording) {
       // Either there was an unexpected error, or the audio failed to
       // align, in which case no recording is provided, but just the
       // basic metadata.
@@ -1461,11 +1461,11 @@ class Sdk {
       self._session.call('nl.itslanguage.recording.write',
         [self._recordingId, encoded, 'base64']).then(
         // RPC success callback
-        function (res) {
+        function(res) {
           // Wrote data.
         },
         // RPC error callback
-        function (res) {
+        function(res) {
           self.logRPCError(res);
           _ecb(res);
         }
@@ -1481,7 +1481,7 @@ class Sdk {
       if (recorder.hasUserMediaApproval()) {
         self.speechRecordingInitAudio(recorder, dataavailableCb);
       } else {
-        var userMediaCb = function (chunk) {
+        var userMediaCb = function(chunk) {
           self.speechRecordingInitAudio(recorder, dataavailableCb);
           recorder.removeEventListener('ready', recordingCb);
         };
@@ -1493,24 +1493,24 @@ class Sdk {
       // RPC success callback
       recordingCb,
       // RPC error callback
-      function (res) {
+      function(res) {
         self.logRPCError(res);
         _ecb(res);
       }
     );
 
     // Stop listening when the audio recorder stopped.
-    var recordedCb = function (activeRecordingId, audioBlob, forcedStop) {
+    var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
       self._session.call('nl.itslanguage.recording.close',
         [self._recordingId]).then(
         // RPC success callback
-        function (res) {
+        function(res) {
           console.log(res);
           // Pass along details to the success callback
           _cb(res, forcedStop);
         },
         // RPC error callback
-        function (res) {
+        function(res) {
           self.logRPCError(res);
           _ecb(res);
         }
@@ -1578,7 +1578,7 @@ class Sdk {
    */
   getSpeechRecording(challenge, recordingId, cb, ecb) {
     var self = this;
-    var _cb = function (data) {
+    var _cb = function(data) {
       var student = new Student(challenge.organisationId, data.studentId);
       var recording = new SpeechRecording(challenge, student, data.id);
       recording.audio = null;
@@ -1630,9 +1630,9 @@ class Sdk {
    */
   listSpeechRecordings(challenge, cb, ecb) {
     var self = this;
-    var _cb = function (data) {
+    var _cb = function(data) {
       var recordings = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var student = new Student(challenge.organisationId, datum.studentId);
         var recording = new SpeechRecording(challenge, student, datum.id);
         recording.audio = null;
@@ -1687,7 +1687,7 @@ class Sdk {
    * @param {Sdk~pronunciationChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
   createPronunciationChallenge(challenge, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
       challenge.id = data.id;
       challenge.created = new Date(data.created);
@@ -1699,7 +1699,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, challenge);
       }
@@ -1755,7 +1755,7 @@ class Sdk {
    * @param {Sdk~getPronunciationChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
   getPronunciationChallenge(organisationId, challengeId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var challenge = new PronunciationChallenge(organisationId, data.id,
         data.transcription);
       challenge.created = new Date(data.created);
@@ -1798,9 +1798,9 @@ class Sdk {
    * @param {Sdk~listPronunciationChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
   listPronunciationChallenges(organisationId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var challenges = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var challenge = new PronunciationChallenge(
           organisationId, datum.id, datum.transcription);
         challenge.created = new Date(datum.created);
@@ -1845,13 +1845,13 @@ class Sdk {
    * @param {Sdk~pronunciationChallengeDeletedErrorCallback} [ecb] The callback that handles the error response.
    */
   deletePronunciationChallenge(challenge, cb, ecb) {
-    var _cb = function (response) {
+    var _cb = function(response) {
       if (cb) {
         cb(challenge);
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, challenge);
       }
@@ -1899,13 +1899,13 @@ class Sdk {
    */
   _wordsToModels(inWords) {
     var words = [];
-    inWords.forEach(function (word) {
+    inWords.forEach(function(word) {
       var chunks = [];
-      word.chunks.forEach(function (chunk) {
+      word.chunks.forEach(function(chunk) {
         var phonemes = [];
         // Phonemes are only provided on detailed analysis.
         chunk.phonemes = chunk.phonemes || [];
-        chunk.phonemes.forEach(function (phoneme) {
+        chunk.phonemes.forEach(function(phoneme) {
           var newPhoneme = new Phoneme(
             phoneme.ipa, phoneme.score, phoneme.confidenceScore,
             phoneme.verdict);
@@ -1934,11 +1934,11 @@ class Sdk {
     this._session.call('nl.itslanguage.pronunciation.init_challenge',
       [self._analysisId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
-      function (analysisId) {
+      function(analysisId) {
         console.log('Challenge initialised for analysisId: ' + self._analysisId);
       },
       // RPC error callback
-      function (res) {
+      function(res) {
         self.logRPCError(res);
       }
     );
@@ -1946,12 +1946,12 @@ class Sdk {
     this._session.call('nl.itslanguage.pronunciation.alignment',
       [self._analysisId]).then(
       // RPC success callback
-      function (alignment) {
+      function(alignment) {
         self.referenceAlignment = alignment;
         console.log('Reference alignment retrieved');
       },
       // RPC error callback
-      function (res) {
+      function(res) {
         self.logRPCError(res);
       }
     );
@@ -1971,13 +1971,13 @@ class Sdk {
     this._session.call('nl.itslanguage.pronunciation.init_audio',
       [self._analysisId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
-      function (analysisId) {
+      function(analysisId) {
         console.log('Accepted audio parameters for analysisId after init_audio: ' + self._analysisId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
       },
       // RPC error callback
-      function (res) {
+      function(res) {
         self.logRPCError(res);
       }
     );
@@ -1996,7 +1996,7 @@ class Sdk {
    */
   startStreamingPronunciationAnalysis(challenge, recorder, preparedCb, cb, ecb, progressCb, trim) {
     var self = this;
-    var _cb = function (data) {
+    var _cb = function(data) {
       var analysis = new PronunciationAnalysis(
         challenge.id, data.studentId, data.id,
         null, null,
@@ -2009,13 +2009,13 @@ class Sdk {
       }
     };
 
-    var _progressCb = function (progress) {
+    var _progressCb = function(progress) {
       if (progressCb) {
         progressCb(progress, self.referenceAlignment);
       }
     };
 
-    var _ecb = function (data) {
+    var _ecb = function(data) {
       // Either there was an unexpected error, or the audio failed to
       // align, in which case no analysis is provided, but just the
       // basic metadata.
@@ -2057,25 +2057,25 @@ class Sdk {
 
     // Start streaming the binary audio when the user instructs
     // the audio recorder to start recording.
-    var dataavailableCb = function (chunk) {
+    var dataavailableCb = function(chunk) {
       var encoded = self._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for analysisId: ' +
         self._analysisId);
       self._session.call('nl.itslanguage.pronunciation.write',
         [self._analysisId, encoded, 'base64']).then(
         // RPC success callback
-        function (res) {
+        function(res) {
           console.debug('Delivered audio successfully');
         },
         // RPC error callback
-        function (res) {
+        function(res) {
           self.logRPCError(res);
           _ecb(res);
         }
       );
     };
 
-    var analysisInitCb = function (analysisId) {
+    var analysisInitCb = function(analysisId) {
       self._analysisId = analysisId;
       console.log('Got analysisId after initialisation: ' + self._analysisId);
       self.pronunciationAnalysisInitChallenge(challenge);
@@ -2084,7 +2084,7 @@ class Sdk {
       if (recorder.hasUserMediaApproval()) {
         self.pronunciationAnalysisInitAudio(recorder, dataavailableCb);
       } else {
-        var userMediaCb = function (chunk) {
+        var userMediaCb = function(chunk) {
           self.pronunciationAnalysisInitAudio(recorder, dataavailableCb);
           recorder.removeEventListener('ready', userMediaCb);
         };
@@ -2105,24 +2105,24 @@ class Sdk {
       // RPC success callback
       analysisInitCb,
       // RPC error callback
-      function (res) {
+      function(res) {
         self.logRPCError(res);
       }
     );
 
     // Stop listening when the audio recorder stopped.
-    var recordedCb = function (id) {
+    var recordedCb = function(id) {
       // When done, submit any plain text (non-JSON) to start analysing.
 
       self._session.call('nl.itslanguage.pronunciation.analyse',
         [self._analysisId], {}, {receive_progress: true}).then(
         // RPC success callback
-        function (res) {
+        function(res) {
           // Wait for analysis results to come back.
           _cb(res);
         },
         // RPC error callback
-        function (res) {
+        function(res) {
           if (res.error === 'nl.itslanguage.ref_alignment_failed') {
             res.kwargs.analysis.message = 'Reference alignment failed';
           } else if (res.error === 'nl.itslanguage.alignment_failed') {
@@ -2184,7 +2184,7 @@ class Sdk {
    * @param {Sdk~getPronunciationAnalysisErrorCallback} [ecb] The callback that handles the error response.
    */
   getPronunciationAnalysis(challenge, analysisId, cb, ecb) {
-    var _cb = function (datum) {
+    var _cb = function(datum) {
       var student = new Student(challenge.organisationId, datum.studentId);
       var analysis = new PronunciationAnalysis(challenge, student,
         datum.id, new Date(datum.created), new Date(datum.updated),
@@ -2242,9 +2242,9 @@ class Sdk {
    */
   listPronunciationAnalyses(challenge, detailed, cb, ecb) {
     var self = this;
-    var _cb = function (data) {
+    var _cb = function(data) {
       var analyses = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var student = new Student(challenge.organisationId, datum.studentId);
         var analysis = new PronunciationAnalysis(challenge, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
@@ -2307,14 +2307,14 @@ class Sdk {
    * @param {Sdk~choiceChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
   createChoiceChallenge(challenge, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
       challenge.id = data.id;
       challenge.created = new Date(data.created);
       challenge.updated = new Date(data.updated);
       challenge.status = data.status;
       challenge.choices = [];
-      data.choices.forEach(function (pair) {
+      data.choices.forEach(function(pair) {
         challenge.choices.push(pair.choice);
       });
       if (cb) {
@@ -2322,7 +2322,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (errors) {
+    var _ecb = function(errors) {
       if (ecb) {
         ecb(errors, challenge);
       }
@@ -2342,7 +2342,7 @@ class Sdk {
       fd.append('id', challenge.id);
     }
     fd.append('question', challenge.question);
-    challenge.choices.forEach(function (choice) {
+    challenge.choices.forEach(function(choice) {
       fd.append('choices', choice);
     });
     this._secureAjaxPost(url, fd, _cb, _ecb);
@@ -2375,14 +2375,14 @@ class Sdk {
    * @param {Sdk~getChoiceChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
   getChoiceChallenge(organisationId, challengeId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var challenge = new ChoiceChallenge(organisationId, data.id,
         data.question, data.choices);
       challenge.created = new Date(data.created);
       challenge.updated = new Date(data.updated);
       challenge.status = data.status;
       challenge.choices = [];
-      data.choices.forEach(function (pair) {
+      data.choices.forEach(function(pair) {
         challenge.choices.push(pair.choice);
       });
       if (cb) {
@@ -2421,16 +2421,16 @@ class Sdk {
    * @param {Sdk~listChoiceChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
   listChoiceChallenges(organisationId, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var challenges = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var challenge = new ChoiceChallenge(
           organisationId, datum.id, datum.question, datum.choices);
         challenge.created = new Date(datum.created);
         challenge.updated = new Date(datum.updated);
         challenge.status = datum.status;
         challenge.choices = [];
-        datum.choices.forEach(function (pair) {
+        datum.choices.forEach(function(pair) {
           challenge.choices.push(pair.choice);
         });
         challenges.push(challenge);
@@ -2474,11 +2474,11 @@ class Sdk {
     this._session.call('nl.itslanguage.choice.init_challenge',
       [self._recognitionId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
-      function (recognitionId) {
+      function(recognitionId) {
         console.log('Challenge initialised for recognitionId: ' + self._recognitionId);
       },
       // RPC error callback
-      function (res) {
+      function(res) {
         console.error('RPC error returned:', res.error);
       }
     );
@@ -2498,13 +2498,13 @@ class Sdk {
     this._session.call('nl.itslanguage.choice.init_audio',
       [self._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
-      function (recognitionId) {
+      function(recognitionId) {
         console.log('Accepted audio parameters for recognitionId after init_audio: ' + self._recognitionId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
       },
       // RPC error callback
-      function (res) {
+      function(res) {
         console.error('RPC error returned:', res.error);
       }
     );
@@ -2522,7 +2522,7 @@ class Sdk {
    */
   startStreamingChoiceRecognition(challenge, recorder, preparedCb, cb, ecb, trim) {
     var self = this;
-    var _cb = function (data) {
+    var _cb = function(data) {
       var recognition = new ChoiceRecognition(
         challenge.id, data.studentId, data.id,
         new Date(data.created), new Date(data.updated),
@@ -2532,7 +2532,7 @@ class Sdk {
       }
     };
 
-    var _ecb = function (data) {
+    var _ecb = function(data) {
       // There was an unexpected error.
       if (ecb) {
         var analysis = new PronunciationAnalysis(
@@ -2572,25 +2572,25 @@ class Sdk {
 
     // Start streaming the binary audio when the user instructs
     // the audio recorder to start recording.
-    var dataavailableCb = function (chunk) {
+    var dataavailableCb = function(chunk) {
       var encoded = self._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for recognitionId: ' +
         self._recognitionId);
       self._session.call('nl.itslanguage.choice.write',
         [self._recognitionId, encoded, 'base64']).then(
         // RPC success callback
-        function (res) {
+        function(res) {
           console.debug('Delivered audio successfully');
         },
         // RPC error callback
-        function (res) {
+        function(res) {
           console.error('RPC error returned:', res.error);
           _ecb(res);
         }
       );
     };
 
-    var recognitionInitCb = function (recognitionId) {
+    var recognitionInitCb = function(recognitionId) {
       self._recognitionId = recognitionId;
       console.log('Got recognitionId after initialisation: ' + self._recognitionId);
       self.choiceRecognitionInitChallenge(challenge);
@@ -2599,7 +2599,7 @@ class Sdk {
       if (recorder.hasUserMediaApproval()) {
         self.choiceRecognitionInitAudio(recorder, dataavailableCb);
       } else {
-        var userMediaCb = function (chunk) {
+        var userMediaCb = function(chunk) {
           self.choiceRecognitionInitAudio(recorder, dataavailableCb);
           recorder.removeEventListener('ready', userMediaCb);
         };
@@ -2620,24 +2620,24 @@ class Sdk {
       // RPC success callback
       recognitionInitCb,
       // RPC error callback
-      function (res) {
+      function(res) {
         console.error('RPC error returned:', res.error);
       }
     );
 
     // Stop listening when the audio recorder stopped.
-    var recordedCb = function (id) {
+    var recordedCb = function(id) {
       // When done, submit any plain text (non-JSON) to start analysing.
       self._session.call('nl.itslanguage.choice.recognise',
         [self._recognitionId]).then(
         // RPC success callback
-        function (res) {
+        function(res) {
           console.log(res);
           // Wait for analysis results to come back.
           _cb(res);
         },
         // RPC error callback
-        function (res) {
+        function(res) {
           console.error('RPC error returned:', res.error);
           if (res.error === 'nl.itslanguage.recognition_failed') {
             res.kwargs.recognition.message = 'Recognition failed';
@@ -2683,7 +2683,7 @@ class Sdk {
    * @param {Sdk~getChoiceRecognitionErrorCallback} [ecb] The callback that handles the error response.
    */
   getChoiceRecognition(challenge, recognitionId, cb, ecb) {
-    var _cb = function (datum) {
+    var _cb = function(datum) {
       var student = new Student(challenge.organisationId, datum.studentId);
       var recognition = new ChoiceRecognition(challenge, student,
         datum.id, new Date(datum.created), new Date(datum.updated),
@@ -2738,9 +2738,9 @@ class Sdk {
    * @param {Sdk~listChoiceRecognitionsErrorCallback} [ecb] The callback that handles the error response.
    */
   listChoiceRecognitions(challenge, cb, ecb) {
-    var _cb = function (data) {
+    var _cb = function(data) {
       var recognitions = [];
-      data.forEach(function (datum) {
+      data.forEach(function(datum) {
         var student = new Student(challenge.organisationId, datum.studentId);
         var recognition = new ChoiceRecognition(challenge, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
