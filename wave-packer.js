@@ -58,8 +58,8 @@ module.exports = class WavePacker {
   }
 
   exportWAV(callback) {
-    var bufferL = this.mergeBuffers(this.recBuffersL, this.recLength);
-    var bufferR = this.mergeBuffers(this.recBuffersR, this.recLength);
+    var bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
+    var bufferR = WavePacker.mergeBuffers(this.recBuffersR, this.recLength);
     var interleaved = this.interleave(bufferL, bufferR);
     var dataview = this.encodeWAV(interleaved);
     var audioBlob = new Blob([dataview], {
@@ -70,7 +70,7 @@ module.exports = class WavePacker {
 
 
   exportMonoWAV(callback) {
-    var bufferL = this.mergeBuffers(this.recBuffersL, this.recLength);
+    var bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
     var dataview = this.encodeWAV(bufferL, true);
     var audioBlob = new Blob([dataview], {
       type: 'audio/wav'
@@ -88,13 +88,13 @@ module.exports = class WavePacker {
     var view = new DataView(buffer);
 
     // RIFF chunk descriptor
-    this.writeUTFBytes(view, 0, 'RIFF');
+    WavePacker.writeUTFBytes(view, 0, 'RIFF');
     // file length
     view.setUint32(4, 44 + interleaved.length * 2, true);
     // RIFF type
-    this.writeUTFBytes(view, 8, 'WAVE');
+    WavePacker.writeUTFBytes(view, 8, 'WAVE');
     // FMT sub-chunk
-    this.writeUTFBytes(view, 12, 'fmt ');
+    WavePacker.writeUTFBytes(view, 12, 'fmt ');
     // format chunk length
     view.setUint32(16, 16, true);
     // sample format (raw)
@@ -110,7 +110,7 @@ module.exports = class WavePacker {
     // bits per sample
     view.setUint16(34, 16, true);
     // data sub-chunk
-    this.writeUTFBytes(view, 36, 'data');
+    WavePacker.writeUTFBytes(view, 36, 'data');
     view.setUint32(40, interleaved.length * 2, true);
 
     // write the PCM samples
@@ -174,7 +174,7 @@ module.exports = class WavePacker {
     return result;
   }
 
-  mergeBuffers(channelBuffer, recordingLength) {
+  static mergeBuffers(channelBuffer, recordingLength) {
     var result = new Float32Array(recordingLength);
     var offset = 0;
     var lng = channelBuffer.length;
@@ -186,7 +186,7 @@ module.exports = class WavePacker {
     return result;
   }
 
-  writeUTFBytes(view, offset, string) {
+  static writeUTFBytes(view, offset, string) {
     var lng = string.length;
     for (var i = 0; i < lng; i++) {
       view.setUint8(offset + i, string.charCodeAt(i));
