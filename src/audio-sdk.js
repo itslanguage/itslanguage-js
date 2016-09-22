@@ -521,7 +521,6 @@ class AudioRecorder {
     }
 
     function failure(e) {
-      console.log(e);
       throw new Error('No live audio input available or permitted');
     }
 
