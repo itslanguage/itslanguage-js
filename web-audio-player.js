@@ -252,7 +252,6 @@ module.exports = class WebAudioPlayer {
     for (var i = 0; i < this.sound.buffered.length; i++) {
       var start = this.sound.buffered.start(i);
       var end = this.sound.buffered.end(i);
-      // console.log('Got segment from: ' + start + ' to: ' + end);
       // Often, the segment that starts from 0 keeps growing and
       // indicates -most likely- the biggest buffer.
       if (start === 0) {

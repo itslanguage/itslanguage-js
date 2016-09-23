@@ -5,7 +5,7 @@ module.exports = config => {
       'jasmine'
     ],
     files: [
-      'test/**/*.js'
+      'test/*.js'
     ],
     browsers: [
       'PhantomJS'

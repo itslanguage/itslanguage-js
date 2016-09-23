@@ -68,7 +68,6 @@ module.exports = class WavePacker {
     callback(audioBlob);
   }
 
-
   exportMonoWAV(callback) {
     var bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
     var dataview = this.encodeWAV(bufferL, true);

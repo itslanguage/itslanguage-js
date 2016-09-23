@@ -144,11 +144,8 @@ class VolumeMeter {
       var minDiff = 1;
       if (parseInt(averageVolume) >= (lastVolume - minDiff) &&
         parseInt(averageVolume) <= (lastVolume + minDiff)) {
-        // console.log('Skip same average: ' + lastVolume);
         return true;
       }
-      // console.log('Got new volume: ' + parseInt(averageVolume) +
-      // ' (old: ' + lastVolume + ')');
       lastVolume = parseInt(averageVolume);
 
       var args = [averageVolume].concat(volumeIndicationCallbackArgs);
