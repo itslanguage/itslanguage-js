@@ -1,8 +1,8 @@
 /* eslint-disable
-  callback-return,
-  max-len,
-  new-cap
-*/
+ callback-return,
+ max-len,
+ new-cap
+ */
 
 
 /**
@@ -15,9 +15,9 @@
 
 
 /**
-@module its.Audio.Tools
-ITSLanguage Audio tools.
-*/
+ @module its.Audio.Tools
+ ITSLanguage Audio tools.
+ */
 
 
 const pcm = require('pcmjs');
@@ -35,7 +35,7 @@ function generateWaveSample(duration) {
   var loops = duration * sampleRate;
   for (var i = 0; i < loops; i++) {
     effect[i] = 64 + Math.round(
-      32 * (Math.cos(i * i / 2000) + Math.sin(i * i / 4000)));
+        32 * (Math.cos(i * i / 2000) + Math.sin(i * i / 4000)));
   }
   var wave = new pcm({channels: 1, rate: 22000, depth: 8}).toWav(effect);
   return wave.encode();
@@ -82,7 +82,7 @@ class VolumeMeter {
     this._updateAnalysers();
   }
 
-  _getAverageVolume(array) {
+  static _getAverageVolume(array) {
     var values = 0;
     var average;
 
@@ -110,7 +110,6 @@ class VolumeMeter {
     };
     var skippedCallbacks = 0;
     var lastVolume = -1;
-    var self = this;
 
     animloop();
 
@@ -130,7 +129,7 @@ class VolumeMeter {
       var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
 
       analyserNode.getByteFrequencyData(freqByteData);
-      var averageVolume = self._getAverageVolume(freqByteData);
+      var averageVolume = VolumeMeter._getAverageVolume(freqByteData);
 
       if (willAnimate.anim) {
         requestAnimationFrame(animloop);
@@ -144,11 +143,8 @@ class VolumeMeter {
       var minDiff = 1;
       if (parseInt(averageVolume) >= (lastVolume - minDiff) &&
         parseInt(averageVolume) <= (lastVolume + minDiff)) {
-        // console.log('Skip same average: ' + lastVolume);
         return true;
       }
-      // console.log('Got new volume: ' + parseInt(averageVolume) +
-      // ' (old: ' + lastVolume + ')');
       lastVolume = parseInt(averageVolume);
 
       var args = [averageVolume].concat(volumeIndicationCallbackArgs);

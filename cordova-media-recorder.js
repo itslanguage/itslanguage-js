@@ -1,7 +1,7 @@
 /* global
-  device,
-  Media
-*/
+ device,
+ Media
+ */
 
 /*
  * Use the Cordova Media recorder for recording and encoding audio
@@ -93,8 +93,7 @@ module.exports = class CordovaMediaRecorder {
     }
   }
 
-  _requestFilepath(
-    filename, callback) {
+  _requestFilepath(filename, callback) {
     // org.apache.cordova.file provides the HTML5 Filesystem API.
 
     // var fs = window.TEMPORARY;

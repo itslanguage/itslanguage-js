@@ -1,6 +1,6 @@
 /* eslint-disable
-  max-len
-*/
+ max-len
+ */
 
 
 /**
@@ -90,19 +90,19 @@ module.exports = class WebAudioPlayer {
           break;
         case e.target.error.MEDIA_ERR_NETWORK:
           console.error(
-          'A network error caused the audio download to fail.');
+            'A network error caused the audio download to fail.');
           break;
         case e.target.error.MEDIA_ERR_DECODE:
           console.error(
-          'The audio playback was aborted due to a corruption ' +
-          'problem or because the media used features your ' +
-          'browser did not support.');
+            'The audio playback was aborted due to a corruption ' +
+            'problem or because the media used features your ' +
+            'browser did not support.');
           break;
         case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
           console.error(
-          'The audio could not be loaded, either because the ' +
-          'server or network failed or because the format is ' +
-          'not supported.');
+            'The audio could not be loaded, either because the ' +
+            'server or network failed or because the format is ' +
+            'not supported.');
           break;
         default:
           console.error('An unknown error occurred.');
@@ -252,7 +252,6 @@ module.exports = class WebAudioPlayer {
     for (var i = 0; i < this.sound.buffered.length; i++) {
       var start = this.sound.buffered.start(i);
       var end = this.sound.buffered.end(i);
-      // console.log('Got segment from: ' + start + ' to: ' + end);
       // Often, the segment that starts from 0 keeps growing and
       // indicates -most likely- the biggest buffer.
       if (start === 0) {
@@ -308,6 +307,6 @@ module.exports = class WebAudioPlayer {
     // Either the player is in a valid readyState (preloaded), or
     // the player has a source attached and doesn't show any loading error (non-preloaded).
     return (this.sound.readyState >= this.sound.HAVE_METADATA ||
-      (this.sound.src && !this.sound.error));
+    (this.sound.src && !this.sound.error));
   }
 };

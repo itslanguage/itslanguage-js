@@ -1,12 +1,12 @@
 /* eslint-disable
-  handle-callback-err,
-  max-len,
-  no-unused-vars
-*/
+ handle-callback-err,
+ max-len,
+ no-unused-vars
+ */
 
 /* global
-  device
-*/
+ device
+ */
 
 
 /**
@@ -55,8 +55,7 @@ module.exports = class CordovaMediaPlayer {
     }
   }
 
-  _writeFile(
-    filename, callback) {
+  _writeFile(filename, callback) {
     // org.apache.cordova.file provides the HTML5 Filesystem API.
 
     // var fs = window.TEMPORARY;
@@ -99,10 +98,10 @@ module.exports = class CordovaMediaPlayer {
    * @callback CordovaMediaPlayer~loadedCallback
    * @param {Audio} audio The Audio element that has the duration property set.
    */
-  loadedCallback(audio) {}
+  loadedCallback(audio) {
+  }
 
-  _loadMedia(
-        filepath, closure, loadedCb) {
+  _loadMedia(filepath, closure, loadedCb) {
     console.debug('Loading media: ' + filepath);
     var self = this;
     // Cordova Media can only be loaded during instantiation.
