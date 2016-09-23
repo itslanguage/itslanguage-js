@@ -51,7 +51,7 @@ describe('Secure GET test', function() {
     var output = api.secureAjaxGet(url);
 
     return output
-      .then(function(result) {
+      .then(function() {
         var request = jasmine.Ajax.requests.mostRecent();
         // That's the correct base64 representation of 'principal:secret'
         expect(request.requestHeaders).toEqual({
@@ -96,7 +96,7 @@ describe('Secure POST test', function() {
     var output = api.secureAjaxPost(url);
 
     return output
-      .then(function(result) {
+      .then(function() {
         var request = jasmine.Ajax.requests.mostRecent();
         // That's the correct base64 representation of 'principal:secret'
         expect(request.requestHeaders).toEqual({

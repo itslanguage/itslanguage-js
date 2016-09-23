@@ -1215,23 +1215,11 @@ class Sdk {
       }
       self._recordingId = null;
 
-      var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
-        self._session.call('nl.itslanguage.recording.close',
-            [self._recordingId]).then(
-            // RPC success callback
-            function(res) {
-              // Pass along details to the success callback
-              _cb(res, forcedStop);
-            },
-            // RPC error callback
-            function(res) {
-              Sdk.logRPCError(res);
-              errorEncountered(res);
-            }
-          );
-        recorder.removeEventListener('recorded', recordedCb);
-        recorder.removeEventListener('dataavailable', startStreaming);
-        self._recordingId = null;
+      var errorEncountered = function(errors, recording) {
+          // Either there was an unexpected error, or the audio failed to
+          // align, in which case no recording is provided, but just the
+          // basic metadata.
+        reject(errors);
       };
 
       var _cb = function(data) {
@@ -1245,13 +1233,6 @@ class Sdk {
         resolve(recording);
       };
 
-      var errorEncountered = function(errors, recording) {
-          // Either there was an unexpected error, or the audio failed to
-          // align, in which case no recording is provided, but just the
-          // basic metadata.
-        reject(errors);
-      };
-
       var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
         self._session.call('nl.itslanguage.recording.close',
             [self._recordingId]).then(
@@ -1270,7 +1251,6 @@ class Sdk {
         recorder.removeEventListener('dataavailable', startStreaming);
         self._recordingId = null;
       };
-
 
         // Start streaming the binary audio when the user instructs
         // the audio recorder to start recording.
@@ -1652,7 +1632,7 @@ class Sdk {
   startStreamingPronunciationAnalysis(challenge, recorder, trim) {
     // return Q.Promise(function(resolve, reject, notify){});
     var self = this;
-    return new when.promise(function(resolve, reject, notify) {
+    return new when.Promise(function(resolve, reject, notify) {
       // Validate required domain model.
       if (typeof challenge !== 'object' || !challenge) {
         reject(new Error(

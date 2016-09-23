@@ -350,7 +350,7 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output
-      .then(function(result) {
+      .then(function() {
         fail('An error should be a thrown');
       })
       .catch(function(error) {
