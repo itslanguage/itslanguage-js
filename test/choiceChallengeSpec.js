@@ -161,11 +161,8 @@ describe('ChoiceChallenge API interaction test', function() {
 
     return output
       .then(function(result) {
-
         fail('No result should be returned');
-
       }).catch(function(error) {
-
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
         expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
         expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
@@ -176,7 +173,6 @@ describe('ChoiceChallenge API interaction test', function() {
           code: 'missing'
         }];
         expect(error.errors.errors).toEqual(errors);
-
       });
   });
 

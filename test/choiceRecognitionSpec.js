@@ -86,7 +86,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
             sampleRate: 48000
           },
           audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
-        }
+        };
       };
       this.hasUserMediaApproval = function() {
         return true;
@@ -105,7 +105,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
       this.hasUserMediaApproval = function() {
         return true;
-      }
+      };
     }
 
     var challenge = new its.ChoiceChallenge('fb', '4', null, []);
@@ -144,9 +144,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
         'nl.itslanguage.choice.init_recognition', [],
         {trimStart: 0.15, trimEnd: 0});
     }).catch(function(error) {
-
       fail('No error should be thrown ' + error);
-
     });
   });
 
@@ -178,7 +176,6 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
     var request = jasmine.Ajax.requests.mostRecent();
     return output.then(function(result) {
-
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
       var stringDate = '2014-12-31T23:59:59Z';
@@ -187,7 +184,6 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
         '5', new Date(stringDate), new Date(stringDate));
       recognition.audioUrl = audioUrl;
       expect(result).toEqual(recognition);
-
     }).catch(function(error) {
       fail('No error should be thrown ' + error);
     });
@@ -248,12 +244,8 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       expect(content1).toEqual(recognition);
       expect(content2).toEqual(recognition2);
       expect(result).toEqual([recognition, recognition2]);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
-
   });
 });

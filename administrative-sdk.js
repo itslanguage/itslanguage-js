@@ -494,7 +494,6 @@ class Sdk {
     this.events = {};
     var self = this;
     this.addEventListener = function(name, handler) {
-
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
@@ -644,7 +643,6 @@ class Sdk {
             reject(response || e);
           }
         }
-
       };
       if (typeof auth !== 'undefined') {
         request.setRequestHeader('Authorization', auth);
@@ -733,9 +731,8 @@ class Sdk {
   _secureAjaxPost(url, formdata, authHeaders) {
     var request = new XMLHttpRequest({mozSystem: true});
     var response = null;
-    //var authHeaders = this._getAuthHeaders();
+    // var authHeaders = this._getAuthHeaders();
     return new Promise(function(resolve, reject) {
-
       request.open('POST', url);
       if (typeof authHeaders !== 'undefined') {
         request.setRequestHeader('Authorization', authHeaders);
@@ -820,18 +817,14 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxPost(url, fd)
         .catch(function(error) {
-
           reject(error);
-
         })
         .then(function(data) {
-
           // Update the id in case domain model didn't contain one.
           tenant.id = data.id;
           tenant.created = new Date(data.created);
           tenant.updated = new Date(data.updated);
           resolve(tenant);
-
         });
     });
   }
@@ -848,12 +841,9 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxPost(url, formData)
         .catch(function(error) {
-
           reject(error);
-
         })
         .then(function(data) {
-
           basicauth.principal = data.principal;
           basicauth.created = new Date(data.created);
           basicauth.updated = new Date(data.updated);
@@ -862,7 +852,6 @@ class Sdk {
             basicauth.credentials = data.credentials;
           }
           resolve(basicauth);
-
         });
     });
   }
@@ -881,17 +870,13 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxPost(url, fd)
         .catch(function(error) {
-
           reject(error);
-
         }).then(function(data) {
-
-        organisation.id = data.id;
-        organisation.created = new Date(data.created);
-        organisation.updated = new Date(data.updated);
-        resolve(organisation);
-
-      });
+          organisation.id = data.id;
+          organisation.created = new Date(data.created);
+          organisation.updated = new Date(data.updated);
+          resolve(organisation);
+        });
     });
   }
 
@@ -907,17 +892,13 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         })
         .then(function(data) {
-
           var organisation = new Organisation(data.id, data.name);
           organisation.created = new Date(data.created);
           organisation.updated = new Date(data.updated);
           resolve(organisation);
-
         });
     });
   }
@@ -933,11 +914,8 @@ class Sdk {
 
     return new Promise(function(resolve, reject) {
       self.secureAjaxGet(url).catch(function(error) {
-
         reject(new Error(error));
-
       }).then(function(data) {
-
         var organisations = [];
         data.forEach(function(datum) {
           var organisation = new Organisation(datum.id, datum.name);
@@ -946,7 +924,6 @@ class Sdk {
           organisations.push(organisation);
         });
         resolve(organisations);
-
       });
     });
   }
@@ -969,20 +946,16 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxPost(url, fd)
         .then(function(data) {
-
           // Update the id in case domain model didn't contain one.
           student.id = data.id;
           student.created = new Date(data.created);
           student.updated = new Date(data.updated);
           resolve(student);
-
         }).catch(function(error) {
-
-        reject(error);
-
-      });
+          reject(error);
+        });
     });
-  };
+  }
 
   /**
    * Get a student.
@@ -998,18 +971,14 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         })
         .then(function(data) {
-
           var student = new Student(organisationId, data.id, data.firstName,
             data.lastName, data.gender, data.birthYear);
           student.created = new Date(data.created);
           student.updated = new Date(data.updated);
           resolve(student);
-
         });
     });
   }
@@ -1027,12 +996,9 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         })
         .then(function(data) {
-
           var students = [];
           data.forEach(function(datum) {
             var student = new Student(organisationId, datum.id,
@@ -1042,7 +1008,6 @@ class Sdk {
             students.push(student);
           });
           resolve(students);
-
         });
     });
   }
@@ -1054,11 +1019,9 @@ class Sdk {
    * @returns {Promise} A promise to return the created speech challenge.
    */
   createSpeechChallenge(challenge) {
-
     var self = this;
 
     return new Promise(function(resolve, reject) {
-
       if (!challenge.organisationId) {
         reject(new Error('organisationId field is required'));
       }
@@ -1077,19 +1040,15 @@ class Sdk {
 
       self.secureAjaxPost(url, fd)
         .catch(function(error) {
-
           reject(error);
-
         })
         .then(function(data) {
-
           // Update the id in case domain model didn't contain one.
           challenge.id = data.id;
           challenge.created = new Date(data.created);
           challenge.updated = new Date(data.updated);
           challenge.referenceAudioUrl = data.referenceAudioUrl || null;
           resolve(challenge);
-
         });
     });
   }
@@ -1109,18 +1068,14 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         }).then(function(data) {
-
-        var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
-        challenge.created = new Date(data.created);
-        challenge.updated = new Date(data.updated);
-        resolve(challenge);
-
-      });
-    })
+          var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
+          challenge.created = new Date(data.created);
+          challenge.updated = new Date(data.updated);
+          resolve(challenge);
+        });
+    });
   }
 
   /**
@@ -1140,7 +1095,6 @@ class Sdk {
           reject(new Error(error));
         })
         .then(function(data) {
-
           var challenges = [];
           data.forEach(function(datum) {
             var challenge = new SpeechChallenge(organisationId, datum.id,
@@ -1150,7 +1104,6 @@ class Sdk {
             challenges.push(challenge);
           });
           resolve(challenges);
-
         });
     });
   }
@@ -1242,28 +1195,28 @@ class Sdk {
     return new Promise(function(resolve, reject) {
         // Validate required domain model.
         // Validate environment prerequisites.
-        if (typeof challenge !== 'object' || !challenge) {
-          reject(new Error('"challenge" parameter is required or invalid'));
-        }
-        if (!challenge.id) {
-          reject(new Error('challenge.id field is required'));
-        }
-        if (!challenge.organisationId) {
-          reject(new Error('challenge.organisationId field is required'));
-        }
-        if (!self._session) {
-          reject(new Error('WebSocket connection was not open.'));
-        }
-        if (recorder.isRecording()) {
-          reject(new Error('Recorder should not yet be recording.'));
-        }
-        if (self._recordingId !== null) {
-          reject(new Error('Session with recordingId ' + self._recordingId + ' still in progress.'));
-        }
-        self._recordingId = null;
+      if (typeof challenge !== 'object' || !challenge) {
+        reject(new Error('"challenge" parameter is required or invalid'));
+      }
+      if (!challenge.id) {
+        reject(new Error('challenge.id field is required'));
+      }
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+      if (!self._session) {
+        reject(new Error('WebSocket connection was not open.'));
+      }
+      if (recorder.isRecording()) {
+        reject(new Error('Recorder should not yet be recording.'));
+      }
+      if (self._recordingId !== null) {
+        reject(new Error('Session with recordingId ' + self._recordingId + ' still in progress.'));
+      }
+      self._recordingId = null;
 
-        var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
-          self._session.call('nl.itslanguage.recording.close',
+      var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
+        self._session.call('nl.itslanguage.recording.close',
             [self._recordingId]).then(
             // RPC success callback
             function(res) {
@@ -1276,36 +1229,36 @@ class Sdk {
               errorEncountered(res);
             }
           );
-          recorder.removeEventListener('recorded', recordedCb);
-          recorder.removeEventListener('dataavailable', startStreaming);
-          self._recordingId = null;
-        };
+        recorder.removeEventListener('recorded', recordedCb);
+        recorder.removeEventListener('dataavailable', startStreaming);
+        self._recordingId = null;
+      };
 
-        var _cb = function(data) {
-          var student = new Student(challenge.organisationId, data.studentId);
-          var recording = new SpeechRecording(
+      var _cb = function(data) {
+        var student = new Student(challenge.organisationId, data.studentId);
+        var recording = new SpeechRecording(
             challenge, student, data.id);
-          recording.created = new Date(data.created);
-          recording.updated = new Date(data.updated);
-          recording.audioUrl = self.addAccessToken(data.audioUrl);
-          recording.recordingId = self._recordingId;
-          resolve(recording);
-        };
+        recording.created = new Date(data.created);
+        recording.updated = new Date(data.updated);
+        recording.audioUrl = self.addAccessToken(data.audioUrl);
+        recording.recordingId = self._recordingId;
+        resolve(recording);
+      };
 
-        var errorEncountered = function(errors, recording) {
+      var errorEncountered = function(errors, recording) {
           // Either there was an unexpected error, or the audio failed to
           // align, in which case no recording is provided, but just the
           // basic metadata.
-          reject(errors);
-        };
+        reject(errors);
+      };
 
         // Start streaming the binary audio when the user instructs
         // the audio recorder to start recording.
-        function startStreaming(chunk) {
-          var encoded = Sdk._arrayBufferToBase64(chunk);
-          console.log('Sending audio chunk to websocket for recordingId: ' +
+      function startStreaming(chunk) {
+        var encoded = Sdk._arrayBufferToBase64(chunk);
+        console.log('Sending audio chunk to websocket for recordingId: ' +
             self._recordingId);
-          self._session.call('nl.itslanguage.recording.write',
+        self._session.call('nl.itslanguage.recording.write',
             [self._recordingId, encoded, 'base64']).then(
             // RPC success callback
             function(res) {
@@ -1319,36 +1272,33 @@ class Sdk {
               errorEncountered(res);
             }
           );
-        }
+      }
 
-        function startRecording(recordingId) {
-          self._recordingId = recordingId;
-          console.log('Got recordingId after initialisation: ' + self._recordingId);
-          self.speechRecordingInitChallenge(challenge)
+      function startRecording(recordingId) {
+        self._recordingId = recordingId;
+        console.log('Got recordingId after initialisation: ' + self._recordingId);
+        self.speechRecordingInitChallenge(challenge)
             .then(function(result) {
-
               var p = new Promise(function(resolve, reject) {
-
                 if (recorder.hasUserMediaApproval()) {
                   resolve();
                 } else {
                   recorder.addEventListener('ready', resolve);
                 }
-
               });
               p.then(self.speechRecordingInitAudio(recorder, startStreaming));
             });
-        }
+      }
 
-        recorder.addEventListener('recorded', recordedCb);
-        self._session.call('nl.itslanguage.recording.init_recording', [])
+      recorder.addEventListener('recorded', recordedCb);
+      self._session.call('nl.itslanguage.recording.init_recording', [])
           .then(startRecording,
             function(res) {
               Sdk.logRPCError(res);
               errorEncountered(res);
             }
           );
-      }
+    }
     );
   }
 
@@ -1397,12 +1347,9 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self._secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         })
         .then(function(data) {
-
           var student = new Student(challenge.organisationId, data.studentId);
           var recording = new SpeechRecording(challenge, student, data.id);
           recording.audio = null;
@@ -1410,7 +1357,6 @@ class Sdk {
           recording.created = new Date(data.created);
           recording.updated = new Date(data.updated);
           resolve(recording);
-
         });
     });
   }
@@ -1422,7 +1368,6 @@ class Sdk {
    * @returns Promise to get a list of all speech recordings for a specific speech challenge.
    */
   listSpeechRecordings(challenge) {
-
     if (!challenge || !challenge.id) {
       throw new Error('challenge.id field is required');
     }
@@ -1437,12 +1382,9 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self._secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         })
         .then(function(data) {
-
           var recordings = [];
           data.forEach(function(datum) {
             var student = new Student(challenge.organisationId, datum.studentId);
@@ -1454,7 +1396,6 @@ class Sdk {
             recordings.push(recording);
           });
           resolve(recordings);
-
         });
     });
   }
@@ -1471,7 +1412,6 @@ class Sdk {
     var self = this;
 
     return new Promise(function(resolve, reject) {
-
       // Validate required domain model fields.
       if (!challenge.organisationId) {
         reject(new Error('organisationId field is required'));
@@ -1499,10 +1439,9 @@ class Sdk {
           challenge.referenceAudioUrl = data.referenceAudioUrl;
           challenge.status = data.status;
           resolve(challenge);
-
         }).catch(function(error) {
-        reject(error);
-      });
+          reject(error);
+        });
     });
   }
 
@@ -1521,12 +1460,9 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         })
         .then(function(data) {
-
           var challenge = new PronunciationChallenge(organisationId, data.id,
             data.transcription);
           challenge.created = new Date(data.created);
@@ -1534,7 +1470,6 @@ class Sdk {
           challenge.referenceAudioUrl = data.referenceAudioUrl;
           challenge.status = data.status;
           resolve(challenge);
-
         });
     });
   }
@@ -1553,12 +1488,9 @@ class Sdk {
     return new Promise(function(resolve, reject) {
       self.secureAjaxGet(url)
         .catch(function(error) {
-
           reject(new Error(error));
-
         })
         .then(function(data) {
-
           var challenges = [];
           data.forEach(function(datum) {
             var challenge = new PronunciationChallenge(
@@ -1570,7 +1502,6 @@ class Sdk {
             challenges.push(challenge);
           });
           resolve(challenges);
-
         });
     });
   }
@@ -1600,14 +1531,10 @@ class Sdk {
 
       self._secureAjaxDelete(url)
         .then(function() {
-
           resolve(challenge);
-
         }).catch(function(error) {
-
-        reject(error);
-
-      });
+          reject(error);
+        });
     });
   }
 
@@ -1703,10 +1630,9 @@ class Sdk {
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
    */
   startStreamingPronunciationAnalysis(challenge, recorder, trim) {
-    //return Q.Promise(function(resolve, reject, notify){});
+    // return Q.Promise(function(resolve, reject, notify){});
     var self = this;
     return new when.promise(function(resolve, reject, notify) {
-
       // Validate required domain model.
       if (typeof challenge !== 'object' || !challenge) {
         reject(new Error(
@@ -1786,7 +1712,6 @@ class Sdk {
         self.pronunciationAnalysisInitChallenge(challenge)
           .then(function() {
             var p = new Promise(function(resolve) {
-
               if (recorder.hasUserMediaApproval()) {
                 resolve();
               } else {
@@ -1826,12 +1751,12 @@ class Sdk {
             }
             reportError(res.kwargs.analysis);
           })
-          .tap(function(progress){
+          .tap(function(progress) {
             reportProgress(progress);
           });
       };
 
-      //BEGIN POINT
+      // BEGIN POINT
       recorder.addEventListener('recorded', stopListening);
       self._session.call('nl.itslanguage.pronunciation.init_analysis', [],
         {
@@ -1869,7 +1794,6 @@ class Sdk {
     console.log(challenge);
     console.log(JSON.stringify(challenge));
     return new Promise(function(resolve, reject) {
-
       if (!challenge || !challenge.id) {
         reject(new Error('challenge.id field is required'));
       }
@@ -1894,7 +1818,7 @@ class Sdk {
         })
         .catch(function(error) {
           reject(error);
-        })
+        });
     });
   }
 
@@ -1914,7 +1838,6 @@ class Sdk {
       url += '?detailed=true';
     }
     return new Promise(function(resolve, reject) {
-
       if (!challenge || !challenge.id) {
         reject(new Error('challenge.id field is required'));
       }
@@ -1961,7 +1884,6 @@ class Sdk {
     var self = this;
 
     return new Promise(function(resolve, reject) {
-
       if (!challenge.organisationId) {
         reject(new Error('organisationId field is required'));
       }
@@ -1981,7 +1903,6 @@ class Sdk {
 
       self.secureAjaxPost(url, fd)
         .then(function(data) {
-
           // Update the id in case domain model didn't contain one.
           challenge.id = data.id;
           challenge.created = new Date(data.created);
@@ -1992,12 +1913,9 @@ class Sdk {
             challenge.choices.push(pair.choice);
           });
           resolve(challenge);
-
         })
         .catch(function(errors) {
-
           reject(errors);
-
         });
     });
   }
@@ -2121,7 +2039,6 @@ class Sdk {
     var self = this;
 
     return new Promise(function(resolve, reject) {
-
       var _cb = function(data) {
         var recognition = new ChoiceRecognition(
           challenge.id, data.studentId, data.id,
@@ -2195,9 +2112,7 @@ class Sdk {
         console.log('Got recognitionId after initialisation: ' + self._recognitionId);
         self.choiceRecognitionInitChallenge(challenge)
           .then(function() {
-
             var p = new Promise(function(resolve, reject) {
-
               if (recorder.hasUserMediaApproval()) {
                 resolve();
               } else {
@@ -2208,7 +2123,6 @@ class Sdk {
               recorder.removeEventListener('ready', resolve);
               self.choiceRecognitionInitAudio(recorder, dataavailableCb);
             });
-
           });
       };
 
@@ -2285,7 +2199,6 @@ class Sdk {
    * @param {Sdk~getChoiceRecognitionErrorCallback} [ecb] The callback that handles the error response.
    */
   getChoiceRecognition(challenge, recognitionId) {
-
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions/' + recognitionId;
@@ -2326,7 +2239,6 @@ class Sdk {
       challenge.id + '/recognitions';
     var self = this;
     return new Promise(function(resolve, reject) {
-
       if (!challenge || !challenge.id) {
         reject(new Error('challenge.id field is required'));
       }
@@ -2335,7 +2247,6 @@ class Sdk {
       }
       self.secureAjaxGet(url)
         .then(function(data) {
-
           var recognitions = [];
           data.forEach(function(datum) {
             var student = new Student(challenge.organisationId, datum.studentId);
@@ -2351,7 +2262,6 @@ class Sdk {
             recognitions.push(recognition);
           });
           resolve(recognitions);
-
         })
         .catch(reject);
     });
@@ -2361,18 +2271,18 @@ class Sdk {
 
 module
   .exports = {
-  BasicAuth: BasicAuth,
-  ChoiceChallenge: ChoiceChallenge,
-  ChoiceRecognition: ChoiceRecognition,
-  Organisation: Organisation,
-  Phoneme: Phoneme,
-  PronunciationAnalysis: PronunciationAnalysis,
-  PronunciationChallenge: PronunciationChallenge,
-  Sdk: Sdk,
-  SpeechChallenge: SpeechChallenge,
-  SpeechRecording: SpeechRecording,
-  Student: Student,
-  Tenant: Tenant,
-  Word: Word,
-  WordChunk: WordChunk
-};
+    BasicAuth: BasicAuth,
+    ChoiceChallenge: ChoiceChallenge,
+    ChoiceRecognition: ChoiceRecognition,
+    Organisation: Organisation,
+    Phoneme: Phoneme,
+    PronunciationAnalysis: PronunciationAnalysis,
+    PronunciationChallenge: PronunciationChallenge,
+    Sdk: Sdk,
+    SpeechChallenge: SpeechChallenge,
+    SpeechRecording: SpeechRecording,
+    Student: Student,
+    Tenant: Tenant,
+    Word: Word,
+    WordChunk: WordChunk
+  };

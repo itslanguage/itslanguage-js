@@ -11,10 +11,10 @@ module.exports = class WavePacker {
 
     this.sampleRate = sampleRate;
     if ([
-        this.recordingSampleRate,
-        this.recordingSampleRate / 2,
-        this.recordingSampleRate / 4
-      ].indexOf(this.sampleRate) === -1) {
+      this.recordingSampleRate,
+      this.recordingSampleRate / 2,
+      this.recordingSampleRate / 4
+    ].indexOf(this.sampleRate) === -1) {
       console.warn(
         'sampleRate must be equal, half or a quarter of the ' +
         'recording sample rate');

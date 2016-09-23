@@ -110,8 +110,8 @@ module.exports = class CordovaMediaRecorder {
       // By setting options to create:false, only a lookup will be performed.
       console.debug('Calling getFile in read mode: ' + filename);
       fileSystem.root.getFile(filename, {
-          create: false
-        },
+        create: false
+      },
         entryCallback, entryErrorCallback);
     }
 

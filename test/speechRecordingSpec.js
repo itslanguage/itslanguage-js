@@ -125,7 +125,6 @@ describe('SpeechRecording API interaction test', function() {
 
     return output
       .then(function(result) {
-
         var request = jasmine.Ajax.requests.mostRecent();
         expect(request.url).toBe(url);
         expect(request.method).toBe('GET');
@@ -137,12 +136,9 @@ describe('SpeechRecording API interaction test', function() {
         recording.audio = null;
         recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
         expect(result).toEqual(recording);
-
       })
       .catch(function(error) {
-
         fail('No error should be thrown: ' + error);
-
       });
   });
 
@@ -173,25 +169,21 @@ describe('SpeechRecording API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
     return output
       .then(function(result) {
-
-      var request = jasmine.Ajax.requests.mostRecent();
-      expect(request.url).toBe(url);
-      expect(request.method).toBe('GET');
-      var student = new its.Student('fb', '6');
-      var recording = new its.SpeechRecording(challenge, student, '5');
-      var stringDate = '2014-12-31T23:59:59Z';
-      recording.created = new Date(stringDate);
-      recording.updated = new Date(stringDate);
-      recording.audio = null;
-      recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
-      expect(result[0]).toEqual(recording);
-
-    })
+        var request = jasmine.Ajax.requests.mostRecent();
+        expect(request.url).toBe(url);
+        expect(request.method).toBe('GET');
+        var student = new its.Student('fb', '6');
+        var recording = new its.SpeechRecording(challenge, student, '5');
+        var stringDate = '2014-12-31T23:59:59Z';
+        recording.created = new Date(stringDate);
+        recording.updated = new Date(stringDate);
+        recording.audio = null;
+        recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
+        expect(result[0]).toEqual(recording);
+      })
       .catch(function(error) {
-
-      fail('No error should be thrown: ' + error);
-
-    });
+        fail('No error should be thrown: ' + error);
+      });
   });
 });
 
@@ -237,16 +229,12 @@ describe('Speech Recording Websocket API interaction test', function() {
 
     api.startStreamingSpeechRecording(challenge, recorder)
       .then(function(result) {
-
         fail('An error should be thrown!');
-
       }).catch(function(error) {
-
-      expect(error.message).toEqual(expectedMessage);
+        expect(error.message).toEqual(expectedMessage);
       // Restore WebSocket
-      window.WebSocket = old;
-    });
-
+        window.WebSocket = old;
+      });
   });
 
   it('should start streaming a new speech recording', function() {
@@ -290,7 +278,7 @@ describe('Speech Recording Websocket API interaction test', function() {
 
       this.hasUserMediaApproval = function() {
         return true;
-      }
+      };
     }
 
     var challenge = new its.SpeechChallenge('fb', '4');
@@ -324,7 +312,6 @@ describe('Speech Recording Websocket API interaction test', function() {
 
     return output
       .then(function(result) {
-
         expect(result.challenge).toEqual(challenge);
         expect(result.student.organisationId).toBe(challenge.organisationId);
         expect(output).toEqual(jasmine.any(Promise));
@@ -333,9 +320,7 @@ describe('Speech Recording Websocket API interaction test', function() {
           'nl.itslanguage.recording.init_recording', []);
       })
       .catch(function(error) {
-
         fail('No error should be thrown: ' + error);
-
       });
   });
 });

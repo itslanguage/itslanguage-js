@@ -124,12 +124,9 @@ describe('Student API interaction test', function() {
     var output = api.createStudent(student);
     var request = jasmine.Ajax.requests.mostRecent();
     return output.then(function(result) {
-
       fail('An error should be thrown!');
       expect(result).toBeUndefined();
-
     }).catch(function(error) {
-
       expect(request.url).toBe(url);
       expect(request.method).toBe('POST');
       var expected = {
@@ -144,7 +141,6 @@ describe('Student API interaction test', function() {
         code: 'missing'
       }];
       expect(error.errors.errors).toEqual(errors);
-
     });
   });
 
@@ -170,7 +166,6 @@ describe('Student API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
@@ -179,11 +174,8 @@ describe('Student API interaction test', function() {
       student.created = new Date(stringDate);
       student.updated = new Date(stringDate);
       expect(result).toEqual(student);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 
