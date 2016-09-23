@@ -160,7 +160,7 @@ describe('ChoiceChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output
-      .then(function() {
+      .then(function(result) {
         fail('No result should be returned');
       }).catch(function(error) {
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');

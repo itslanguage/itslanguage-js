@@ -229,7 +229,7 @@ describe('Speech Recording Websocket API interaction test', function() {
     var expectedMessage = 'WebSocket connection was not open.';
 
     api.startStreamingSpeechRecording(challenge, recorder)
-      .then(function() {
+      .then(function(result) {
         fail('An error should be thrown!');
       }).catch(function(error) {
         expect(error.message).toEqual(expectedMessage);

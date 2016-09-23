@@ -1215,6 +1215,25 @@ class Sdk {
       }
       self._recordingId = null;
 
+      var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
+        self._session.call('nl.itslanguage.recording.close',
+            [self._recordingId]).then(
+            // RPC success callback
+            function(res) {
+              // Pass along details to the success callback
+              _cb(res, forcedStop);
+            },
+            // RPC error callback
+            function(res) {
+              Sdk.logRPCError(res);
+              errorEncountered(res);
+            }
+          );
+        recorder.removeEventListener('recorded', recordedCb);
+        recorder.removeEventListener('dataavailable', startStreaming);
+        self._recordingId = null;
+      };
+
       var _cb = function(data) {
         var student = new Student(challenge.organisationId, data.studentId);
         var recording = new SpeechRecording(
@@ -1633,7 +1652,7 @@ class Sdk {
   startStreamingPronunciationAnalysis(challenge, recorder, trim) {
     // return Q.Promise(function(resolve, reject, notify){});
     var self = this;
-    return new when.Promise(function(resolve, reject, notify) {
+    return new when.promise(function(resolve, reject, notify) {
       // Validate required domain model.
       if (typeof challenge !== 'object' || !challenge) {
         reject(new Error(

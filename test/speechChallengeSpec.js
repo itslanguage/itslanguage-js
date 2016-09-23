@@ -184,7 +184,7 @@ describe('SpeechChallenge API interaction test', function() {
     var output = api.createSpeechChallenge(challenge);
 
     return output
-        .then(function() {
+        .then(function(result) {
           fail('An error should be thrown!');
         }).catch(function(error) {
           var request = jasmine.Ajax.requests.mostRecent();
