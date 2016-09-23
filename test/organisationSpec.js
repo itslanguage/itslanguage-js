@@ -19,7 +19,7 @@ require('jasmine-ajax');
 require('jasmine-as-promised')();
 const autobahn = require('autobahn');
 var Promise = require('es6-promise').Promise;
-const its = require('..');
+const its = require('../');
 
 describe('Organisation object test', function() {
   it('should instantiate an Organisation without id', function() {

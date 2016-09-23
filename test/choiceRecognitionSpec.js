@@ -22,7 +22,7 @@ const autobahn = require('autobahn');
 var nock = require('nock');
 var Promise = require('es6-promise').Promise;
 var mock = require('xhr-mock');
-const its = require('..');
+const its = require('../');
 
 describe('ChoiceRecognition Websocket API interaction test', function() {
   beforeEach(function() {

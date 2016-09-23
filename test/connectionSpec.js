@@ -19,7 +19,7 @@ require('jasmine-ajax');
 require('jasmine-as-promised')();
 const autobahn = require('autobahn');
 var Promise = require('es6-promise').Promise;
-const its = require('..');
+const its = require('../');
 
 describe('Secure GET test', function() {
   beforeEach(function() {
@@ -42,7 +42,7 @@ describe('Secure GET test', function() {
       authPrincipal: 'principal',
       authCredentials: 'secret',
     });
-    var url = 'https://api.itslanguage.nl/basicauths';
+    var url = api.settings.apiUrl;
     jasmine.Ajax.stubRequest(url).andReturn(
       {
         status: 200,
@@ -54,9 +54,8 @@ describe('Secure GET test', function() {
 
     return output
       .then(function(result) {
-        console.log('output is ' + JSON.stringify(output));
+
         var request = jasmine.Ajax.requests.mostRecent();
-        console.log('request is  ' + request);
         // That's the correct base64 representation of 'principal:secret'
         expect(request.requestHeaders).toEqual({
           Authorization: 'Basic cHJpbmNpcGFsOnNlY3JldA=='

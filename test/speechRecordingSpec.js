@@ -20,7 +20,7 @@ require('jasmine-as-promised')();
 const autobahn = require('autobahn');
 
 var Promise = require('es6-promise').Promise;
-const its = require('..');
+const its = require('../');
 
 describe('SpeechRecording object test', function() {
   it('should require all required fields in constructor', function() {

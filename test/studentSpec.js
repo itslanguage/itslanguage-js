@@ -19,7 +19,7 @@ require('jasmine-ajax');
 require('jasmine-as-promised')();
 const autobahn = require('autobahn');
 var Promise = require('es6-promise').Promise;
-const its = require('..');
+const its = require('../');
 
 describe('Student object test', function() {
   it('should instantiate a Student without id', function() {
@@ -126,6 +126,7 @@ describe('Student API interaction test', function() {
     return output.then(function(result) {
 
       fail('An error should be thrown!');
+      expect(result).toBeUndefined();
 
     }).catch(function(error) {
 

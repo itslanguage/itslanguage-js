@@ -5,16 +5,29 @@ module.exports = config => {
       'jasmine'
     ],
     files: [
-      'test/*.js'
+      'node_modules/jasmine-promises/dist/jasmine-promises.js',
+      'test/*.js',
+      'src/*.js'
+      //'test/pronunciationAnalysisSpec.js',
+      //'test/speechRecordingSpec.js'
     ],
     browsers: [
       'PhantomJS'
     ],
+
+    reporters: ['progress', 'coverage'],
+
     preprocessors: {
-      'test/**/*.js': ['browserify']
+      'test/*.js': ['browserify'],
+      '**/*.js': ['coverage']
+    },
+
+    coverageReporter: {
+      type: 'html',
+      dir: 'coverage/'
     },
     browserify: {
-      entries: './index.js',
+      entries: 'src/index.js',
       debug: true,
       transform: ['babelify']
     }

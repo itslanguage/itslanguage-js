@@ -680,6 +680,7 @@ class Sdk {
    * @param authHeaders form headers.
    */
   _secureAjaxGet(url, authHeaders) {
+    console.log('in ajax get with ' + url + ' ' + JSON.stringify(authHeaders));
     return new Promise(function(resolve, reject) {
       var request = new XMLHttpRequest();
       var response = null;
@@ -688,6 +689,7 @@ class Sdk {
         request.setRequestHeader('Authorization', authHeaders);
       }
       request.onload = function() {
+        console.log('onload');
         response = Sdk._parseResponse(request.responseText);
         if (request.status >= 200 && request.status < 300) {
           resolve(response);
@@ -1393,7 +1395,7 @@ class Sdk {
       challenge.id + '/recordings/' + recordingId;
 
     return new Promise(function(resolve, reject) {
-      self.secureAjaxGet(url)
+      self._secureAjaxGet(url)
         .catch(function(error) {
 
           reject(new Error(error));
@@ -1433,7 +1435,7 @@ class Sdk {
       challenge.id + '/recordings';
 
     return new Promise(function(resolve, reject) {
-      self.secureAjaxGet(url)
+      self._secureAjaxGet(url)
         .catch(function(error) {
 
           reject(new Error(error));
@@ -1619,7 +1621,7 @@ class Sdk {
     var words = [];
     inWords.forEach(function(word) {
       var chunks = [];
-      word.chunks.forEach(function(chunk) {
+      word.forEach(function(chunk) {
         var phonemes = [];
         // Phonemes are only provided on detailed analysis.
         chunk.phonemes = chunk.phonemes || [];
@@ -1824,12 +1826,12 @@ class Sdk {
             }
             reportError(res.kwargs.analysis);
           })
-          .tap(function(progress) {
+          .tap(function(progress){
             reportProgress(progress);
           });
       };
 
-
+      //BEGIN POINT
       recorder.addEventListener('recorded', stopListening);
       self._session.call('nl.itslanguage.pronunciation.init_analysis', [],
         {
@@ -1864,6 +1866,8 @@ class Sdk {
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses/' + analysisId;
 
+    console.log(challenge);
+    console.log(JSON.stringify(challenge));
     return new Promise(function(resolve, reject) {
 
       if (!challenge || !challenge.id) {
@@ -1901,6 +1905,7 @@ class Sdk {
    * @param {Boolean} detailed Returns extra analysis metadata when true. false by default.
    */
   listPronunciationAnalyses(challenge, detailed) {
+    console.log('In listPronunciationAnalyses');
     var self = this;
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
@@ -1919,8 +1924,10 @@ class Sdk {
 
       self.secureAjaxGet(url)
         .then(function(data) {
+          console.log('Back from get ' + JSON.stringify(data));
           var analyses = [];
           data.forEach(function(datum) {
+            console.log('in FOREACH ' + JSON.stringify(datum));
             var student = new Student(challenge.organisationId, datum.studentId);
             var analysis = new PronunciationAnalysis(challenge, student,
               datum.id, new Date(datum.created), new Date(datum.updated),
