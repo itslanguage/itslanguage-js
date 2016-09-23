@@ -42,7 +42,9 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.1",
+    "mock-socket": "^5.0.1",
     "q": "^1.4.1",
+    "sinon": "^1.17.6",
     "watchify": "^3.7.0",
     "xhr-mock": "^1.6.0"
   }

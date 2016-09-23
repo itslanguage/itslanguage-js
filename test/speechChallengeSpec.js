@@ -10,6 +10,7 @@
  expect,
  it,
  jasmine,
+ fail,
  spyOn,
  window,
  FormData
@@ -17,7 +18,6 @@
 
 require('jasmine-ajax');
 require('jasmine-as-promised')();
-const autobahn = require('autobahn');
 var Promise = require('es6-promise').Promise;
 const its = require('../');
 
@@ -93,7 +93,6 @@ describe('SpeechChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('POST');
@@ -105,11 +104,8 @@ describe('SpeechChallenge API interaction test', function() {
       outChallenge.created = new Date(stringDate);
       outChallenge.updated = new Date(stringDate);
       expect(result).toEqual(outChallenge);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 
@@ -157,7 +153,6 @@ describe('SpeechChallenge API interaction test', function() {
       outChallenge.referenceAudio = challenge.referenceAudio;
       outChallenge.referenceAudioUrl = referenceAudioUrl;
       expect(result).toEqual(outChallenge);
-
     }).catch(function(error) {
       fail('No error should be thrown: ' + error);
     });
@@ -188,27 +183,23 @@ describe('SpeechChallenge API interaction test', function() {
     jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
     var output = api.createSpeechChallenge(challenge);
 
-      return output
-        .then(function(result) {
-
-        fail('An error should be thrown!');
-
-      }).catch(function(error) {
-
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
-        expect(FormData.prototype.append.calls.count()).toEqual(2);
-        var errors = [{
-          resource: 'SpeechChallenge',
-          field: 'topic',
-          code: 'missing'
-        }];
-        expect(error.errors.errors).toEqual(errors);
-
-      });
+    return output
+        .then(function() {
+          fail('An error should be thrown!');
+        }).catch(function(error) {
+          var request = jasmine.Ajax.requests.mostRecent();
+          expect(request.url).toBe(url);
+          expect(request.method).toBe('POST');
+          expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
+          expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
+          expect(FormData.prototype.append.calls.count()).toEqual(2);
+          var errors = [{
+            resource: 'SpeechChallenge',
+            field: 'topic',
+            code: 'missing'
+          }];
+          expect(error.errors.errors).toEqual(errors);
+        });
   });
 
   it('should get an existing speech challenge', function() {
@@ -234,7 +225,6 @@ describe('SpeechChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
@@ -243,11 +233,8 @@ describe('SpeechChallenge API interaction test', function() {
       challenge.created = new Date(stringDate);
       challenge.updated = new Date(stringDate);
       expect(result).toEqual(challenge);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 
@@ -275,7 +262,6 @@ describe('SpeechChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
       var stringDate = '2014-12-31T23:59:59Z';
@@ -284,11 +270,8 @@ describe('SpeechChallenge API interaction test', function() {
       challenge.updated = new Date(stringDate);
       expect(result[0]).toEqual(challenge);
       expect(result.length).toBe(1);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 });

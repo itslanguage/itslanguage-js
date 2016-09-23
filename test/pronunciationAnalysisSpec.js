@@ -10,6 +10,7 @@
  expect,
  it,
  jasmine,
+ fail,
  spyOn,
  window,
  FormData
@@ -58,7 +59,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
     window.WebSocket = jasmine.createSpy('WebSocket');
 
     api.startStreamingPronunciationAnalysis(challenge, recorder)
-      .then(function(result){
+      .then(function(result) {
         fail('An error should be thrown. Got ' + result);
       })
       .catch(function(error) {
@@ -87,7 +88,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
             sampleRate: 48000
           },
           audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
-        }
+        };
       };
       this.hasUserMediaApproval = function() {
         return true;
@@ -106,7 +107,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
 
       this.hasUserMediaApproval = function() {
         return true;
-      }
+      };
     }
 
     var challenge = new its.PronunciationChallenge('fb', '4', 'foo');
@@ -141,7 +142,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
       challenge, recorder);
 
     return output
-      .then(function(result) {
+      .then(function() {
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.pronunciation.init_analysis', [],
@@ -173,7 +174,7 @@ describe('PronunciationAnalyses API interaction test', function() {
       authPassword: 'secret'
     });
 
-    var challenge = new its.PronunciationChallenge('fb', '4', 'test', new Blob);
+    var challenge = new its.PronunciationChallenge('fb', '4', 'test', new Blob());
 
     var url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation/4/analyses/5';
@@ -196,7 +197,6 @@ describe('PronunciationAnalyses API interaction test', function() {
     var output = api.getPronunciationAnalysis(challenge, '5');
     expect(output).toEqual(jasmine.any(Promise));
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
@@ -205,11 +205,8 @@ describe('PronunciationAnalyses API interaction test', function() {
       var analysis = new its.PronunciationAnalysis(challenge, student,
         '5', new Date(stringDate), new Date(stringDate), audioUrl);
       expect(result).toEqual(analysis);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 
@@ -219,7 +216,7 @@ describe('PronunciationAnalyses API interaction test', function() {
       authPassword: 'secret'
     });
 
-    var challenge = new its.PronunciationChallenge('fb', '4', 'test', new Blob);
+    var challenge = new its.PronunciationChallenge('fb', '4', 'test', new Blob());
     var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     var content = [{
       id: '5',
@@ -271,7 +268,6 @@ describe('PronunciationAnalyses API interaction test', function() {
 
     return output
       .then(function(result) {
-
         var request = jasmine.Ajax.requests.mostRecent();
         expect(request.url).toBe(url);
         expect(request.method).toBe('GET');
@@ -288,7 +284,7 @@ describe('PronunciationAnalyses API interaction test', function() {
         var chunk = [
           new its.WordChunk('b', 0.9, 'good', []),
           new its.WordChunk('o', 0.4, 'bad', []),
-          new its.WordChunk('x', 0.5, 'moderate', []),
+          new its.WordChunk('x', 0.5, 'moderate', [])
         ];
         var word = new its.Word(chunk);
         analysis2.words = [word];
@@ -296,12 +292,9 @@ describe('PronunciationAnalyses API interaction test', function() {
         expect(result).toEqual(jasmine.any(Array));
         expect(result.length).toBe(2);
         expect(result).toEqual([analysis, analysis2]);
-
       })
       .catch(function(error) {
-
         fail('No error should be thrown: ' + error);
-
       });
   });
 
@@ -311,7 +304,7 @@ describe('PronunciationAnalyses API interaction test', function() {
       authPassword: 'secret'
     });
 
-    var challenge = new its.PronunciationChallenge('fb', '4', 'test', new Blob);
+    var challenge = new its.PronunciationChallenge('fb', '4', 'test', new Blob());
     var url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation/4/analyses?detailed=true';
 
@@ -391,7 +384,6 @@ describe('PronunciationAnalyses API interaction test', function() {
 
     return output
       .then(function(result) {
-
         var request = jasmine.Ajax.requests.mostRecent();
         expect(request.url).toBe(url);
         expect(request.method).toBe('GET');
@@ -424,7 +416,7 @@ describe('PronunciationAnalyses API interaction test', function() {
         var chunk = [
           new its.WordChunk('b', 0.9, 'good', phonemes1),
           new its.WordChunk('o', 0.4, 'bad', phonemes2),
-          new its.WordChunk('x', 0.5, 'moderate', phonemes3),
+          new its.WordChunk('x', 0.5, 'moderate', phonemes3)
         ];
         var word = new its.Word(chunk);
         analysis2.words = [word];
@@ -433,12 +425,9 @@ describe('PronunciationAnalyses API interaction test', function() {
         expect(result[0]).toEqual(analysis);
         expect(result[1]).toEqual(analysis2);
         expect(result).toEqual([analysis, analysis2]);
-
       })
       .catch(function(error) {
-
         fail('No error should be thrown: ' + error);
-
       });
   });
 });

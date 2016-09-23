@@ -10,14 +10,13 @@
  expect,
  it,
  jasmine,
- spyOn,
+ fail,
  window,
  FormData
  */
 
 require('jasmine-ajax');
 require('jasmine-as-promised')();
-const autobahn = require('autobahn');
 var Promise = require('es6-promise').Promise;
 const its = require('../');
 
@@ -94,7 +93,7 @@ describe('BasicAuth API interaction test', function() {
 
     expect(output).toEqual(jasmine.any(Promise));
 
-    return output.then(function(result) {
+    return output.then(function() {
       expect(request.url).toBe(url);
       expect(request.method).toBe('POST');
       var expected = {tenantId: '4', principal: 'principal'};

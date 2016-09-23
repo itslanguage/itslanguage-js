@@ -520,7 +520,7 @@ class AudioRecorder {
       self.fireEvent('ready', [self.audioContext, micInputGain]);
     }
 
-    function failure(e) {
+    function failure() {
       throw new Error('No live audio input available or permitted');
     }
 

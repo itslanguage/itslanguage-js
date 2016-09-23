@@ -9,6 +9,7 @@
  describe,
  expect,
  it,
+ fail,
  jasmine,
  spyOn,
  window,
@@ -17,7 +18,6 @@
 
 require('jasmine-ajax');
 require('jasmine-as-promised')();
-const autobahn = require('autobahn');
 var Promise = require('es6-promise').Promise;
 const its = require('../');
 
@@ -84,13 +84,9 @@ describe('PronunciationChallenge API interaction test', function() {
 
     return api.createPronunciationChallenge(challenge)
       .then(function() {
-
         fail('An error should be thrown');
-
       }).catch(function(error) {
-
         expect(error.message).toEqual('referenceAudio parameter of type "Blob" is required');
-
       });
   });
 
@@ -103,13 +99,9 @@ describe('PronunciationChallenge API interaction test', function() {
 
     return api.createPronunciationChallenge(challenge)
       .then(function() {
-
         fail('An error should be thrown');
-
       }).catch(function(error) {
-
         expect(error.message).toEqual('referenceAudio parameter of type "Blob" is required');
-
       });
   });
 
@@ -143,7 +135,6 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('POST');
@@ -161,11 +152,8 @@ describe('PronunciationChallenge API interaction test', function() {
       outChallenge.referenceAudioUrl = referenceAudioUrl;
       outChallenge.status = 'preparing';
       expect(result).toEqual(outChallenge);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 
@@ -198,11 +186,8 @@ describe('PronunciationChallenge API interaction test', function() {
     var output = api.createPronunciationChallenge(challenge);
 
     return output.then(function() {
-
       fail('An error should be thrown!');
-
     }).catch(function(error) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('POST');
@@ -218,7 +203,6 @@ describe('PronunciationChallenge API interaction test', function() {
         code: 'missing'
       }];
       expect(error.errors.errors).toEqual(errors);
-
     });
   });
 
@@ -249,7 +233,6 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
@@ -260,11 +243,8 @@ describe('PronunciationChallenge API interaction test', function() {
       challenge.referenceAudioUrl = referenceAudioUrl;
       challenge.status = 'prepared';
       expect(result).toEqual(challenge);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 
@@ -296,11 +276,8 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     }).then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
@@ -334,16 +311,12 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     }).then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('DELETE');
       expect(result).toEqual(challenge);
-
     });
   });
 
@@ -377,20 +350,16 @@ describe('PronunciationChallenge API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output
-      .then(function(result) {
-
+      .then(function() {
         fail('An error should be a thrown');
-
       })
       .catch(function(error) {
-
         var errors = [{
           resource: 'PronunciationChallenge',
           field: 'id',
           code: 'missing'
         }];
         expect(error.errors).toEqual(errors);
-
       });
   });
 });

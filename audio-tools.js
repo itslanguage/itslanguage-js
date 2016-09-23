@@ -110,7 +110,6 @@ class VolumeMeter {
     };
     var skippedCallbacks = 0;
     var lastVolume = -1;
-    var self = this;
 
     animloop();
 

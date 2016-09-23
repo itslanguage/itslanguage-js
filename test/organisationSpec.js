@@ -9,15 +9,14 @@
  describe,
  expect,
  it,
+ fail,
  jasmine,
- spyOn,
  window,
  FormData
  */
 
 require('jasmine-ajax');
 require('jasmine-as-promised')();
-const autobahn = require('autobahn');
 var Promise = require('es6-promise').Promise;
 const its = require('../');
 
@@ -117,18 +116,15 @@ describe('Organisation API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
 
-        return output.then(function(result){
-
-          fail('An error should be thrown! Instead got result ' + result);
-          expect(result).toBeUndefined();
-
-        }).catch(function(error){
-          var request = jasmine.Ajax.requests.mostRecent();
-          expect(request.url).toBe(url);
-          expect(request.method).toBe('POST');
-          expect(error.errors).toEqual(content);
-
-        });
+    return output.then(function(result) {
+      fail('An error should be thrown! Instead got result ' + result);
+      expect(result).toBeUndefined();
+    }).catch(function(error) {
+      var request = jasmine.Ajax.requests.mostRecent();
+      expect(request.url).toBe(url);
+      expect(request.method).toBe('POST');
+      expect(error.errors).toEqual(content);
+    });
   });
 
   it('should get an existing organisation through API', function() {
@@ -153,7 +149,6 @@ describe('Organisation API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
@@ -163,11 +158,8 @@ describe('Organisation API interaction test', function() {
       organisation.created = new Date(stringDate);
       organisation.updated = new Date(stringDate);
       expect(result).toEqual(organisation);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 
@@ -193,7 +185,6 @@ describe('Organisation API interaction test', function() {
     expect(output).toEqual(jasmine.any(Promise));
 
     return output.then(function(result) {
-
       var request = jasmine.Ajax.requests.mostRecent();
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
@@ -203,11 +194,8 @@ describe('Organisation API interaction test', function() {
       organisation.updated = new Date(stringDate);
       expect(result[0]).toEqual(organisation);
       expect(result.length).toBe(1);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
   });
 });

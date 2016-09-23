@@ -10,6 +10,7 @@
  expect,
  it,
  jasmine,
+ fail,
  spyOn,
  window,
  FormData
@@ -19,9 +20,7 @@
 require('jasmine-ajax');
 require('jasmine-as-promised')();
 const autobahn = require('autobahn');
-var nock = require('nock');
 var Promise = require('es6-promise').Promise;
-var mock = require('xhr-mock');
 const its = require('../');
 
 describe('ChoiceRecognition Websocket API interaction test', function() {
@@ -61,10 +60,9 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       fail('An error should be thrown!');
     }).catch(function(error) {
       expect(error.message).toEqual('WebSocket connection was not open.');
+      // Restore WebSocket
+      window.WebSocket = old;
     });
-
-    // Restore WebSocket
-    window.WebSocket = old;
   });
 
   it('should start streaming a new choice recognition', function() {
@@ -86,7 +84,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
             sampleRate: 48000
           },
           audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
-        }
+        };
       };
       this.hasUserMediaApproval = function() {
         return true;
@@ -105,7 +103,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
       this.hasUserMediaApproval = function() {
         return true;
-      }
+      };
     }
 
     var challenge = new its.ChoiceChallenge('fb', '4', null, []);
@@ -138,15 +136,13 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       challenge, recorder);
 
     expect(output).toEqual(jasmine.any(Promise));
-    return output.then(function(result) {
+    return output.then(function() {
       expect(api._session.call).toHaveBeenCalled();
       expect(api._session.call).toHaveBeenCalledWith(
         'nl.itslanguage.choice.init_recognition', [],
         {trimStart: 0.15, trimEnd: 0});
     }).catch(function(error) {
-
       fail('No error should be thrown ' + error);
-
     });
   });
 
@@ -178,7 +174,6 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
     var request = jasmine.Ajax.requests.mostRecent();
     return output.then(function(result) {
-
       expect(request.url).toBe(url);
       expect(request.method).toBe('GET');
       var stringDate = '2014-12-31T23:59:59Z';
@@ -187,7 +182,6 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
         '5', new Date(stringDate), new Date(stringDate));
       recognition.audioUrl = audioUrl;
       expect(result).toEqual(recognition);
-
     }).catch(function(error) {
       fail('No error should be thrown ' + error);
     });
@@ -248,12 +242,8 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       expect(content1).toEqual(recognition);
       expect(content2).toEqual(recognition2);
       expect(result).toEqual([recognition, recognition2]);
-
     }).catch(function(error) {
-
       fail('No error should be thrown: ' + error);
-
     });
-
   });
 });

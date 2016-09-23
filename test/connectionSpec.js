@@ -8,17 +8,15 @@
  beforeEach,
  describe,
  expect,
+ fail,
  it,
  jasmine,
- spyOn,
  window,
  FormData
  */
 
 require('jasmine-ajax');
 require('jasmine-as-promised')();
-const autobahn = require('autobahn');
-var Promise = require('es6-promise').Promise;
 const its = require('../');
 
 describe('Secure GET test', function() {
@@ -40,7 +38,7 @@ describe('Secure GET test', function() {
   it('should correctly assemble the Authorization header', function() {
     var api = new its.Sdk({
       authPrincipal: 'principal',
-      authCredentials: 'secret',
+      authCredentials: 'secret'
     });
     var url = api.settings.apiUrl;
     jasmine.Ajax.stubRequest(url).andReturn(
@@ -53,19 +51,15 @@ describe('Secure GET test', function() {
     var output = api.secureAjaxGet(url);
 
     return output
-      .then(function(result) {
-
+      .then(function() {
         var request = jasmine.Ajax.requests.mostRecent();
         // That's the correct base64 representation of 'principal:secret'
         expect(request.requestHeaders).toEqual({
           Authorization: 'Basic cHJpbmNpcGFsOnNlY3JldA=='
         });
-
       })
       .catch(function(error) {
-
         fail('No error should be thrown: ' + error);
-
       });
   });
 });
@@ -102,19 +96,15 @@ describe('Secure POST test', function() {
     var output = api.secureAjaxPost(url);
 
     return output
-      .then(function(result) {
-
+      .then(function() {
         var request = jasmine.Ajax.requests.mostRecent();
         // That's the correct base64 representation of 'principal:secret'
         expect(request.requestHeaders).toEqual({
           Authorization: 'Basic cHJpbmNpcGFsOnNlY3JldA=='
         });
-
       })
       .catch(function(error) {
-
         fail('No error should be thrown: ' + error);
-
       });
   });
 });

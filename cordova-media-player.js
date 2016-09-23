@@ -72,8 +72,8 @@ module.exports = class CordovaMediaPlayer {
       // By setting options to create:false, only a lookup will be performed.
       console.debug('Calling getFile in read mode: ' + filename);
       fileSystem.root.getFile(filename, {
-          create: true
-        },
+        create: true
+      },
         entryCallback, entryErrorCallback);
     }
 
@@ -106,8 +106,8 @@ module.exports = class CordovaMediaPlayer {
     var self = this;
     // Cordova Media can only be loaded during instantiation.
     this.sound = new window.Media(filepath, function() {
-        console.debug('Playback ended successfully.');
-      },
+      console.debug('Playback ended successfully.');
+    },
       function(e) {
         console.debug('Playback failed: ' + e.code);
       },

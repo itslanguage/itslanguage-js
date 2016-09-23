@@ -6,10 +6,10 @@ module.exports = config => {
     ],
     files: [
       'node_modules/jasmine-promises/dist/jasmine-promises.js',
-      'test/*.js',
-      'src/*.js'
-      //'test/pronunciationAnalysisSpec.js',
-      //'test/speechRecordingSpec.js'
+      'test/*.js'
+      // 'src/*.js'
+      // 'test/pronunciationAnalysisSpec.js',
+      // 'test/speechRecordingSpec.js'
     ],
     browsers: [
       'PhantomJS'
@@ -27,7 +27,7 @@ module.exports = config => {
       dir: 'coverage/'
     },
     browserify: {
-      entries: 'src/index.js',
+      entries: './index.js',
       debug: true,
       transform: ['babelify']
     }
