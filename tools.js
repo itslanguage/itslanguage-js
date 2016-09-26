@@ -8,9 +8,9 @@
 
 
 /**
-@module its.Tools
-ITSLanguage helper tools.
-*/
+ @module its.Tools
+ ITSLanguage helper tools.
+ */
 
 
 class Stopwatch {

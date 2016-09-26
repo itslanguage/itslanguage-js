@@ -1,11 +1,11 @@
 /* eslint-disable
-  callback-return,
-  camelcase,
-  func-style,
-  handle-callback-err,
-  max-len,
-  no-unused-vars
-*/
+ callback-return,
+ camelcase,
+ func-style,
+ handle-callback-err,
+ max-len,
+ no-unused-vars
+ */
 
 
 /**
@@ -19,9 +19,9 @@
 const autobahn = require('autobahn');
 
 /**
-@module its
-ITSLanguage SDK module.
-*/
+ @module its
+ ITSLanguage SDK module.
+ */
 
 class Tenant {
   /**
@@ -54,15 +54,15 @@ class BasicAuth {
     }
     this.tenantId = tenantId;
     if (typeof principal !== 'string' &&
-        principal !== null &&
-        principal !== undefined) {
+      principal !== null &&
+      principal !== undefined) {
       throw new Error(
         'principal parameter of type "string|null|undefined" is required');
     }
     this.principal = principal;
     if (typeof credentials !== 'string' &&
-        credentials !== null &&
-        credentials !== undefined) {
+      credentials !== null &&
+      credentials !== undefined) {
       throw new Error(
         'credentials parameter of type "string|null|undefined" is required');
     }
@@ -413,8 +413,8 @@ class ChoiceChallenge {
     }
     this.id = id;
     if (typeof question !== 'string' &&
-        question !== null &&
-        question !== undefined) {
+      question !== null &&
+      question !== undefined) {
       throw new Error(
         'question parameter of type "string|null|undefined" is required');
     }
@@ -494,18 +494,19 @@ class Sdk {
     // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener
     // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
     this.events = {};
-
     var self = this;
     this.addEventListener = function(name, handler) {
+
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
       } else {
         self.events[name] = [handler];
       }
     };
+
     this.removeEventListener = function(name, handler) {
       /* This is a bit tricky, because how would you identify functions?
-         This simple solution should work if you pass THE SAME handler. */
+       This simple solution should work if you pass THE SAME handler. */
       if (!self.events.hasOwnProperty(name)) {
         return;
       }
@@ -557,7 +558,7 @@ class Sdk {
    */
   _webSocketConnect(data) {
     var authUrl = data.wsUrl + '?access_token=' +
-        this.settings.wsToken;
+      this.settings.wsToken;
     var connection = null;
     // Open a websocket connection for streaming audio
     try {
@@ -634,8 +635,8 @@ class Sdk {
           // Some error occured.
           response = self._parseResponse(request.responseText);
           ecb(response.errors || {
-            status: request.status
-          }, response);
+              status: request.status
+            }, response);
         }
       }
     };
@@ -648,7 +649,7 @@ class Sdk {
   /**
    * Perform a HTTP POST to the API.
    *
-   * @param {string} URL to submit to.
+   * @param {string} url to submit to.
    * @param {FormData|string} formdata FormData or stringified JSON to POST.
    * @param {callback} [cb] The callback that handles the response.
    * @param {callback} [ecb] The callback that handles the error response.
@@ -673,8 +674,8 @@ class Sdk {
           try {
             response = self._parseResponse(request.responseText);
             ecb(response.errors || {
-              status: request.status
-            }, response);
+                status: request.status
+              }, response);
           } catch (e) {
             ecb(response || e);
           }
@@ -722,8 +723,8 @@ class Sdk {
           try {
             response = self._parseResponse(request.responseText);
             ecb(response.errors || {
-              status: request.status
-            }, response);
+                status: request.status
+              }, response);
           } catch (e) {
             ecb(response || e);
           }
@@ -813,7 +814,8 @@ class Sdk {
    * @callback Sdk~tenantCreatedCallback
    * @param {its.Tenant} tenant Updated tenant domain model instance.
    */
-  tenantCreatedCallback(tenant) {}
+  tenantCreatedCallback(tenant) {
+  }
 
   /**
    * Error callback used by createTenant.
@@ -822,7 +824,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.Tenant} tenant Tenant domain model instance with unapplied changes.
    */
-  tenantCreatedErrorCallback(errors, tenant) {}
+  tenantCreatedErrorCallback(errors, tenant) {
+  }
 
   /**
    * Create a tenant.
@@ -860,7 +863,8 @@ class Sdk {
    * @callback Sdk~basicAuthCreatedCallback
    * @param {its.BasicAuth} basicAuth Updated basicAuth domain model instance.
    */
-  basicAuthCreatedCallback(basicAuth) {}
+  basicAuthCreatedCallback(basicAuth) {
+  }
 
   /**
    * Error callback used by createBasicAuth.
@@ -869,7 +873,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.BasicAuth} basicAuth BasicAuth domain model instance with unapplied changes.
    */
-  basicAuthCreatedErrorCallback(errors, basicAuth) {}
+  basicAuthCreatedErrorCallback(errors, basicAuth) {
+  }
 
   /**
    * Create a basic auth.
@@ -909,7 +914,8 @@ class Sdk {
    * @callback Sdk~organisationCreatedCallback
    * @param {its.Organisation} organisation Updated organisation domain model instance.
    */
-  organisationCreatedCallback(organisation) {}
+  organisationCreatedCallback(organisation) {
+  }
 
   /**
    * Error callback used by createOrganisation.
@@ -918,7 +924,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.Organisation} organisation Organisation domain model instance with unapplied changes.
    */
-  organisationCreatedErrorCallback(errors, organisation) {}
+  organisationCreatedErrorCallback(errors, organisation) {
+  }
 
   /**
    * Create an organisation.
@@ -955,7 +962,8 @@ class Sdk {
    * @callback Sdk~organisationGetCallback
    * @param {its.Organisation} organisation Retrieved organisation domain model instance.
    */
-  organisationGetCallback(organisation) {}
+  organisationGetCallback(organisation) {
+  }
 
   /**
    * Error callback used by getOrganisation.
@@ -963,7 +971,8 @@ class Sdk {
    * @callback Sdk~organisationGetErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  organisationGetErrorCallback(errors) {}
+  organisationGetErrorCallback(errors) {
+  }
 
   /**
    * Get an organisation.
@@ -992,7 +1001,8 @@ class Sdk {
    * @callback Sdk~listCallback
    * @param {its.Organisation[]} organisation Retrieved organisation domain model instances.
    */
-  organisationListCallback(organisation) {}
+  organisationListCallback(organisation) {
+  }
 
   /**
    * Error callback used by listOrganisations.
@@ -1000,7 +1010,8 @@ class Sdk {
    * @callback Sdk~listErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  organisationListErrorCallback(errors) {}
+  organisationListErrorCallback(errors) {
+  }
 
   /**
    * List all organisations in the organisation.
@@ -1033,7 +1044,8 @@ class Sdk {
    * @callback Sdk~studentCreatedCallback
    * @param {its.Student} student Updated student domain model instance.
    */
-  studentCreatedCallback(student) {}
+  studentCreatedCallback(student) {
+  }
 
   /**
    * Error callback used by createStudent.
@@ -1042,7 +1054,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.Student} student Student domain model instance with unapplied changes.
    */
-  studentCreatedErrorCallback(errors, student) {}
+  studentCreatedErrorCallback(errors, student) {
+  }
 
   /**
    * Create a student.
@@ -1084,7 +1097,8 @@ class Sdk {
    * @callback Sdk~studentGetCallback
    * @param {its.Student} student Retrieved student domain model instance.
    */
-  studentGetCallback(student) {}
+  studentGetCallback(student) {
+  }
 
   /**
    * Error callback used by getStudent.
@@ -1092,7 +1106,8 @@ class Sdk {
    * @callback Sdk~studentGetErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  studentGetErrorCallback(errors) {}
+  studentGetErrorCallback(errors) {
+  }
 
   /**
    * Get a student.
@@ -1124,7 +1139,8 @@ class Sdk {
    * @callback Sdk~listCallback
    * @param {its.Student[]} student Retrieved student domain model instances.
    */
-  studentListCallback(student) {}
+  studentListCallback(student) {
+  }
 
   /**
    * Error callback used by listStudents.
@@ -1132,7 +1148,8 @@ class Sdk {
    * @callback Sdk~listErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  studentListErrorCallback(errors) {}
+  studentListErrorCallback(errors) {
+  }
 
   /**
    * List all students in the organisation.
@@ -1168,7 +1185,8 @@ class Sdk {
    * @callback Sdk~speechChallengeCreatedCallback
    * @param {its.SpeechChallenge} challenge Updated speech challenge domain model instance.
    */
-  speechChallengeCreatedCallback(challenge) {}
+  speechChallengeCreatedCallback(challenge) {
+  }
 
   /**
    * Error callback used by createSpeechChallenge.
@@ -1177,7 +1195,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.SpeechChallenge} challenge Speech challenge domain model instance with unapplied changes.
    */
-  speechChallengeCreatedErrorCallback(errors, challenge) {}
+  speechChallengeCreatedErrorCallback(errors, challenge) {
+  }
 
   /**
    * Create a speech challenge.
@@ -1229,7 +1248,8 @@ class Sdk {
    * @callback Sdk~getSpeechChallengeCallback
    * @param {its.SpeechChallenge} challenge Retrieved speech challenge domain model instance.
    */
-  getSpeechChallengeCallback(challenge) {}
+  getSpeechChallengeCallback(challenge) {
+  }
 
   /**
    * Error callback used by getSpeechChallenge.
@@ -1237,7 +1257,8 @@ class Sdk {
    * @callback Sdk~getSpeechChallengeErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  getSpeechChallengeErrorCallback(errors) {}
+  getSpeechChallengeErrorCallback(errors) {
+  }
 
   /**
    * Get a speech challenge.
@@ -1268,7 +1289,8 @@ class Sdk {
    * @callback Sdk~listSpeechChallegesCallback
    * @param {its.SpeechChallenge[]} challenges Retrieved speech challenge domain model instances.
    */
-  listSpeechChallengeCallback(challenges) {}
+  listSpeechChallengeCallback(challenges) {
+  }
 
   /**
    * Error callback used by listSpeechChallenges.
@@ -1276,7 +1298,8 @@ class Sdk {
    * @callback Sdk~listSpeechChallengesErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  listSpeechChallengeErrorCallback(errors) {}
+  listSpeechChallengeErrorCallback(errors) {
+  }
 
   /**
    * List all speech challenges in the organisation.
@@ -1311,7 +1334,8 @@ class Sdk {
    * @callback Sdk~speechRecordingCreatedCallback
    * @param {its.SpeechRecording} recording Updated speech recording domain model instance.
    */
-  speechRecordingCreatedCallback(recording) {}
+  speechRecordingCreatedCallback(recording) {
+  }
 
   /**
    * Error callback used by createSpeechRecording.
@@ -1320,7 +1344,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.SpeechRecording} recording Speech recording domain model instance with unapplied changes.
    */
-  speechRecordingCreatedErrorCallback(errors, recording) {}
+  speechRecordingCreatedErrorCallback(errors, recording) {
+  }
 
   /**
    * Initialise the speech recording challenge through RPCs.
@@ -1432,9 +1457,9 @@ class Sdk {
     function dataavailableCb(chunk) {
       var encoded = self._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for recordingId: ' +
-          self._recordingId);
+        self._recordingId);
       self._session.call('nl.itslanguage.recording.write',
-          [self._recordingId, encoded, 'base64']).then(
+        [self._recordingId, encoded, 'base64']).then(
         // RPC success callback
         function(res) {
           // Wrote data.
@@ -1477,7 +1502,7 @@ class Sdk {
     // Stop listening when the audio recorder stopped.
     var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
       self._session.call('nl.itslanguage.recording.close',
-          [self._recordingId]).then(
+        [self._recordingId]).then(
         // RPC success callback
         function(res) {
           console.log(res);
@@ -1531,7 +1556,8 @@ class Sdk {
    * @callback Sdk~getSpeechRecordingCallback
    * @param {its.SpeechRecording} recording Retrieved speech recording domain model instance.
    */
-  getSpeechRecordingCallback(recording) {}
+  getSpeechRecordingCallback(recording) {
+  }
 
   /**
    * Error callback used by getSpeechRecording.
@@ -1539,7 +1565,8 @@ class Sdk {
    * @callback Sdk~getSpeechRecordingErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  getSpeechRecordingErrorCallback(errors) {}
+  getSpeechRecordingErrorCallback(errors) {
+  }
 
   /**
    * Get a speech recording in a speech challenge.
@@ -1582,7 +1609,8 @@ class Sdk {
    * @callback Sdk~listSpeechChallegesCallback
    * @param {its.SpeechRecording[]} recordings Retrieved speech recording domain model instances.
    */
-  listSpeechRecordingCallback(recordings) {}
+  listSpeechRecordingCallback(recordings) {
+  }
 
   /**
    * Error callback used by listSpeechRecordings.
@@ -1590,7 +1618,8 @@ class Sdk {
    * @callback Sdk~listSpeechRecordingsErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  listSpeechRecordingErrorCallback(errors) {}
+  listSpeechRecordingErrorCallback(errors) {
+  }
 
   /**
    * List all speech recordings in a specific speech challenge.
@@ -1637,7 +1666,8 @@ class Sdk {
    * @callback Sdk~pronunciationChallengeCreatedCallback
    * @param {its.PronunciationChallenge} challenge Updated speech challenge domain model instance.
    */
-  pronunciationChallengeCreatedCallback(challenge) {}
+  pronunciationChallengeCreatedCallback(challenge) {
+  }
 
   /**
    * Error callback used by createPronunciationChallenge.
@@ -1646,7 +1676,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.PronunciationChallenge} challenge Pronunciation challenge domain model instance with unapplied changes.
    */
-  pronunciationChallengeCreatedErrorCallback(errors, challenge) {}
+  pronunciationChallengeCreatedErrorCallback(errors, challenge) {
+  }
 
   /**
    * Create a pronunciation challenge.
@@ -1679,8 +1710,7 @@ class Sdk {
       throw new Error('organisationId field is required');
     }
 
-    if (typeof challenge.referenceAudio !== 'object' ||
-      !challenge.referenceAudio) {
+    if (typeof challenge.referenceAudio !== 'object' || !challenge.referenceAudio) {
       throw new Error(
         'referenceAudio parameter of type "Blob" is required');
     }
@@ -1704,7 +1734,8 @@ class Sdk {
    * @callback Sdk~getPronunciationChallengeCallback
    * @param {its.PronunciationChallenge} challenge Retrieved pronunciation challenge domain model instance.
    */
-  getPronunciationChallengeCallback(challenge) {}
+  getPronunciationChallengeCallback(challenge) {
+  }
 
   /**
    * Error callback used by getPronunciationChallenge.
@@ -1712,7 +1743,8 @@ class Sdk {
    * @callback Sdk~getPronunciationChallengeErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  getPronunciationChallengeErrorCallback(errors) {}
+  getPronunciationChallengeErrorCallback(errors) {
+  }
 
   /**
    * Get a pronunciation challenge.
@@ -1722,8 +1754,7 @@ class Sdk {
    * @param {Sdk~getPronunciationChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getPronunciationChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  getPronunciationChallenge(
-      organisationId, challengeId, cb, ecb) {
+  getPronunciationChallenge(organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new PronunciationChallenge(organisationId, data.id,
         data.transcription);
@@ -1747,7 +1778,8 @@ class Sdk {
    * @callback Sdk~listPronunciationChallengesCallback
    * @param {its.PronunciationChallenge[]} challenges Retrieved pronunciation challenge domain model instances.
    */
-  listPronunciationChallengesCallback(challenges) {}
+  listPronunciationChallengesCallback(challenges) {
+  }
 
   /**
    * Error callback used by listPronunciationChallenges.
@@ -1755,7 +1787,8 @@ class Sdk {
    * @callback Sdk~listPronunciationChallengesErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  listPronunciationChallengesErrorCallback(errors) {}
+  listPronunciationChallengesErrorCallback(errors) {
+  }
 
   /**
    * List all pronunciation challenges in the organisation.
@@ -1764,8 +1797,7 @@ class Sdk {
    * @param {Sdk~listPronunciationChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listPronunciationChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listPronunciationChallenges(
-      organisationId, cb, ecb) {
+  listPronunciationChallenges(organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];
       data.forEach(function(datum) {
@@ -1792,7 +1824,8 @@ class Sdk {
    *
    * @callback Sdk~pronunciationChallengeDeletedCallback
    */
-  pronunciationChallengeDeletedCallback(challenge) {}
+  pronunciationChallengeDeletedCallback(challenge) {
+  }
 
   /**
    * Error callback used by deletePronunciationChallenge.
@@ -1801,7 +1834,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.PronunciationChallenge} challenge Pronunciation challenge domain model instance with unapplied changes.
    */
-  pronunciationChallengeDeletedErrorCallback(errors, challenge) {}
+  pronunciationChallengeDeletedErrorCallback(errors, challenge) {
+  }
 
   /**
    * Delete a pronunciation challenge.
@@ -1844,7 +1878,8 @@ class Sdk {
    * @callback Sdk~Sdk~pronunciationAnalysisCreatedCallback
    * @param {its.PronunciationAnalysis} analysis New pronunciation analysis domain model instance containing the performed analysis.
    */
-  pronunciationAnalysisCreatedCallback(analysis) {}
+  pronunciationAnalysisCreatedCallback(analysis) {
+  }
 
   /**
    * Error callback used by createPronunciationAnalysis.
@@ -1853,7 +1888,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.SpeechRecording} recording Speech recording domain model instance with unapplied changes.
    */
-  pronunciationAnalysisCreatedErrorCallback(errors, recording) {}
+  pronunciationAnalysisCreatedErrorCallback(errors, recording) {
+  }
 
   /**
    * Create a `its.Word` domain model from JSON data.
@@ -1865,7 +1901,7 @@ class Sdk {
     var words = [];
     inWords.forEach(function(word) {
       var chunks = [];
-      word.chunks.forEach(function(chunk) {
+      word.forEach(function(chunk) {
         var phonemes = [];
         // Phonemes are only provided on detailed analysis.
         chunk.phonemes = chunk.phonemes || [];
@@ -2024,9 +2060,9 @@ class Sdk {
     var dataavailableCb = function(chunk) {
       var encoded = self._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for analysisId: ' +
-          self._analysisId);
+        self._analysisId);
       self._session.call('nl.itslanguage.pronunciation.write',
-          [self._analysisId, encoded, 'base64']).then(
+        [self._analysisId, encoded, 'base64']).then(
         // RPC success callback
         function(res) {
           console.debug('Delivered audio successfully');
@@ -2062,8 +2098,10 @@ class Sdk {
       trimAudioStart = 0.0;
     }
     this._session.call('nl.itslanguage.pronunciation.init_analysis', [],
-         {trimStart: trimAudioStart,
-          trimEnd: trimAudioEnd}).then(
+      {
+        trimStart: trimAudioStart,
+        trimEnd: trimAudioEnd
+      }).then(
       // RPC success callback
       analysisInitCb,
       // RPC error callback
@@ -2077,8 +2115,7 @@ class Sdk {
       // When done, submit any plain text (non-JSON) to start analysing.
 
       self._session.call('nl.itslanguage.pronunciation.analyse',
-          [self._analysisId], {}, {receive_progress: true}).then(
-
+        [self._analysisId], {}, {receive_progress: true}).then(
         // RPC success callback
         function(res) {
           // Wait for analysis results to come back.
@@ -2126,7 +2163,8 @@ class Sdk {
    * @callback Sdk~getPronunciationAnalysisCallback
    * @param {its.PronunciationAnalysis} analysis Retrieved pronunciation analysis domain model instance.
    */
-  getPronunciationAnalysisCallback(analysis) {}
+  getPronunciationAnalysisCallback(analysis) {
+  }
 
   /**
    * Error callback used by getPronunciationAnalysis.
@@ -2134,7 +2172,8 @@ class Sdk {
    * @callback Sdk~getPronunciationAnalysisErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  getPronunciationAnalysisErrorCallback(errors) {}
+  getPronunciationAnalysisErrorCallback(errors) {
+  }
 
   /**
    * Get a pronunciation analysis in a pronunciation challenge.
@@ -2181,7 +2220,8 @@ class Sdk {
    * @callback Sdk~listPronunciationAnalysesCallback
    * @param {its.PronunciationAnalysis[]} analyses Retrieved pronunciation analysis domain model instances.
    */
-  listPronunciationAnalysisCallback(analyses) {}
+  listPronunciationAnalysisCallback(analyses) {
+  }
 
   /**
    * Error callback used by listPronunciationAnalyses.
@@ -2189,7 +2229,8 @@ class Sdk {
    * @callback Sdk~listPronunciationAnalysesErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  listPronunciationAnalysisErrorCallback(errors) {}
+  listPronunciationAnalysisErrorCallback(errors) {
+  }
 
   /**
    * List all pronunciation analyses in a specific pronunciation challenge.
@@ -2245,7 +2286,8 @@ class Sdk {
    * @callback Sdk~choiceChallengeCreatedCallback
    * @param {its.ChoiceChallenge} challenge Updated choice challenge domain model instance.
    */
-  choiceChallengeCreatedCallback(challenge) {}
+  choiceChallengeCreatedCallback(challenge) {
+  }
 
   /**
    * Error callback used by createChoiceChallenge.
@@ -2254,7 +2296,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.ChoiceChallenge} challenge Choice challenge domain model instance with unapplied changes.
    */
-  choiceChallengeCreatedErrorCallback(errors, challenge) {}
+  choiceChallengeCreatedErrorCallback(errors, challenge) {
+  }
 
   /**
    * Create a choice challenge.
@@ -2311,7 +2354,8 @@ class Sdk {
    * @callback Sdk~getChoiceChallengeCallback
    * @param {its.ChoiceChallenge} challenge Retrieved choice challenge domain model instance.
    */
-  getChoiceChallengeCallback(challenge) {}
+  getChoiceChallengeCallback(challenge) {
+  }
 
   /**
    * Error callback used by getChoiceChallenge.
@@ -2319,7 +2363,8 @@ class Sdk {
    * @callback Sdk~getChoiceChallengeErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  getChoiceChallengeErrorCallback(errors) {}
+  getChoiceChallengeErrorCallback(errors) {
+  }
 
   /**
    * Get a choice challenge.
@@ -2329,8 +2374,7 @@ class Sdk {
    * @param {Sdk~getChoiceChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getChoiceChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  getChoiceChallenge(
-      organisationId, challengeId, cb, ecb) {
+  getChoiceChallenge(organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new ChoiceChallenge(organisationId, data.id,
         data.question, data.choices);
@@ -2357,7 +2401,8 @@ class Sdk {
    * @callback Sdk~listChoiceChallengesCallback
    * @param {its.ChoiceChallenge[]} challenges Retrieved choice challenge domain model instances.
    */
-  listChoiceChallengesCallback(challenges) {}
+  listChoiceChallengesCallback(challenges) {
+  }
 
   /**
    * Error callback used by listSpeechChallenges.
@@ -2365,7 +2410,8 @@ class Sdk {
    * @callback Sdk~listChoiceChallengesErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  listChoiceChallengesErrorCallback(errors) {}
+  listChoiceChallengesErrorCallback(errors) {
+  }
 
   /**
    * List all choice challenges in the organisation.
@@ -2374,8 +2420,7 @@ class Sdk {
    * @param {Sdk~listChoiceChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listChoiceChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listChoiceChallenges(
-      organisationId, cb, ecb) {
+  listChoiceChallenges(organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];
       data.forEach(function(datum) {
@@ -2406,7 +2451,8 @@ class Sdk {
    * @callback Sdk~Sdk~choiceRecognitionCreatedCallback
    * @param {its.ChoiceRecognition} recognition New choice recognition domain model instance containing the performed recognition.
    */
-  choiceRecognitionCreatedCallback(recognition) {}
+  choiceRecognitionCreatedCallback(recognition) {
+  }
 
   /**
    * Error callback used by createChoiceRecognition.
@@ -2415,7 +2461,8 @@ class Sdk {
    * @param {object[]} errors Array of errors.
    * @param {its.SpeechRecording} recording Speech recording domain model instance with unapplied changes.
    */
-  choiceRecognitionCreatedErrorCallback(errors, recording) {}
+  choiceRecognitionCreatedErrorCallback(errors, recording) {
+  }
 
   /**
    * Initialise the choice recognition challenge through RPCs.
@@ -2528,9 +2575,9 @@ class Sdk {
     var dataavailableCb = function(chunk) {
       var encoded = self._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for recognitionId: ' +
-          self._recognitionId);
+        self._recognitionId);
       self._session.call('nl.itslanguage.choice.write',
-          [self._recognitionId, encoded, 'base64']).then(
+        [self._recognitionId, encoded, 'base64']).then(
         // RPC success callback
         function(res) {
           console.debug('Delivered audio successfully');
@@ -2566,8 +2613,10 @@ class Sdk {
       trimAudioStart = 0.0;
     }
     this._session.call('nl.itslanguage.choice.init_recognition', [],
-         {trimStart: trimAudioStart,
-          trimEnd: trimAudioEnd}).then(
+      {
+        trimStart: trimAudioStart,
+        trimEnd: trimAudioEnd
+      }).then(
       // RPC success callback
       recognitionInitCb,
       // RPC error callback
@@ -2580,7 +2629,7 @@ class Sdk {
     var recordedCb = function(id) {
       // When done, submit any plain text (non-JSON) to start analysing.
       self._session.call('nl.itslanguage.choice.recognise',
-          [self._recognitionId]).then(
+        [self._recognitionId]).then(
         // RPC success callback
         function(res) {
           console.log(res);
@@ -2613,7 +2662,8 @@ class Sdk {
    * @callback Sdk~getChoiceRecognitionCallback
    * @param {its.ChoiceRecognition} recognition Retrieved choice recognition domain model instance.
    */
-  getChoiceRecognitionCallback(recognition) {}
+  getChoiceRecognitionCallback(recognition) {
+  }
 
   /**
    * Error callback used by getChoiceRecognition.
@@ -2621,7 +2671,8 @@ class Sdk {
    * @callback Sdk~getChoiceRecognitionErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  getChoiceRecognitionErrorCallback(errors) {}
+  getChoiceRecognitionErrorCallback(errors) {
+  }
 
   /**
    * Get a choice recognition in a choice challenge.
@@ -2667,7 +2718,8 @@ class Sdk {
    * @callback Sdk~listChoiceRecognitionsCallback
    * @param {its.ChoiceRecognition[]} recognitions Retrieved choice recognition domain model instances.
    */
-  listChoiceRecognitionCallback(recognitions) {}
+  listChoiceRecognitionCallback(recognitions) {
+  }
 
   /**
    * Error callback used by listChoiceRecognitions.
@@ -2675,7 +2727,8 @@ class Sdk {
    * @callback Sdk~listChoiceRecognitionsErrorCallback
    * @param {object[]} errors Array of errors.
    */
-  listChoiceRecognitionErrorCallback(errors) {}
+  listChoiceRecognitionErrorCallback(errors) {
+  }
 
   /**
    * List all choice recognitions in a specific choice challenge.
