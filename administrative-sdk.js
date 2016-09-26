@@ -17,6 +17,7 @@
  */
 
 const autobahn = require('autobahn');
+var when = require('autobahn').when;
 
 /**
 @module its
@@ -613,36 +614,38 @@ class Sdk {
    * Perform a HTTP GET to the API.
    *
    * @param {string} url URL to retrieve.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
    */
-  _ajaxGet(url, cb, ecb, auth) {
+  _ajaxGet(url, auth) {
     var self = this;
-    var request = new XMLHttpRequest();
-    var response = null;
-    request.open('GET', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        if (request.status >= 100 && request.status < 300) {
-          // Perfect!
-          response = self._parseResponse(request.responseText);
-          if (cb) {
-            return cb(response);
-          }
-        } else if (ecb) {
-          // Some error occured.
-          response = self._parseResponse(request.responseText);
-          ecb(response.errors || {
-            status: request.status
-          }, response);
-        }
+    return new Promise(function(resolve, reject) {
+      var request = new XMLHttpRequest();
+      var response = null;
+      request.open('GET', url);
+      if (typeof auth !== 'undefined') {
+        request.setRequestHeader('Authorization', auth);
       }
-    };
-    if (typeof auth !== 'undefined') {
-      request.setRequestHeader('Authorization', auth);
-    }
-    request.send();
+      request.onload = function() {
+        console.log('onload');
+        response = self._parseResponse(request.responseText);
+        if (request.status >= 200 && request.status < 300) {
+          resolve(response);
+        } else {
+          reject({
+            status: request.status,
+            errors: response
+          });
+        }
+      };
+
+      request.onerror = function() {
+        reject({
+          status: request.status,
+          errors: response
+        });
+      };
+      request.send();
+    });
   }
 
   /**
@@ -650,90 +653,85 @@ class Sdk {
    *
    * @param {string} URL to submit to.
    * @param {FormData|string} formdata FormData or stringified JSON to POST.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
    */
-  _ajaxPost(url, formdata, cb, ecb, auth) {
-    var self = this;
-    var request = new XMLHttpRequest();
+  _ajaxPost(url, formdata, auth) {
+    var request = new XMLHttpRequest({mozSystem: true});
     var response = null;
-    request.open('POST', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        // The response is received
-        if (request.status >= 100 && request.status < 300) {
-          // Perfect!
-          response = self._parseResponse(request.responseText);
-          if (cb) {
-            return cb(response);
-          }
-        } else if (ecb) {
-          // Some error occured.
-          try {
-            response = self._parseResponse(request.responseText);
-            ecb(response.errors || {
-              status: request.status
-            }, response);
-          } catch (e) {
-            ecb(response || e);
-          }
-        }
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      request.open('POST', url);
+      if (typeof auth !== 'undefined') {
+        request.setRequestHeader('Authorization', auth);
       }
-    };
-    if (typeof auth !== 'undefined') {
-      request.setRequestHeader('Authorization', auth);
-    }
-    if (typeof formdata === 'object') {
-      // The only way to send blob data is using FormData, which is
-      // supported everywhere except for IE <10.
+      request.onload = function() {
+        response = self._parseResponse(request.responseText);
+        if (request.status >= 100 && request.status < 300) {
+          resolve(response);
+        } else {
+          reject(
+            {
+              status: request.status,
+              errors: response
+            }
+          );
+        }
+      };
+
+      request.onerror = function() {
+        reject(
+          {
+            status: request.status,
+            errors: response
+          }
+        );
+      };
+      if (typeof formdata === 'string') {
+        // Send JSON by default
+        request.setRequestHeader('Content-Type',
+          'application/json; charset=utf-8');
+      }
+
       request.send(formdata);
-    } else if (typeof formdata === 'string') {
-      // Send JSON by default
-      request.setRequestHeader('Content-Type',
-        'application/json; charset=utf-8');
-      request.send(formdata);
-    }
+    });
   }
 
   /**
    * Perform a HTTP DELETE to the API.
    *
    * @param {string} URL to submit to.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
    */
-  _ajaxDelete(url, cb, ecb, auth) {
+  _ajaxDelete(url, auth) {
     var self = this;
-    var request = new XMLHttpRequest();
-    var response = null;
-    request.open('DELETE', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        // The response is received
+    return new Promise(function(resolve, reject) {
+      var request = new XMLHttpRequest();
+      var response = null;
+      request.open('DELETE', url);
+      request.onload = function() {
         if (request.status >= 100 && request.status < 300) {
           // A delete call usually has no body to parse.
-          if (cb) {
-            cb();
-          }
-        } else if (ecb) {
+          resolve();
+        } else {
           // Some error occured.
           try {
             response = self._parseResponse(request.responseText);
-            ecb(response.errors || {
-              status: request.status
-            }, response);
+            reject(
+              {
+                errors: response.errors,
+                status: request.status
+              }
+            );
           } catch (e) {
-            ecb(response || e);
+            reject(response || e);
           }
         }
+      };
+      if (typeof auth !== 'undefined') {
+        request.setRequestHeader('Authorization', auth);
       }
-    };
-    if (typeof auth !== 'undefined') {
-      request.setRequestHeader('Authorization', auth);
-    }
-    request.send();
+      request.send();
+    });
   }
 
   /**
@@ -752,11 +750,9 @@ class Sdk {
    * Perform a HTTP GET to the API using authentication.
    *
    * @param {string} URL to retrieve.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    */
-  _secureAjaxGet(url, cb, ecb) {
-    return this._ajaxGet(url, cb, ecb, this._getAuthHeaders());
+  _secureAjaxGet(url) {
+    return this._ajaxGet(url, this._getAuthHeaders());
   }
 
   /**
@@ -764,22 +760,18 @@ class Sdk {
    *
    * @param {string} URL to submit to.
    * @param {FormData} formdata The form to POST.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    */
-  _secureAjaxPost(url, formdata, cb, ecb) {
-    return this._ajaxPost(url, formdata, cb, ecb, this._getAuthHeaders());
+  _secureAjaxPost(url, formdata) {
+    return this._ajaxPost(url, formdata, this._getAuthHeaders());
   }
 
   /**
    * Perform a HTTP DELETE to the API using authentication.
    *
    * @param {string} URL to submit to.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    */
-  _secureAjaxDelete(url, cb, ecb) {
-    return this._ajaxDelete(url, cb, ecb, this._getAuthHeaders());
+  _secureAjaxDelete(url) {
+    return this._ajaxDelete(url, this._getAuthHeaders());
   }
 
   /**
@@ -808,519 +800,299 @@ class Sdk {
   }
 
   /**
-   * Callback used by createTenant.
-   *
-   * @callback Sdk~tenantCreatedCallback
-   * @param {its.Tenant} tenant Updated tenant domain model instance.
-   */
-  tenantCreatedCallback(tenant) {}
-
-  /**
-   * Error callback used by createTenant.
-   *
-   * @callback Sdk~tenantCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.Tenant} tenant Tenant domain model instance with unapplied changes.
-   */
-  tenantCreatedErrorCallback(errors, tenant) {}
-
-  /**
    * Create a tenant.
    *
    * @param {its.Tenant} tenant A tenant domain model instance.
-   * @param {Sdk~tenantCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~tenantCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createTenant(tenant, cb, ecb) {
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      tenant.id = data.id;
-      tenant.created = new Date(data.created);
-      tenant.updated = new Date(data.updated);
-      if (cb) {
-        cb(tenant);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, tenant);
-      }
-    };
-
+  createTenant(tenant) {
     var url = this.settings.apiUrl + '/tenants';
     var fd = JSON.stringify(tenant);
-    this._secureAjaxPost(url, fd, _cb, _ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxPost(url, fd)
+        .catch(function(error) {
+          reject(error);
+        })
+        .then(function(data) {
+          // Update the id in case domain model didn't contain one.
+          tenant.id = data.id;
+          tenant.created = new Date(data.created);
+          tenant.updated = new Date(data.updated);
+          resolve(tenant);
+        });
+    });
   }
-
-
-  /**
-   * Callback used by createBasicAuth.
-   *
-   * @callback Sdk~basicAuthCreatedCallback
-   * @param {its.BasicAuth} basicAuth Updated basicAuth domain model instance.
-   */
-  basicAuthCreatedCallback(basicAuth) {}
-
-  /**
-   * Error callback used by createBasicAuth.
-   *
-   * @callback Sdk~basicAuthCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.BasicAuth} basicAuth BasicAuth domain model instance with unapplied changes.
-   */
-  basicAuthCreatedErrorCallback(errors, basicAuth) {}
 
   /**
    * Create a basic auth.
    *
    * @param {its.BasicAuth} basicAuth A basic auth domain model instance.
-   * @param {Sdk~basicAuthCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~basicAuthCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createBasicAuth(basicauth, cb, ecb) {
-    var _cb = function(data) {
-      basicauth.principal = data.principal;
-      basicauth.created = new Date(data.created);
-      basicauth.updated = new Date(data.updated);
-      // Credentials are only supplied when generated by the backend.
-      if (data.credentials) {
-        basicauth.credentials = data.credentials;
-      }
-      if (cb) {
-        cb(basicauth);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, basicauth);
-      }
-    };
-
+  createBasicAuth(basicauth) {
+    var self = this;
     var url = this.settings.apiUrl + '/basicauths';
-    var fd = JSON.stringify(basicauth);
-    this._secureAjaxPost(url, fd, _cb, _ecb);
+    var formData = JSON.stringify(basicauth);
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxPost(url, formData)
+        .catch(function(error) {
+          reject(error);
+        })
+        .then(function(data) {
+          basicauth.principal = data.principal;
+          basicauth.created = new Date(data.created);
+          basicauth.updated = new Date(data.updated);
+          // Credentials are only supplied when generated by the backend.
+          if (data.credentials) {
+            basicauth.credentials = data.credentials;
+          }
+          resolve(basicauth);
+        });
+    });
   }
-
-  /**
-   * Callback used by createOrganisation.
-   *
-   * @callback Sdk~organisationCreatedCallback
-   * @param {its.Organisation} organisation Updated organisation domain model instance.
-   */
-  organisationCreatedCallback(organisation) {}
-
-  /**
-   * Error callback used by createOrganisation.
-   *
-   * @callback Sdk~organisationCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.Organisation} organisation Organisation domain model instance with unapplied changes.
-   */
-  organisationCreatedErrorCallback(errors, organisation) {}
 
   /**
    * Create an organisation.
    *
    * @param {its.Organisation} organisation An organisation domain model instance.
-   * @param {Sdk~organisationCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~organisationCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createOrganisation(organisation, cb, ecb) {
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      organisation.id = data.id;
-      organisation.created = new Date(data.created);
-      organisation.updated = new Date(data.updated);
-      if (cb) {
-        cb(organisation);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, organisation);
-      }
-    };
-
+  createOrganisation(organisation) {
     var url = this.settings.apiUrl + '/organisations';
     var fd = JSON.stringify(organisation);
-    this._secureAjaxPost(url, fd, _cb, _ecb);
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxPost(url, fd)
+        .catch(function(error) {
+          reject(error);
+        }).then(function(data) {
+          organisation.id = data.id;
+          organisation.created = new Date(data.created);
+          organisation.updated = new Date(data.updated);
+          resolve(organisation);
+        });
+    });
   }
-
-  /**
-   * Callback used by getOrganisation.
-   *
-   * @callback Sdk~organisationGetCallback
-   * @param {its.Organisation} organisation Retrieved organisation domain model instance.
-   */
-  organisationGetCallback(organisation) {}
-
-  /**
-   * Error callback used by getOrganisation.
-   *
-   * @callback Sdk~organisationGetErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  organisationGetErrorCallback(errors) {}
 
   /**
    * Get an organisation.
    *
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~getCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
-  getOrganisation(organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var organisation = new Organisation(data.id, data.name);
-      organisation.created = new Date(data.created);
-      organisation.updated = new Date(data.updated);
-      if (cb) {
-        cb(organisation);
-      }
-    };
-
+  getOrganisation(organisationId) {
     var url = this.settings.apiUrl + '/organisations/' + organisationId;
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var organisation = new Organisation(data.id, data.name);
+          organisation.created = new Date(data.created);
+          organisation.updated = new Date(data.updated);
+          resolve(organisation);
+        });
+    });
   }
-
-  /**
-   * Callback used by listOrganisations.
-   *
-   * @callback Sdk~listCallback
-   * @param {its.Organisation[]} organisation Retrieved organisation domain model instances.
-   */
-  organisationListCallback(organisation) {}
-
-  /**
-   * Error callback used by listOrganisations.
-   *
-   * @callback Sdk~listErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  organisationListErrorCallback(errors) {}
 
   /**
    * List all organisations in the organisation.
    *
-   * @param {Sdk~listCallback} cb The callback that handles the response.
-   * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
-  listOrganisations(cb, ecb) {
-    var _cb = function(data) {
-      var organisations = [];
-      data.forEach(function(datum) {
-        var organisation = new Organisation(datum.id, datum.name);
-        organisation.created = new Date(datum.created);
-        organisation.updated = new Date(datum.updated);
-        organisations.push(organisation);
-      });
-      if (cb) {
-        cb(organisations);
-      }
-    };
-
+  listOrganisations() {
     var url = this.settings.apiUrl + '/organisations';
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url).catch(function(error) {
+        reject(new Error(error));
+      }).then(function(data) {
+        var organisations = [];
+        data.forEach(function(datum) {
+          var organisation = new Organisation(datum.id, datum.name);
+          organisation.created = new Date(datum.created);
+          organisation.updated = new Date(datum.updated);
+          organisations.push(organisation);
+        });
+        resolve(organisations);
+      });
+    });
   }
-
-
-  /**
-   * Callback used by createStudent.
-   *
-   * @callback Sdk~studentCreatedCallback
-   * @param {its.Student} student Updated student domain model instance.
-   */
-  studentCreatedCallback(student) {}
-
-  /**
-   * Error callback used by createStudent.
-   *
-   * @callback Sdk~studentCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.Student} student Student domain model instance with unapplied changes.
-   */
-  studentCreatedErrorCallback(errors, student) {}
 
   /**
    * Create a student.
    *
    * @param {its.Student} student A student domain model instance.
-   * @param {Sdk~studentCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~studentCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createStudent(student, cb, ecb) {
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      student.id = data.id;
-      student.created = new Date(data.created);
-      student.updated = new Date(data.updated);
-      if (cb) {
-        cb(student);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, student);
-      }
-    };
-
+  createStudent(student) {
     if (!student.organisationId) {
       throw new Error('organisationId field is required');
     }
-
     var url = this.settings.apiUrl + '/organisations/' +
       student.organisationId + '/students';
     var fd = JSON.stringify(student);
-    this._secureAjaxPost(url, fd, _cb, _ecb);
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxPost(url, fd)
+        .then(function(data) {
+          // Update the id in case domain model didn't contain one.
+          student.id = data.id;
+          student.created = new Date(data.created);
+          student.updated = new Date(data.updated);
+          resolve(student);
+        }).catch(function(error) {
+          reject(error);
+        });
+    });
   }
-
-  /**
-   * Callback used by getStudent.
-   *
-   * @callback Sdk~studentGetCallback
-   * @param {its.Student} student Retrieved student domain model instance.
-   */
-  studentGetCallback(student) {}
-
-  /**
-   * Error callback used by getStudent.
-   *
-   * @callback Sdk~studentGetErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  studentGetErrorCallback(errors) {}
 
   /**
    * Get a student.
    *
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} studentId Specify a student identifier.
-   * @param {Sdk~getCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
-  getStudent(organisationId, studentId, cb, ecb) {
-    var _cb = function(data) {
-      var student = new Student(organisationId, data.id, data.firstName,
-        data.lastName, data.gender, data.birthYear);
-      student.created = new Date(data.created);
-      student.updated = new Date(data.updated);
-      if (cb) {
-        cb(student);
-      }
-    };
-
+  getStudent(organisationId, studentId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var student = new Student(organisationId, data.id, data.firstName,
+            data.lastName, data.gender, data.birthYear);
+          student.created = new Date(data.created);
+          student.updated = new Date(data.updated);
+          resolve(student);
+        });
+    });
   }
-
-  /**
-   * Callback used by listStudents.
-   *
-   * @callback Sdk~listCallback
-   * @param {its.Student[]} student Retrieved student domain model instances.
-   */
-  studentListCallback(student) {}
-
-  /**
-   * Error callback used by listStudents.
-   *
-   * @callback Sdk~listErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  studentListErrorCallback(errors) {}
 
   /**
    * List all students in the organisation.
    *
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listCallback} cb The callback that handles the response.
-   * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
-  listStudents(organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var students = [];
-      data.forEach(function(datum) {
-        var student = new Student(organisationId, datum.id,
-          datum.firstName, datum.lastName, datum.gender, datum.birthYear);
-        student.created = new Date(datum.created);
-        student.updated = new Date(datum.updated);
-        students.push(student);
-      });
-      if (cb) {
-        cb(students);
-      }
-    };
-
+  listStudents(organisationId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/students';
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var students = [];
+          data.forEach(function(datum) {
+            var student = new Student(organisationId, datum.id,
+              datum.firstName, datum.lastName, datum.gender, datum.birthYear);
+            student.created = new Date(datum.created);
+            student.updated = new Date(datum.updated);
+            students.push(student);
+          });
+          resolve(students);
+        });
+    });
   }
-
-
-  /**
-   * Callback used by createSpeechChallenge.
-   *
-   * @callback Sdk~speechChallengeCreatedCallback
-   * @param {its.SpeechChallenge} challenge Updated speech challenge domain model instance.
-   */
-  speechChallengeCreatedCallback(challenge) {}
-
-  /**
-   * Error callback used by createSpeechChallenge.
-   *
-   * @callback Sdk~speechChallengeCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.SpeechChallenge} challenge Speech challenge domain model instance with unapplied changes.
-   */
-  speechChallengeCreatedErrorCallback(errors, challenge) {}
 
   /**
    * Create a speech challenge.
    *
    * @param {its.SpeechChallenge} challenge A speech challenge object.
-   * @param {Sdk~speechChallengeCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~speechChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createSpeechChallenge(challenge, cb, ecb) {
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      challenge.id = data.id;
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      challenge.referenceAudioUrl = data.referenceAudioUrl || null;
-      if (cb) {
-        cb(challenge);
+  createSpeechChallenge(challenge) {
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      if (!challenge.organisationId) {
+        reject(new Error('organisationId field is required'));
       }
-    };
 
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, challenge);
+      var fd = new FormData();
+      if (typeof challenge.id !== 'undefined' &&
+        challenge.id !== null) {
+        fd.append('id', challenge.id);
       }
-    };
+      fd.append('topic', challenge.topic);
+      if (challenge.referenceAudio) {
+        fd.append('referenceAudio', challenge.referenceAudio);
+      }
+      var url = self.settings.apiUrl + '/organisations/' +
+        challenge.organisationId + '/challenges/speech';
 
-    if (!challenge.organisationId) {
-      throw new Error('organisationId field is required');
-    }
-
-    var fd = new FormData();
-    if (typeof challenge.id !== 'undefined' &&
-      challenge.id !== null) {
-      fd.append('id', challenge.id);
-    }
-    fd.append('topic', challenge.topic);
-    if (challenge.referenceAudio) {
-      fd.append('referenceAudio', challenge.referenceAudio);
-    }
-
-    var url = this.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/speech';
-    this._secureAjaxPost(url, fd, _cb, _ecb);
+      self._secureAjaxPost(url, fd)
+        .catch(function(error) {
+          reject(error);
+        })
+        .then(function(data) {
+          // Update the id in case domain model didn't contain one.
+          challenge.id = data.id;
+          challenge.created = new Date(data.created);
+          challenge.updated = new Date(data.updated);
+          challenge.referenceAudioUrl = data.referenceAudioUrl || null;
+          resolve(challenge);
+        });
+    });
   }
-
-  /**
-   * Callback used by getSpeechChallenge.
-   *
-   * @callback Sdk~getSpeechChallengeCallback
-   * @param {its.SpeechChallenge} challenge Retrieved speech challenge domain model instance.
-   */
-  getSpeechChallengeCallback(challenge) {}
-
-  /**
-   * Error callback used by getSpeechChallenge.
-   *
-   * @callback Sdk~getSpeechChallengeErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getSpeechChallengeErrorCallback(errors) {}
 
   /**
    * Get a speech challenge.
    *
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a speech challenge identifier.
-   * @param {Sdk~getSpeechChallengeCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getSpeechChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  getSpeechChallenge(organisationId, challengeId, cb, ecb) {
-    var _cb = function(data) {
-      var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      if (cb) {
-        cb(challenge);
-      }
-    };
-
+  getSpeechChallenge(organisationId, challengeId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech/' + challengeId;
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        }).then(function(data) {
+          var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
+          challenge.created = new Date(data.created);
+          challenge.updated = new Date(data.updated);
+          resolve(challenge);
+        });
+    });
   }
-
-  /**
-   * Callback used by listSpeechChallenges.
-   *
-   * @callback Sdk~listSpeechChallegesCallback
-   * @param {its.SpeechChallenge[]} challenges Retrieved speech challenge domain model instances.
-   */
-  listSpeechChallengeCallback(challenges) {}
-
-  /**
-   * Error callback used by listSpeechChallenges.
-   *
-   * @callback Sdk~listSpeechChallengesErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listSpeechChallengeErrorCallback(errors) {}
 
   /**
    * List all speech challenges in the organisation.
    *
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listSpeechChallengesCallback} cb The callback that handles the response.
-   * @param {Sdk~listSpeechChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listSpeechChallenges(organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var challenges = [];
-      data.forEach(function(datum) {
-        var challenge = new SpeechChallenge(organisationId, datum.id,
-          datum.topic);
-        challenge.created = new Date(datum.created);
-        challenge.updated = new Date(datum.updated);
-        challenges.push(challenge);
-      });
-      if (cb) {
-        cb(challenges);
-      }
-    };
-
+  listSpeechChallenges(organisationId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech';
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var challenges = [];
+          data.forEach(function(datum) {
+            var challenge = new SpeechChallenge(organisationId, datum.id,
+              datum.topic);
+            challenge.created = new Date(datum.created);
+            challenge.updated = new Date(datum.updated);
+            challenges.push(challenge);
+          });
+          resolve(challenges);
+        });
+    });
   }
-
-  /**
-   * Callback used by createSpeechRecording.
-   *
-   * @callback Sdk~speechRecordingCreatedCallback
-   * @param {its.SpeechRecording} recording Updated speech recording domain model instance.
-   */
-  speechRecordingCreatedCallback(recording) {}
-
-  /**
-   * Error callback used by createSpeechRecording.
-   *
-   * @callback Sdk~speechRecordingCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.SpeechRecording} recording Speech recording domain model instance with unapplied changes.
-   */
-  speechRecordingCreatedErrorCallback(errors, recording) {}
 
   /**
    * Initialise the speech recording challenge through RPCs.
@@ -1329,7 +1101,7 @@ class Sdk {
   speechRecordingInitChallenge(challenge) {
     var self = this;
 
-    this._session.call('nl.itslanguage.recording.init_challenge',
+    return this._session.call('nl.itslanguage.recording.init_challenge',
       [self._recordingId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
       function(recordingId) {
@@ -1373,130 +1145,117 @@ class Sdk {
    *
    * @param {its.SpeechChallenge} challenge The pronunciation challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Sdk~speechRecordingPreparedCallback} [preparedCb] The callback that signals server is prepared for receiving data.
-   * @param {Sdk~speechRecordingCreatedCallback} [cb] The callback that handles the response. The success outcome is returned as first parameter, whether the recording was forcedStopped due to timer timeout is returned as second parameter.
-   * @param {Sdk~speechRecordingCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  startStreamingSpeechRecording(challenge, recorder, preparedCb, cb, ecb) {
+  startStreamingSpeechRecording(challenge, recorder) {
     var self = this;
-    var _cb = function(data) {
-      var student = new Student(challenge.organisationId, data.studentId);
-      var recording = new SpeechRecording(
-        challenge, student, data.id);
-      recording.created = new Date(data.created);
-      recording.updated = new Date(data.updated);
-      recording.audioUrl = self.addAccessToken(data.audioUrl);
-      if (cb) {
-        cb(recording);
+    return new Promise(function(resolve, reject) {
+        // Validate required domain model.
+        // Validate environment prerequisites.
+      if (typeof challenge !== 'object' || !challenge) {
+        reject(new Error('"challenge" parameter is required or invalid'));
       }
-    };
-
-    var _ecb = function(errors, recording) {
-      // Either there was an unexpected error, or the audio failed to
-      // align, in which case no recording is provided, but just the
-      // basic metadata.
-      if (ecb) {
-        ecb(errors, null);
+      if (!challenge.id) {
+        reject(new Error('challenge.id field is required'));
       }
-    };
-
-    // Validate required domain model.
-    if (typeof challenge !== 'object' || !challenge) {
-      throw new Error(
-        '"challenge" parameter is required or invalid');
-    }
-    if (!challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
-    // Validate environment prerequisites.
-    if (!this._session) {
-      throw new Error('WebSocket connection was not open.');
-    }
-
-    if (recorder.isRecording()) {
-      throw new Error('Recorder should not yet be recording.');
-    }
-
-    if (this._recordingId !== null) {
-      console.error('Session with recordingId ' + this._recordingId + ' still in progress.');
-      return;
-    }
-    this._recordingId = null;
-
-    // Start streaming the binary audio when the user instructs
-    // the audio recorder to start recording.
-    function dataavailableCb(chunk) {
-      var encoded = self._arrayBufferToBase64(chunk);
-      console.log('Sending audio chunk to websocket for recordingId: ' +
-          self._recordingId);
-      self._session.call('nl.itslanguage.recording.write',
-          [self._recordingId, encoded, 'base64']).then(
-        // RPC success callback
-        function(res) {
-          // Wrote data.
-        },
-        // RPC error callback
-        function(res) {
-          self.logRPCError(res);
-          _ecb(res);
-        }
-      );
-    }
-
-    function recordingCb(recordingId) {
-      self._recordingId = recordingId;
-      console.log('Got recordingId after initialisation: ' + self._recordingId);
-      self.speechRecordingInitChallenge(challenge);
-      preparedCb(self._recordingId);
-
-      if (recorder.hasUserMediaApproval()) {
-        self.speechRecordingInitAudio(recorder, dataavailableCb);
-      } else {
-        var userMediaCb = function(chunk) {
-          self.speechRecordingInitAudio(recorder, dataavailableCb);
-          recorder.removeEventListener('ready', recordingCb);
-        };
-        recorder.addEventListener('ready', userMediaCb);
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
       }
-    }
-
-    this._session.call('nl.itslanguage.recording.init_recording', []).then(
-      // RPC success callback
-      recordingCb,
-      // RPC error callback
-      function(res) {
-        self.logRPCError(res);
-        _ecb(res);
+      if (!self._session) {
+        reject(new Error('WebSocket connection was not open.'));
       }
-    );
-
-    // Stop listening when the audio recorder stopped.
-    var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
-      self._session.call('nl.itslanguage.recording.close',
-          [self._recordingId]).then(
-        // RPC success callback
-        function(res) {
-          console.log(res);
-          // Pass along details to the success callback
-          _cb(res, forcedStop);
-        },
-        // RPC error callback
-        function(res) {
-          self.logRPCError(res);
-          _ecb(res);
-        }
-      );
-
-      recorder.removeEventListener('recorded', recordedCb);
-      recorder.removeEventListener('dataavailable', dataavailableCb);
-      // This session is over.
+      if (recorder.isRecording()) {
+        reject(new Error('Recorder should not yet be recording.'));
+      }
+      if (self._recordingId !== null) {
+        reject(new Error('Session with recordingId ' + self._recordingId + ' still in progress.'));
+      }
       self._recordingId = null;
-    };
-    recorder.addEventListener('recorded', recordedCb);
+
+      var errorEncountered = function(errors, recording) {
+          // Either there was an unexpected error, or the audio failed to
+          // align, in which case no recording is provided, but just the
+          // basic metadata.
+        reject(errors);
+      };
+
+      var _cb = function(data) {
+        var student = new Student(challenge.organisationId, data.studentId);
+        var recording = new SpeechRecording(
+            challenge, student, data.id);
+        recording.created = new Date(data.created);
+        recording.updated = new Date(data.updated);
+        recording.audioUrl = self.addAccessToken(data.audioUrl);
+        recording.recordingId = self._recordingId;
+        resolve(recording);
+      };
+
+      var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
+        self._session.call('nl.itslanguage.recording.close',
+            [self._recordingId]).then(
+            // RPC success callback
+            function(res) {
+              // Pass along details to the success callback
+              _cb(res, forcedStop);
+            },
+            // RPC error callback
+            function(res) {
+              self.logRPCError(res);
+              errorEncountered(res);
+            }
+          );
+        recorder.removeEventListener('recorded', recordedCb);
+        recorder.removeEventListener('dataavailable', startStreaming);
+        self._recordingId = null;
+      };
+
+        // Start streaming the binary audio when the user instructs
+        // the audio recorder to start recording.
+      function startStreaming(chunk) {
+        var encoded = self._arrayBufferToBase64(chunk);
+        console.log('Sending audio chunk to websocket for recordingId: ' +
+            self._recordingId);
+        self._session.call('nl.itslanguage.recording.write',
+            [self._recordingId, encoded, 'base64']).then(
+            // RPC success callback
+            function(res) {
+              // Wrote data.
+              console.log('Wrote data');
+            },
+            // RPC error callback
+            function(res) {
+              console.log('Caught in startStreaming ' + res);
+              self.logRPCError(res);
+              errorEncountered(res);
+            }
+          );
+      }
+
+      function startRecording(recordingId) {
+        self._recordingId = recordingId;
+        console.log('Got recordingId after initialisation: ' + self._recordingId);
+        self.speechRecordingInitChallenge(challenge)
+            .then(function() {
+              var p = new Promise(function(resolve) {
+                if (recorder.hasUserMediaApproval()) {
+                  resolve();
+                } else {
+                  recorder.addEventListener('ready', resolve);
+                }
+              });
+              p.then(self.speechRecordingInitAudio(recorder, startStreaming));
+            });
+      }
+
+      recorder.addEventListener('recorded', recordedCb);
+      self._session.call('nl.itslanguage.recording.init_recording', [])
+          .then(startRecording,
+            function(res) {
+              self.logRPCError(res);
+              errorEncountered(res);
+            }
+          );
+    }
+    );
   }
 
   /**
@@ -1526,334 +1285,210 @@ class Sdk {
   }
 
   /**
-   * Callback used by getSpeechRecording.
-   *
-   * @callback Sdk~getSpeechRecordingCallback
-   * @param {its.SpeechRecording} recording Retrieved speech recording domain model instance.
-   */
-  getSpeechRecordingCallback(recording) {}
-
-  /**
-   * Error callback used by getSpeechRecording.
-   *
-   * @callback Sdk~getSpeechRecordingErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getSpeechRecordingErrorCallback(errors) {}
-
-  /**
    * Get a speech recording in a speech challenge.
    *
    * @param {SpeechChallenge} challenge Specify a speech challenge.
    * @param {string} recordingId Specify a speech recording identifier.
-   * @param {Sdk~getSpeechRecordingCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getSpeechRecordingErrorCallback} [ecb] The callback that handles the error response.
    */
-  getSpeechRecording(challenge, recordingId, cb, ecb) {
+  getSpeechRecording(challenge, recordingId) {
     var self = this;
-    var _cb = function(data) {
-      var student = new Student(challenge.organisationId, data.studentId);
-      var recording = new SpeechRecording(challenge, student, data.id);
-      recording.audio = null;
-      recording.audioUrl = self.addAccessToken(data.audioUrl);
-      recording.created = new Date(data.created);
-      recording.updated = new Date(data.updated);
-      if (cb) {
-        cb(recording);
-      }
-    };
-
     if (!challenge || !challenge.id) {
       throw new Error('challenge.id field is required');
     }
     if (!challenge.organisationId) {
       throw new Error('challenge.organisationId field is required');
     }
-
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/speech/' +
       challenge.id + '/recordings/' + recordingId;
-    this._secureAjaxGet(url, _cb, ecb);
+
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var student = new Student(challenge.organisationId, data.studentId);
+          var recording = new SpeechRecording(challenge, student, data.id);
+          recording.audio = null;
+          recording.audioUrl = self.addAccessToken(data.audioUrl);
+          recording.created = new Date(data.created);
+          recording.updated = new Date(data.updated);
+          resolve(recording);
+        });
+    });
   }
-
-  /**
-   * Callback used by listSpeechRecordings.
-   *
-   * @callback Sdk~listSpeechChallegesCallback
-   * @param {its.SpeechRecording[]} recordings Retrieved speech recording domain model instances.
-   */
-  listSpeechRecordingCallback(recordings) {}
-
-  /**
-   * Error callback used by listSpeechRecordings.
-   *
-   * @callback Sdk~listSpeechRecordingsErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listSpeechRecordingErrorCallback(errors) {}
 
   /**
    * List all speech recordings in a specific speech challenge.
    *
    * @param {SpeechChallenge} challenge Specify a speech challenge to list speech recordings for.
-   * @param {Sdk~listSpeechRecordingsCallback} cb The callback that handles the response.
-   * @param {Sdk~listSpeechRecordingsErrorCallback} [ecb] The callback that handles the error response.
    */
-  listSpeechRecordings(challenge, cb, ecb) {
+  listSpeechRecordings(challenge) {
     var self = this;
-    var _cb = function(data) {
-      var recordings = [];
-      data.forEach(function(datum) {
-        var student = new Student(challenge.organisationId, datum.studentId);
-        var recording = new SpeechRecording(challenge, student, datum.id);
-        recording.audio = null;
-        recording.audioUrl = self.addAccessToken(datum.audioUrl);
-        recording.created = new Date(datum.created);
-        recording.updated = new Date(datum.updated);
-        recordings.push(recording);
-      });
-      if (cb) {
-        cb(recordings);
-      }
-    };
-
-    if (!challenge || !challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/speech/' +
       challenge.id + '/recordings';
-    this._secureAjaxGet(url, _cb, ecb);
+
+    return new Promise(function(resolve, reject) {
+      if (!challenge || !challenge.id) {
+        reject(new Error('challenge.id field is required'));
+      }
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var recordings = [];
+          data.forEach(function(datum) {
+            var student = new Student(challenge.organisationId, datum.studentId);
+            var recording = new SpeechRecording(challenge, student, datum.id);
+            recording.audio = null;
+            recording.audioUrl = self.addAccessToken(datum.audioUrl);
+            recording.created = new Date(datum.created);
+            recording.updated = new Date(datum.updated);
+            recordings.push(recording);
+          });
+          resolve(recordings);
+        });
+    });
   }
-
-
-  /**
-   * Callback used by createPronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeCreatedCallback
-   * @param {its.PronunciationChallenge} challenge Updated speech challenge domain model instance.
-   */
-  pronunciationChallengeCreatedCallback(challenge) {}
-
-  /**
-   * Error callback used by createPronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.PronunciationChallenge} challenge Pronunciation challenge domain model instance with unapplied changes.
-   */
-  pronunciationChallengeCreatedErrorCallback(errors, challenge) {}
 
   /**
    * Create a pronunciation challenge.
    *
    * @param {its.PronunciationChallenge} challenge A pronunciation challenge object.
-   * @param {Sdk~pronunciationChallengeCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~pronunciationChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createPronunciationChallenge(challenge, cb, ecb) {
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      challenge.id = data.id;
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      challenge.referenceAudioUrl = data.referenceAudioUrl;
-      challenge.status = data.status;
-      if (cb) {
-        cb(challenge);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, challenge);
-      }
-    };
-
-    // Validate required domain model fields.
-    if (!challenge.organisationId) {
-      throw new Error('organisationId field is required');
-    }
-
-    if (typeof challenge.referenceAudio !== 'object' ||
-      !challenge.referenceAudio) {
-      throw new Error(
-        'referenceAudio parameter of type "Blob" is required');
-    }
-
-    var fd = new FormData();
-    if (typeof challenge.id !== 'undefined' &&
-      challenge.id !== null) {
-      fd.append('id', challenge.id);
-    }
-    fd.append('transcription', challenge.transcription);
-    fd.append('referenceAudio', challenge.referenceAudio);
-
+  createPronunciationChallenge(challenge) {
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation';
-    this._secureAjaxPost(url, fd, _cb, _ecb);
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      // Validate required domain model fields.
+      if (!challenge.organisationId) {
+        reject(new Error('organisationId field is required'));
+      }
+
+      if (typeof challenge.referenceAudio !== 'object' || !challenge.referenceAudio) {
+        reject(new Error(
+          'referenceAudio parameter of type "Blob" is required'));
+      }
+
+      var fd = new FormData();
+      if (typeof challenge.id !== 'undefined' &&
+        challenge.id !== null) {
+        fd.append('id', challenge.id);
+      }
+
+      fd.append('transcription', challenge.transcription);
+      fd.append('referenceAudio', challenge.referenceAudio);
+      self._secureAjaxPost(url, fd)
+        .then(function(data) {
+          // Update the id in case domain model didn't contain one.
+          challenge.id = data.id;
+          challenge.created = new Date(data.created);
+          challenge.updated = new Date(data.updated);
+          challenge.referenceAudioUrl = data.referenceAudioUrl;
+          challenge.status = data.status;
+          resolve(challenge);
+        }).catch(function(error) {
+          reject(error);
+        });
+    });
   }
-
-  /**
-   * Callback used by getPronunciationChallenge.
-   *
-   * @callback Sdk~getPronunciationChallengeCallback
-   * @param {its.PronunciationChallenge} challenge Retrieved pronunciation challenge domain model instance.
-   */
-  getPronunciationChallengeCallback(challenge) {}
-
-  /**
-   * Error callback used by getPronunciationChallenge.
-   *
-   * @callback Sdk~getPronunciationChallengeErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getPronunciationChallengeErrorCallback(errors) {}
 
   /**
    * Get a pronunciation challenge.
    *
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a pronunciation challenge identifier.
-   * @param {Sdk~getPronunciationChallengeCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getPronunciationChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
   getPronunciationChallenge(
-      organisationId, challengeId, cb, ecb) {
-    var _cb = function(data) {
-      var challenge = new PronunciationChallenge(organisationId, data.id,
-        data.transcription);
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      challenge.referenceAudioUrl = data.referenceAudioUrl;
-      challenge.status = data.status;
-      if (cb) {
-        cb(challenge);
-      }
-    };
-
+      organisationId, challengeId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation/' + challengeId;
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var challenge = new PronunciationChallenge(organisationId, data.id,
+            data.transcription);
+          challenge.created = new Date(data.created);
+          challenge.updated = new Date(data.updated);
+          challenge.referenceAudioUrl = data.referenceAudioUrl;
+          challenge.status = data.status;
+          resolve(challenge);
+        });
+    });
   }
-
-  /**
-   * Callback used by listPronunciationChallenges.
-   *
-   * @callback Sdk~listPronunciationChallengesCallback
-   * @param {its.PronunciationChallenge[]} challenges Retrieved pronunciation challenge domain model instances.
-   */
-  listPronunciationChallengesCallback(challenges) {}
-
-  /**
-   * Error callback used by listPronunciationChallenges.
-   *
-   * @callback Sdk~listPronunciationChallengesErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listPronunciationChallengesErrorCallback(errors) {}
 
   /**
    * List all pronunciation challenges in the organisation.
    *
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listPronunciationChallengesCallback} cb The callback that handles the response.
-   * @param {Sdk~listPronunciationChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
   listPronunciationChallenges(
-      organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var challenges = [];
-      data.forEach(function(datum) {
-        var challenge = new PronunciationChallenge(
-          organisationId, datum.id, datum.transcription);
-        challenge.created = new Date(datum.created);
-        challenge.updated = new Date(datum.updated);
-        challenge.referenceAudioUrl = datum.referenceAudioUrl;
-        challenge.status = datum.status;
-        challenges.push(challenge);
-      });
-      if (cb) {
-        cb(challenges);
-      }
-    };
-
+      organisationId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation';
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url)
+        .catch(function(error) {
+          reject(new Error(error));
+        })
+        .then(function(data) {
+          var challenges = [];
+          data.forEach(function(datum) {
+            var challenge = new PronunciationChallenge(
+              organisationId, datum.id, datum.transcription);
+            challenge.created = new Date(datum.created);
+            challenge.updated = new Date(datum.updated);
+            challenge.referenceAudioUrl = datum.referenceAudioUrl;
+            challenge.status = datum.status;
+            challenges.push(challenge);
+          });
+          resolve(challenges);
+        });
+    });
   }
-
-  /**
-   * Callback used by deletePronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeDeletedCallback
-   */
-  pronunciationChallengeDeletedCallback(challenge) {}
-
-  /**
-   * Error callback used by deletePronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeDeletedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.PronunciationChallenge} challenge Pronunciation challenge domain model instance with unapplied changes.
-   */
-  pronunciationChallengeDeletedErrorCallback(errors, challenge) {}
 
   /**
    * Delete a pronunciation challenge.
    *
    * @param {its.PronunciationChallenge} challenge A pronunciation challenge object.
-   * @param {Sdk~pronunciationChallengeDeletedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~pronunciationChallengeDeletedErrorCallback} [ecb] The callback that handles the error response.
    */
-  deletePronunciationChallenge(challenge, cb, ecb) {
-    var _cb = function(response) {
-      if (cb) {
-        cb(challenge);
+  deletePronunciationChallenge(challenge) {
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      // Validate required domain model fields.
+      if (!challenge.organisationId) {
+        reject(new Error('organisationId field is required'));
       }
-    };
 
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, challenge);
+      if (!challenge.id) {
+        reject(new Error('id field is required'));
       }
-    };
+      var url = self.settings.apiUrl + '/organisations/' +
+        challenge.organisationId + '/challenges/pronunciation/' +
+        challenge.id;
 
-    // Validate required domain model fields.
-    if (!challenge.organisationId) {
-      throw new Error('organisationId field is required');
-    }
-
-    if (!challenge.id) {
-      throw new Error('id field is required');
-    }
-
-    var url = this.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/pronunciation/' +
-      challenge.id;
-    this._secureAjaxDelete(url, _cb, _ecb);
+      self._secureAjaxDelete(url)
+        .then(function() {
+          resolve(challenge);
+        }).catch(function(error) {
+          reject(error);
+        });
+    });
   }
-
-  /**
-   * Callback used by createPronunciationAnalysis.
-   *
-   * @callback Sdk~Sdk~pronunciationAnalysisCreatedCallback
-   * @param {its.PronunciationAnalysis} analysis New pronunciation analysis domain model instance containing the performed analysis.
-   */
-  pronunciationAnalysisCreatedCallback(analysis) {}
-
-  /**
-   * Error callback used by createPronunciationAnalysis.
-   *
-   * @callback Sdk~pronunciationAnalysisCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.SpeechRecording} recording Speech recording domain model instance with unapplied changes.
-   */
-  pronunciationAnalysisCreatedErrorCallback(errors, recording) {}
 
   /**
    * Create a `its.Word` domain model from JSON data.
@@ -1865,7 +1500,7 @@ class Sdk {
     var words = [];
     inWords.forEach(function(word) {
       var chunks = [];
-      word.chunks.forEach(function(chunk) {
+      word.forEach(function(chunk) {
         var phonemes = [];
         // Phonemes are only provided on detailed analysis.
         chunk.phonemes = chunk.phonemes || [];
@@ -1895,30 +1530,23 @@ class Sdk {
   pronunciationAnalysisInitChallenge(challenge) {
     var self = this;
 
-    this._session.call('nl.itslanguage.pronunciation.init_challenge',
-      [self._analysisId, challenge.organisationId, challenge.id]).then(
-      // RPC success callback
-      function(analysisId) {
-        console.log('Challenge initialised for analysisId: ' + self._analysisId);
-      },
-      // RPC error callback
-      function(res) {
+    return self._session.call('nl.itslanguage.pronunciation.init_challenge',
+      [self._analysisId, challenge.organisationId, challenge.id])
+      .catch(function(res) {
         self.logRPCError(res);
-      }
-    );
-
-    this._session.call('nl.itslanguage.pronunciation.alignment',
-      [self._analysisId]).then(
-      // RPC success callback
-      function(alignment) {
+      })
+      .then(function(analysisId) {
+        console.log('Challenge initialised for analysisId: ' + self._analysisId);
+      })
+      .then(self._session.call('nl.itslanguage.pronunciation.alignment',
+        [self._analysisId]))
+      .catch(function(res) {
+        self.logRPCError(res);
+      })
+      .then(function(alignment) {
         self.referenceAlignment = alignment;
         console.log('Reference alignment retrieved');
-      },
-      // RPC error callback
-      function(res) {
-        self.logRPCError(res);
-      }
-    );
+      });
   }
 
   /**
@@ -1952,161 +1580,144 @@ class Sdk {
    *
    * @param {its.PronunciationChallenge} challenge The pronunciation challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Sdk~pronunciationAnalysisPreparedCallback} [preparedCb] The callback that signals server is prepared for receiving data.
-   * @param {Sdk~pronunciationAnalysisCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~pronunciationAnalysisCreatedErrorCallback} [ecb] The callback that handles the error response.
-   * @param {Sdk~pronunciationAnalysisProgressCallback} [progressCb] The callback that handles the intermediate results.
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
    */
-  startStreamingPronunciationAnalysis(challenge, recorder, preparedCb, cb, ecb, progressCb, trim) {
+  startStreamingPronunciationAnalysis(challenge, recorder, trim) {
     var self = this;
-    var _cb = function(data) {
-      var analysis = new PronunciationAnalysis(
-        challenge.id, data.studentId, data.id,
-        null, null,
-        self.addAccessToken(data.audioUrl));
-      analysis.score = data.score;
-      analysis.confidenceScore = data.confidenceScore;
-      analysis.words = self._wordsToModels(data.words);
-      if (cb) {
-        cb(analysis);
+    return new when.Promise(function(resolve, reject, notify) {
+      // Validate required domain model.
+      if (typeof challenge !== 'object' || !challenge) {
+        reject(new Error(
+          '"challenge" parameter is required or invalid'));
       }
-    };
-
-    var _progressCb = function(progress) {
-      if (progressCb) {
-        progressCb(progress, self.referenceAlignment);
+      if (!challenge.id) {
+        reject(new Error('challenge.id field is required'));
       }
-    };
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+      // Validate environment prerequisites.
+      if (!self._session) {
+        reject(new Error('WebSocket connection was not open.'));
+      }
+      if (recorder.isRecording()) {
+        reject(new Error('Recorder should not yet be recording.'));
+      }
 
-    var _ecb = function(data) {
-      // Either there was an unexpected error, or the audio failed to
-      // align, in which case no analysis is provided, but just the
-      // basic metadata.
-      if (ecb) {
+      if (self._analysisId !== null) {
+        reject(new Error('Session with analysisId ' + self._analysisId + ' still in progress.'));
+      }
+
+      self._analyisId = null;
+      var trimAudioStart = 0.15;
+      var trimAudioEnd = 0.0;
+      if (trim === false) {
+        trimAudioStart = 0.0;
+      }
+
+      var reportDone = function(data) {
+        var analysis = new PronunciationAnalysis(
+          challenge.id, data.studentId, data.id,
+          null, null,
+          self.addAccessToken(data.audioUrl));
+        analysis.score = data.score;
+        analysis.confidenceScore = data.confidenceScore;
+        analysis.words = self._wordsToModels(data.words);
+        resolve({analysisId: self._analysisId, analysis: analysis});
+      };
+
+      var reportProgress = function(progress) {
+        notify(progress, self.referenceAlignment);
+      };
+
+      var reportError = function(data) {
+        // Either there was an unexpected error, or the audio failed to
+        // align, in which case no analysis is provided, but just the
+        // basic metadata.
         var analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           self.addAccessToken(data.audioUrl));
-        ecb(analysis, data.message);
-      }
-    };
+        reject({analysis: analysis, message: data.message});
+      };
 
-    // Validate required domain model.
-    if (typeof challenge !== 'object' || !challenge) {
-      throw new Error(
-        '"challenge" parameter is required or invalid');
-    }
-    if (!challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
-    // Validate environment prerequisites.
-    if (!this._session) {
-      throw new Error('WebSocket connection was not open.');
-    }
-
-    if (recorder.isRecording()) {
-      throw new Error('Recorder should not yet be recording.');
-    }
-
-    if (this._analysisId !== null) {
-      console.error('Session with analysisId ' + this._analysisId + ' still in progress.');
-      return;
-    }
-    this._analyisId = null;
-
-    // Start streaming the binary audio when the user instructs
-    // the audio recorder to start recording.
-    var dataavailableCb = function(chunk) {
-      var encoded = self._arrayBufferToBase64(chunk);
-      console.log('Sending audio chunk to websocket for analysisId: ' +
+      // Start streaming the binary audio when the user instructs
+      // the audio recorder to start recording.
+      var startStreaming = function(chunk) {
+        var encoded = self._arrayBufferToBase64(chunk);
+        console.log('Sending audio chunk to websocket for analysisId: ' +
           self._analysisId);
-      self._session.call('nl.itslanguage.pronunciation.write',
-          [self._analysisId, encoded, 'base64']).then(
-        // RPC success callback
-        function(res) {
-          console.debug('Delivered audio successfully');
-        },
-        // RPC error callback
-        function(res) {
-          self.logRPCError(res);
-          _ecb(res);
-        }
-      );
-    };
-
-    var analysisInitCb = function(analysisId) {
-      self._analysisId = analysisId;
-      console.log('Got analysisId after initialisation: ' + self._analysisId);
-      self.pronunciationAnalysisInitChallenge(challenge);
-      preparedCb(self._analysisId);
-
-      if (recorder.hasUserMediaApproval()) {
-        self.pronunciationAnalysisInitAudio(recorder, dataavailableCb);
-      } else {
-        var userMediaCb = function(chunk) {
-          self.pronunciationAnalysisInitAudio(recorder, dataavailableCb);
-          recorder.removeEventListener('ready', userMediaCb);
-        };
-        recorder.addEventListener('ready', userMediaCb);
-      }
-    };
-
-    var trimAudioStart = 0.15;
-    var trimAudioEnd = 0.0;
-    if (trim === false) {
-      trimAudioStart = 0.0;
-    }
-    this._session.call('nl.itslanguage.pronunciation.init_analysis', [],
-         {trimStart: trimAudioStart,
-          trimEnd: trimAudioEnd}).then(
-      // RPC success callback
-      analysisInitCb,
-      // RPC error callback
-      function(res) {
-        self.logRPCError(res);
-      }
-    );
-
-    // Stop listening when the audio recorder stopped.
-    var recordedCb = function(id) {
-      // When done, submit any plain text (non-JSON) to start analysing.
-
-      self._session.call('nl.itslanguage.pronunciation.analyse',
-          [self._analysisId], {}, {receive_progress: true}).then(
-
-        // RPC success callback
-        function(res) {
-          // Wait for analysis results to come back.
-          _cb(res);
-        },
-        // RPC error callback
-        function(res) {
-          if (res.error === 'nl.itslanguage.ref_alignment_failed') {
-            res.kwargs.analysis.message = 'Reference alignment failed';
-          } else if (res.error === 'nl.itslanguage.alignment_failed') {
-            res.kwargs.analysis.message = 'Alignment failed';
-          } else if (res.error === 'nl.itslanguage.analysis_failed') {
-            res.kwargs.analysis.message = 'Analysis failed';
-          } else {
-            res.kwargs.analysis.message = 'Unhandled error';
+        self._session.call('nl.itslanguage.pronunciation.write',
+          [self._analysisId, encoded, 'base64'])
+          .catch(function(res) {
             self.logRPCError(res);
-          }
-          _ecb(res.kwargs.analysis);
-        },
-        _progressCb
-      );
+            reportError(res);
+          })
+          .then(function(res) {
+            console.debug('Delivered audio successfully');
+          });
+      };
 
-      recorder.removeEventListener('recorded', recordedCb);
-      recorder.removeEventListener('dataavailable', dataavailableCb);
-      // This session is over.
-      self._analysisId = null;
-    };
-    recorder.addEventListener('recorded', recordedCb);
+      var initAnalysis = function(analysisId) {
+        self._analysisId = analysisId;
+        console.log('Got analysisId after initialisation: ' + self._analysisId);
+        self.pronunciationAnalysisInitChallenge(challenge)
+          .then(function() {
+            var p = new Promise(function(resolve) {
+              if (recorder.hasUserMediaApproval()) {
+                resolve();
+              } else {
+                recorder.addEventListener('ready', resolve);
+              }
+            });
+
+            p.then(function() {
+              recorder.removeEventListener('ready', resolve);
+              self.pronunciationAnalysisInitAudio(recorder, startStreaming);
+            });
+          });
+      };
+
+      // Stop listening when the audio recorder stopped.
+      var stopListening = function(id) {
+        recorder.removeEventListener('recorded', stopListening);
+        recorder.removeEventListener('dataavailable', startStreaming);
+
+        // This session is over.
+        self._analysisId = null;
+
+        // When done, submit any plain text (non-JSON) to start analysing.
+        self._session.call('nl.itslanguage.pronunciation.analyse',
+          [self._analysisId], {}, {receive_progress: true})
+          .then(reportDone)
+          .catch(function(res) {
+            if (res.error === 'nl.itslanguage.ref_alignment_failed') {
+              res.kwargs.analysis.message = 'Reference alignment failed';
+            } else if (res.error === 'nl.itslanguage.alignment_failed') {
+              res.kwargs.analysis.message = 'Alignment failed';
+            } else if (res.error === 'nl.itslanguage.analysis_failed') {
+              res.kwargs.analysis.message = 'Analysis failed';
+            } else {
+              res.kwargs.analysis.message = 'Unhandled error';
+              self.logRPCError(res);
+            }
+            reportError(res.kwargs.analysis);
+          })
+          .tap(function(progress) {
+            reportProgress(progress);
+          });
+      };
+
+      // BEGIN POINT
+      recorder.addEventListener('recorded', stopListening);
+      self._session.call('nl.itslanguage.pronunciation.init_analysis', [],
+        {
+          trimStart: trimAudioStart,
+          trimEnd: trimAudioEnd
+        })
+        .then(initAnalysis)
+        .catch(self.logRPCError);
+    });
   }
 
   _arrayBufferToBase64(buffer) {
@@ -2119,303 +1730,200 @@ class Sdk {
     return window.btoa(binary);
   }
 
-
-  /**
-   * Callback used by getPronunciationAnalysis.
-   *
-   * @callback Sdk~getPronunciationAnalysisCallback
-   * @param {its.PronunciationAnalysis} analysis Retrieved pronunciation analysis domain model instance.
-   */
-  getPronunciationAnalysisCallback(analysis) {}
-
-  /**
-   * Error callback used by getPronunciationAnalysis.
-   *
-   * @callback Sdk~getPronunciationAnalysisErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getPronunciationAnalysisErrorCallback(errors) {}
-
   /**
    * Get a pronunciation analysis in a pronunciation challenge.
    *
    * @param {PronunciationChallenge} challenge Specify a pronunciation challenge.
    * @param {string} analysisId Specify a pronunciation analysis identifier.
-   * @param {Sdk~getPronunciationAnalysisCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getPronunciationAnalysisErrorCallback} [ecb] The callback that handles the error response.
    */
-  getPronunciationAnalysis(challenge, analysisId, cb, ecb) {
-    var _cb = function(datum) {
-      var student = new Student(challenge.organisationId, datum.studentId);
-      var analysis = new PronunciationAnalysis(challenge, student,
-        datum.id, new Date(datum.created), new Date(datum.updated),
-        datum.audioUrl);
-      // Alignment may not be successful, in which case the analysis
-      // is not available, but it's still an attempt that is available,
-      // albeit without extended attributes like score and phonemes.
-      if (datum.score) {
-        analysis.score = datum.score;
-        analysis.words = this._wordsToModels(datum.words);
-      }
-      if (cb) {
-        cb(analysis);
-      }
-    };
-
-    if (!challenge || !challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
+  getPronunciationAnalysis(challenge, analysisId) {
+    var self = this;
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses/' + analysisId;
-    this._secureAjaxGet(url, _cb, ecb);
+    return new Promise(function(resolve, reject) {
+      if (!challenge || !challenge.id) {
+        reject(new Error('challenge.id field is required'));
+      }
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+
+      self._secureAjaxGet(url)
+        .then(function(datum) {
+          var student = new Student(challenge.organisationId, datum.studentId);
+          var analysis = new PronunciationAnalysis(challenge, student,
+            datum.id, new Date(datum.created), new Date(datum.updated),
+            datum.audioUrl);
+          // Alignment may not be successful, in which case the analysis
+          // is not available, but it's still an attempt that is available,
+          // albeit without extended attributes like score and phonemes.
+          if (datum.score) {
+            analysis.score = datum.score;
+            analysis.words = this._wordsToModels(datum.words);
+          }
+          resolve(analysis);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
   }
-
-  /**
-   * Callback used by listPronunciationAnalyses.
-   *
-   * @callback Sdk~listPronunciationAnalysesCallback
-   * @param {its.PronunciationAnalysis[]} analyses Retrieved pronunciation analysis domain model instances.
-   */
-  listPronunciationAnalysisCallback(analyses) {}
-
-  /**
-   * Error callback used by listPronunciationAnalyses.
-   *
-   * @callback Sdk~listPronunciationAnalysesErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listPronunciationAnalysisErrorCallback(errors) {}
 
   /**
    * List all pronunciation analyses in a specific pronunciation challenge.
    *
    * @param {PronunciationChallenge} challenge Specify a pronunciation challenge to list speech recordings for.
    * @param {Boolean} detailed Returns extra analysis metadata when true. false by default.
-   * @param {Sdk~listPronunciationAnalysesCallback} cb The callback that handles the response.
-   * @param {Sdk~listPronunciationAnalysesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listPronunciationAnalyses(challenge, detailed, cb, ecb) {
+  listPronunciationAnalyses(challenge, detailed) {
     var self = this;
-    var _cb = function(data) {
-      var analyses = [];
-      data.forEach(function(datum) {
-        var student = new Student(challenge.organisationId, datum.studentId);
-        var analysis = new PronunciationAnalysis(challenge, student,
-          datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl);
-        // Alignment may not be successful, in which case the analysis
-        // is not available, but it's still an attempt that is available,
-        // albeit without extended attributes like score and phonemes.
-        if (datum.score) {
-          analysis.score = datum.score;
-          analysis.words = self._wordsToModels(datum.words);
-        }
-        analyses.push(analysis);
-      });
-      if (cb) {
-        cb(analyses);
-      }
-    };
-
-    if (!challenge || !challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses';
     if (detailed) {
       url += '?detailed=true';
     }
-    this._secureAjaxGet(url, _cb, ecb);
+    return new Promise(function(resolve, reject) {
+      if (!challenge || !challenge.id) {
+        reject(new Error('challenge.id field is required'));
+      }
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+
+      self._secureAjaxGet(url)
+        .then(function(data) {
+          console.log('Back from get ' + JSON.stringify(data));
+          var analyses = [];
+          data.forEach(function(datum) {
+            console.log('in FOREACH ' + JSON.stringify(datum));
+            var student = new Student(challenge.organisationId, datum.studentId);
+            var analysis = new PronunciationAnalysis(challenge, student,
+              datum.id, new Date(datum.created), new Date(datum.updated),
+              datum.audioUrl);
+            // Alignment may not be successful, in which case the analysis
+            // is not available, but it's still an attempt that is available,
+            // albeit without extended attributes like score and phonemes.
+            if (datum.score) {
+              analysis.score = datum.score;
+              analysis.words = self._wordsToModels(datum.words);
+            }
+            analyses.push(analysis);
+          });
+          resolve(analyses);
+        })
+        .catch(function(error) {
+          reject(error);
+        });
+    });
   }
-
-
-  /**
-   * Callback used by createChoiceChallenge.
-   *
-   * @callback Sdk~choiceChallengeCreatedCallback
-   * @param {its.ChoiceChallenge} challenge Updated choice challenge domain model instance.
-   */
-  choiceChallengeCreatedCallback(challenge) {}
-
-  /**
-   * Error callback used by createChoiceChallenge.
-   *
-   * @callback Sdk~choiceChallengeCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.ChoiceChallenge} challenge Choice challenge domain model instance with unapplied changes.
-   */
-  choiceChallengeCreatedErrorCallback(errors, challenge) {}
 
   /**
    * Create a choice challenge.
    *
    * @param {its.ChoiceChallenge} challenge A choice challenge object.
-   * @param {Sdk~choiceChallengeCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~choiceChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createChoiceChallenge(challenge, cb, ecb) {
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      challenge.id = data.id;
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      challenge.status = data.status;
-      challenge.choices = [];
-      data.choices.forEach(function(pair) {
-        challenge.choices.push(pair.choice);
+  createChoiceChallenge(challenge) {
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      // Validate required domain model fields.
+      if (!challenge.organisationId) {
+        reject(new Error('organisationId field is required'));
+      }
+      var url = self.settings.apiUrl + '/organisations/' +
+        challenge.organisationId + '/challenges/choice';
+      var fd = new FormData();
+      if (challenge.id !== undefined &&
+        challenge.id !== null) {
+        fd.append('id', challenge.id);
+      }
+      fd.append('question', challenge.question);
+      challenge.choices.forEach(function(choice) {
+        fd.append('choices', choice);
       });
-      if (cb) {
-        cb(challenge);
-      }
-    };
 
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, challenge);
-      }
-    };
-
-    // Validate required domain model fields.
-    if (!challenge.organisationId) {
-      throw new Error('organisationId field is required');
-    }
-
-    var url = this.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/choice';
-
-    var fd = new FormData();
-    if (challenge.id !== undefined &&
-      challenge.id !== null) {
-      fd.append('id', challenge.id);
-    }
-    fd.append('question', challenge.question);
-    challenge.choices.forEach(function(choice) {
-      fd.append('choices', choice);
+      self._secureAjaxPost(url, fd)
+        .then(function(data) {
+          // Update the id in case domain model didn't contain one.
+          challenge.id = data.id;
+          challenge.created = new Date(data.created);
+          challenge.updated = new Date(data.updated);
+          challenge.status = data.status;
+          challenge.choices = [];
+          data.choices.forEach(function(pair) {
+            challenge.choices.push(pair.choice);
+          });
+          resolve(challenge);
+        })
+        .catch(function(errors) {
+          reject(errors);
+        });
     });
-    this._secureAjaxPost(url, fd, _cb, _ecb);
   }
-
-  /**
-   * Callback used by getChoiceChallenge.
-   *
-   * @callback Sdk~getChoiceChallengeCallback
-   * @param {its.ChoiceChallenge} challenge Retrieved choice challenge domain model instance.
-   */
-  getChoiceChallengeCallback(challenge) {}
-
-  /**
-   * Error callback used by getChoiceChallenge.
-   *
-   * @callback Sdk~getChoiceChallengeErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getChoiceChallengeErrorCallback(errors) {}
 
   /**
    * Get a choice challenge.
    *
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a choice challenge identifier.
-   * @param {Sdk~getChoiceChallengeCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getChoiceChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
   getChoiceChallenge(
-      organisationId, challengeId, cb, ecb) {
-    var _cb = function(data) {
-      var challenge = new ChoiceChallenge(organisationId, data.id,
-        data.question, data.choices);
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      challenge.status = data.status;
-      challenge.choices = [];
-      data.choices.forEach(function(pair) {
-        challenge.choices.push(pair.choice);
-      });
-      if (cb) {
-        cb(challenge);
-      }
-    };
-
+      organisationId, challengeId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice/' + challengeId;
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url).catch(function(error) {
+        reject(error);
+      })
+        .then(function(data) {
+          var challenge = new ChoiceChallenge(organisationId, data.id,
+            data.question, data.choices);
+          challenge.created = new Date(data.created);
+          challenge.updated = new Date(data.updated);
+          challenge.status = data.status;
+          challenge.choices = [];
+          data.choices.forEach(function(pair) {
+            challenge.choices.push(pair.choice);
+          });
+          resolve(challenge);
+        })
+      ;
+    });
   }
-
-  /**
-   * Callback used by listChoiceChallenges.
-   *
-   * @callback Sdk~listChoiceChallengesCallback
-   * @param {its.ChoiceChallenge[]} challenges Retrieved choice challenge domain model instances.
-   */
-  listChoiceChallengesCallback(challenges) {}
-
-  /**
-   * Error callback used by listSpeechChallenges.
-   *
-   * @callback Sdk~listChoiceChallengesErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listChoiceChallengesErrorCallback(errors) {}
 
   /**
    * List all choice challenges in the organisation.
    *
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listChoiceChallengesCallback} cb The callback that handles the response.
-   * @param {Sdk~listChoiceChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
   listChoiceChallenges(
-      organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var challenges = [];
-      data.forEach(function(datum) {
-        var challenge = new ChoiceChallenge(
-          organisationId, datum.id, datum.question, datum.choices);
-        challenge.created = new Date(datum.created);
-        challenge.updated = new Date(datum.updated);
-        challenge.status = datum.status;
-        challenge.choices = [];
-        datum.choices.forEach(function(pair) {
-          challenge.choices.push(pair.choice);
-        });
-        challenges.push(challenge);
-      });
-      if (cb) {
-        cb(challenges);
-      }
-    };
-
+      organisationId) {
     var url = this.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice';
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      self._secureAjaxGet(url).catch(function(error) {
+        reject(error);
+      }).then(function(data) {
+        var challenges = [];
+        data.forEach(function(datum) {
+          var challenge = new ChoiceChallenge(
+            organisationId, datum.id, datum.question, datum.choices);
+          challenge.created = new Date(datum.created);
+          challenge.updated = new Date(datum.updated);
+          challenge.status = datum.status;
+          challenge.choices = [];
+          datum.choices.forEach(function(pair) {
+            challenge.choices.push(pair.choice);
+          });
+          challenges.push(challenge);
+        });
+        resolve(challenges);
+      });
+    });
   }
-
-  /**
-   * Callback used by createChoiceRecognition.
-   *
-   * @callback Sdk~Sdk~choiceRecognitionCreatedCallback
-   * @param {its.ChoiceRecognition} recognition New choice recognition domain model instance containing the performed recognition.
-   */
-  choiceRecognitionCreatedCallback(recognition) {}
-
-  /**
-   * Error callback used by createChoiceRecognition.
-   *
-   * @callback Sdk~choiceRecognitionCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.SpeechRecording} recording Speech recording domain model instance with unapplied changes.
-   */
-  choiceRecognitionCreatedErrorCallback(errors, recording) {}
 
   /**
    * Initialise the choice recognition challenge through RPCs.
@@ -2424,7 +1932,7 @@ class Sdk {
   choiceRecognitionInitChallenge(challenge) {
     var self = this;
 
-    this._session.call('nl.itslanguage.choice.init_challenge',
+    return this._session.call('nl.itslanguage.choice.init_challenge',
       [self._recognitionId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
       function(recognitionId) {
@@ -2468,254 +1976,219 @@ class Sdk {
    *
    * @param {its.ChoiceChallenge} challenge The choice challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Sdk~choiceRecognitionPreparedCallback} [preparedCb] The callback that signals server is prepared for receiving data.
-   * @param {Sdk~choiceRecognitionCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~choiceRecognitionCreatedErrorCallback} [ecb] The callback that handles the error response.
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
    */
-  startStreamingChoiceRecognition(challenge, recorder, preparedCb, cb, ecb, trim) {
+  startStreamingChoiceRecognition(challenge, recorder, trim) {
     var self = this;
-    var _cb = function(data) {
-      var recognition = new ChoiceRecognition(
-        challenge.id, data.studentId, data.id,
-        new Date(data.created), new Date(data.updated),
-        self.addAccessToken(data.audioUrl), data.recognised);
-      if (cb) {
-        cb(recognition);
-      }
-    };
 
-    var _ecb = function(data) {
-      // There was an unexpected error.
-      if (ecb) {
+    return new Promise(function(resolve, reject) {
+      var _cb = function(data) {
+        var recognition = new ChoiceRecognition(
+          challenge.id, data.studentId, data.id,
+          new Date(data.created), new Date(data.updated),
+          self.addAccessToken(data.audioUrl), data.recognised);
+        resolve(recognition);
+      };
+
+      var _ecb = function(data) {
+        // There was an unexpected error.
         var analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           self.addAccessToken(data.audioUrl));
-        ecb(analysis, data.message);
-      }
-    };
-
-    // Validate required domain model.
-    if (typeof challenge !== 'object' || !challenge) {
-      throw new Error(
-        '"challenge" parameter is required or invalid');
-    }
-    if (!challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
-    // Validate environment prerequisites.
-    if (!this._session) {
-      throw new Error('WebSocket connection was not open.');
-    }
-
-    if (recorder.isRecording()) {
-      throw new Error('Recorder should not yet be recording.');
-    }
-
-    if (this._recognitionId !== null) {
-      console.error('Session with recognitionId ' + this._recognitionId + ' still in progress.');
-      return;
-    }
-    this._recognitionId = null;
-
-    // Start streaming the binary audio when the user instructs
-    // the audio recorder to start recording.
-    var dataavailableCb = function(chunk) {
-      var encoded = self._arrayBufferToBase64(chunk);
-      console.log('Sending audio chunk to websocket for recognitionId: ' +
-          self._recognitionId);
-      self._session.call('nl.itslanguage.choice.write',
-          [self._recognitionId, encoded, 'base64']).then(
-        // RPC success callback
-        function(res) {
-          console.debug('Delivered audio successfully');
-        },
-        // RPC error callback
-        function(res) {
-          console.error('RPC error returned:', res.error);
-          _ecb(res);
-        }
-      );
-    };
-
-    var recognitionInitCb = function(recognitionId) {
-      self._recognitionId = recognitionId;
-      console.log('Got recognitionId after initialisation: ' + self._recognitionId);
-      self.choiceRecognitionInitChallenge(challenge);
-      preparedCb(self._recognitionId);
-
-      if (recorder.hasUserMediaApproval()) {
-        self.choiceRecognitionInitAudio(recorder, dataavailableCb);
-      } else {
-        var userMediaCb = function(chunk) {
-          self.choiceRecognitionInitAudio(recorder, dataavailableCb);
-          recorder.removeEventListener('ready', userMediaCb);
-        };
-        recorder.addEventListener('ready', userMediaCb);
-      }
-    };
-
-    var trimAudioStart = 0.15;
-    var trimAudioEnd = 0.0;
-    if (trim === false) {
-      trimAudioStart = 0.0;
-    }
-    this._session.call('nl.itslanguage.choice.init_recognition', [],
-         {trimStart: trimAudioStart,
-          trimEnd: trimAudioEnd}).then(
-      // RPC success callback
-      recognitionInitCb,
-      // RPC error callback
-      function(res) {
-        console.error('RPC error returned:', res.error);
-      }
-    );
-
-    // Stop listening when the audio recorder stopped.
-    var recordedCb = function(id) {
-      // When done, submit any plain text (non-JSON) to start analysing.
-      self._session.call('nl.itslanguage.choice.recognise',
-          [self._recognitionId]).then(
-        // RPC success callback
-        function(res) {
-          console.log(res);
-          // Wait for analysis results to come back.
-          _cb(res);
-        },
-        // RPC error callback
-        function(res) {
-          console.error('RPC error returned:', res.error);
-          if (res.error === 'nl.itslanguage.recognition_failed') {
-            res.kwargs.recognition.message = 'Recognition failed';
-          } else {
-            res.kwargs.recognition.message = 'Unhandled error';
+        reject(
+          {
+            analysis: analysis,
+            message: data.message
           }
-          _ecb(res.kwargs.analysis);
-        }
-      );
+        );
+      };
 
-      recorder.removeEventListener('recorded', recordedCb);
-      recorder.removeEventListener('dataavailable', dataavailableCb);
-      // This session is over.
+      // Validate required domain model.
+      if (typeof challenge !== 'object' || !challenge) {
+        reject(new Error(
+          '"challenge" parameter is required or invalid'));
+      }
+      if (!challenge.id) {
+        reject(new Error('challenge.id field is required'));
+      }
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+
+      // Validate environment prerequisites.
+      if (!self._session) {
+        reject(new Error('WebSocket connection was not open.'));
+      }
+
+      if (recorder.isRecording()) {
+        reject(new Error('Recorder should not yet be recording.'));
+      }
+
+      if (self._recognitionId !== null) {
+        reject(new Error('Session with recognitionId ' + self._recognitionId + ' still in progress.'));
+      }
       self._recognitionId = null;
-    };
-    recorder.addEventListener('recorded', recordedCb);
+
+      // Start streaming the binary audio when the user instructs
+      // the audio recorder to start recording.
+      var dataavailableCb = function(chunk) {
+        var encoded = self._arrayBufferToBase64(chunk);
+        console.log('Sending audio chunk to websocket for recognitionId: ' +
+          self._recognitionId);
+        self._session.call('nl.itslanguage.choice.write',
+          [self._recognitionId, encoded, 'base64']).then(
+          // RPC success callback
+          function(res) {
+            console.debug('Delivered audio successfully');
+          },
+          // RPC error callback
+          function(res) {
+            console.error('RPC error returned:', res.error);
+            _ecb(res);
+          }
+        );
+      };
+
+      var recognitionInitCb = function(recognitionId) {
+        self._recognitionId = recognitionId;
+        console.log('Got recognitionId after initialisation: ' + self._recognitionId);
+        self.choiceRecognitionInitChallenge(challenge)
+          .then(function() {
+            var p = new Promise(function(resolve, reject) {
+              if (recorder.hasUserMediaApproval()) {
+                resolve();
+              } else {
+                recorder.addEventListener('ready', resolve);
+              }
+            });
+            p.then(function(result) {
+              recorder.removeEventListener('ready', resolve);
+              self.choiceRecognitionInitAudio(recorder, dataavailableCb);
+            });
+          });
+      };
+
+      var trimAudioStart = 0.15;
+      var trimAudioEnd = 0.0;
+      if (trim === false) {
+        trimAudioStart = 0.0;
+      }
+      self._session.call('nl.itslanguage.choice.init_recognition', [],
+        {
+          trimStart: trimAudioStart,
+          trimEnd: trimAudioEnd
+        })
+        .then(recognitionInitCb)
+        .catch(function(res) {
+          console.error('RPC error returned:', res.error);
+        });
+
+      // Stop listening when the audio recorder stopped.
+      var recordedCb = function(id) {
+        // When done, submit any plain text (non-JSON) to start analysing.
+        self._session.call('nl.itslanguage.choice.recognise',
+          [self._recognitionId]).then(
+          // RPC success callback
+          function(res) {
+            // Wait for analysis results to come back.
+            _cb(res);
+          },
+          // RPC error callback
+          function(res) {
+            console.error('RPC error returned:', res.error);
+            if (res.error === 'nl.itslanguage.recognition_failed') {
+              res.kwargs.recognition.message = 'Recognition failed';
+            } else {
+              res.kwargs.recognition.message = 'Unhandled error';
+            }
+            _ecb(res.kwargs.analysis);
+          }
+        );
+
+        recorder.removeEventListener('recorded', recordedCb);
+        recorder.removeEventListener('dataavailable', dataavailableCb);
+        // This session is over.
+        self._recognitionId = null;
+      };
+      recorder.addEventListener('recorded', recordedCb);
+    });
   }
-
-  /**
-   * Callback used by getChoiceRecognition.
-   *
-   * @callback Sdk~getChoiceRecognitionCallback
-   * @param {its.ChoiceRecognition} recognition Retrieved choice recognition domain model instance.
-   */
-  getChoiceRecognitionCallback(recognition) {}
-
-  /**
-   * Error callback used by getChoiceRecognition.
-   *
-   * @callback Sdk~getChoiceRecognitionErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getChoiceRecognitionErrorCallback(errors) {}
 
   /**
    * Get a choice recognition in a choice challenge.
    *
    * @param {ChoiceChallenge} challenge Specify a choice challenge.
    * @param {string} recognitionId Specify a choice recognition identifier.
-   * @param {Sdk~getChoiceRecognitionCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getChoiceRecognitionErrorCallback} [ecb] The callback that handles the error response.
    */
-  getChoiceRecognition(challenge, recognitionId, cb, ecb) {
-    var _cb = function(datum) {
-      var student = new Student(challenge.organisationId, datum.studentId);
-      var recognition = new ChoiceRecognition(challenge, student,
-        datum.id, new Date(datum.created), new Date(datum.updated),
-        datum.audioUrl);
-      // Alignment may not be successful, in which case the recognition
-      // is not available, but it's still an attempt that is available,
-      // albeit without extended attributes like score and phonemes.
-      if (datum.recognised) {
-        recognition.recognised = datum.recognised;
-      }
-      if (cb) {
-        cb(recognition);
-      }
-    };
-
-    if (!challenge || !challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
+  getChoiceRecognition(challenge, recognitionId) {
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions/' + recognitionId;
-    this._secureAjaxGet(url, _cb, ecb);
+
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      if (!challenge || !challenge.id) {
+        reject(new Error('challenge.id field is required'));
+      }
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+      self._secureAjaxGet(url).catch(function(error) {
+        reject(error);
+      }).then(function(datum) {
+        var student = new Student(challenge.organisationId, datum.studentId);
+        var recognition = new ChoiceRecognition(challenge, student,
+          datum.id, new Date(datum.created), new Date(datum.updated),
+          datum.audioUrl);
+        // Alignment may not be successful, in which case the recognition
+        // is not available, but it's still an attempt that is available,
+        // albeit without extended attributes like score and phonemes.
+        if (datum.recognised) {
+          recognition.recognised = datum.recognised;
+        }
+        resolve(recognition);
+      });
+    });
   }
-
-  /**
-   * Callback used by listChoiceRecognitions.
-   *
-   * @callback Sdk~listChoiceRecognitionsCallback
-   * @param {its.ChoiceRecognition[]} recognitions Retrieved choice recognition domain model instances.
-   */
-  listChoiceRecognitionCallback(recognitions) {}
-
-  /**
-   * Error callback used by listChoiceRecognitions.
-   *
-   * @callback Sdk~listChoiceRecognitionsErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listChoiceRecognitionErrorCallback(errors) {}
 
   /**
    * List all choice recognitions in a specific choice challenge.
    *
    * @param {ChoiceChallenge} challenge Specify a choice challenge to list speech recognitions for.
-   * @param {Sdk~listChoiceRecognitionsCallback} cb The callback that handles the response.
-   * @param {Sdk~listChoiceRecognitionsErrorCallback} [ecb] The callback that handles the error response.
    */
-  listChoiceRecognitions(challenge, cb, ecb) {
-    var _cb = function(data) {
-      var recognitions = [];
-      data.forEach(function(datum) {
-        var student = new Student(challenge.organisationId, datum.studentId);
-        var recognition = new ChoiceRecognition(challenge, student,
-          datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl);
-        // Recognition may not be successful, in which case the recognition
-        // is not available, but it's still an attempt that is available,
-        // albeit without extended attributes like recognised.
-        if (datum.recognised) {
-          recognition.recognised = datum.recognised;
-        }
-        recognitions.push(recognition);
-      });
-      if (cb) {
-        cb(recognitions);
-      }
-    };
-
-    if (!challenge || !challenge.id) {
-      throw new Error('challenge.id field is required');
-    }
-    if (!challenge.organisationId) {
-      throw new Error('challenge.organisationId field is required');
-    }
-
+  listChoiceRecognitions(challenge) {
     var url = this.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions';
-    this._secureAjaxGet(url, _cb, ecb);
+    var self = this;
+    return new Promise(function(resolve, reject) {
+      if (!challenge || !challenge.id) {
+        reject(new Error('challenge.id field is required'));
+      }
+      if (!challenge.organisationId) {
+        reject(new Error('challenge.organisationId field is required'));
+      }
+      self._secureAjaxGet(url)
+        .then(function(data) {
+          var recognitions = [];
+          data.forEach(function(datum) {
+            var student = new Student(challenge.organisationId, datum.studentId);
+            var recognition = new ChoiceRecognition(challenge, student,
+              datum.id, new Date(datum.created), new Date(datum.updated),
+              datum.audioUrl);
+            // Recognition may not be successful, in which case the recognition
+            // is not available, but it's still an attempt that is available,
+            // albeit without extended attributes like recognised.
+            if (datum.recognised) {
+              recognition.recognised = datum.recognised;
+            }
+            recognitions.push(recognition);
+          });
+          resolve(recognitions);
+        })
+        .catch(reject);
+    });
   }
 }
 
