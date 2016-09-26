@@ -15,7 +15,7 @@ Simply require `itslanguage` in your project.
 const itslanguage = require('itslanguage');
 ```
 
-The ITSLanguage SDK will be included in your build. For example using (browserify)[http://browserify.org/]
+The ITSLanguage SDK will be included in your build. For example using [browserify](http://browserify.org/)
 
 Every component of the SDK can be accessed either directly as a property of the `itslanguage` module or directly using `require`.
 
