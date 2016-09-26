@@ -1901,7 +1901,7 @@ class Sdk {
     var words = [];
     inWords.forEach(function(word) {
       var chunks = [];
-      word.chunks.forEach(function(chunk) {
+      word.forEach(function(chunk) {
         var phonemes = [];
         // Phonemes are only provided on detailed analysis.
         chunk.phonemes = chunk.phonemes || [];
