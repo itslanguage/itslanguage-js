@@ -4,7 +4,6 @@ const AudioTools = require('./audio-tools');
 const CordovaMediaPlayer = require('./cordova-media-player');
 const CordovaMediaRecorder = require('./cordova-media-recorder');
 const MediaRecorder = require('./media-recorder');
-const TextualComponents = require('./textual-components');
 const Tools = require('./tools');
 const WavePacker = require('./wave-packer');
 const WebAudioPlayer = require('./web-audio-player');
@@ -37,8 +36,6 @@ module.exports = {
   CordovaMediaRecorder: CordovaMediaRecorder,
 
   MediaRecorder: MediaRecorder,
-
-  TextualComponents: TextualComponents,
 
   Tools: Tools,
 
