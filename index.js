@@ -9,11 +9,16 @@ const WavePacker = require('./wave-packer');
 const WebAudioPlayer = require('./web-audio-player');
 const WebAudioRecorder = require('./web-audio-recorder');
 
-
 module.exports = {
+  AudioPlayer: audioSdk.AudioPlayer,
+  AudioRecorder: audioSdk.AudioRecorder,
+  AudioTools: AudioTools,
   BasicAuth: administrativeSdk.BasicAuth,
+  CordovaMediaPlayer: CordovaMediaPlayer,
+  CordovaMediaRecorder: CordovaMediaRecorder,
   ChoiceChallenge: administrativeSdk.ChoiceChallenge,
   ChoiceRecognition: administrativeSdk.ChoiceRecognition,
+  MediaRecorder: MediaRecorder,
   Organisation: administrativeSdk.Organisation,
   Phoneme: administrativeSdk.Phoneme,
   PronunciationAnalysis: administrativeSdk.PronunciationAnalysis,
@@ -23,25 +28,10 @@ module.exports = {
   SpeechRecording: administrativeSdk.SpeechRecording,
   Student: administrativeSdk.Student,
   Tenant: administrativeSdk.Tenant,
+  Tools: Tools,
   Word: administrativeSdk.Word,
   WordChunk: administrativeSdk.WordChunk,
-
-  AudioPlayer: audioSdk.AudioPlayer,
-  AudioRecorder: audioSdk.AudioRecorder,
-
-  AudioTools: AudioTools,
-
-  CordovaMediaPlayer: CordovaMediaPlayer,
-
-  CordovaMediaRecorder: CordovaMediaRecorder,
-
-  MediaRecorder: MediaRecorder,
-
-  Tools: Tools,
-
   WavePacker: WavePacker,
-
   WebAudioPlayer: WebAudioPlayer,
-
   WebAudioRecorder: WebAudioRecorder
 };
