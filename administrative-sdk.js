@@ -529,10 +529,6 @@ class Sdk {
         ev.apply(null, args);
       });
     };
-
-    if (this.settings.wsToken) {
-      this._webSocketConnect(this.settings);
-    }
   }
 
   /**
@@ -555,16 +551,30 @@ class Sdk {
    * Create a connection to the websocket server.
    *
    */
-  _webSocketConnect(data) {
-    var authUrl = data.wsUrl + '?access_token=' +
-        this.settings.wsToken;
+  webSocketConnect(accessToken) {
+    /**
+     * This callback is fired during Ticket-based authentication
+     *
+     */
+    function onOAuth2Challenge(session, method, extra) {
+      if (method === 'ticket') {
+        return accessToken;
+      }
+      throw new Error(`don't know how to authenticate using '${method}'`);
+    }
+
+    var authUrl = this.settings.wsUrl;
     var connection = null;
     // Open a websocket connection for streaming audio
     try {
       // Set up WAMP connection to router
       connection = new autobahn.Connection({
         url: authUrl,
-        realm: 'default'
+        realm: 'default',
+        // the following attributes must be set for Ticket-based authentication
+        authmethods: ['ticket'],
+        authid: 'oauth2',
+        onchallenge: onOAuth2Challenge
       });
     } catch (e) {
       console.log('WebSocket creation error: ' + e);
