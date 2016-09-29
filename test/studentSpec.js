@@ -15,8 +15,9 @@
  */
 
 require('jasmine-ajax');
-
-const its = require('..');
+const its = require('../administrative-sdk/student');
+const connection = require('../administrative-sdk/connection');
+const _ = require('underscore');
 
 describe('Student object test', function() {
   it('should instantiate a Student without id', function() {
@@ -53,13 +54,14 @@ describe('Student API interaction test', function() {
 
   it('should create a new student through API', function() {
     var student = new its.Student('fb', '1', 'Mark');
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    student.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.createStudent(student, cb);
+    var output = student.createStudent(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -69,7 +71,7 @@ describe('Student API interaction test', function() {
     var expected = {id: '1',
       organisationId: 'fb',
       firstName: 'Mark'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       id: '1',
@@ -92,15 +94,16 @@ describe('Student API interaction test', function() {
   });
 
   it('should handle errors while creating a new student', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var student = new its.Student('fb', '1', 'Mark');
+    student.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = api.createStudent(student, cb, ecb);
+    var output = student.createStudent(cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/students';
@@ -109,7 +112,7 @@ describe('Student API interaction test', function() {
     var expected = {id: '1',
       organisationId: 'fb',
       firstName: 'Mark'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       message: 'Validation failed',
@@ -138,13 +141,15 @@ describe('Student API interaction test', function() {
   });
 
   it('should get an existing student through API', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var stud = new its.Student();
+    stud.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.getStudent('fb', '4', cb);
+    var output = stud.getStudent('fb', '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -172,13 +177,15 @@ describe('Student API interaction test', function() {
   });
 
   it('should get a list of existing students through API', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var stud = new its.Student();
+    stud.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.listStudents('fb', cb);
+    var output = stud.listStudents('fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
