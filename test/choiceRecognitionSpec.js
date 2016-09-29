@@ -17,8 +17,12 @@
 
 require('jasmine-ajax');
 const autobahn = require('autobahn');
-
-const its = require('..');
+const ChoiceRecognition = require('../administrative-sdk/choiceRecognition').ChoiceRecognition;
+const ChoiceChallenge = require('../administrative-sdk/choiceChallenge').ChoiceChallenge;
+const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
+const Student = require('../administrative-sdk/student').Student;
+const connection = require('../administrative-sdk/connection');
+const _ = require('underscore');
 
 describe('ChoiceRecognition Websocket API interaction test', function() {
   beforeEach(function() {
@@ -30,7 +34,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
   });
 
   it('should fail streaming when websocket connection is closed', function() {
-    var api = new its.Sdk();
+    var api = new connection.Connection();
 
     // Mock the audio recorder
     function RecorderMock() {
@@ -50,13 +54,15 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     var old = window.WebSocket;
     window.WebSocket = jasmine.createSpy('WebSocket');
 
-    var challenge = new its.ChoiceChallenge('fb', '4', null, []);
+    var challenge = new ChoiceChallenge('fb', '4', null, []);
+    var recog = new ChoiceRecognition();
+    recog.connection = api;
     var recorder = new RecorderMock();
     var preparedcb = jasmine.createSpy('callback');
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
     expect(function() {
-      api.startStreamingChoiceRecognition(
+      recog.startStreamingChoiceRecognition(
         challenge, recorder, preparedcb, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
 
@@ -65,7 +71,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
   });
 
   it('should start streaming a new choice recognition', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar'
     });
@@ -88,7 +94,9 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       this.addEventListener = function() {};
     }
 
-    var challenge = new its.ChoiceChallenge('fb', '4', null, []);
+    var challenge = new ChoiceChallenge('fb', '4', null, []);
+    var recog = new ChoiceRecognition();
+
     var recorder = new RecorderMock();
     var prepareCb = jasmine.createSpy('callback');
     var cb = jasmine.createSpy('callback');
@@ -102,8 +110,8 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     }
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-
-    var output = api.startStreamingChoiceRecognition(
+    recog.connection = api;
+    var output = recog.startStreamingChoiceRecognition(
       challenge, recorder, prepareCb, cb, ecb);
 
     expect(api._session.call).toHaveBeenCalled();
@@ -114,14 +122,16 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
   });
 
   it('should get an existing choice recognition', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.getChoiceRecognition(challenge, '5', cb);
+    var challenge = new SpeechChallenge('fb', '4');
+    var recog = new ChoiceRecognition();
+    recog.connection = api;
+    var output = recog.getChoiceRecognition(challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -145,22 +155,24 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var recognition = new its.ChoiceRecognition(challenge, student,
+    var student = new Student('fb', '6');
+    var recognition = new ChoiceRecognition(challenge, student,
       '5', new Date(stringDate), new Date(stringDate));
     recognition.audioUrl = audioUrl;
     expect(cb).toHaveBeenCalledWith(recognition);
   });
 
   it('should get a list of existing choice recognitions', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.listChoiceRecognitions(challenge, cb);
+    var challenge = new SpeechChallenge('fb', '4');
+    var recog = new ChoiceRecognition();
+    recog.connection = api;
+    var output = recog.listChoiceRecognitions(challenge, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -192,13 +204,13 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var recognition = new its.ChoiceRecognition(challenge, student,
+    var student = new Student('fb', '6');
+    var recognition = new ChoiceRecognition(challenge, student,
       '5', new Date(stringDate), new Date(stringDate));
     recognition.audioUrl = audioUrl;
 
-    var student2 = new its.Student('fb', '24');
-    var recognition2 = new its.ChoiceRecognition(challenge, student2,
+    var student2 = new Student('fb', '24');
+    var recognition2 = new ChoiceRecognition(challenge, student2,
       '6', new Date(stringDate), new Date(stringDate));
     recognition2.audioUrl = audioUrl;
     recognition2.recognised = 'Hi';
