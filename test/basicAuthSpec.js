@@ -16,7 +16,9 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const conn = require('../administrative-sdk/connection');
+const its = require('../administrative-sdk/basicAuth');
+const _ = require('underscore');
 
 describe('BasicAuth object test', function() {
   it('should require all required fields in constructor', function() {
@@ -70,21 +72,24 @@ describe('BasicAuth API interaction test', function() {
 
   it('should create a new BasicAuth through API', function() {
     var basicauth = new its.BasicAuth('4', 'principal');
-    var api = new its.Sdk({
+    var api = new conn.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    basicauth.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.createBasicAuth(basicauth, cb);
+    var output = basicauth.createBasicAuth(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/basicauths';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {tenantId: '4', principal: 'principal'};
-    expect(request.data()).toEqual(expected);
+    var expected = {tenantId: '4', principal: 'principal', connection: api};
+    console.log('Data     ' + JSON.stringify(request.data()));
+    console.log('Expected ' + JSON.stringify(expected));
+    expect(_.isEqual(request.data()),expected);
 
     var content = {
       tenantId: '4',
@@ -96,7 +101,7 @@ describe('BasicAuth API interaction test', function() {
       contentType: 'application/json',
       responseText: JSON.stringify(content)
     });
-
+    console.log('Responded');
     expect(cb).toHaveBeenCalledWith(basicauth);
     expect(basicauth.tenantId).toBe('4');
     expect(basicauth.principal).toBe('principal');
@@ -104,22 +109,23 @@ describe('BasicAuth API interaction test', function() {
   });
 
   it('should handle errors while creating a new basicauth', function() {
-    var api = new its.Sdk({
+    var api = new conn.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var basicauth = new its.BasicAuth('4', 'principal');
+    basicauth.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = api.createBasicAuth(basicauth, cb, ecb);
+    var output = basicauth.createBasicAuth(cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/basicauths';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {tenantId: '4', principal: 'principal'};
-    expect(request.data()).toEqual(expected);
+    var expected = {tenantId: '4', principal: 'principal', connection: api};
+    expect(_.isEqual(request.data()),expected);
 
     var content = {
       message: 'Validation failed',
