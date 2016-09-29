@@ -17,7 +17,9 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const its = require('../administrative-sdk/choiceChallenge');
+const connection = require('../administrative-sdk/connection');
+const _ = require('underscore');
 
 describe('ChoiceChallenge object test', function() {
   it('should require all required fields in constructor', function() {
@@ -81,11 +83,12 @@ describe('ChoiceChallenge API interaction test', function() {
     var challenge = new its.ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
     var cb = jasmine.createSpy('callback');
 
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var output = api.createChoiceChallenge(challenge, cb);
+    challenge.connection = api;
+    var output = challenge.createChoiceChallenge(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -128,11 +131,12 @@ describe('ChoiceChallenge API interaction test', function() {
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var output = api.createChoiceChallenge(challenge, cb, ecb);
+    challenge.connection = api;
+    var output = challenge.createChoiceChallenge(cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb' +
@@ -169,13 +173,15 @@ describe('ChoiceChallenge API interaction test', function() {
   });
 
   it('should get an existing choice challenge', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var chal = new its.ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
+    chal.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.getChoiceChallenge('fb', '1', cb);
+    var output = chal.getChoiceChallenge('fb', '1', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -210,13 +216,15 @@ describe('ChoiceChallenge API interaction test', function() {
   });
 
   it('should get a list of existing challenges', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var chal = new its.ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
+    chal.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.listChoiceChallenges('fb', cb);
+    var output = chal.listChoiceChallenges('fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
