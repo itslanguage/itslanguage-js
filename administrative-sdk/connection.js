@@ -361,6 +361,32 @@ class Connection{
       throw new Error('No WebSocket capabilities');
     }
   }
+
+  /**
+   * Cancel any current streaming audio recording.
+   *
+   * @param {its.AudioRecorder} recorder The audio recorder currently recording.
+   */
+  cancelStreaming(recorder) {
+    var self = this;
+
+    if (this._recordingId === null && this._analysisId === null && this._recognitionId === null) {
+      console.info('No session in progress, nothing to cancel.');
+      return;
+    }
+
+    recorder.removeEventListener('ready');
+    recorder.removeEventListener('recorded');
+    recorder.removeEventListener('dataavailable');
+    if (recorder.isRecording()) {
+      recorder.stop();
+    }
+
+    // This session is over.
+    self._recordingId = null;
+    self._analysisId = null;
+    self._recognitionId = null;
+  }
 }
 
 module.exports = {
