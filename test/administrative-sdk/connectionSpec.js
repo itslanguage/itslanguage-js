@@ -16,7 +16,7 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const its = require('../../');
 
 
 describe('Secure GET test', function() {
