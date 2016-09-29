@@ -16,7 +16,9 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const its = require('../administrative-sdk/organisation');
+const connection = require('../administrative-sdk/connection');
+const _ = require('underscore');
 
 describe('Organisation object test', function() {
   it('should instantiate an Organisation without id', function() {
@@ -44,14 +46,14 @@ describe('Organisation API interaction test', function() {
   });
 
   it('should create a new organisation through API', function() {
-    var organisation = new its.Organisation('1', 'School of silly walks');
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var organisation = new its.Organisation('1', 'School of silly walks', api);
     var cb = jasmine.createSpy('callback');
 
-    var output = api.createOrganisation(organisation, cb);
+    var output = organisation.createOrganisation(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -59,7 +61,7 @@ describe('Organisation API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {id: '1', name: 'School of silly walks'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       id: '1',
@@ -82,22 +84,23 @@ describe('Organisation API interaction test', function() {
   });
 
   it('should handle errors while creating a new organisation', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var organisation = new its.Organisation('1');
+    organisation.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = api.createOrganisation(organisation, cb, ecb);
+    var output = organisation.createOrganisation(cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {id: '1'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(),expected));
 
     var content = {
       message: 'Validation failed',
@@ -126,13 +129,17 @@ describe('Organisation API interaction test', function() {
   });
 
   it('should get an existing organisation through API', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+
+    var org = new its.Organisation();
+    org.connection = api;
+
     var cb = jasmine.createSpy('callback');
 
-    var output = api.getOrganisation('4', cb);
+    var output = org.getOrganisation('4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -160,13 +167,15 @@ describe('Organisation API interaction test', function() {
   });
 
   it('should get a list of existing organisations through API', function() {
-    var api = new its.Sdk({
+    var api = new connection.Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var org = new its.Organisation();
+    org.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.listOrganisations(cb);
+    var output = org.listOrganisations(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
