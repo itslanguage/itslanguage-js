@@ -18,6 +18,53 @@ class Connection{
       wsUrl: null,
       wsToken: null
     }, options);
+    this._sdkCompatibility();
+    this._analysisId = null;
+    this._recordingId = null;
+    this._recognitionId = null;
+
+    // The addEventListener interface exists on object.Element DOM elements.
+    // However, this is just a simple class without any relation to the DOM.
+    // Therefore we have to implement a pub/sub mechanism ourselves.
+    // See:
+    // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener
+    // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
+    this.events = {};
+
+    var self = this;
+    this.addEventListener = function(name, handler) {
+      if (self.events.hasOwnProperty(name)) {
+        self.events[name].push(handler);
+      } else {
+        self.events[name] = [handler];
+      }
+    };
+    this.removeEventListener = function(name, handler) {
+      /* This is a bit tricky, because how would you identify functions?
+       This simple solution should work if you pass THE SAME handler. */
+      if (!self.events.hasOwnProperty(name)) {
+        return;
+      }
+
+      var index = self.events[name].indexOf(handler);
+      if (index !== -1) {
+        self.events[name].splice(index, 1);
+      }
+    };
+
+    this.fireEvent = function(name, args) {
+      if (!self.events.hasOwnProperty(name)) {
+        return;
+      }
+      if (!args || !args.length) {
+        args = [];
+      }
+
+      var evs = self.events[name];
+      evs.forEach(function(ev) {
+        ev.apply(null, args);
+      });
+    };
   }
 
   /**
@@ -299,6 +346,21 @@ class Connection{
     return secureUrl;
   }
 
+  /**
+   * Logs browser compatibility for required and optional SDK capabilities.
+   * In case of compatibility issues, an error is thrown.
+   */
+  _sdkCompatibility() {
+    // WebSocket
+    // http://caniuse.com/#feat=websockets
+    var canCreateWebSocket = 'WebSocket' in window;
+    console.log('Native WebSocket capability: ' +
+      canCreateWebSocket);
+
+    if (!canCreateWebSocket) {
+      throw new Error('No WebSocket capabilities');
+    }
+  }
 }
 
 module.exports = {
