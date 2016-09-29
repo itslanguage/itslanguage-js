@@ -6,8 +6,80 @@
  max-len,
  no-unused-vars
  */
-'use strict';
+
 const Student = require('../administrative-sdk/student').Student;
+
+/**
+ * @class WordChunk
+ *
+ * @member {string} graphemes The graphemes this chunk consists of.
+ * @member {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
+ * @member {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
+ * @member {its.Phoneme[]} phonemes The phonemes this chunk consists of.
+ */
+class WordChunk {
+  /**
+   * Create a word chunk domain model.
+   *
+   * @constructor
+   * @param {string} graphemes The graphemes this chunk consists of.
+   * @param {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
+   * @param {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
+   * @param {its.Phoneme[]} phonemes The phonemes this chunk consists of.
+   * @return {WordChunk}
+   */
+  constructor(graphemes, score, verdict, phonemes) {
+    this.graphemes = graphemes;
+    this.score = score;
+    this.verdict = verdict;
+    this.phonemes = phonemes || [];
+  }
+}
+
+/**
+ * @class Word
+ *
+ * @member {its.WordChunk[]} chunks The spoken sentence, split in graphemes per word.
+ */
+class Word {
+  /**
+   * Create a word domain model.
+   *
+   * @constructor
+   * @param {its.WordChunk[][]} chunks The spoken sentence, split in graphemes per word.
+   * @return {Word}
+   */
+  constructor(chunks) {
+    this.chunks = chunks;
+  }
+}
+
+/**
+ * @class Phoneme
+ *
+ * @member {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
+ * @member {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
+ * @member {string} bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
+ */
+class Phoneme {
+  /**
+   * Create a phoneme domain model.
+   *
+   * @constructor
+   * @param {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
+   * @param {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
+   * @param {float} confidenceScore This value provides a reliable prediction that the pronounced phoneme is actually the phoneme that is supposed to be pronounced. There is no absolute scale defined yet.
+   * @param {string} verdict bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
+   * @return {Phoneme}
+   */
+  constructor(ipa, score, confidenceScore, verdict) {
+    this.ipa = ipa;
+    this.score = score;
+    this.confidenceScore = confidenceScore;
+    this.verdict = verdict;
+  }
+}
+
 /**
  * @class PronunciationAnalysis
  *
@@ -444,78 +516,6 @@ class PronunciationAnalysis {
     this.connection._secureAjaxGet(url, _cb, ecb);
   }
 }
-
-/**
- * @class WordChunk
- *
- * @member {string} graphemes The graphemes this chunk consists of.
- * @member {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
- * @member {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
- * @member {its.Phoneme[]} phonemes The phonemes this chunk consists of.
- */
-class WordChunk {
-  /**
-   * Create a word chunk domain model.
-   *
-   * @constructor
-   * @param {string} graphemes The graphemes this chunk consists of.
-   * @param {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
-   * @param {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
-   * @param {its.Phoneme[]} phonemes The phonemes this chunk consists of.
-   * @return {WordChunk}
-   */
-  constructor(graphemes, score, verdict, phonemes) {
-    this.graphemes = graphemes;
-    this.score = score;
-    this.verdict = verdict;
-    this.phonemes = phonemes || [];
-  }
-}
-
-/**
- * @class Word
- *
- * @member {its.WordChunk[]} chunks The spoken sentence, split in graphemes per word.
- */
-class Word {
-  /**
-   * Create a word domain model.
-   *
-   * @constructor
-   * @param {its.WordChunk[][]} chunks The spoken sentence, split in graphemes per word.
-   * @return {Word}
-   */
-  constructor(chunks) {
-    this.chunks = chunks;
-  }
-}
-
-/**
- * @class Phoneme
- *
- * @member {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
- * @member {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
- * @member {string} bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
- */
-class Phoneme {
-  /**
-   * Create a phoneme domain model.
-   *
-   * @constructor
-   * @param {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
-   * @param {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
-   * @param {float} confidenceScore This value provides a reliable prediction that the pronounced phoneme is actually the phoneme that is supposed to be pronounced. There is no absolute scale defined yet.
-   * @param {string} verdict bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
-   * @return {Phoneme}
-   */
-  constructor(ipa, score, confidenceScore, verdict) {
-    this.ipa = ipa;
-    this.score = score;
-    this.confidenceScore = confidenceScore;
-    this.verdict = verdict;
-  }
-}
-
 module.exports = {
   Phoneme: Phoneme,
   PronunciationAnalysis: PronunciationAnalysis,

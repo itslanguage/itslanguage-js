@@ -6,7 +6,7 @@
  max-len,
  no-unused-vars
  */
-'use strict';
+
 
 /**
  * @class Student

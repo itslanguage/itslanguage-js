@@ -100,7 +100,7 @@ describe('Organisation API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {id: '1'};
-    expect(_.isEqual(request.data(),expected));
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       message: 'Validation failed',

@@ -159,7 +159,7 @@ describe('SpeechChallenge API interaction test', function() {
       authPassword: 'secret'
     });
     var challenge = new its.SpeechChallenge('fb', '1', 'Hi');
-    challenge.connection =  api;
+    challenge.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
@@ -203,7 +203,7 @@ describe('SpeechChallenge API interaction test', function() {
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-    var chall= new its.SpeechChallenge();
+    var chall = new its.SpeechChallenge();
     chall.connection = api;
     var output = chall.getSpeechChallenge('fb', '4', cb);
     expect(output).toBeUndefined();
@@ -239,7 +239,7 @@ describe('SpeechChallenge API interaction test', function() {
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-    var chall= new its.SpeechChallenge();
+    var chall = new its.SpeechChallenge();
     chall.connection = api;
     var output = chall.listSpeechChallenges('fb', cb);
     expect(output).toBeUndefined();

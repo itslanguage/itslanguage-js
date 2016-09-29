@@ -19,7 +19,6 @@ require('jasmine-ajax');
 
 const its = require('../administrative-sdk/choiceChallenge');
 const connection = require('../administrative-sdk/connection');
-const _ = require('underscore');
 
 describe('ChoiceChallenge object test', function() {
   it('should require all required fields in constructor', function() {

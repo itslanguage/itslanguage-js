@@ -6,10 +6,10 @@
  max-len,
  no-unused-vars
  */
+const autobahn = require('autobahn');
+class Connection {
 
-class Connection{
-
-  constructor(options){
+  constructor(options) {
     this.settings = Object.assign({
       // ITSL connection parameters.
       apiUrl: 'https://api.itslanguage.nl',
@@ -155,7 +155,6 @@ class Connection{
    * @param {callback} [ecb] The callback that handles the error response.
    */
   _secureAjaxPost(url, formdata, cb, ecb) {
-    console.log('In secure post');
     return this._ajaxPost(url, formdata, cb, ecb, this._getAuthHeaders());
   }
 
@@ -210,8 +209,8 @@ class Connection{
           // Some error occured.
           response = self._parseResponse(request.responseText);
           ecb(response.errors || {
-              status: request.status
-            }, response);
+            status: request.status
+          }, response);
         }
       }
     };
@@ -248,12 +247,10 @@ class Connection{
           // Some error occured.
           try {
             response = self._parseResponse(request.responseText);
-            console.log('RESPONSE IS ' + JSON.stringify(response));
             ecb(response.errors || {
-                status: request.status
-              }, response);
+              status: request.status
+            }, response);
           } catch (e) {
-            console.log("Caught");
             ecb(response || e);
           }
         }
@@ -300,8 +297,8 @@ class Connection{
           try {
             response = self._parseResponse(request.responseText);
             ecb(response.errors || {
-                status: request.status
-              }, response);
+              status: request.status
+            }, response);
           } catch (e) {
             ecb(response || e);
           }
@@ -328,22 +325,6 @@ class Connection{
       console.error('Unhandled exception: ' + error);
       throw error;
     }
-  }
-
-  /**
-   * Add an access token to the given URL.
-   *
-   * @param {string} url The URL to add an access token to.
-   */
-  addAccessToken(url) {
-    if (!this.settings.authPrincipal && !this.settings.authCredentials) {
-      throw new Error('Please set authPrincipal and authCredentials');
-    }
-    var combo = this.settings.authPrincipal + ':' + this.settings.authCredentials;
-    var accessToken = btoa(unescape(encodeURIComponent(combo)));
-    var secureUrl = url + (url.match(/\?/) ? '&' : '?') + 'access_token=' +
-      encodeURIComponent(accessToken);
-    return secureUrl;
   }
 
   /**

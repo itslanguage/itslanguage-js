@@ -22,7 +22,6 @@ const ChoiceChallenge = require('../administrative-sdk/choiceChallenge').ChoiceC
 const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
 const Student = require('../administrative-sdk/student').Student;
 const connection = require('../administrative-sdk/connection');
-const _ = require('underscore');
 
 describe('ChoiceRecognition Websocket API interaction test', function() {
   beforeEach(function() {

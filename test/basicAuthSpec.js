@@ -87,9 +87,7 @@ describe('BasicAuth API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {tenantId: '4', principal: 'principal', connection: api};
-    console.log('Data     ' + JSON.stringify(request.data()));
-    console.log('Expected ' + JSON.stringify(expected));
-    expect(_.isEqual(request.data()),expected);
+    expect(_.isEqual(request.data()), expected);
 
     var content = {
       tenantId: '4',
@@ -101,7 +99,6 @@ describe('BasicAuth API interaction test', function() {
       contentType: 'application/json',
       responseText: JSON.stringify(content)
     });
-    console.log('Responded');
     expect(cb).toHaveBeenCalledWith(basicauth);
     expect(basicauth.tenantId).toBe('4');
     expect(basicauth.principal).toBe('principal');
@@ -125,7 +122,7 @@ describe('BasicAuth API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {tenantId: '4', principal: 'principal', connection: api};
-    expect(_.isEqual(request.data()),expected);
+    expect(_.isEqual(request.data()), expected);
 
     var content = {
       message: 'Validation failed',

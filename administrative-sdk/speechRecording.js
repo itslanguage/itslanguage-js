@@ -6,7 +6,7 @@
  max-len,
  no-unused-vars
  */
-'use strict';
+
 const Student = require('../administrative-sdk/student').Student;
 /**
  * @class SpeechRecording
