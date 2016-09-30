@@ -28,7 +28,7 @@ class SpeechChallenge {
    * @param {blob} [referenceAudio] The reference audio fragment.
    * @return {choiceRecog.SpeechChallenge}
    */
-  constructor(organisationId, id, topic, referenceAudio, connection) {
+  constructor(organisationId, id, topic, referenceAudio) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
@@ -51,7 +51,6 @@ class SpeechChallenge {
     }
     this.referenceAudio = referenceAudio || null;
     this.referenceAudioUrl = null;
-    this.connection = connection;
   }
 
   /**
@@ -78,7 +77,7 @@ class SpeechChallenge {
    * @param {Sdk~speechChallengeCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~speechChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createSpeechChallenge(cb, ecb) {
+  createSpeechChallenge(connection, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
@@ -111,9 +110,9 @@ class SpeechChallenge {
       fd.append('referenceAudio', this.referenceAudio);
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/speech';
-    this.connection._secureAjaxPost(url, fd, _cb, _ecb);
+    connection._secureAjaxPost(url, fd, _cb, _ecb);
   }
 
   /**
@@ -140,7 +139,7 @@ class SpeechChallenge {
    * @param {Sdk~getSpeechChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getSpeechChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  getSpeechChallenge(organisationId, challengeId, cb, ecb) {
+  getSpeechChallenge(connection, organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
       challenge.created = new Date(data.created);
@@ -150,9 +149,9 @@ class SpeechChallenge {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech/' + challengeId;
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -178,7 +177,7 @@ class SpeechChallenge {
    * @param {Sdk~listSpeechChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listSpeechChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listSpeechChallenges(organisationId, cb, ecb) {
+  listSpeechChallenges(connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];
       data.forEach(function(datum) {
@@ -193,9 +192,9 @@ class SpeechChallenge {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech';
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 }
 

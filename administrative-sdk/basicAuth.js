@@ -15,7 +15,7 @@ class BasicAuth {
    * @param {string} [principal] The principal. If none is given, one is generated.
    * @param {string} [credentials] The credentials. If none is given, one is generated.
    */
-  constructor(tenantId, principal, credentials, connection) {
+  constructor(tenantId, principal, credentials) {
     if (typeof tenantId !== 'string') {
       throw new Error(
         'tenantId parameter of type "string" is required');
@@ -35,7 +35,6 @@ class BasicAuth {
         'credentials parameter of type "string|null|undefined" is required');
     }
     this.credentials = credentials;
-    this.connection = connection;
   }
 
   /**
@@ -64,7 +63,7 @@ class BasicAuth {
    * @param {Sdk~basicAuthCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~basicAuthCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createBasicAuth(cb, ecb) {
+  createBasicAuth(connection, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       self.principal = data.principal;
@@ -85,9 +84,9 @@ class BasicAuth {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/basicauths';
+    var url = connection.settings.apiUrl + '/basicauths';
     var fd = JSON.stringify(this);
-    this.connection._secureAjaxPost(url, fd, _cb, _ecb);
+    connection._secureAjaxPost(url, fd, _cb, _ecb);
   }
 }
 

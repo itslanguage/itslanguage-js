@@ -110,8 +110,7 @@ describe('SpeechRecording API interaction test', function() {
     var chall = new SpeechChallenge('fb');
     var stud = new Student('org');
     var rec = new SpeechRecording(chall, stud, null);
-    rec.connection = api;
-    var output = rec.getSpeechRecording(challenge, '5', cb);
+    var output = rec.getSpeechRecording(api, challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -155,8 +154,7 @@ describe('SpeechRecording API interaction test', function() {
     var chall = new SpeechChallenge('fb');
     var stud = new Student('org');
     var rec = new SpeechRecording(chall, stud, null);
-    rec.connection = api;
-    var output = rec.listSpeechRecordings(challenge, cb);
+    var output = rec.listSpeechRecordings(api, challenge, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -225,7 +223,6 @@ describe('Speech Recording Websocket API interaction test', function() {
     var chall = new SpeechChallenge('fb');
     var stud = new Student('org');
     var rec = new SpeechRecording(chall, stud, null);
-    rec.connection = api;
     var student = new Student('fb', '6');
     var recorder = new RecorderMock();
     var cb = jasmine.createSpy('callback');
@@ -233,7 +230,7 @@ describe('Speech Recording Websocket API interaction test', function() {
 
     expect(function() {
       rec.startStreamingSpeechRecording(
-        challenge, student, recorder, cb, ecb);
+        api, challenge, student, recorder, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
 
     // Restore WebSocket
@@ -281,9 +278,8 @@ describe('Speech Recording Websocket API interaction test', function() {
     var chall = new SpeechChallenge('fb');
     var stud = new Student('org');
     var rec = new SpeechRecording(chall, stud, null);
-    rec.connection = api;
     var output = rec.startStreamingSpeechRecording(
-      challenge, recorder, prepareCb, cb, ecb);
+      api, challenge, recorder, prepareCb, cb, ecb);
 
     expect(api._session.call).toHaveBeenCalled();
     expect(api._session.call).toHaveBeenCalledWith(

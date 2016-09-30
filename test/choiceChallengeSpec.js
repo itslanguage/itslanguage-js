@@ -86,8 +86,7 @@ describe('ChoiceChallenge API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    challenge.connection = api;
-    var output = challenge.createChoiceChallenge(cb);
+    var output = challenge.createChoiceChallenge(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -134,8 +133,7 @@ describe('ChoiceChallenge API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    challenge.connection = api;
-    var output = challenge.createChoiceChallenge(cb, ecb);
+    var output = challenge.createChoiceChallenge(api, cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb' +
@@ -177,10 +175,9 @@ describe('ChoiceChallenge API interaction test', function() {
       authPassword: 'secret'
     });
     var chal = new ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
-    chal.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = chal.getChoiceChallenge('fb', '1', cb);
+    var output = chal.getChoiceChallenge(api, 'fb', '1', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -220,10 +217,9 @@ describe('ChoiceChallenge API interaction test', function() {
       authPassword: 'secret'
     });
     var chal = new ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
-    chal.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = chal.listChoiceChallenges('fb', cb);
+    var output = chal.listChoiceChallenges(api, 'fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

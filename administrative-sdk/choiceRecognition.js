@@ -36,7 +36,7 @@ class ChoiceRecognition {
    * @param {string} audioUrl The audio fragment as streaming audio link.
    * @param {string} recognised The recognised sentence.
    */
-  constructor(challenge, student, id, created, updated, audioUrl, recognised, connection) {
+  constructor(challenge, student, id, created, updated, audioUrl, recognised) {
     this.id = id;
     this.challenge = challenge;
     this.student = student;
@@ -44,7 +44,6 @@ class ChoiceRecognition {
     this.updated = updated;
     this.audioUrl = audioUrl;
     this.recognised = recognised;
-    this.connection = connection;
   }
 
   /**
@@ -68,14 +67,12 @@ class ChoiceRecognition {
    * Initialise the choice recognition challenge through RPCs.
    *
    */
-  choiceRecognitionInitChallenge(challenge) {
-    var self = this;
-
-    this.connection._session.call('nl.itslanguage.choice.init_challenge',
-      [self.connection._recognitionId, challenge.organisationId, challenge.id]).then(
+  choiceRecognitionInitChallenge(connection, challenge) {
+    connection._session.call('nl.itslanguage.choice.init_challenge',
+      [connection._recognitionId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
       function(recognitionId) {
-        console.log('Challenge initialised for recognitionId: ' + self.connection._recognitionId);
+        console.log('Challenge initialised for recognitionId: ' + connection._recognitionId);
       },
       // RPC error callback
       function(res) {
@@ -88,18 +85,16 @@ class ChoiceRecognition {
    * Initialise the pronunciation analysis audio specs through RPCs.
    *
    */
-  choiceRecognitionInitAudio(recorder, dataavailableCb) {
-    var self = this;
-
+  choiceRecognitionInitAudio(connection, recorder, dataavailableCb) {
     // Indicate to the socket server that we're about to start recording a
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     var specs = recorder.getAudioSpecs();
-    this.connection._session.call('nl.itslanguage.choice.init_audio',
-      [self.connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
+    connection._session.call('nl.itslanguage.choice.init_audio',
+      [connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
       function(recognitionId) {
-        console.log('Accepted audio parameters for recognitionId after init_audio: ' + self.connection._recognitionId);
+        console.log('Accepted audio parameters for recognitionId after init_audio: ' + connection._recognitionId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
       },
@@ -120,13 +115,13 @@ class ChoiceRecognition {
    * @param {Sdk~choiceRecognitionCreatedErrorCallback} [ecb] The callback that handles the error response.
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
    */
-  startStreamingChoiceRecognition(challenge, recorder, preparedCb, cb, ecb, trim) {
+  startStreamingChoiceRecognition(connection, challenge, recorder, preparedCb, cb, ecb, trim) {
     var self = this;
     var _cb = function(data) {
       var recognition = new ChoiceRecognition(
         challenge.id, data.studentId, data.id,
         new Date(data.created), new Date(data.updated),
-        self.addAccessToken(data.audioUrl), data.recognised);
+        connection.addAccessToken(data.audioUrl), data.recognised);
       if (cb) {
         cb(recognition);
       }
@@ -138,7 +133,7 @@ class ChoiceRecognition {
         var analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          self.addAccessToken(data.audioUrl));
+          connection.addAccessToken(data.audioUrl));
         ecb(analysis, data.message);
       }
     };
@@ -156,7 +151,7 @@ class ChoiceRecognition {
     }
 
     // Validate environment prerequisites.
-    if (!this.connection._session) {
+    if (!connection._session) {
       throw new Error('WebSocket connection was not open.');
     }
 
@@ -164,20 +159,20 @@ class ChoiceRecognition {
       throw new Error('Recorder should not yet be recording.');
     }
 
-    if (this.connection._recognitionId !== null) {
-      console.error('Session with recognitionId ' + this.connection._recognitionId + ' still in progress.');
+    if (connection._recognitionId !== null) {
+      console.error('Session with recognitionId ' + connection._recognitionId + ' still in progress.');
       return;
     }
-    this.connection._recognitionId = null;
+    connection._recognitionId = null;
 
     // Start streaming the binary audio when the user instructs
     // the audio recorder to start recording.
     var dataavailableCb = function(chunk) {
       var encoded = Base64Utils._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for recognitionId: ' +
-        self.connection._recognitionId);
-      self._session.call('nl.itslanguage.choice.write',
-        [self.connection._recognitionId, encoded, 'base64']).then(
+        connection._recognitionId);
+      connection._session.call('nl.itslanguage.choice.write',
+        [connection._recognitionId, encoded, 'base64']).then(
         // RPC success callback
         function(res) {
           console.debug('Delivered audio successfully');
@@ -191,16 +186,16 @@ class ChoiceRecognition {
     };
 
     var recognitionInitCb = function(recognitionId) {
-      self.connection._recognitionId = recognitionId;
-      console.log('Got recognitionId after initialisation: ' + self.connection._recognitionId);
-      self.choiceRecognitionInitChallenge(challenge);
-      preparedCb(self.connection._recognitionId);
+      connection._recognitionId = recognitionId;
+      console.log('Got recognitionId after initialisation: ' + connection._recognitionId);
+      self.choiceRecognitionInitChallenge(connection, challenge);
+      preparedCb(connection._recognitionId);
 
       if (recorder.hasUserMediaApproval()) {
-        self.choiceRecognitionInitAudio(recorder, dataavailableCb);
+        self.choiceRecognitionInitAudio(connection, recorder, dataavailableCb);
       } else {
         var userMediaCb = function(chunk) {
-          self.choiceRecognitionInitAudio(recorder, dataavailableCb);
+          self.choiceRecognitionInitAudio(connection, recorder, dataavailableCb);
           recorder.removeEventListener('ready', userMediaCb);
         };
         recorder.addEventListener('ready', userMediaCb);
@@ -212,7 +207,7 @@ class ChoiceRecognition {
     if (trim === false) {
       trimAudioStart = 0.0;
     }
-    this.connection._session.call('nl.itslanguage.choice.init_recognition', [],
+    connection._session.call('nl.itslanguage.choice.init_recognition', [],
       {trimStart: trimAudioStart,
         trimEnd: trimAudioEnd}).then(
       // RPC success callback
@@ -226,8 +221,8 @@ class ChoiceRecognition {
     // Stop listening when the audio recorder stopped.
     var recordedCb = function(id) {
       // When done, submit any plain text (non-JSON) to start analysing.
-      self.connection._session.call('nl.itslanguage.choice.recognise',
-        [self.connection._recognitionId]).then(
+      connection._session.call('nl.itslanguage.choice.recognise',
+        [connection._recognitionId]).then(
         // RPC success callback
         function(res) {
           console.log(res);
@@ -249,7 +244,7 @@ class ChoiceRecognition {
       recorder.removeEventListener('recorded', recordedCb);
       recorder.removeEventListener('dataavailable', dataavailableCb);
       // This session is over.
-      self.connection._recognitionId = null;
+      connection._recognitionId = null;
     };
     recorder.addEventListener('recorded', recordedCb);
   }
@@ -278,7 +273,7 @@ class ChoiceRecognition {
    * @param {Sdk~getChoiceRecognitionCallback} [cb] The callback that handles the response.
    * @param {Sdk~getChoiceRecognitionErrorCallback} [ecb] The callback that handles the error response.
    */
-  getChoiceRecognition(challenge, recognitionId, cb, ecb) {
+  getChoiceRecognition(connection, challenge, recognitionId, cb, ecb) {
     var _cb = function(datum) {
       var student = new Student(challenge.organisationId, datum.studentId);
       var recognition = new ChoiceRecognition(challenge, student,
@@ -302,10 +297,10 @@ class ChoiceRecognition {
       throw new Error('challenge.organisationId field is required');
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions/' + recognitionId;
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -331,7 +326,7 @@ class ChoiceRecognition {
    * @param {Sdk~listChoiceRecognitionsCallback} cb The callback that handles the response.
    * @param {Sdk~listChoiceRecognitionsErrorCallback} [ecb] The callback that handles the error response.
    */
-  listChoiceRecognitions(challenge, cb, ecb) {
+  listChoiceRecognitions(connection, challenge, cb, ecb) {
     var _cb = function(data) {
       var recognitions = [];
       data.forEach(function(datum) {
@@ -359,10 +354,10 @@ class ChoiceRecognition {
       throw new Error('challenge.organisationId field is required');
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions';
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 }
 

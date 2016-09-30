@@ -49,8 +49,7 @@ describe('PronunciationAnalyses API interaction test', function() {
 
     var challenge = new SpeechChallenge('fb', '4');
     var analys = new PronunciationAnalysis();
-    analys.connection = api;
-    var output = analys.getPronunciationAnalysis(challenge, '5', cb);
+    var output = analys.getPronunciationAnalysis(api, challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -90,8 +89,7 @@ describe('PronunciationAnalyses API interaction test', function() {
 
     var challenge = new SpeechChallenge('fb', '4');
     var analys = new PronunciationAnalysis();
-    analys.connection = api;
-    var output = analys.listPronunciationAnalyses(challenge, false, cb);
+    var output = analys.listPronunciationAnalyses(api, challenge, false, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -174,8 +172,7 @@ describe('PronunciationAnalyses API interaction test', function() {
 
     var challenge = new SpeechChallenge('fb', '4');
     var analys = new PronunciationAnalysis();
-    analys.connection = api;
-    var output = analys.listPronunciationAnalyses(challenge, true, cb);
+    var output = analys.listPronunciationAnalyses(api, challenge, true, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -326,10 +323,9 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
     var analys = new PronunciationAnalysis();
-    analys.connection = api;
     expect(function() {
       analys.startStreamingPronunciationAnalysis(
-        challenge, recorder, prepareCb, cb, ecb);
+        api, challenge, recorder, prepareCb, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
   });
 
@@ -374,9 +370,8 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
 
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-    analys.connection = api;
     var output = analys.startStreamingPronunciationAnalysis(
-      challenge, recorder, prepareCb, cb, ecb);
+      api, challenge, recorder, prepareCb, cb, ecb);
 
     expect(api._session.call).toHaveBeenCalled();
     expect(api._session.call).toHaveBeenCalledWith(

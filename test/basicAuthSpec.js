@@ -75,18 +75,16 @@ describe('BasicAuth API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    basicauth.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = basicauth.createBasicAuth(cb);
+    var output = basicauth.createBasicAuth(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/basicauths';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {tenantId: '4', principal: 'principal', connection: api};
-    expected = JSON.parse(JSON.stringify(expected));
+    var expected = {tenantId: '4', principal: 'principal'};
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -111,18 +109,16 @@ describe('BasicAuth API interaction test', function() {
       authPassword: 'secret'
     });
     var basicauth = new BasicAuth('4', 'principal');
-    basicauth.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = basicauth.createBasicAuth(cb, ecb);
+    var output = basicauth.createBasicAuth(api, cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/basicauths';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {tenantId: '4', principal: 'principal', connection: api};
-    expected = JSON.parse(JSON.stringify(expected));
+    var expected = {tenantId: '4', principal: 'principal'};
     expect(request.data()).toEqual(expected);
 
     var content = {

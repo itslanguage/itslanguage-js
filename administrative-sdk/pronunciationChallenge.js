@@ -29,7 +29,7 @@ class PronunciationChallenge {
    * @param {blob} referenceAudio The reference audio fragment.
    * @return {PronunciationChallenge}
    */
-  constructor(organisationId, id, transcription, referenceAudio, connection) {
+  constructor(organisationId, id, transcription, referenceAudio) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
@@ -50,7 +50,6 @@ class PronunciationChallenge {
         'referenceAudio parameter of type "Blob" is required');
     }
     this.referenceAudio = referenceAudio;
-    this.connection = connection;
   }
 
   /**
@@ -77,7 +76,7 @@ class PronunciationChallenge {
    * @param {Sdk~pronunciationChallengeCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~pronunciationChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createPronunciationChallenge(cb, ecb) {
+  createPronunciationChallenge(connection, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
@@ -116,9 +115,9 @@ class PronunciationChallenge {
     fd.append('transcription', this.transcription);
     fd.append('referenceAudio', this.referenceAudio);
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/pronunciation';
-    this.connection._secureAjaxPost(url, fd, _cb, _ecb);
+    connection._secureAjaxPost(url, fd, _cb, _ecb);
   }
 
   /**
@@ -146,7 +145,7 @@ class PronunciationChallenge {
    * @param {Sdk~getPronunciationChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
   getPronunciationChallenge(
-    organisationId, challengeId, cb, ecb) {
+    connection, organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new PronunciationChallenge(organisationId, data.id,
         data.transcription);
@@ -159,9 +158,9 @@ class PronunciationChallenge {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation/' + challengeId;
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -188,7 +187,7 @@ class PronunciationChallenge {
    * @param {Sdk~listPronunciationChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
   listPronunciationChallenges(
-    organisationId, cb, ecb) {
+    connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];
       data.forEach(function(datum) {
@@ -205,9 +204,9 @@ class PronunciationChallenge {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation';
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -233,7 +232,7 @@ class PronunciationChallenge {
    * @param {Sdk~pronunciationChallengeDeletedCallback} [cb] The callback that handles the response.
    * @param {Sdk~pronunciationChallengeDeletedErrorCallback} [ecb] The callback that handles the error response.
    */
-  deletePronunciationChallenge(cb, ecb) {
+  deletePronunciationChallenge(connection, cb, ecb) {
     var self = this;
     var _cb = function(response) {
       if (cb) {
@@ -256,10 +255,10 @@ class PronunciationChallenge {
       throw new Error('id field is required');
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/pronunciation/' +
       this.id;
-    this.connection._secureAjaxDelete(url, _cb, _ecb);
+    connection._secureAjaxDelete(url, _cb, _ecb);
   }
 }
 

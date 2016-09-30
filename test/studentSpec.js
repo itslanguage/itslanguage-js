@@ -57,10 +57,9 @@ describe('Student API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    student.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = student.createStudent(cb);
+    var output = student.createStudent(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -69,9 +68,7 @@ describe('Student API interaction test', function() {
     expect(request.method).toBe('POST');
     var expected = {id: '1',
       organisationId: 'fb',
-      connection: api,
       firstName: 'Mark'};
-    expected = JSON.parse(JSON.stringify(expected));
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -100,11 +97,10 @@ describe('Student API interaction test', function() {
       authPassword: 'secret'
     });
     var student = new Student('fb', '1', 'Mark');
-    student.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = student.createStudent(cb, ecb);
+    var output = student.createStudent(api, cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/students';
@@ -112,9 +108,7 @@ describe('Student API interaction test', function() {
     expect(request.method).toBe('POST');
     var expected = {id: '1',
       organisationId: 'fb',
-      connection: api,
       firstName: 'Mark'};
-    expected = JSON.parse(JSON.stringify(expected));
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -149,10 +143,9 @@ describe('Student API interaction test', function() {
       authPassword: 'secret'
     });
     var stud = new Student();
-    stud.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = stud.getStudent('fb', '4', cb);
+    var output = stud.getStudent(api, 'fb', '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -185,10 +178,9 @@ describe('Student API interaction test', function() {
       authPassword: 'secret'
     });
     var stud = new Student();
-    stud.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = stud.listStudents('fb', cb);
+    var output = stud.listStudents(api, 'fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

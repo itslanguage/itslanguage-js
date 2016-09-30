@@ -14,10 +14,9 @@ class Tenant {
    * @param {string} [id] The tenant identifier. If none is given, one is generated.
    * @param {string} name name of the tenant.
    */
-  constructor(id, name, connection) {
+  constructor(id, name) {
     this.id = id;
     this.name = name;
-    this.connection = connection;
   }
 
   /**
@@ -44,7 +43,7 @@ class Tenant {
    * @param {Sdk~tenantCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~tenantCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createTenant(cb, ecb) {
+  createTenant(connection, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
@@ -62,9 +61,9 @@ class Tenant {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/tenants';
+    var url = connection.settings.apiUrl + '/tenants';
     var fd = JSON.stringify(this);
-    this.connection._secureAjaxPost(url, fd, _cb, _ecb);
+    connection._secureAjaxPost(url, fd, _cb, _ecb);
   }
 }
 

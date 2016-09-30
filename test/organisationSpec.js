@@ -52,15 +52,14 @@ describe('Organisation API interaction test', function() {
     var organisation = new Organisation('1', 'School of silly walks', api);
     var cb = jasmine.createSpy('callback');
 
-    var output = organisation.createOrganisation(cb);
+    var output = organisation.createOrganisation(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {id: '1', name: 'School of silly walks', connection: api};
-    expected = JSON.parse(JSON.stringify(expected));
+    var expected = {id: '1', name: 'School of silly walks'};
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -89,18 +88,16 @@ describe('Organisation API interaction test', function() {
       authPassword: 'secret'
     });
     var organisation = new Organisation('1');
-    organisation.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = organisation.createOrganisation(cb, ecb);
+    var output = organisation.createOrganisation(api, cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {id: '1', connection: api};
-    expected = JSON.parse(JSON.stringify(expected));
+    var expected = {id: '1'};
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -136,11 +133,10 @@ describe('Organisation API interaction test', function() {
     });
 
     var org = new Organisation();
-    org.connection = api;
 
     var cb = jasmine.createSpy('callback');
 
-    var output = org.getOrganisation('4', cb);
+    var output = org.getOrganisation(api, '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -173,10 +169,9 @@ describe('Organisation API interaction test', function() {
       authPassword: 'secret'
     });
     var org = new Organisation();
-    org.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = org.listOrganisations(cb);
+    var output = org.listOrganisations(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

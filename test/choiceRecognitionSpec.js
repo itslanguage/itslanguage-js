@@ -55,14 +55,13 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
     var challenge = new ChoiceChallenge('fb', '4', null, []);
     var recog = new ChoiceRecognition();
-    recog.connection = api;
     var recorder = new RecorderMock();
     var preparedcb = jasmine.createSpy('callback');
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
     expect(function() {
       recog.startStreamingChoiceRecognition(
-        challenge, recorder, preparedcb, cb, ecb);
+        api, challenge, recorder, preparedcb, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
 
     // Restore WebSocket
@@ -109,9 +108,8 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     }
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-    recog.connection = api;
     var output = recog.startStreamingChoiceRecognition(
-      challenge, recorder, prepareCb, cb, ecb);
+      api, challenge, recorder, prepareCb, cb, ecb);
 
     expect(api._session.call).toHaveBeenCalled();
     expect(api._session.call).toHaveBeenCalledWith(
@@ -129,8 +127,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
     var challenge = new SpeechChallenge('fb', '4');
     var recog = new ChoiceRecognition();
-    recog.connection = api;
-    var output = recog.getChoiceRecognition(challenge, '5', cb);
+    var output = recog.getChoiceRecognition(api, challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -170,8 +167,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
 
     var challenge = new SpeechChallenge('fb', '4');
     var recog = new ChoiceRecognition();
-    recog.connection = api;
-    var output = recog.listChoiceRecognitions(challenge, cb);
+    var output = recog.listChoiceRecognitions(api, challenge, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
