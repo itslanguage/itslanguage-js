@@ -18,7 +18,7 @@
 require('jasmine-ajax');
 const autobahn = require('autobahn');
 
-const its = require('..');
+const its = require('../../');
 
 describe('SpeechRecording object test', function() {
   it('should require all required fields in constructor', function() {

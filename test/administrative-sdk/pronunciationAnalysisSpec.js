@@ -18,7 +18,7 @@
 require('jasmine-ajax');
 const autobahn = require('autobahn');
 
-const its = require('..');
+const its = require('../../');
 
 describe('PronunciationAnalyses API interaction test', function() {
   beforeEach(function() {
