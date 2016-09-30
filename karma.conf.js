@@ -40,6 +40,11 @@ module.exports = config => {
       },
       reporters: [
         {
+          type: 'html',
+          dir: 'coverage/',
+          subdir: 'report-html'
+        },
+        {
           type: 'text'
         },
         {
@@ -54,8 +59,8 @@ module.exports = config => {
       entries: './index.js',
       debug: true,
       transform: [
-        'babelify',
-        istanbul()
+        istanbul({instrumenter: require('isparta')}),
+        'babelify'
       ]
     }
   };
