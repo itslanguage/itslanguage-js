@@ -174,10 +174,9 @@ describe('ChoiceChallenge API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var chal = new ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
     var cb = jasmine.createSpy('callback');
 
-    var output = chal.getChoiceChallenge(api, 'fb', '1', cb);
+    var output = ChoiceChallenge.getChoiceChallenge(api, 'fb', '1', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -216,10 +215,9 @@ describe('ChoiceChallenge API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var chal = new ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
     var cb = jasmine.createSpy('callback');
 
-    var output = chal.listChoiceChallenges(api, 'fb', cb);
+    var output = ChoiceChallenge.listChoiceChallenges(api, 'fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

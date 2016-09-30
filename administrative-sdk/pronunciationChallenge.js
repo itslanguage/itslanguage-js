@@ -144,7 +144,7 @@ class PronunciationChallenge {
    * @param {Sdk~getPronunciationChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getPronunciationChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  getPronunciationChallenge(
+  static getPronunciationChallenge(
     connection, organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new PronunciationChallenge(organisationId, data.id,
@@ -186,7 +186,7 @@ class PronunciationChallenge {
    * @param {Sdk~listPronunciationChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listPronunciationChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listPronunciationChallenges(
+  static listPronunciationChallenges(
     connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];

@@ -273,7 +273,7 @@ class ChoiceRecognition {
    * @param {Sdk~getChoiceRecognitionCallback} [cb] The callback that handles the response.
    * @param {Sdk~getChoiceRecognitionErrorCallback} [ecb] The callback that handles the error response.
    */
-  getChoiceRecognition(connection, challenge, recognitionId, cb, ecb) {
+  static getChoiceRecognition(connection, challenge, recognitionId, cb, ecb) {
     var _cb = function(datum) {
       var student = new Student(challenge.organisationId, datum.studentId);
       var recognition = new ChoiceRecognition(challenge, student,
@@ -326,7 +326,7 @@ class ChoiceRecognition {
    * @param {Sdk~listChoiceRecognitionsCallback} cb The callback that handles the response.
    * @param {Sdk~listChoiceRecognitionsErrorCallback} [ecb] The callback that handles the error response.
    */
-  listChoiceRecognitions(connection, challenge, cb, ecb) {
+  static listChoiceRecognitions(connection, challenge, cb, ecb) {
     var _cb = function(data) {
       var recognitions = [];
       data.forEach(function(datum) {

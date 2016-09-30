@@ -142,10 +142,9 @@ describe('Student API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var stud = new Student();
     var cb = jasmine.createSpy('callback');
 
-    var output = stud.getStudent(api, 'fb', '4', cb);
+    var output = Student.getStudent(api, 'fb', '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -177,10 +176,9 @@ describe('Student API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var stud = new Student();
     var cb = jasmine.createSpy('callback');
 
-    var output = stud.listStudents(api, 'fb', cb);
+    var output = Student.listStudents(api, 'fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

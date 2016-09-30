@@ -82,7 +82,7 @@ class VolumeMeter {
     this._updateAnalysers();
   }
 
-  _getAverageVolume(array) {
+  static _getAverageVolume(array) {
     var values = 0;
     var average;
 
@@ -110,7 +110,6 @@ class VolumeMeter {
     };
     var skippedCallbacks = 0;
     var lastVolume = -1;
-    var self = this;
 
     animloop();
 
@@ -130,7 +129,7 @@ class VolumeMeter {
       var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
 
       analyserNode.getByteFrequencyData(freqByteData);
-      var averageVolume = self._getAverageVolume(freqByteData);
+      var averageVolume = VolumeMeter._getAverageVolume(freqByteData);
 
       if (willAnimate.anim) {
         requestAnimationFrame(animloop);

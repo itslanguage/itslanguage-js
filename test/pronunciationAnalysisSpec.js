@@ -48,8 +48,7 @@ describe('PronunciationAnalyses API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new SpeechChallenge('fb', '4');
-    var analys = new PronunciationAnalysis();
-    var output = analys.getPronunciationAnalysis(api, challenge, '5', cb);
+    var output = PronunciationAnalysis.getPronunciationAnalysis(api, challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -88,8 +87,7 @@ describe('PronunciationAnalyses API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new SpeechChallenge('fb', '4');
-    var analys = new PronunciationAnalysis();
-    var output = analys.listPronunciationAnalyses(api, challenge, false, cb);
+    var output = PronunciationAnalysis.listPronunciationAnalyses(api, challenge, false, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -171,8 +169,7 @@ describe('PronunciationAnalyses API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new SpeechChallenge('fb', '4');
-    var analys = new PronunciationAnalysis();
-    var output = analys.listPronunciationAnalyses(api, challenge, true, cb);
+    var output = PronunciationAnalysis.listPronunciationAnalyses(api, challenge, true, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

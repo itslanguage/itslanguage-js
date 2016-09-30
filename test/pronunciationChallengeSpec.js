@@ -196,9 +196,7 @@ describe('PronunciationChallenge API interaction test', function() {
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-    var blob = new Blob(['1234567890']);
-    var chall = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    var output = chall.getPronunciationChallenge(api, 'fb', '4', cb);
+    var output = PronunciationChallenge.getPronunciationChallenge(api, 'fb', '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -238,9 +236,7 @@ describe('PronunciationChallenge API interaction test', function() {
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-    var blob = new Blob(['1234567890']);
-    var chall = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    var output = chall.listPronunciationChallenges(api, 'fb', cb);
+    var output = PronunciationChallenge.listPronunciationChallenges(api, 'fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

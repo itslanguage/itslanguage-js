@@ -148,7 +148,7 @@ class ChoiceChallenge {
    * @param {Sdk~getChoiceChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getChoiceChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  getChoiceChallenge(
+  static getChoiceChallenge(
     connection, organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new ChoiceChallenge(organisationId, data.id,
@@ -193,7 +193,7 @@ class ChoiceChallenge {
    * @param {Sdk~listChoiceChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listChoiceChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listChoiceChallenges(
+  static listChoiceChallenges(
     connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];

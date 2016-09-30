@@ -126,8 +126,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new SpeechChallenge('fb', '4');
-    var recog = new ChoiceRecognition();
-    var output = recog.getChoiceRecognition(api, challenge, '5', cb);
+    var output = ChoiceRecognition.getChoiceRecognition(api, challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -166,8 +165,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new SpeechChallenge('fb', '4');
-    var recog = new ChoiceRecognition();
-    var output = recog.listChoiceRecognitions(api, challenge, cb);
+    var output = ChoiceRecognition.listChoiceRecognitions(api, challenge, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

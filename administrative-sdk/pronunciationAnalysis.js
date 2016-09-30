@@ -139,7 +139,7 @@ class PronunciationAnalysis {
    * @param {object[]} The words array from the PronunciationAnalysis API.
    * @returns an array of the `its.Word` domain models.
    */
-  _wordsToModels(inWords) {
+  static _wordsToModels(inWords) {
     var words = [];
     inWords.forEach(function(word) {
       var chunks = [];
@@ -245,7 +245,7 @@ class PronunciationAnalysis {
         connection.addAccessToken(data.audioUrl));
       analysis.score = data.score;
       analysis.confidenceScore = data.confidenceScore;
-      analysis.words = self._wordsToModels(data.words);
+      analysis.words = PronunciationAnalysis._wordsToModels(data.words);
       if (cb) {
         cb(analysis);
       }
@@ -411,7 +411,7 @@ class PronunciationAnalysis {
    * @param {Sdk~getPronunciationAnalysisCallback} [cb] The callback that handles the response.
    * @param {Sdk~getPronunciationAnalysisErrorCallback} [ecb] The callback that handles the error response.
    */
-  getPronunciationAnalysis(connection, challenge, analysisId, cb, ecb) {
+  static getPronunciationAnalysis(connection, challenge, analysisId, cb, ecb) {
     var _cb = function(datum) {
       var student = new Student(challenge.organisationId, datum.studentId);
       var analysis = new PronunciationAnalysis(challenge, student,
@@ -422,7 +422,7 @@ class PronunciationAnalysis {
       // albeit without extended attributes like score and phonemes.
       if (datum.score) {
         analysis.score = datum.score;
-        analysis.words = this._wordsToModels(datum.words);
+        analysis.words = PronunciationAnalysis._wordsToModels(datum.words);
       }
       if (cb) {
         cb(analysis);
@@ -466,7 +466,7 @@ class PronunciationAnalysis {
    * @param {Sdk~listPronunciationAnalysesCallback} cb The callback that handles the response.
    * @param {Sdk~listPronunciationAnalysesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listPronunciationAnalyses(connection, challenge, detailed, cb, ecb) {
+  static listPronunciationAnalyses(connection, challenge, detailed, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       var analyses = [];

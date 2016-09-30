@@ -139,7 +139,7 @@ class SpeechChallenge {
    * @param {Sdk~getSpeechChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getSpeechChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  getSpeechChallenge(connection, organisationId, challengeId, cb, ecb) {
+  static getSpeechChallenge(connection, organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
       challenge.created = new Date(data.created);
@@ -177,7 +177,7 @@ class SpeechChallenge {
    * @param {Sdk~listSpeechChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listSpeechChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listSpeechChallenges(connection, organisationId, cb, ecb) {
+  static listSpeechChallenges(connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];
       data.forEach(function(datum) {

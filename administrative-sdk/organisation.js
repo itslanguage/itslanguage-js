@@ -89,7 +89,7 @@ class Organisation {
    * @param {Sdk~getCallback} [cb] The callback that handles the response.
    * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
-  getOrganisation(connection, organisationId, cb, ecb) {
+  static getOrganisation(connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var organisation = new Organisation(data.id, data.name);
       organisation.created = new Date(data.created);
@@ -124,7 +124,7 @@ class Organisation {
    * @param {Sdk~listCallback} cb The callback that handles the response.
    * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
-  listOrganisations(connection, cb, ecb) {
+  static listOrganisations(connection, cb, ecb) {
     var _cb = function(data) {
       var organisations = [];
       data.forEach(function(datum) {
