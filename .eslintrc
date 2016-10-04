@@ -6,6 +6,7 @@ env:
   browser: true
   es6: true
   node: true
+  jasmine: true
 
 rules:
   no-console: 0  # This project purposely uses console.
