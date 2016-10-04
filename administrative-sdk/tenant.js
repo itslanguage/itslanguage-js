@@ -6,7 +6,6 @@
  max-len,
  no-unused-vars
  */
-
 class Tenant {
   /**
    * Tenant domain model.

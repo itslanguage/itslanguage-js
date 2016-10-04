@@ -6,7 +6,6 @@
  max-len,
  no-unused-vars
  */
-
 const autobahn = require('autobahn');
 const Student = require('../administrative-sdk/student').Student;
 const PronunciationAnalysis = require('../administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;

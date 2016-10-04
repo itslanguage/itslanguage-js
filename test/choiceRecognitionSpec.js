@@ -21,7 +21,7 @@ const ChoiceRecognition = require('../administrative-sdk/choiceRecognition').Cho
 const ChoiceChallenge = require('../administrative-sdk/choiceChallenge').ChoiceChallenge;
 const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
 const Student = require('../administrative-sdk/student').Student;
-const connection = require('../administrative-sdk/connection');
+const Connection = require('../administrative-sdk/connection').Connection;
 
 describe('ChoiceRecognition Websocket API interaction test', function() {
   beforeEach(function() {
@@ -33,7 +33,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
   });
 
   it('should fail streaming when websocket connection is closed', function() {
-    var api = new connection.Connection();
+    var api = new Connection();
 
     // Mock the audio recorder
     function RecorderMock() {
@@ -70,7 +70,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
   });
 
   it('should start streaming a new choice recognition', function() {
-    var api = new connection.Connection({
+    var api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar'
     });
@@ -121,7 +121,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
   });
 
   it('should get an existing choice recognition', function() {
-    var api = new connection.Connection({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
@@ -162,7 +162,7 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
   });
 
   it('should get a list of existing choice recognitions', function() {
-    var api = new connection.Connection({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });

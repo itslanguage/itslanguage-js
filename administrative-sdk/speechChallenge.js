@@ -6,8 +6,6 @@
  max-len,
  no-unused-vars
  */
-
-
 /**
  * @class SpeechChallenge
  *

@@ -15,13 +15,12 @@
  */
 
 require('jasmine-ajax');
-const its = require('../administrative-sdk/student');
-const connection = require('../administrative-sdk/connection');
-const _ = require('underscore');
+const Student = require('../administrative-sdk/student').Student;
+const Connection = require('../administrative-sdk/connection').Connection;
 
 describe('Student object test', function() {
   it('should instantiate a Student without id', function() {
-    var s = new its.Student();
+    var s = new Student();
     expect(s).toBeDefined();
     expect(s.id).toBeUndefined();
     expect(s.organisationId).toBeUndefined();
@@ -32,7 +31,7 @@ describe('Student object test', function() {
   });
 
   it('should instantiate a Student with id and metadata', function() {
-    var s = new its.Student('fb', 'test', 'Mark', 'Zuckerberg', 'male', 1984);
+    var s = new Student('fb', 'test', 'Mark', 'Zuckerberg', 'male', 1984);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -53,8 +52,8 @@ describe('Student API interaction test', function() {
   });
 
   it('should create a new student through API', function() {
-    var student = new its.Student('fb', '1', 'Mark');
-    var api = new connection.Connection({
+    var student = new Student('fb', '1', 'Mark');
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
@@ -70,8 +69,10 @@ describe('Student API interaction test', function() {
     expect(request.method).toBe('POST');
     var expected = {id: '1',
       organisationId: 'fb',
+      connection: api,
       firstName: 'Mark'};
-    expect(_.isEqual(request.data(), expected));
+    expected = JSON.parse(JSON.stringify(expected));
+    expect(request.data()).toEqual(expected);
 
     var content = {
       id: '1',
@@ -94,11 +95,11 @@ describe('Student API interaction test', function() {
   });
 
   it('should handle errors while creating a new student', function() {
-    var api = new connection.Connection({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var student = new its.Student('fb', '1', 'Mark');
+    var student = new Student('fb', '1', 'Mark');
     student.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
@@ -111,8 +112,10 @@ describe('Student API interaction test', function() {
     expect(request.method).toBe('POST');
     var expected = {id: '1',
       organisationId: 'fb',
+      connection: api,
       firstName: 'Mark'};
-    expect(_.isEqual(request.data(), expected));
+    expected = JSON.parse(JSON.stringify(expected));
+    expect(request.data()).toEqual(expected);
 
     var content = {
       message: 'Validation failed',
@@ -141,11 +144,11 @@ describe('Student API interaction test', function() {
   });
 
   it('should get an existing student through API', function() {
-    var api = new connection.Connection({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var stud = new its.Student();
+    var stud = new Student();
     stud.connection = api;
     var cb = jasmine.createSpy('callback');
 
@@ -170,18 +173,18 @@ describe('Student API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '4', 'Mark');
+    var student = new Student('fb', '4', 'Mark');
     student.created = new Date(stringDate);
     student.updated = new Date(stringDate);
     expect(cb).toHaveBeenCalledWith(student);
   });
 
   it('should get a list of existing students through API', function() {
-    var api = new connection.Connection({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var stud = new its.Student();
+    var stud = new Student();
     stud.connection = api;
     var cb = jasmine.createSpy('callback');
 
@@ -206,7 +209,7 @@ describe('Student API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '4', 'Mark');
+    var student = new Student('fb', '4', 'Mark');
     student.created = new Date(stringDate);
     student.updated = new Date(stringDate);
     expect(cb).toHaveBeenCalledWith([student]);

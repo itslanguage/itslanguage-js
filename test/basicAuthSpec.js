@@ -16,36 +16,35 @@
 
 require('jasmine-ajax');
 
-const conn = require('../administrative-sdk/connection');
-const its = require('../administrative-sdk/basicAuth');
-const _ = require('underscore');
+const Connection = require('../administrative-sdk/connection').Connection;
+const BasicAuth = require('../administrative-sdk/basicAuth').BasicAuth;
 
 describe('BasicAuth object test', function() {
   it('should require all required fields in constructor', function() {
     [0, 4, undefined, false, null].map(function(v) {
       expect(function() {
-        new its.BasicAuth(v);
+        new BasicAuth(v);
       }).toThrowError(
         'tenantId parameter of type "string" is required');
     });
 
     [0, 4, false].map(function(v) {
       expect(function() {
-        new its.BasicAuth('tenantId', v);
+        new BasicAuth('tenantId', v);
       }).toThrowError(
         'principal parameter of type "string|null|undefined" is required');
     });
 
     [0, 4, false].map(function(v) {
       expect(function() {
-        new its.BasicAuth('tenantId', 'principal', v);
+        new BasicAuth('tenantId', 'principal', v);
       }).toThrowError(
         'credentials parameter of type "string|null|undefined" is required');
     });
   });
 
   it('should instantiate an BasicAuth with tenantId', function() {
-    var o = new its.BasicAuth('tenantId');
+    var o = new BasicAuth('tenantId');
     expect(o).toBeDefined();
     expect(o.tenantId).toBe('tenantId');
     expect(o.principal).toBeUndefined();
@@ -53,7 +52,7 @@ describe('BasicAuth object test', function() {
   });
 
   it('should instantiate a full BasicAuth', function() {
-    var o = new its.BasicAuth('tenantId', 'principal', 'creds');
+    var o = new BasicAuth('tenantId', 'principal', 'creds');
     expect(o).toBeDefined();
     expect(o.tenantId).toBe('tenantId');
     expect(o.principal).toBe('principal');
@@ -71,8 +70,8 @@ describe('BasicAuth API interaction test', function() {
   });
 
   it('should create a new BasicAuth through API', function() {
-    var basicauth = new its.BasicAuth('4', 'principal');
-    var api = new conn.Connection({
+    var basicauth = new BasicAuth('4', 'principal');
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
@@ -87,7 +86,8 @@ describe('BasicAuth API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {tenantId: '4', principal: 'principal', connection: api};
-    expect(_.isEqual(request.data()), expected);
+    expected = JSON.parse(JSON.stringify(expected));
+    expect(request.data()).toEqual(expected);
 
     var content = {
       tenantId: '4',
@@ -106,11 +106,11 @@ describe('BasicAuth API interaction test', function() {
   });
 
   it('should handle errors while creating a new basicauth', function() {
-    var api = new conn.Connection({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var basicauth = new its.BasicAuth('4', 'principal');
+    var basicauth = new BasicAuth('4', 'principal');
     basicauth.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
@@ -122,7 +122,8 @@ describe('BasicAuth API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {tenantId: '4', principal: 'principal', connection: api};
-    expect(_.isEqual(request.data()), expected);
+    expected = JSON.parse(JSON.stringify(expected));
+    expect(request.data()).toEqual(expected);
 
     var content = {
       message: 'Validation failed',
