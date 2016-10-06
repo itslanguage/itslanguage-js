@@ -17,6 +17,7 @@
 require('jasmine-ajax');
 
 const its = require('..');
+const _ = require('underscore');
 
 describe('BasicAuth object test', function() {
   it('should require all required fields in constructor', function() {
@@ -84,7 +85,7 @@ describe('BasicAuth API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {tenantId: '4', principal: 'principal'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       tenantId: '4',
@@ -119,7 +120,7 @@ describe('BasicAuth API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {tenantId: '4', principal: 'principal'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       message: 'Validation failed',
