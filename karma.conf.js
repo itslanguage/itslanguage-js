@@ -2,7 +2,7 @@ const istanbul = require('browserify-istanbul');
 
 
 module.exports = config => {
-  config.set({
+  const configuration = {
     frameworks: [
       'browserify',
       'jasmine'
@@ -11,8 +11,14 @@ module.exports = config => {
       'test/**/*.js'
     ],
     browsers: [
-      'PhantomJS'
+      'Chrome'
     ],
+    customLaunchers: {
+      ChromeTravisCi: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
     reporters: [
       'progress',
       'coverage'
@@ -52,5 +58,13 @@ module.exports = config => {
         istanbul()
       ]
     }
-  });
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.browsers = [
+      'ChromeTravisCi'
+    ];
+  }
+
+  config.set(configuration);
 };
