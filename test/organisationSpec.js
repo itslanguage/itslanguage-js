@@ -17,6 +17,7 @@
 require('jasmine-ajax');
 
 const its = require('..');
+const _ = require('underscore');
 
 describe('Organisation object test', function() {
   it('should instantiate an Organisation without id', function() {
@@ -59,7 +60,7 @@ describe('Organisation API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {id: '1', name: 'School of silly walks'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       id: '1',
@@ -97,7 +98,7 @@ describe('Organisation API interaction test', function() {
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
     var expected = {id: '1'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       message: 'Validation failed',

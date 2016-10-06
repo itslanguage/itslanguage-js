@@ -17,6 +17,7 @@
 require('jasmine-ajax');
 
 const its = require('..');
+const _ = require('underscore');
 
 describe('Student object test', function() {
   it('should instantiate a Student without id', function() {
@@ -69,7 +70,7 @@ describe('Student API interaction test', function() {
     var expected = {id: '1',
       organisationId: 'fb',
       firstName: 'Mark'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       id: '1',
@@ -109,7 +110,7 @@ describe('Student API interaction test', function() {
     var expected = {id: '1',
       organisationId: 'fb',
       firstName: 'Mark'};
-    expect(request.data()).toEqual(expected);
+    expect(_.isEqual(request.data(), expected));
 
     var content = {
       message: 'Validation failed',
