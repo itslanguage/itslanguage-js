@@ -18,45 +18,48 @@
 require('jasmine-ajax');
 const autobahn = require('autobahn');
 
-const its = require('..');
+const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
+const SpeechRecording = require('../administrative-sdk/speechRecording').SpeechRecording;
+const Student = require('../administrative-sdk/student').Student;
+const Connection = require('../administrative-sdk/connection').Connection;
 
 describe('SpeechRecording object test', function() {
   it('should require all required fields in constructor', function() {
     expect(function() {
-      new its.SpeechRecording();
+      new SpeechRecording();
     }).toThrowError(
       'challenge parameter of type "SpeechChallenge" is required');
     expect(function() {
-      new its.SpeechRecording(1);
+      new SpeechRecording(1);
     }).toThrowError(
       'challenge parameter of type "SpeechChallenge" is required');
 
-    var challenge = new its.SpeechChallenge('fb');
+    var challenge = new SpeechChallenge('fb');
     expect(function() {
-      new its.SpeechRecording(challenge);
+      new SpeechRecording(challenge);
     }).toThrowError(
       'student parameter of type "Student" is required');
     expect(function() {
-      new its.SpeechRecording(challenge, 1);
+      new SpeechRecording(challenge, 1);
     }).toThrowError(
       'student parameter of type "Student" is required');
 
-    var student = new its.Student('org');
+    var student = new Student('org');
     expect(function() {
-      new its.SpeechRecording(challenge, student, 1);
+      new SpeechRecording(challenge, student, 1);
     }).toThrowError('id parameter of type "string|null" is required');
 
     expect(function() {
-      new its.SpeechRecording(challenge, student, '1', 'foo');
+      new SpeechRecording(challenge, student, '1', 'foo');
     }).toThrowError('audio parameter of type "Blob|null" is required');
   });
   it('should instantiate a SpeechRecording', function() {
     var blob = new Blob(['1234567890']);
-    var challenge = new its.SpeechChallenge('fb');
-    var student = new its.Student('org');
+    var challenge = new SpeechChallenge('fb');
+    var student = new Student('org');
 
     // Without audio
-    var s = new its.SpeechRecording(challenge, student, null);
+    var s = new SpeechRecording(challenge, student, null);
     expect(s).toBeDefined();
     expect(s.id).toBeNull();
     expect(s.audio).toBeUndefined();
@@ -64,7 +67,7 @@ describe('SpeechRecording object test', function() {
     expect(s.student).toBe(student);
 
     // Without id
-    s = new its.SpeechRecording(challenge, student, null, blob);
+    s = new SpeechRecording(challenge, student, null, blob);
     expect(s).toBeDefined();
     expect(s.id).toBe(null);
     expect(s.audio).toBe(blob);
@@ -72,7 +75,7 @@ describe('SpeechRecording object test', function() {
     expect(s.student).toBe(student);
 
     // With id
-    s = new its.SpeechRecording(challenge, student, 'test', blob);
+    s = new SpeechRecording(challenge, student, 'test', blob);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.audio).toBe(blob);
@@ -97,14 +100,18 @@ describe('SpeechRecording API interaction test', function() {
   });
 
   it('should get an existing speech recording', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.getSpeechRecording(challenge, '5', cb);
+    var challenge = new SpeechChallenge('fb', '4');
+    var chall = new SpeechChallenge('fb');
+    var stud = new Student('org');
+    var rec = new SpeechRecording(chall, stud, null);
+    rec.connection = api;
+    var output = rec.getSpeechRecording(challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -127,8 +134,8 @@ describe('SpeechRecording API interaction test', function() {
       responseText: JSON.stringify(content)
     });
 
-    var student = new its.Student('fb', '6');
-    var recording = new its.SpeechRecording(challenge, student, '5');
+    var student = new Student('fb', '6');
+    var recording = new SpeechRecording(challenge, student, '5');
     var stringDate = '2014-12-31T23:59:59Z';
     recording.created = new Date(stringDate);
     recording.updated = new Date(stringDate);
@@ -138,14 +145,18 @@ describe('SpeechRecording API interaction test', function() {
   });
 
   it('should get a list of existing speech recordings', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.listSpeechRecordings(challenge, cb);
+    var challenge = new SpeechChallenge('fb', '4');
+    var chall = new SpeechChallenge('fb');
+    var stud = new Student('org');
+    var rec = new SpeechRecording(chall, stud, null);
+    rec.connection = api;
+    var output = rec.listSpeechRecordings(challenge, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -168,8 +179,8 @@ describe('SpeechRecording API interaction test', function() {
       responseText: JSON.stringify(content)
     });
 
-    var student = new its.Student('fb', '6');
-    var recording = new its.SpeechRecording(challenge, student, '5');
+    var student = new Student('fb', '6');
+    var recording = new SpeechRecording(challenge, student, '5');
     var stringDate = '2014-12-31T23:59:59Z';
     recording.created = new Date(stringDate);
     recording.updated = new Date(stringDate);
@@ -190,7 +201,7 @@ describe('Speech Recording Websocket API interaction test', function() {
   });
 
   it('should fail streaming when websocket connection is closed', function() {
-    var api = new its.Sdk();
+    var api = new Connection();
 
     // Mock the audio recorder
     function RecorderMock() {
@@ -210,14 +221,18 @@ describe('Speech Recording Websocket API interaction test', function() {
     var old = window.WebSocket;
     window.WebSocket = jasmine.createSpy('WebSocket');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var student = new its.Student('fb', '6');
+    var challenge = new SpeechChallenge('fb', '4');
+    var chall = new SpeechChallenge('fb');
+    var stud = new Student('org');
+    var rec = new SpeechRecording(chall, stud, null);
+    rec.connection = api;
+    var student = new Student('fb', '6');
     var recorder = new RecorderMock();
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
     expect(function() {
-      api.startStreamingSpeechRecording(
+      rec.startStreamingSpeechRecording(
         challenge, student, recorder, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
 
@@ -226,7 +241,7 @@ describe('Speech Recording Websocket API interaction test', function() {
   });
 
   it('should start streaming a new speech recording', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar'
     });
@@ -249,7 +264,7 @@ describe('Speech Recording Websocket API interaction test', function() {
       this.addEventListener = function() {};
     }
 
-    var challenge = new its.SpeechChallenge('fb', '4');
+    var challenge = new SpeechChallenge('fb', '4');
     var recorder = new RecorderMock();
     var prepareCb = jasmine.createSpy('callback');
     var cb = jasmine.createSpy('callback');
@@ -263,8 +278,11 @@ describe('Speech Recording Websocket API interaction test', function() {
     }
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-
-    var output = api.startStreamingSpeechRecording(
+    var chall = new SpeechChallenge('fb');
+    var stud = new Student('org');
+    var rec = new SpeechRecording(chall, stud, null);
+    rec.connection = api;
+    var output = rec.startStreamingSpeechRecording(
       challenge, recorder, prepareCb, cb, ecb);
 
     expect(api._session.call).toHaveBeenCalled();

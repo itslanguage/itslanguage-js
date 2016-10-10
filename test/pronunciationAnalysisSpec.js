@@ -17,8 +17,14 @@
 
 require('jasmine-ajax');
 const autobahn = require('autobahn');
-
-const its = require('..');
+const PronunciationAnalysis = require('../administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;
+const PronunciationChallenge = require('../administrative-sdk/pronunciationChallenge').PronunciationChallenge;
+const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
+const Student = require('../administrative-sdk/student').Student;
+const Connection = require('../administrative-sdk/connection').Connection;
+const WordChunk = require('../administrative-sdk/pronunciationAnalysis').WordChunk;
+const Word = require('../administrative-sdk/pronunciationAnalysis').Word;
+const Phoneme = require('../administrative-sdk/pronunciationAnalysis').Phoneme;
 
 describe('PronunciationAnalyses API interaction test', function() {
   beforeEach(function() {
@@ -35,14 +41,16 @@ describe('PronunciationAnalyses API interaction test', function() {
   });
 
   it('should get an existing pronunciation analysis', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.getPronunciationAnalysis(challenge, '5', cb);
+    var challenge = new SpeechChallenge('fb', '4');
+    var analys = new PronunciationAnalysis();
+    analys.connection = api;
+    var output = analys.getPronunciationAnalysis(challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -66,22 +74,24 @@ describe('PronunciationAnalyses API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var analysis = new its.PronunciationAnalysis(challenge, student,
+    var student = new Student('fb', '6');
+    var analysis = new PronunciationAnalysis(challenge, student,
       '5', new Date(stringDate), new Date(stringDate));
     analysis.audioUrl = audioUrl;
     expect(cb).toHaveBeenCalledWith(analysis);
   });
 
   it('should get a list of existing pronunciation analyses', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.listPronunciationAnalyses(challenge, false, cb);
+    var challenge = new SpeechChallenge('fb', '4');
+    var analys = new PronunciationAnalysis();
+    analys.connection = api;
+    var output = analys.listPronunciationAnalyses(challenge, false, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -134,36 +144,38 @@ describe('PronunciationAnalyses API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var analysis = new its.PronunciationAnalysis(challenge, student,
+    var student = new Student('fb', '6');
+    var analysis = new PronunciationAnalysis(challenge, student,
       '5', new Date(stringDate), new Date(stringDate));
     analysis.audioUrl = audioUrl;
 
-    var student2 = new its.Student('fb', '24');
-    var analysis2 = new its.PronunciationAnalysis(challenge, student2,
+    var student2 = new Student('fb', '24');
+    var analysis2 = new PronunciationAnalysis(challenge, student2,
       '6', new Date(stringDate), new Date(stringDate));
     analysis2.audioUrl = audioUrl;
     analysis2.score = 7.5;
     var chunk = [
-      new its.WordChunk('b', 0.9, 'good', []),
-      new its.WordChunk('o', 0.4, 'bad', []),
-      new its.WordChunk('x', 0.5, 'moderate', [])
+      new WordChunk('b', 0.9, 'good', []),
+      new WordChunk('o', 0.4, 'bad', []),
+      new WordChunk('x', 0.5, 'moderate', [])
     ];
-    var word = new its.Word(chunk);
+    var word = new Word(chunk);
     var words = [word];
     analysis2.words = words;
     expect(cb).toHaveBeenCalledWith([analysis, analysis2]);
   });
 
   it('should get a detailed list of pronunciation analyses', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.SpeechChallenge('fb', '4');
-    var output = api.listPronunciationAnalyses(challenge, true, cb);
+    var challenge = new SpeechChallenge('fb', '4');
+    var analys = new PronunciationAnalysis();
+    analys.connection = api;
+    var output = analys.listPronunciationAnalyses(challenge, true, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -244,37 +256,37 @@ describe('PronunciationAnalyses API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var student = new its.Student('fb', '6');
-    var analysis = new its.PronunciationAnalysis(challenge, student,
+    var student = new Student('fb', '6');
+    var analysis = new PronunciationAnalysis(challenge, student,
       '5', new Date(stringDate), new Date(stringDate));
     analysis.audioUrl = audioUrl;
 
-    var student2 = new its.Student('fb', '24');
-    var analysis2 = new its.PronunciationAnalysis(challenge, student2,
+    var student2 = new Student('fb', '24');
+    var analysis2 = new PronunciationAnalysis(challenge, student2,
       '6', new Date(stringDate), new Date(stringDate));
     analysis2.audioUrl = audioUrl;
     analysis2.score = 7.5;
-    var phoneme1 = new its.Phoneme('b', 0.9);
+    var phoneme1 = new Phoneme('b', 0.9);
     phoneme1.verdict = 'good';
     phoneme1.start = 0.11;
     phoneme1.end = 0.22;
     var phonemes1 = [phoneme1];
-    var phoneme2 = new its.Phoneme('\u0251', 0.4);
+    var phoneme2 = new Phoneme('\u0251', 0.4);
     phoneme2.verdict = 'bad';
     var phonemes2 = [phoneme2];
-    var phoneme3 = new its.Phoneme('k', 0.4);
+    var phoneme3 = new Phoneme('k', 0.4);
     phoneme3.verdict = 'bad';
-    var phoneme4 = new its.Phoneme('s', 0.6);
+    var phoneme4 = new Phoneme('s', 0.6);
     phoneme4.verdict = 'moderate';
     var phonemes3 = [
       phoneme3, phoneme4
     ];
     var chunk = [
-      new its.WordChunk('b', 0.9, 'good', phonemes1),
-      new its.WordChunk('o', 0.4, 'bad', phonemes2),
-      new its.WordChunk('x', 0.5, 'moderate', phonemes3)
+      new WordChunk('b', 0.9, 'good', phonemes1),
+      new WordChunk('o', 0.4, 'bad', phonemes2),
+      new WordChunk('x', 0.5, 'moderate', phonemes3)
     ];
-    var word = new its.Word(chunk);
+    var word = new Word(chunk);
     var words = [word];
     analysis2.words = words;
     expect(cb).toHaveBeenCalledWith([analysis, analysis2]);
@@ -292,7 +304,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
   });
 
   it('should fail streaming when websocket connection is closed', function() {
-    var api = new its.Sdk();
+    var api = new Connection();
 
     // Mock the audio recorder
     function RecorderMock() {
@@ -308,20 +320,21 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
       };
     }
 
-    var challenge = new its.PronunciationChallenge('fb', '4', 'foo');
+    var challenge = new PronunciationChallenge('fb', '4', 'foo');
     var recorder = new RecorderMock();
     var prepareCb = jasmine.createSpy('callback');
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
-
+    var analys = new PronunciationAnalysis();
+    analys.connection = api;
     expect(function() {
-      api.startStreamingPronunciationAnalysis(
+      analys.startStreamingPronunciationAnalysis(
         challenge, recorder, prepareCb, cb, ecb);
     }).toThrowError('WebSocket connection was not open.');
   });
 
   it('should start streaming a new pronunciation analysis', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar'
     });
@@ -345,11 +358,12 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
       };
     }
 
-    var challenge = new its.PronunciationChallenge('fb', '4', 'foo');
+    var challenge = new PronunciationChallenge('fb', '4', 'foo');
     var recorder = new RecorderMock();
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
     var prepareCb = jasmine.createSpy('callback');
+    var analys = new PronunciationAnalysis();
 
     function SessionMock() {
       this.call = function() {
@@ -360,8 +374,8 @@ describe('Pronunciation Analyisis Websocket API interaction test', function() {
 
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-
-    var output = api.startStreamingPronunciationAnalysis(
+    analys.connection = api;
+    var output = analys.startStreamingPronunciationAnalysis(
       challenge, recorder, prepareCb, cb, ecb);
 
     expect(api._session.call).toHaveBeenCalled();

@@ -16,18 +16,19 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const Organisation = require('../administrative-sdk/organisation').Organisation;
+const Connection = require('../administrative-sdk/connection').Connection;
 
 describe('Organisation object test', function() {
   it('should instantiate an Organisation without id', function() {
-    var o = new its.Organisation();
+    var o = new Organisation();
     expect(o).toBeDefined();
     expect(o.id).toBeUndefined();
     expect(o.name).toBeUndefined();
   });
 
   it('should instantiate an Organisation with id and metadata', function() {
-    var o = new its.Organisation('test', 'School of silly walks');
+    var o = new Organisation('test', 'School of silly walks');
     expect(o).toBeDefined();
     expect(o.id).toBe('test');
     expect(o.name).toBe('School of silly walks');
@@ -44,21 +45,22 @@ describe('Organisation API interaction test', function() {
   });
 
   it('should create a new organisation through API', function() {
-    var organisation = new its.Organisation('1', 'School of silly walks');
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var organisation = new Organisation('1', 'School of silly walks', api);
     var cb = jasmine.createSpy('callback');
 
-    var output = api.createOrganisation(organisation, cb);
+    var output = organisation.createOrganisation(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {id: '1', name: 'School of silly walks'};
+    var expected = {id: '1', name: 'School of silly walks', connection: api};
+    expected = JSON.parse(JSON.stringify(expected));
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -82,21 +84,23 @@ describe('Organisation API interaction test', function() {
   });
 
   it('should handle errors while creating a new organisation', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var organisation = new its.Organisation('1');
+    var organisation = new Organisation('1');
+    organisation.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = api.createOrganisation(organisation, cb, ecb);
+    var output = organisation.createOrganisation(cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations';
     expect(request.url).toBe(url);
     expect(request.method).toBe('POST');
-    var expected = {id: '1'};
+    var expected = {id: '1', connection: api};
+    expected = JSON.parse(JSON.stringify(expected));
     expect(request.data()).toEqual(expected);
 
     var content = {
@@ -126,13 +130,17 @@ describe('Organisation API interaction test', function() {
   });
 
   it('should get an existing organisation through API', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+
+    var org = new Organisation();
+    org.connection = api;
+
     var cb = jasmine.createSpy('callback');
 
-    var output = api.getOrganisation('4', cb);
+    var output = org.getOrganisation('4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -153,20 +161,22 @@ describe('Organisation API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var organisation = new its.Organisation('4', 'School of silly walks');
+    var organisation = new Organisation('4', 'School of silly walks');
     organisation.created = new Date(stringDate);
     organisation.updated = new Date(stringDate);
     expect(cb).toHaveBeenCalledWith(organisation);
   });
 
   it('should get a list of existing organisations through API', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    var org = new Organisation();
+    org.connection = api;
     var cb = jasmine.createSpy('callback');
 
-    var output = api.listOrganisations(cb);
+    var output = org.listOrganisations(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -187,7 +197,7 @@ describe('Organisation API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var organisation = new its.Organisation('4', 'School of silly walks');
+    var organisation = new Organisation('4', 'School of silly walks');
     organisation.created = new Date(stringDate);
     organisation.updated = new Date(stringDate);
     expect(cb).toHaveBeenCalledWith([organisation]);

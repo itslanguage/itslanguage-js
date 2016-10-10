@@ -17,27 +17,28 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
+const Connection = require('../administrative-sdk/connection').Connection;
 
 describe('SpeechChallenge object test', function() {
   it('should require all required fields in constructor', function() {
     expect(function() {
-      new its.SpeechChallenge(4);
+      new SpeechChallenge(4);
     }).toThrowError(
       'organisationId parameter of type "string|null" is required');
 
     expect(function() {
-      new its.SpeechChallenge(null, 4);
+      new SpeechChallenge(null, 4);
     }).toThrowError('id parameter of type "string|null" is required');
 
     expect(function() {
-      new its.SpeechChallenge('fb', null, 'hi', '1');
+      new SpeechChallenge('fb', null, 'hi', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
   it('should instantiate a SpeechChallenge with referenceAudio', function() {
     var blob = new Blob(['1234567890']);
 
-    var s = new its.SpeechChallenge('fb', 'test', 'hi', blob);
+    var s = new SpeechChallenge('fb', 'test', 'hi', blob);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -45,7 +46,7 @@ describe('SpeechChallenge object test', function() {
     expect(s.referenceAudio).toBe(blob);
   });
   it('should instantiate a SpeechChallenge', function() {
-    var s = new its.SpeechChallenge('fb', 'test', 'hi');
+    var s = new SpeechChallenge('fb', 'test', 'hi');
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -69,14 +70,14 @@ describe('SpeechChallenge API interaction test', function() {
   });
 
   it('should create a new challenge', function() {
-    var challenge = new its.SpeechChallenge('fb', '1', 'Hi');
-    var api = new its.Sdk({
+    var challenge = new SpeechChallenge('fb', '1', 'Hi');
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-
-    var output = api.createSpeechChallenge(challenge, cb);
+    challenge.connection = api;
+    var output = challenge.createSpeechChallenge(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -100,21 +101,22 @@ describe('SpeechChallenge API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var outChallenge = new its.SpeechChallenge('fb', '1', 'Hi');
+    var outChallenge = new SpeechChallenge('fb', '1', 'Hi');
     outChallenge.created = new Date(stringDate);
     outChallenge.updated = new Date(stringDate);
+    outChallenge.connection = api;
     expect(cb).toHaveBeenCalledWith(outChallenge);
   });
   it('should create a new challenge with referenceAudio', function() {
     var blob = new Blob(['1234567890']);
-    var challenge = new its.SpeechChallenge('fb', '1', 'Hi', blob);
-    var api = new its.Sdk({
+    var challenge = new SpeechChallenge('fb', '1', 'Hi', blob);
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    challenge.connection = api;
     var cb = jasmine.createSpy('callback');
-
-    var output = api.createSpeechChallenge(challenge, cb);
+    var output = challenge.createSpeechChallenge(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -143,7 +145,7 @@ describe('SpeechChallenge API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var outChallenge = new its.SpeechChallenge('fb', '1', 'Hi', blob);
+    var outChallenge = new SpeechChallenge('fb', '1', 'Hi', blob, api);
     outChallenge.created = new Date(stringDate);
     outChallenge.updated = new Date(stringDate);
     outChallenge.referenceAudio = challenge.referenceAudio;
@@ -152,15 +154,16 @@ describe('SpeechChallenge API interaction test', function() {
   });
 
   it('should handle errors while creating a new challenge', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var challenge = new its.SpeechChallenge('fb', '1', 'Hi');
+    var challenge = new SpeechChallenge('fb', '1', 'Hi');
+    challenge.connection = api;
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var output = api.createSpeechChallenge(challenge, cb, ecb);
+    var output = challenge.createSpeechChallenge(cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
@@ -195,13 +198,14 @@ describe('SpeechChallenge API interaction test', function() {
   });
 
   it('should get an existing speech challenge', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-
-    var output = api.getSpeechChallenge('fb', '4', cb);
+    var chall = new SpeechChallenge();
+    chall.connection = api;
+    var output = chall.getSpeechChallenge('fb', '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -223,20 +227,21 @@ describe('SpeechChallenge API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var challenge = new its.SpeechChallenge('fb', '4', 'Hi');
+    var challenge = new SpeechChallenge('fb', '4', 'Hi');
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     expect(cb).toHaveBeenCalledWith(challenge);
   });
 
   it('should get a list of existing challenges', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-
-    var output = api.listSpeechChallenges('fb', cb);
+    var chall = new SpeechChallenge();
+    chall.connection = api;
+    var output = chall.listSpeechChallenges('fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -257,7 +262,7 @@ describe('SpeechChallenge API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var challenge = new its.SpeechChallenge('fb', '4', 'Hi');
+    var challenge = new SpeechChallenge('fb', '4', 'Hi');
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     expect(cb).toHaveBeenCalledWith([challenge]);

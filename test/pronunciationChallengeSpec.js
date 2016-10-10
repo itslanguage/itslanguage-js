@@ -17,26 +17,27 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const PronunciationChallenge = require('../administrative-sdk/pronunciationChallenge').PronunciationChallenge;
+const Connection = require('../administrative-sdk/connection').Connection;
 
 describe('PronunciationChallenge object test', function() {
   it('should require all required fields in constructor', function() {
     expect(function() {
-      new its.PronunciationChallenge(4);
+      new PronunciationChallenge(4);
     }).toThrowError(
       'organisationId parameter of type "string|null" is required');
 
     expect(function() {
-      new its.PronunciationChallenge(null, 4);
+      new PronunciationChallenge(null, 4);
     }).toThrowError('id parameter of type "string|null" is required');
 
     expect(function() {
-      new its.PronunciationChallenge('fb', null, 'hi', '1');
+      new PronunciationChallenge('fb', null, 'hi', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
   it('should instantiate a PronunciationChallenge ' +
     'without referenceAudio', function() {
-    var s = new its.PronunciationChallenge('fb', 'test', 'hi');
+    var s = new PronunciationChallenge('fb', 'test', 'hi');
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -46,7 +47,7 @@ describe('PronunciationChallenge object test', function() {
   it('should instantiate a PronunciationChallenge', function() {
     var blob = new Blob(['1234567890']);
 
-    var s = new its.PronunciationChallenge('fb', 'test', 'hi', blob);
+    var s = new PronunciationChallenge('fb', 'test', 'hi', blob);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -74,33 +75,36 @@ describe('PronunciationChallenge API interaction test', function() {
     // Because referenceAudio is not available when fetching existing
     // PronunciationChallenges from the server, the domain model doesn't
     // require the field, but the createPronunciationChallenge() should.
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
-    var challenge = new its.PronunciationChallenge('fb', '1', 'test');
+    var challenge = new PronunciationChallenge('fb', '1', 'test');
+    challenge.connection = api;
     expect(function() {
-      api.createPronunciationChallenge(challenge, cb);
+      challenge.createPronunciationChallenge(cb);
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
 
-    challenge = new its.PronunciationChallenge('fb', '1', 'test', null);
+    challenge = new PronunciationChallenge('fb', '1', 'test', null);
+    challenge.connection = api;
     expect(function() {
-      api.createPronunciationChallenge(challenge, cb);
+      challenge.createPronunciationChallenge(cb);
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
 
   it('should create a new pronunciation challenge through API', function() {
     var blob = new Blob(['1234567890']);
-    var challenge = new its.PronunciationChallenge('fb', '1', 'test', blob);
+    var challenge = new PronunciationChallenge('fb', '1', 'test', blob);
     var cb = jasmine.createSpy('callback');
 
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var output = api.createPronunciationChallenge(challenge, cb);
+    challenge.connection = api;
+    var output = challenge.createPronunciationChallenge(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -132,26 +136,28 @@ describe('PronunciationChallenge API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var outChallenge = new its.PronunciationChallenge('fb', '1', 'test', blob);
+    var outChallenge = new PronunciationChallenge('fb', '1', 'test', blob);
     outChallenge.created = new Date(stringDate);
     outChallenge.updated = new Date(stringDate);
     outChallenge.referenceAudio = challenge.referenceAudio;
     outChallenge.referenceAudioUrl = referenceAudioUrl;
     outChallenge.status = 'preparing';
+    outChallenge.connection = api;
     expect(cb).toHaveBeenCalledWith(outChallenge);
   });
 
   it('should handle errors while creating a new challenge', function() {
     var blob = new Blob(['1234567890']);
-    var challenge = new its.PronunciationChallenge('fb', 'test', 'hi', blob);
+    var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
     var cb = jasmine.createSpy('callback');
     var ecb = jasmine.createSpy('callback');
 
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var output = api.createPronunciationChallenge(challenge, cb, ecb);
+    challenge.connection = api;
+    var output = challenge.createPronunciationChallenge(cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb' +
@@ -190,13 +196,15 @@ describe('PronunciationChallenge API interaction test', function() {
   });
 
   it('should get an existing pronunciation challenge', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-
-    var output = api.getPronunciationChallenge('fb', '4', cb);
+    var blob = new Blob(['1234567890']);
+    var chall = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    chall.connection = api;
+    var output = chall.getPronunciationChallenge('fb', '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -222,7 +230,7 @@ describe('PronunciationChallenge API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var challenge = new its.PronunciationChallenge('fb', '4', 'Hi');
+    var challenge = new PronunciationChallenge('fb', '4', 'Hi');
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.referenceAudioUrl = referenceAudioUrl;
@@ -231,13 +239,15 @@ describe('PronunciationChallenge API interaction test', function() {
   });
 
   it('should get a list of existing challenges', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
-
-    var output = api.listPronunciationChallenges('fb', cb);
+    var blob = new Blob(['1234567890']);
+    var chall = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    chall.connection = api;
+    var output = chall.listPronunciationChallenges('fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -263,7 +273,7 @@ describe('PronunciationChallenge API interaction test', function() {
     });
 
     var stringDate = '2014-12-31T23:59:59Z';
-    var challenge = new its.PronunciationChallenge('fb', '4', 'Hi');
+    var challenge = new PronunciationChallenge('fb', '4', 'Hi');
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.referenceAudioUrl = referenceAudioUrl;
@@ -272,16 +282,16 @@ describe('PronunciationChallenge API interaction test', function() {
   });
 
   it('should delete a an existing challenge', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var cb = jasmine.createSpy('callback');
 
     var blob = new Blob(['1234567890']);
-    var challenge = new its.PronunciationChallenge('fb', 'test', 'hi', blob);
-
-    var output = api.deletePronunciationChallenge(challenge, cb);
+    var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    challenge.connection = api;
+    var output = challenge.deletePronunciationChallenge(cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -299,7 +309,7 @@ describe('PronunciationChallenge API interaction test', function() {
   });
 
   it('should not delete a non existing challenge', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
@@ -307,9 +317,9 @@ describe('PronunciationChallenge API interaction test', function() {
     var ecb = jasmine.createSpy('callback');
 
     var blob = new Blob(['1234567890']);
-    var challenge = new its.PronunciationChallenge('fb', 'test', 'hi', blob);
-
-    var output = api.deletePronunciationChallenge(challenge, cb, ecb);
+    var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    challenge.connection = api;
+    var output = challenge.deletePronunciationChallenge(cb, ecb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

@@ -16,7 +16,7 @@
 
 require('jasmine-ajax');
 
-const its = require('..');
+const Connection = require('../administrative-sdk/connection').Connection;
 
 
 describe('Secure GET test', function() {
@@ -29,7 +29,7 @@ describe('Secure GET test', function() {
   });
 
   it('should throw error on required auth credentials', function() {
-    var api = new its.Sdk();
+    var api = new Connection();
 
     expect(function() {
       api._secureAjaxGet();
@@ -37,7 +37,7 @@ describe('Secure GET test', function() {
   });
 
   it('should correctly assemble the Authorization header', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authCredentials: 'secret'
     });
@@ -62,7 +62,7 @@ describe('Secure POST test', function() {
   });
 
   it('should throw error on required auth credentials', function() {
-    var api = new its.Sdk();
+    var api = new Connection();
 
     expect(function() {
       api._secureAjaxPost();
@@ -70,7 +70,7 @@ describe('Secure POST test', function() {
   });
 
   it('should correctly assemble the Authorization header', function() {
-    var api = new its.Sdk({
+    var api = new Connection({
       authPrincipal: 'principal',
       authCredentials: 'secret'
     });
