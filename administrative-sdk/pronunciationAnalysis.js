@@ -7,6 +7,7 @@
  no-unused-vars
  */
 const Student = require('../administrative-sdk/student').Student;
+const Base64Utils = require('./base64Utils').Base64Utils;
 const Connection = require('../administrative-sdk/connection').Connection;
 
 /**
@@ -300,7 +301,7 @@ class PronunciationAnalysis {
     // Start streaming the binary audio when the user instructs
     // the audio recorder to start recording.
     var dataavailableCb = function(chunk) {
-      var encoded = self._arrayBufferToBase64(chunk);
+      var encoded = Base64Utils._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for analysisId: ' +
         self.connection._analysisId);
       self._session.call('nl.itslanguage.pronunciation.write',
@@ -386,17 +387,6 @@ class PronunciationAnalysis {
     };
     recorder.addEventListener('recorded', recordedCb);
   }
-
-  _arrayBufferToBase64(buffer) {
-    var binary = '';
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  }
-
 
   /**
    * Callback used by getPronunciationAnalysis.
