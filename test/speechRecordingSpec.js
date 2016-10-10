@@ -107,10 +107,7 @@ describe('SpeechRecording API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new SpeechChallenge('fb', '4');
-    var chall = new SpeechChallenge('fb');
-    var stud = new Student('org');
-    var rec = new SpeechRecording(chall, stud, null);
-    var output = rec.getSpeechRecording(api, challenge, '5', cb);
+    var output = SpeechRecording.getSpeechRecording(api, challenge, '5', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -151,10 +148,7 @@ describe('SpeechRecording API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new SpeechChallenge('fb', '4');
-    var chall = new SpeechChallenge('fb');
-    var stud = new Student('org');
-    var rec = new SpeechRecording(chall, stud, null);
-    var output = rec.listSpeechRecordings(api, challenge, cb);
+    var output = SpeechRecording.listSpeechRecordings(api, challenge, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

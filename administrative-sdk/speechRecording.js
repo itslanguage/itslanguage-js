@@ -273,8 +273,7 @@ class SpeechRecording {
    * @param {Sdk~getSpeechRecordingCallback} [cb] The callback that handles the response.
    * @param {Sdk~getSpeechRecordingErrorCallback} [ecb] The callback that handles the error response.
    */
-  getSpeechRecording(connection, challenge, recordingId, cb, ecb) {
-    var self = this;
+  static getSpeechRecording(connection, challenge, recordingId, cb, ecb) {
     var _cb = function(data) {
       var student = new Student(challenge.organisationId, data.studentId);
       var recording = new SpeechRecording(challenge, student, data.id);
@@ -323,8 +322,7 @@ class SpeechRecording {
    * @param {Sdk~listSpeechRecordingsCallback} cb The callback that handles the response.
    * @param {Sdk~listSpeechRecordingsErrorCallback} [ecb] The callback that handles the error response.
    */
-  listSpeechRecordings(connection, challenge, cb, ecb) {
-    var self = this;
+  static listSpeechRecordings(connection, challenge, cb, ecb) {
     var _cb = function(data) {
       var recordings = [];
       data.forEach(function(datum) {
