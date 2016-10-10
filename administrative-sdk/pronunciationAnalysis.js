@@ -7,6 +7,7 @@
  no-unused-vars
  */
 const Student = require('../administrative-sdk/student').Student;
+const Connection = require('../administrative-sdk/connection').Connection;
 
 /**
  * @class WordChunk
@@ -180,7 +181,7 @@ class PronunciationAnalysis {
       },
       // RPC error callback
       function(res) {
-        self.logRPCError(res);
+        Connection.logRPCError(res);
       }
     );
 
@@ -193,7 +194,7 @@ class PronunciationAnalysis {
       },
       // RPC error callback
       function(res) {
-        self.logRPCError(res);
+        Connection.logRPCError(res);
       }
     );
   }
@@ -219,7 +220,7 @@ class PronunciationAnalysis {
       },
       // RPC error callback
       function(res) {
-        self.logRPCError(res);
+        Connection.logRPCError(res);
       }
     );
   }
@@ -310,7 +311,7 @@ class PronunciationAnalysis {
         },
         // RPC error callback
         function(res) {
-          self.logRPCError(res);
+          Connection.logRPCError(res);
           _ecb(res);
         }
       );
@@ -345,7 +346,7 @@ class PronunciationAnalysis {
       analysisInitCb,
       // RPC error callback
       function(res) {
-        self.logRPCError(res);
+        Connection.logRPCError(res);
       }
     );
 
@@ -371,7 +372,7 @@ class PronunciationAnalysis {
             res.kwargs.analysis.message = 'Analysis failed';
           } else {
             res.kwargs.analysis.message = 'Unhandled error';
-            self.logRPCError(res);
+            Connection.logRPCError(res);
           }
           _ecb(res.kwargs.analysis);
         },

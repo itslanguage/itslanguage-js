@@ -368,6 +368,15 @@ class Connection {
     self._analysisId = null;
     self._recognitionId = null;
   }
+
+    /**
+   * Log a RPC error to the console.
+   *
+   * @param {object} result Autobahn error object.
+   */
+  static logRPCError(result) {
+    console.error('RPC error returned:', result.error);
+  }
 }
 
 module.exports = {
