@@ -7,6 +7,8 @@
  no-unused-vars
  */
 const Student = require('../administrative-sdk/student').Student;
+const Connection = require('../administrative-sdk/connection').Connection;
+
 /**
  * @class SpeechRecording
  *
@@ -85,7 +87,7 @@ class SpeechRecording {
       },
       // RPC error callback
       function(res) {
-        self.logRPCError(res);
+        Connection.logRPCError(res);
       }
     );
   }
@@ -111,7 +113,7 @@ class SpeechRecording {
       },
       // RPC error callback
       function(res) {
-        self.logRPCError(res);
+        Connection.logRPCError(res);
       }
     );
   }
@@ -189,7 +191,7 @@ class SpeechRecording {
         },
         // RPC error callback
         function(res) {
-          self.logRPCError(res);
+          Connection.logRPCError(res);
           _ecb(res);
         }
       );
@@ -217,7 +219,7 @@ class SpeechRecording {
       recordingCb,
       // RPC error callback
       function(res) {
-        self.logRPCError(res);
+        Connection.logRPCError(res);
         _ecb(res);
       }
     );
@@ -234,7 +236,7 @@ class SpeechRecording {
         },
         // RPC error callback
         function(res) {
-          self.logRPCError(res);
+          Connection.logRPCError(res);
           _ecb(res);
         }
       );
