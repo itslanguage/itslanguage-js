@@ -9,6 +9,8 @@
 const autobahn = require('autobahn');
 const Student = require('../administrative-sdk/student').Student;
 const PronunciationAnalysis = require('../administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;
+const Base64Utils = require('./base64Utils').Base64Utils;
+
 /**
  * @class ChoiceRecognition
  *
@@ -171,7 +173,7 @@ class ChoiceRecognition {
     // Start streaming the binary audio when the user instructs
     // the audio recorder to start recording.
     var dataavailableCb = function(chunk) {
-      var encoded = self._arrayBufferToBase64(chunk);
+      var encoded = Base64Utils._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for recognitionId: ' +
         self.connection._recognitionId);
       self._session.call('nl.itslanguage.choice.write',
