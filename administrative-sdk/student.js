@@ -123,7 +123,7 @@ class Student {
    * @param {Sdk~getCallback} [cb] The callback that handles the response.
    * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
-  getStudent(connection, organisationId, studentId, cb, ecb) {
+  static getStudent(connection, organisationId, studentId, cb, ecb) {
     var _cb = function(data) {
       var student = new Student(organisationId, data.id, data.firstName,
         data.lastName, data.gender, data.birthYear);
@@ -162,7 +162,7 @@ class Student {
    * @param {Sdk~listCallback} cb The callback that handles the response.
    * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
-  listStudents(connection, organisationId, cb, ecb) {
+  static listStudents(connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var students = [];
       data.forEach(function(datum) {

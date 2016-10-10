@@ -18,7 +18,7 @@ class Connection {
       wsUrl: null,
       wsToken: null
     }, options);
-    this._sdkCompatibility();
+    Connection._sdkCompatibility();
     this._analysisId = null;
     this._recordingId = null;
     this._recognitionId = null;
@@ -201,13 +201,13 @@ class Connection {
       if (request.readyState === 4) {
         if (request.status >= 100 && request.status < 300) {
           // Perfect!
-          response = self._parseResponse(request.responseText);
+          response = Connection._parseResponse(request.responseText);
           if (cb) {
             return cb(response);
           }
         } else if (ecb) {
           // Some error occured.
-          response = self._parseResponse(request.responseText);
+          response = Connection._parseResponse(request.responseText);
           ecb(response.errors || {
             status: request.status
           }, response);
@@ -239,14 +239,14 @@ class Connection {
         // The response is received
         if (request.status >= 100 && request.status < 300) {
           // Perfect!
-          response = self._parseResponse(request.responseText);
+          response = Connection._parseResponse(request.responseText);
           if (cb) {
             return cb(response);
           }
         } else if (ecb) {
           // Some error occured.
           try {
-            response = self._parseResponse(request.responseText);
+            response = Connection._parseResponse(request.responseText);
             ecb(response.errors || {
               status: request.status
             }, response);
@@ -295,7 +295,7 @@ class Connection {
         } else if (ecb) {
           // Some error occured.
           try {
-            response = self._parseResponse(request.responseText);
+            response = Connection._parseResponse(request.responseText);
             ecb(response.errors || {
               status: request.status
             }, response);
@@ -317,7 +317,7 @@ class Connection {
    * @param {string} responseText The response body as text.
    * @return {object} Parsed JSON object.
    */
-  _parseResponse(responseText) {
+  static _parseResponse(responseText) {
     try {
       return JSON.parse(responseText);
     } catch (error) {
@@ -331,7 +331,7 @@ class Connection {
    * Logs browser compatibility for required and optional SDK capabilities.
    * In case of compatibility issues, an error is thrown.
    */
-  _sdkCompatibility() {
+  static _sdkCompatibility() {
     // WebSocket
     // http://caniuse.com/#feat=websockets
     var canCreateWebSocket = 'WebSocket' in window;

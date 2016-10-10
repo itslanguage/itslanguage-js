@@ -132,11 +132,9 @@ describe('Organisation API interaction test', function() {
       authPassword: 'secret'
     });
 
-    var org = new Organisation();
-
     var cb = jasmine.createSpy('callback');
 
-    var output = org.getOrganisation(api, '4', cb);
+    var output = Organisation.getOrganisation(api, '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -168,10 +166,9 @@ describe('Organisation API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var org = new Organisation();
     var cb = jasmine.createSpy('callback');
 
-    var output = org.listOrganisations(api, cb);
+    var output = Organisation.listOrganisations(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
