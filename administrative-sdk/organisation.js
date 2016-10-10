@@ -14,10 +14,9 @@ class Organisation {
    * @param {string} [id] The organisation identifier. If none is given, one is generated.
    * @param {string} [name] name of the organisation.
    */
-  constructor(id, name, connection) {
+  constructor(id, name) {
     this.id = id;
     this.name = name;
-    this.connection = connection;
   }
 
   /**
@@ -44,7 +43,7 @@ class Organisation {
    * @param {Sdk~organisationCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~organisationCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createOrganisation(cb, ecb) {
+  createOrganisation(connection, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
@@ -62,9 +61,9 @@ class Organisation {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations';
+    var url = connection.settings.apiUrl + '/organisations';
     var fd = JSON.stringify(this);
-    this.connection._secureAjaxPost(url, fd, _cb, _ecb);
+    connection._secureAjaxPost(url, fd, _cb, _ecb);
   }
 
   /**
@@ -90,7 +89,7 @@ class Organisation {
    * @param {Sdk~getCallback} [cb] The callback that handles the response.
    * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
-  getOrganisation(organisationId, cb, ecb) {
+  getOrganisation(connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var organisation = new Organisation(data.id, data.name);
       organisation.created = new Date(data.created);
@@ -99,8 +98,8 @@ class Organisation {
         cb(organisation);
       }
     };
-    var url = this.connection.settings.apiUrl + '/organisations/' + organisationId;
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    var url = connection.settings.apiUrl + '/organisations/' + organisationId;
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -125,7 +124,7 @@ class Organisation {
    * @param {Sdk~listCallback} cb The callback that handles the response.
    * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
-  listOrganisations(cb, ecb) {
+  listOrganisations(connection, cb, ecb) {
     var _cb = function(data) {
       var organisations = [];
       data.forEach(function(datum) {
@@ -138,8 +137,8 @@ class Organisation {
         cb(organisations);
       }
     };
-    var url = this.connection.settings.apiUrl + '/organisations';
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    var url = connection.settings.apiUrl + '/organisations';
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 }
 

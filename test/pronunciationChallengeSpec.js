@@ -82,15 +82,13 @@ describe('PronunciationChallenge API interaction test', function() {
     var cb = jasmine.createSpy('callback');
 
     var challenge = new PronunciationChallenge('fb', '1', 'test');
-    challenge.connection = api;
     expect(function() {
       challenge.createPronunciationChallenge(cb);
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
 
     challenge = new PronunciationChallenge('fb', '1', 'test', null);
-    challenge.connection = api;
     expect(function() {
-      challenge.createPronunciationChallenge(cb);
+      challenge.createPronunciationChallenge(api, cb);
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
 
@@ -103,8 +101,7 @@ describe('PronunciationChallenge API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    challenge.connection = api;
-    var output = challenge.createPronunciationChallenge(cb);
+    var output = challenge.createPronunciationChallenge(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -142,7 +139,6 @@ describe('PronunciationChallenge API interaction test', function() {
     outChallenge.referenceAudio = challenge.referenceAudio;
     outChallenge.referenceAudioUrl = referenceAudioUrl;
     outChallenge.status = 'preparing';
-    outChallenge.connection = api;
     expect(cb).toHaveBeenCalledWith(outChallenge);
   });
 
@@ -156,8 +152,7 @@ describe('PronunciationChallenge API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    challenge.connection = api;
-    var output = challenge.createPronunciationChallenge(cb, ecb);
+    var output = challenge.createPronunciationChallenge(api, cb, ecb);
 
     var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb' +
@@ -203,8 +198,7 @@ describe('PronunciationChallenge API interaction test', function() {
     var cb = jasmine.createSpy('callback');
     var blob = new Blob(['1234567890']);
     var chall = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    chall.connection = api;
-    var output = chall.getPronunciationChallenge('fb', '4', cb);
+    var output = chall.getPronunciationChallenge(api, 'fb', '4', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -246,8 +240,7 @@ describe('PronunciationChallenge API interaction test', function() {
     var cb = jasmine.createSpy('callback');
     var blob = new Blob(['1234567890']);
     var chall = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    chall.connection = api;
-    var output = chall.listPronunciationChallenges('fb', cb);
+    var output = chall.listPronunciationChallenges(api, 'fb', cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -290,8 +283,7 @@ describe('PronunciationChallenge API interaction test', function() {
 
     var blob = new Blob(['1234567890']);
     var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    challenge.connection = api;
-    var output = challenge.deletePronunciationChallenge(cb);
+    var output = challenge.deletePronunciationChallenge(api, cb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();
@@ -318,8 +310,7 @@ describe('PronunciationChallenge API interaction test', function() {
 
     var blob = new Blob(['1234567890']);
     var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    challenge.connection = api;
-    var output = challenge.deletePronunciationChallenge(cb, ecb);
+    var output = challenge.deletePronunciationChallenge(api, cb, ecb);
     expect(output).toBeUndefined();
 
     var request = jasmine.Ajax.requests.mostRecent();

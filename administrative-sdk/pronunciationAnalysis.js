@@ -107,14 +107,13 @@ class PronunciationAnalysis {
    * @param {date} updated The most recent update date of the entity.
    * @param {string} audioUrl The audio fragment as streaming audio link.
    */
-  constructor(challenge, student, id, created, updated, audioUrl, connection) {
+  constructor(challenge, student, id, created, updated, audioUrl) {
     this.id = id;
     this.challenge = challenge;
     this.student = student;
     this.created = created;
     this.updated = updated;
     this.audioUrl = audioUrl;
-    this.connection = connection;
   }
 
   /**
@@ -171,14 +170,14 @@ class PronunciationAnalysis {
    * Initialise the pronunciation analysis challenge through RPCs.
    *
    */
-  pronunciationAnalysisInitChallenge(challenge) {
+  pronunciationAnalysisInitChallenge(connection, challenge) {
     var self = this;
 
-    this.connection._session.call('nl.itslanguage.pronunciation.init_challenge',
-      [self._analysisId, challenge.organisationId, challenge.id]).then(
+    connection._session.call('nl.itslanguage.pronunciation.init_challenge',
+      [connection._analysisId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
       function(analysisId) {
-        console.log('Challenge initialised for analysisId: ' + self._analysisId);
+        console.log('Challenge initialised for analysisId: ' + connection._analysisId);
       },
       // RPC error callback
       function(res) {
@@ -186,8 +185,8 @@ class PronunciationAnalysis {
       }
     );
 
-    this.connection._session.call('nl.itslanguage.pronunciation.alignment',
-      [self._analysisId]).then(
+    connection._session.call('nl.itslanguage.pronunciation.alignment',
+      [connection._analysisId]).then(
       // RPC success callback
       function(alignment) {
         self.referenceAlignment = alignment;
@@ -204,18 +203,18 @@ class PronunciationAnalysis {
    * Initialise the pronunciation analysis audio specs through RPCs.
    *
    */
-  pronunciationAnalysisInitAudio(recorder, dataavailableCb) {
+  pronunciationAnalysisInitAudio(connection, recorder, dataavailableCb) {
     var self = this;
 
     // Indicate to the socket server that we're about to start recording a
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     var specs = recorder.getAudioSpecs();
-    this.connection._session.call('nl.itslanguage.pronunciation.init_audio',
-      [self._analysisId, specs.audioFormat], specs.audioParameters).then(
+    connection._session.call('nl.itslanguage.pronunciation.init_audio',
+      [connection._analysisId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
       function(analysisId) {
-        console.log('Accepted audio parameters for analysisId after init_audio: ' + self._analysisId);
+        console.log('Accepted audio parameters for analysisId after init_audio: ' + connection._analysisId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
       },
@@ -237,13 +236,13 @@ class PronunciationAnalysis {
    * @param {Sdk~pronunciationAnalysisProgressCallback} [progressCb] The callback that handles the intermediate results.
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
    */
-  startStreamingPronunciationAnalysis(challenge, recorder, preparedCb, cb, ecb, progressCb, trim) {
+  startStreamingPronunciationAnalysis(connection, challenge, recorder, preparedCb, cb, ecb, progressCb, trim) {
     var self = this;
     var _cb = function(data) {
       var analysis = new PronunciationAnalysis(
         challenge.id, data.studentId, data.id,
         null, null,
-        self.addAccessToken(data.audioUrl));
+        connection.addAccessToken(data.audioUrl));
       analysis.score = data.score;
       analysis.confidenceScore = data.confidenceScore;
       analysis.words = self._wordsToModels(data.words);
@@ -284,7 +283,7 @@ class PronunciationAnalysis {
     }
 
     // Validate environment prerequisites.
-    if (!this.connection._session) {
+    if (!connection._session) {
       throw new Error('WebSocket connection was not open.');
     }
 
@@ -292,8 +291,8 @@ class PronunciationAnalysis {
       throw new Error('Recorder should not yet be recording.');
     }
 
-    if (this.connection._analysisId !== null) {
-      console.error('Session with analysisId ' + this.connection._analysisId + ' still in progress.');
+    if (connection._analysisId !== null) {
+      console.error('Session with analysisId ' + connection._analysisId + ' still in progress.');
       return;
     }
     this._analyisId = null;
@@ -303,9 +302,9 @@ class PronunciationAnalysis {
     var dataavailableCb = function(chunk) {
       var encoded = Base64Utils._arrayBufferToBase64(chunk);
       console.log('Sending audio chunk to websocket for analysisId: ' +
-        self.connection._analysisId);
-      self._session.call('nl.itslanguage.pronunciation.write',
-        [self.connection._analysisId, encoded, 'base64']).then(
+        connection._analysisId);
+      connection._session.call('nl.itslanguage.pronunciation.write',
+        [connection._analysisId, encoded, 'base64']).then(
         // RPC success callback
         function(res) {
           console.debug('Delivered audio successfully');
@@ -319,16 +318,16 @@ class PronunciationAnalysis {
     };
 
     var analysisInitCb = function(analysisId) {
-      self.connection._analysisId = analysisId;
-      console.log('Got analysisId after initialisation: ' + self.connection._analysisId);
+      connection._analysisId = analysisId;
+      console.log('Got analysisId after initialisation: ' + connection._analysisId);
       self.pronunciationAnalysisInitChallenge(challenge);
-      preparedCb(self.connection._analysisId);
+      preparedCb(connection._analysisId);
 
       if (recorder.hasUserMediaApproval()) {
-        self.pronunciationAnalysisInitAudio(recorder, dataavailableCb);
+        self.pronunciationAnalysisInitAudio(connection, recorder, dataavailableCb);
       } else {
         var userMediaCb = function(chunk) {
-          self.pronunciationAnalysisInitAudio(recorder, dataavailableCb);
+          self.pronunciationAnalysisInitAudio(connection, recorder, dataavailableCb);
           recorder.removeEventListener('ready', userMediaCb);
         };
         recorder.addEventListener('ready', userMediaCb);
@@ -340,7 +339,7 @@ class PronunciationAnalysis {
     if (trim === false) {
       trimAudioStart = 0.0;
     }
-    this.connection._session.call('nl.itslanguage.pronunciation.init_analysis', [],
+    connection._session.call('nl.itslanguage.pronunciation.init_analysis', [],
       {trimStart: trimAudioStart,
         trimEnd: trimAudioEnd}).then(
       // RPC success callback
@@ -355,8 +354,8 @@ class PronunciationAnalysis {
     var recordedCb = function(id) {
       // When done, submit any plain text (non-JSON) to start analysing.
 
-      self.connection._session.call('nl.itslanguage.pronunciation.analyse',
-        [self.connection._analysisId], {}, {receive_progress: true}).then(
+      connection._session.call('nl.itslanguage.pronunciation.analyse',
+        [connection._analysisId], {}, {receive_progress: true}).then(
 
         // RPC success callback
         function(res) {
@@ -383,7 +382,7 @@ class PronunciationAnalysis {
       recorder.removeEventListener('recorded', recordedCb);
       recorder.removeEventListener('dataavailable', dataavailableCb);
       // This session is over.
-      self.connection._analysisId = null;
+      connection._analysisId = null;
     };
     recorder.addEventListener('recorded', recordedCb);
   }
@@ -412,7 +411,7 @@ class PronunciationAnalysis {
    * @param {Sdk~getPronunciationAnalysisCallback} [cb] The callback that handles the response.
    * @param {Sdk~getPronunciationAnalysisErrorCallback} [ecb] The callback that handles the error response.
    */
-  getPronunciationAnalysis(challenge, analysisId, cb, ecb) {
+  getPronunciationAnalysis(connection, challenge, analysisId, cb, ecb) {
     var _cb = function(datum) {
       var student = new Student(challenge.organisationId, datum.studentId);
       var analysis = new PronunciationAnalysis(challenge, student,
@@ -437,10 +436,10 @@ class PronunciationAnalysis {
       throw new Error('challenge.organisationId field is required');
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses/' + analysisId;
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -467,7 +466,7 @@ class PronunciationAnalysis {
    * @param {Sdk~listPronunciationAnalysesCallback} cb The callback that handles the response.
    * @param {Sdk~listPronunciationAnalysesErrorCallback} [ecb] The callback that handles the error response.
    */
-  listPronunciationAnalyses(challenge, detailed, cb, ecb) {
+  listPronunciationAnalyses(connection, challenge, detailed, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       var analyses = [];
@@ -497,13 +496,13 @@ class PronunciationAnalysis {
       throw new Error('challenge.organisationId field is required');
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses';
     if (detailed) {
       url += '?detailed=true';
     }
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 }
 module.exports = {

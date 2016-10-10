@@ -30,7 +30,7 @@ class Student {
    * @param {string} [gender] Gender of the student (either `male` or `female`).
    * @param {number} [birthYear] Birth year of the student.
    */
-  constructor(organisationId, id, firstName, lastName, gender, birthYear, connection) {
+  constructor(organisationId, id, firstName, lastName, gender, birthYear) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
@@ -45,7 +45,6 @@ class Student {
     this.lastName = lastName;
     this.gender = gender;
     this.birthYear = birthYear;
-    this.connection = connection;
   }
 
   /**
@@ -72,7 +71,7 @@ class Student {
    * @param {Sdk~studentCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~studentCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createStudent(cb, ecb) {
+  createStudent(connection, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
@@ -94,10 +93,10 @@ class Student {
       throw new Error('organisationId field is required');
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/students';
     var fd = JSON.stringify(this);
-    this.connection._secureAjaxPost(url, fd, _cb, _ecb);
+    connection._secureAjaxPost(url, fd, _cb, _ecb);
   }
 
   /**
@@ -124,7 +123,7 @@ class Student {
    * @param {Sdk~getCallback} [cb] The callback that handles the response.
    * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
    */
-  getStudent(organisationId, studentId, cb, ecb) {
+  getStudent(connection, organisationId, studentId, cb, ecb) {
     var _cb = function(data) {
       var student = new Student(organisationId, data.id, data.firstName,
         data.lastName, data.gender, data.birthYear);
@@ -135,9 +134,9 @@ class Student {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -163,7 +162,7 @@ class Student {
    * @param {Sdk~listCallback} cb The callback that handles the response.
    * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
    */
-  listStudents(organisationId, cb, ecb) {
+  listStudents(connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var students = [];
       data.forEach(function(datum) {
@@ -178,9 +177,9 @@ class Student {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students';
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 }
 

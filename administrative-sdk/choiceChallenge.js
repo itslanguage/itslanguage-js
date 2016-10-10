@@ -28,7 +28,7 @@ class ChoiceChallenge {
    * @param {string[]} choices The sentences of which at most one may be recognised.
    * @return {ChoiceChallenge}
    */
-  constructor(organisationId, id, question, choices, connection) {
+  constructor(organisationId, id, question, choices) {
     if (typeof organisationId !== 'string') {
       throw new Error(
         'organisationId parameter of type "string" is required');
@@ -55,7 +55,6 @@ class ChoiceChallenge {
         'choices parameter of type "Array" is required');
     }
     this.choices = choices;
-    this.connection = connection;
   }
 
   /**
@@ -82,7 +81,7 @@ class ChoiceChallenge {
    * @param {Sdk~choiceChallengeCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~choiceChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createChoiceChallenge(cb, ecb) {
+  createChoiceChallenge(connection, cb, ecb) {
     var self = this;
     var _cb = function(data) {
       // Update the id in case domain model didn't contain one.
@@ -110,7 +109,7 @@ class ChoiceChallenge {
       throw new Error('organisationId field is required');
     }
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/choice';
 
     var fd = new FormData();
@@ -122,7 +121,7 @@ class ChoiceChallenge {
     this.choices.forEach(function(choice) {
       fd.append('choices', choice);
     });
-    this.connection._secureAjaxPost(url, fd, _cb, _ecb);
+    connection._secureAjaxPost(url, fd, _cb, _ecb);
   }
 
   /**
@@ -150,7 +149,7 @@ class ChoiceChallenge {
    * @param {Sdk~getChoiceChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
   getChoiceChallenge(
-    organisationId, challengeId, cb, ecb) {
+    connection, organisationId, challengeId, cb, ecb) {
     var _cb = function(data) {
       var challenge = new ChoiceChallenge(organisationId, data.id,
         data.question, data.choices);
@@ -166,9 +165,9 @@ class ChoiceChallenge {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice/' + challengeId;
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 
   /**
@@ -195,7 +194,7 @@ class ChoiceChallenge {
    * @param {Sdk~listChoiceChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
   listChoiceChallenges(
-    organisationId, cb, ecb) {
+    connection, organisationId, cb, ecb) {
     var _cb = function(data) {
       var challenges = [];
       data.forEach(function(datum) {
@@ -215,9 +214,9 @@ class ChoiceChallenge {
       }
     };
 
-    var url = this.connection.settings.apiUrl + '/organisations/' +
+    var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice';
-    this.connection._secureAjaxGet(url, _cb, ecb);
+    connection._secureAjaxGet(url, _cb, ecb);
   }
 }
 
