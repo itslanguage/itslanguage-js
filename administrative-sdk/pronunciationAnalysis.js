@@ -467,7 +467,6 @@ class PronunciationAnalysis {
    * @param {Sdk~listPronunciationAnalysesErrorCallback} [ecb] The callback that handles the error response.
    */
   static listPronunciationAnalyses(connection, challenge, detailed, cb, ecb) {
-    var self = this;
     var _cb = function(data) {
       var analyses = [];
       data.forEach(function(datum) {
@@ -480,7 +479,7 @@ class PronunciationAnalysis {
         // albeit without extended attributes like score and phonemes.
         if (datum.score) {
           analysis.score = datum.score;
-          analysis.words = self._wordsToModels(datum.words);
+          analysis.words = PronunciationAnalysis._wordsToModels(datum.words);
         }
         analyses.push(analysis);
       });
