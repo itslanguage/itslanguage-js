@@ -142,8 +142,8 @@ class Connection {
    * @param {callback} [cb] The callback that handles the response.
    * @param {callback} [ecb] The callback that handles the error response.
    */
-  _secureAjaxGet(url, cb, ecb) {
-    return this._ajaxGet(url, cb, ecb, this._getAuthHeaders());
+  _secureAjaxGet(url) {
+    return this._ajaxGet(url, this._getAuthHeaders());
   }
 
   /**
@@ -154,8 +154,8 @@ class Connection {
    * @param {callback} [cb] The callback that handles the response.
    * @param {callback} [ecb] The callback that handles the error response.
    */
-  _secureAjaxPost(url, formdata, cb, ecb) {
-    return this._ajaxPost(url, formdata, cb, ecb, this._getAuthHeaders());
+  _secureAjaxPost(url, formdata) {
+    return this._ajaxPost(url, formdata, this._getAuthHeaders());
   }
 
   /**
@@ -165,8 +165,8 @@ class Connection {
    * @param {callback} [cb] The callback that handles the response.
    * @param {callback} [ecb] The callback that handles the error response.
    */
-  _secureAjaxDelete(url, cb, ecb) {
-    return this._ajaxDelete(url, cb, ecb, this._getAuthHeaders());
+  _secureAjaxDelete(url) {
+    return this._ajaxDelete(url, this._getAuthHeaders());
   }
 
   /**
@@ -184,6 +184,7 @@ class Connection {
       encodeURIComponent(accessToken);
     return secureUrl;
   }
+
   /**
    * Perform a HTTP GET to the API.
    *
@@ -192,32 +193,34 @@ class Connection {
    * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
    */
-  _ajaxGet(url, cb, ecb, auth) {
-    var self = this;
+  _ajaxGet(url, auth) {
     var request = new XMLHttpRequest();
     var response = null;
     request.open('GET', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        if (request.status >= 100 && request.status < 300) {
-          // Perfect!
-          response = Connection._parseResponse(request.responseText);
-          if (cb) {
-            return cb(response);
-          }
-        } else if (ecb) {
-          // Some error occured.
-          response = Connection._parseResponse(request.responseText);
-          ecb(response.errors || {
-            status: request.status
-          }, response);
-        }
-      }
-    };
     if (typeof auth !== 'undefined') {
       request.setRequestHeader('Authorization', auth);
     }
-    request.send();
+    return new Promise(function(resolve, reject) {
+      request.onload = function() {
+        response = Connection._parseResponse(request.responseText);
+        if (request.status >= 200 && request.status < 300) {
+          resolve(response);
+        } else {
+          reject({
+            status: request.status,
+            errors: response
+          });
+        }
+      };
+
+      request.onerror = function() {
+        reject({
+          status: request.status,
+          errors: response
+        });
+      };
+      request.send();
+    });
   }
 
   /**
@@ -229,46 +232,44 @@ class Connection {
    * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
    */
-  _ajaxPost(url, formdata, cb, ecb, auth) {
-    var self = this;
-    var request = new XMLHttpRequest();
+  _ajaxPost(url, formdata, auth) {
+    var request = new XMLHttpRequest({mozSystem: true});
     var response = null;
     request.open('POST', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        // The response is received
-        if (request.status >= 100 && request.status < 300) {
-          // Perfect!
-          response = Connection._parseResponse(request.responseText);
-          if (cb) {
-            return cb(response);
-          }
-        } else if (ecb) {
-          // Some error occured.
-          try {
-            response = Connection._parseResponse(request.responseText);
-            ecb(response.errors || {
-              status: request.status
-            }, response);
-          } catch (e) {
-            ecb(response || e);
-          }
-        }
-      }
-    };
     if (typeof auth !== 'undefined') {
       request.setRequestHeader('Authorization', auth);
     }
-    if (typeof formdata === 'object') {
-      // The only way to send blob data is using FormData, which is
-      // supported everywhere except for IE <10.
-      request.send(formdata);
-    } else if (typeof formdata === 'string') {
+    if (typeof formdata === 'string') {
       // Send JSON by default
       request.setRequestHeader('Content-Type',
         'application/json; charset=utf-8');
-      request.send(formdata);
     }
+    return new Promise(function(resolve, reject) {
+      request.onload = function() {
+        response = Connection._parseResponse(request.responseText);
+        if (request.status >= 100 && request.status < 300) {
+          resolve(response);
+        } else {
+          reject(
+            {
+              status: request.status,
+              errors: response
+            }
+          );
+        }
+      };
+
+      request.onerror = function() {
+        reject(
+          {
+            status: request.status,
+            errors: response
+          }
+        );
+      };
+
+      request.send(formdata);
+    });
   }
 
   /**
@@ -279,36 +280,36 @@ class Connection {
    * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
    */
-  _ajaxDelete(url, cb, ecb, auth) {
-    var self = this;
+  _ajaxDelete(url, auth) {
     var request = new XMLHttpRequest();
     var response = null;
     request.open('DELETE', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        // The response is received
-        if (request.status >= 100 && request.status < 300) {
-          // A delete call usually has no body to parse.
-          if (cb) {
-            cb();
-          }
-        } else if (ecb) {
-          // Some error occured.
-          try {
-            response = Connection._parseResponse(request.responseText);
-            ecb(response.errors || {
-              status: request.status
-            }, response);
-          } catch (e) {
-            ecb(response || e);
-          }
-        }
-      }
-    };
     if (typeof auth !== 'undefined') {
       request.setRequestHeader('Authorization', auth);
     }
-    request.send();
+    return new Promise(function(resolve, reject) {
+      request.onload = function() {
+        if (request.status >= 100 && request.status < 300) {
+          // A delete call usually has no body to parse.
+          resolve();
+        } else {
+          // Some error occured.
+          try {
+            response = Connection._parseResponse(request.responseText);
+            reject(
+              {
+                errors: response.errors,
+                status: request.status
+              }
+            );
+          } catch (e) {
+            reject(response || e);
+          }
+        }
+      };
+
+      request.send();
+    });
   }
 
   /**
@@ -369,7 +370,7 @@ class Connection {
     self._recognitionId = null;
   }
 
-    /**
+  /**
    * Log a RPC error to the console.
    *
    * @param {object} result Autobahn error object.

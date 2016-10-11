@@ -54,52 +54,16 @@ class SpeechChallenge {
   }
 
   /**
-   * Callback used by createSpeechChallenge.
-   *
-   * @callback Sdk~speechChallengeCreatedCallback
-   * @param {its.SpeechChallenge} challenge Updated speech challenge domain model instance.
-   */
-  speechChallengeCreatedCallback(challenge) {}
-
-  /**
-   * Error callback used by createSpeechChallenge.
-   *
-   * @callback Sdk~speechChallengeCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.SpeechChallenge} challenge Speech challenge domain model instance with unapplied changes.
-   */
-  speechChallengeCreatedErrorCallback(errors, challenge) {}
-
-  /**
    * Create a speech challenge.
    *
    * @param {its.SpeechChallenge} challenge A speech challenge object.
    * @param {Sdk~speechChallengeCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~speechChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createSpeechChallenge(connection, cb, ecb) {
-    var self = this;
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      self.id = data.id;
-      self.created = new Date(data.created);
-      self.updated = new Date(data.updated);
-      self.referenceAudioUrl = data.referenceAudioUrl || null;
-      if (cb) {
-        cb(self);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, self);
-      }
-    };
-
+  createSpeechChallenge(connection) {
     if (!this.organisationId) {
-      throw new Error('organisationId field is required');
+      return Promise.reject(new Error('organisationId field is required'));
     }
-
     var fd = new FormData();
     if (typeof this.id !== 'undefined' &&
       this.id !== null) {
@@ -109,27 +73,19 @@ class SpeechChallenge {
     if (this.referenceAudio) {
       fd.append('referenceAudio', this.referenceAudio);
     }
-
     var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/speech';
-    connection._secureAjaxPost(url, fd, _cb, _ecb);
+
+    return connection._secureAjaxPost(url, fd)
+      .then(data => {
+        // Update the id in case domain model didn't contain one.
+        this.id = data.id;
+        this.created = new Date(data.created);
+        this.updated = new Date(data.updated);
+        this.referenceAudioUrl = data.referenceAudioUrl || null;
+        return this;
+      });
   }
-
-  /**
-   * Callback used by getSpeechChallenge.
-   *
-   * @callback Sdk~getSpeechChallengeCallback
-   * @param {its.SpeechChallenge} challenge Retrieved speech challenge domain model instance.
-   */
-  getSpeechChallengeCallback(challenge) {}
-
-  /**
-   * Error callback used by getSpeechChallenge.
-   *
-   * @callback Sdk~getSpeechChallengeErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getSpeechChallengeErrorCallback(errors) {}
 
   /**
    * Get a speech challenge.
@@ -139,36 +95,18 @@ class SpeechChallenge {
    * @param {Sdk~getSpeechChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getSpeechChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  static getSpeechChallenge(connection, organisationId, challengeId, cb, ecb) {
-    var _cb = function(data) {
-      var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      if (cb) {
-        cb(challenge);
-      }
-    };
-
+  static getSpeechChallenge(connection, organisationId, challengeId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech/' + challengeId;
-    connection._secureAjaxGet(url, _cb, ecb);
+
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
+        challenge.created = new Date(data.created);
+        challenge.updated = new Date(data.updated);
+        return challenge;
+      });
   }
-
-  /**
-   * Callback used by listSpeechChallenges.
-   *
-   * @callback Sdk~listSpeechChallegesCallback
-   * @param {its.SpeechChallenge[]} challenges Retrieved speech challenge domain model instances.
-   */
-  listSpeechChallengeCallback(challenges) {}
-
-  /**
-   * Error callback used by listSpeechChallenges.
-   *
-   * @callback Sdk~listSpeechChallengesErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listSpeechChallengeErrorCallback(errors) {}
 
   /**
    * List all speech challenges in the organisation.
@@ -177,24 +115,22 @@ class SpeechChallenge {
    * @param {Sdk~listSpeechChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listSpeechChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  static listSpeechChallenges(connection, organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var challenges = [];
-      data.forEach(function(datum) {
-        var challenge = new SpeechChallenge(organisationId, datum.id,
-          datum.topic);
-        challenge.created = new Date(datum.created);
-        challenge.updated = new Date(datum.updated);
-        challenges.push(challenge);
-      });
-      if (cb) {
-        cb(challenges);
-      }
-    };
-
+  static listSpeechChallenges(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech';
-    connection._secureAjaxGet(url, _cb, ecb);
+
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var challenges = [];
+        data.forEach(function(datum) {
+          var challenge = new SpeechChallenge(organisationId, datum.id,
+            datum.topic);
+          challenge.created = new Date(datum.created);
+          challenge.updated = new Date(datum.updated);
+          challenges.push(challenge);
+        });
+        return challenges;
+      });
   }
 }
 

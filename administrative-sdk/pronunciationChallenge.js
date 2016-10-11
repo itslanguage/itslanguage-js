@@ -53,60 +53,22 @@ class PronunciationChallenge {
   }
 
   /**
-   * Callback used by createPronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeCreatedCallback
-   * @param {its.PronunciationChallenge} challenge Updated speech challenge domain model instance.
-   */
-  pronunciationChallengeCreatedCallback(challenge) {}
-
-  /**
-   * Error callback used by createPronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.PronunciationChallenge} challenge Pronunciation challenge domain model instance with unapplied changes.
-   */
-  pronunciationChallengeCreatedErrorCallback(errors, challenge) {}
-
-  /**
    * Create a pronunciation challenge.
    *
    * @param {its.PronunciationChallenge} challenge A pronunciation challenge object.
    * @param {Sdk~pronunciationChallengeCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~pronunciationChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createPronunciationChallenge(connection, cb, ecb) {
-    var self = this;
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      self.id = data.id;
-      self.created = new Date(data.created);
-      self.updated = new Date(data.updated);
-      self.referenceAudioUrl = data.referenceAudioUrl;
-      self.status = data.status;
-      if (cb) {
-        cb(self);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, self);
-      }
-    };
-
-    // Validate required domain model fields.
+  createPronunciationChallenge(connection) {
     if (!this.organisationId) {
-      throw new Error('organisationId field is required');
+      return Promise.reject(new Error('organisationId field is required'));
     }
-
-    if (typeof this.referenceAudio !== 'object' ||
-      !this.referenceAudio) {
-      throw new Error(
-        'referenceAudio parameter of type "Blob" is required');
+    if (typeof this.referenceAudio !== 'object' || !this.referenceAudio) {
+      return Promise.reject(new Error(
+        'referenceAudio parameter of type "Blob" is required'));
     }
-
+    var url = connection.settings.apiUrl + '/organisations/' +
+      this.organisationId + '/challenges/pronunciation';
     var fd = new FormData();
     if (typeof this.id !== 'undefined' &&
       this.id !== null) {
@@ -115,26 +77,17 @@ class PronunciationChallenge {
     fd.append('transcription', this.transcription);
     fd.append('referenceAudio', this.referenceAudio);
 
-    var url = connection.settings.apiUrl + '/organisations/' +
-      this.organisationId + '/challenges/pronunciation';
-    connection._secureAjaxPost(url, fd, _cb, _ecb);
+    return connection._secureAjaxPost(url, fd)
+      .then(data => {
+        // Update the id in case domain model didn't contain one.
+        this.id = data.id;
+        this.created = new Date(data.created);
+        this.updated = new Date(data.updated);
+        this.referenceAudioUrl = data.referenceAudioUrl;
+        this.status = data.status;
+        return this;
+      });
   }
-
-  /**
-   * Callback used by getPronunciationChallenge.
-   *
-   * @callback Sdk~getPronunciationChallengeCallback
-   * @param {its.PronunciationChallenge} challenge Retrieved pronunciation challenge domain model instance.
-   */
-  getPronunciationChallengeCallback(challenge) {}
-
-  /**
-   * Error callback used by getPronunciationChallenge.
-   *
-   * @callback Sdk~getPronunciationChallengeErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getPronunciationChallengeErrorCallback(errors) {}
 
   /**
    * Get a pronunciation challenge.
@@ -144,40 +97,20 @@ class PronunciationChallenge {
    * @param {Sdk~getPronunciationChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getPronunciationChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  static getPronunciationChallenge(
-    connection, organisationId, challengeId, cb, ecb) {
-    var _cb = function(data) {
-      var challenge = new PronunciationChallenge(organisationId, data.id,
-        data.transcription);
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      challenge.referenceAudioUrl = data.referenceAudioUrl;
-      challenge.status = data.status;
-      if (cb) {
-        cb(challenge);
-      }
-    };
-
+  static getPronunciationChallenge(connection, organisationId, challengeId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation/' + challengeId;
-    connection._secureAjaxGet(url, _cb, ecb);
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var challenge = new PronunciationChallenge(organisationId, data.id,
+          data.transcription);
+        challenge.created = new Date(data.created);
+        challenge.updated = new Date(data.updated);
+        challenge.referenceAudioUrl = data.referenceAudioUrl;
+        challenge.status = data.status;
+        return challenge;
+      });
   }
-
-  /**
-   * Callback used by listPronunciationChallenges.
-   *
-   * @callback Sdk~listPronunciationChallengesCallback
-   * @param {its.PronunciationChallenge[]} challenges Retrieved pronunciation challenge domain model instances.
-   */
-  listPronunciationChallengesCallback(challenges) {}
-
-  /**
-   * Error callback used by listPronunciationChallenges.
-   *
-   * @callback Sdk~listPronunciationChallengesErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listPronunciationChallengesErrorCallback(errors) {}
 
   /**
    * List all pronunciation challenges in the organisation.
@@ -186,44 +119,24 @@ class PronunciationChallenge {
    * @param {Sdk~listPronunciationChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listPronunciationChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  static listPronunciationChallenges(
-    connection, organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var challenges = [];
-      data.forEach(function(datum) {
-        var challenge = new PronunciationChallenge(
-          organisationId, datum.id, datum.transcription);
-        challenge.created = new Date(datum.created);
-        challenge.updated = new Date(datum.updated);
-        challenge.referenceAudioUrl = datum.referenceAudioUrl;
-        challenge.status = datum.status;
-        challenges.push(challenge);
-      });
-      if (cb) {
-        cb(challenges);
-      }
-    };
-
+  static listPronunciationChallenges(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation';
-    connection._secureAjaxGet(url, _cb, ecb);
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var challenges = [];
+        data.forEach(function(datum) {
+          var challenge = new PronunciationChallenge(
+            organisationId, datum.id, datum.transcription);
+          challenge.created = new Date(datum.created);
+          challenge.updated = new Date(datum.updated);
+          challenge.referenceAudioUrl = datum.referenceAudioUrl;
+          challenge.status = datum.status;
+          challenges.push(challenge);
+        });
+        return challenges;
+      });
   }
-
-  /**
-   * Callback used by deletePronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeDeletedCallback
-   */
-  pronunciationChallengeDeletedCallback(challenge) {}
-
-  /**
-   * Error callback used by deletePronunciationChallenge.
-   *
-   * @callback Sdk~pronunciationChallengeDeletedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.PronunciationChallenge} challenge Pronunciation challenge domain model instance with unapplied changes.
-   */
-  pronunciationChallengeDeletedErrorCallback(errors, challenge) {}
 
   /**
    * Delete a pronunciation challenge.
@@ -232,33 +145,18 @@ class PronunciationChallenge {
    * @param {Sdk~pronunciationChallengeDeletedCallback} [cb] The callback that handles the response.
    * @param {Sdk~pronunciationChallengeDeletedErrorCallback} [ecb] The callback that handles the error response.
    */
-  deletePronunciationChallenge(connection, cb, ecb) {
-    var self = this;
-    var _cb = function(response) {
-      if (cb) {
-        cb(self);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, self);
-      }
-    };
-
-    // Validate required domain model fields.
+  deletePronunciationChallenge(connection) {
     if (!this.organisationId) {
-      throw new Error('organisationId field is required');
+      return Promise.reject(new Error('organisationId field is required'));
     }
-
     if (!this.id) {
-      throw new Error('id field is required');
+      return Promise.reject(new Error('id field is required'));
     }
-
     var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/pronunciation/' +
       this.id;
-    connection._secureAjaxDelete(url, _cb, _ecb);
+    return connection._secureAjaxDelete(url)
+      .then(() => (this));
   }
 }
 

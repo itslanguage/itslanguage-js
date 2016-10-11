@@ -10,6 +10,7 @@
  expect,
  it,
  jasmine,
+ fail
  spyOn,
  window,
  FormData
@@ -17,7 +18,6 @@
 
 require('jasmine-ajax');
 const autobahn = require('autobahn');
-
 const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
 const SpeechRecording = require('../administrative-sdk/speechRecording').SpeechRecording;
 const Student = require('../administrative-sdk/student').Student;
@@ -84,7 +84,6 @@ describe('SpeechRecording object test', function() {
   });
 });
 
-
 describe('SpeechRecording API interaction test', function() {
   beforeEach(function() {
     jasmine.Ajax.install();
@@ -99,23 +98,13 @@ describe('SpeechRecording API interaction test', function() {
     jasmine.Ajax.uninstall();
   });
 
-  it('should get an existing speech recording', function() {
+  it('should get an existing speech recording', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var challenge = new SpeechChallenge('fb', '4');
-    var output = SpeechRecording.getSpeechRecording(api, challenge, '5', cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech' +
       '/4/recordings/5';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
-
     var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     var content = {
       id: '5',
@@ -124,39 +113,40 @@ describe('SpeechRecording API interaction test', function() {
       audioUrl: audioUrl,
       studentId: '6'
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = {
       status: 200,
       contentType: 'application/json',
       responseText: JSON.stringify(content)
-    });
-
-    var student = new Student('fb', '6');
-    var recording = new SpeechRecording(challenge, student, '5');
-    var stringDate = '2014-12-31T23:59:59Z';
-    recording.created = new Date(stringDate);
-    recording.updated = new Date(stringDate);
-    recording.audio = null;
-    recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
-    expect(cb).toHaveBeenCalledWith(recording);
+    };
+    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+    var challenge = new SpeechChallenge('fb', '4');
+    SpeechRecording.getSpeechRecording(api, challenge, '5')
+      .then(function(result) {
+        var request = jasmine.Ajax.requests.mostRecent();
+        expect(request.url).toBe(url);
+        expect(request.method).toBe('GET');
+        var student = new Student('fb', '6');
+        var recording = new SpeechRecording(challenge, student, '5');
+        var stringDate = '2014-12-31T23:59:59Z';
+        recording.created = new Date(stringDate);
+        recording.updated = new Date(stringDate);
+        recording.audio = null;
+        recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
+        expect(result).toEqual(recording);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 
-  it('should get a list of existing speech recordings', function() {
+  it('should get a list of existing speech recordings', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var challenge = new SpeechChallenge('fb', '4');
-    var output = SpeechRecording.listSpeechRecordings(api, challenge, cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech' +
       '/4/recordings';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
-
     var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     var content = [{
       id: '5',
@@ -165,23 +155,33 @@ describe('SpeechRecording API interaction test', function() {
       audioUrl: audioUrl,
       studentId: '6'
     }];
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = {
       status: 200,
       contentType: 'application/json',
       responseText: JSON.stringify(content)
-    });
-
-    var student = new Student('fb', '6');
-    var recording = new SpeechRecording(challenge, student, '5');
-    var stringDate = '2014-12-31T23:59:59Z';
-    recording.created = new Date(stringDate);
-    recording.updated = new Date(stringDate);
-    recording.audio = null;
-    recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
-    expect(cb).toHaveBeenCalledWith([recording]);
+    };
+    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+    var challenge = new SpeechChallenge('fb', '4');
+    SpeechRecording.listSpeechRecordings(api, challenge)
+      .then(function(result) {
+        var request = jasmine.Ajax.requests.mostRecent();
+        expect(request.url).toBe(url);
+        expect(request.method).toBe('GET');
+        var student = new Student('fb', '6');
+        var recording = new SpeechRecording(challenge, student, '5');
+        var stringDate = '2014-12-31T23:59:59Z';
+        recording.created = new Date(stringDate);
+        recording.updated = new Date(stringDate);
+        recording.audio = null;
+        recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
+        expect(result[0]).toEqual(recording);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 });
-
 
 describe('Speech Recording Websocket API interaction test', function() {
   beforeEach(function() {
@@ -192,49 +192,10 @@ describe('Speech Recording Websocket API interaction test', function() {
     jasmine.Ajax.uninstall();
   });
 
-  it('should fail streaming when websocket connection is closed', function() {
-    var api = new Connection();
-
-    // Mock the audio recorder
-    function RecorderMock() {
-      this.getAudioSpecs = function() {
-        return {
-          audioFormat: 'audio/wave',
-          audioParameters: {
-            channels: 1,
-            sampleWidth: 16,
-            sampleRate: 48000
-          }
-        };
-      };
-    }
-
-    // Save WebSocket
-    var old = window.WebSocket;
-    window.WebSocket = jasmine.createSpy('WebSocket');
-
-    var challenge = new SpeechChallenge('fb', '4');
-    var chall = new SpeechChallenge('fb');
-    var stud = new Student('org');
-    var rec = new SpeechRecording(chall, stud, null);
-    var student = new Student('fb', '6');
-    var recorder = new RecorderMock();
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
-
-    expect(function() {
-      rec.startStreamingSpeechRecording(
-        api, challenge, student, recorder, cb, ecb);
-    }).toThrowError('WebSocket connection was not open.');
-
-    // Restore WebSocket
-    window.WebSocket = old;
-  });
-
-  it('should start streaming a new speech recording', function() {
+  it('should fail streaming when websocket connection is closed', function(done) {
     var api = new Connection({
-      wsToken: 'foo',
-      wsUrl: 'ws://foo.bar'
+      authPrincipal: 'principal',
+      authPassword: 'secret'
     });
 
     // Mock the audio recorder
@@ -246,38 +207,117 @@ describe('Speech Recording Websocket API interaction test', function() {
             channels: 1,
             sampleWidth: 16,
             sampleRate: 48000
-          }
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
         };
       };
+    }
+
+    // Save WebSocket
+    var old = window.WebSocket;
+    window.WebSocket = jasmine.createSpy('WebSocket');
+
+    var challenge = new SpeechChallenge('fb', '4');
+    var recording = new SpeechRecording(challenge, new Student(), '3', new Blob());
+    var recorder = new RecorderMock();
+
+    var expectedMessage = 'WebSocket connection was not open.';
+
+    recording.startStreamingSpeechRecording(api, challenge, recorder)
+      .then(function() {
+        fail('An error should be thrown!');
+      })
+      .catch(function(error) {
+        expect(error.message).toEqual(expectedMessage);
+        // Restore WebSocket
+        window.WebSocket = old;
+      })
+      .then(done);
+  });
+
+  it('should start streaming a new speech recording', function(done) {
+    var api = new Connection({
+      wsToken: 'foo',
+      wsUrl: 'ws://foo.bar',
+      authPrincipal: 'principal',
+      authPassword: 'secret'
+    });
+
+    // Mock the audio recorder
+    function RecorderMock() {
+      this.getAudioSpecs = function() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      };
+
       this.isRecording = function() {
         return false;
       };
-      this.addEventListener = function() {};
+
+      this.recorded = null;
+
+      this.addEventListener = function(name, func) {
+        if (name === 'recorded') {
+          this.recorded = func;
+        } else if (name === 'dataavailable') {
+          func('EventFired');
+          this.recorded('recordDone');
+        }
+      };
+      this.removeEventListener = function() {
+      };
+
+      this.hasUserMediaApproval = function() {
+        return true;
+      };
     }
 
     var challenge = new SpeechChallenge('fb', '4');
+    var recording = new SpeechRecording(challenge, new Student(), '3', new Blob());
     var recorder = new RecorderMock();
-    var prepareCb = jasmine.createSpy('callback');
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
+    var stringDate = '2014-12-31T23:59:59Z';
+    var fakeResponse = {
+      created: new Date(stringDate),
+      updated: new Date(stringDate),
+      audioFormat: 'audio/wave',
+      audioParameters: {
+        channels: 1,
+        sampleWidth: 16,
+        sampleRate: 48000
+      },
+      audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+    };
 
     function SessionMock() {
       this.call = function() {
         var d = autobahn.when.defer();
+        d.resolve(fakeResponse);
         return d.promise;
       };
     }
+
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-    var chall = new SpeechChallenge('fb');
-    var stud = new Student('org');
-    var rec = new SpeechRecording(chall, stud, null);
-    var output = rec.startStreamingSpeechRecording(
-      api, challenge, recorder, prepareCb, cb, ecb);
 
-    expect(api._session.call).toHaveBeenCalled();
-    expect(api._session.call).toHaveBeenCalledWith(
-      'nl.itslanguage.recording.init_recording', []);
-    expect(output).toBeUndefined();
+    recording.startStreamingSpeechRecording(
+      api, challenge, recorder)
+      .then(function(result) {
+        expect(result.challenge).toEqual(challenge);
+        expect(result.student.organisationId).toBe(challenge.organisationId);
+        expect(api._session.call).toHaveBeenCalled();
+        expect(api._session.call).toHaveBeenCalledWith(
+          'nl.itslanguage.recording.init_recording', []);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 });

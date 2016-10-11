@@ -58,60 +58,20 @@ class ChoiceChallenge {
   }
 
   /**
-   * Callback used by createChoiceChallenge.
-   *
-   * @callback Sdk~choiceChallengeCreatedCallback
-   * @param {its.ChoiceChallenge} challenge Updated choice challenge domain model instance.
-   */
-  choiceChallengeCreatedCallback(challenge) {}
-
-  /**
-   * Error callback used by createChoiceChallenge.
-   *
-   * @callback Sdk~choiceChallengeCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.ChoiceChallenge} challenge Choice challenge domain model instance with unapplied changes.
-   */
-  choiceChallengeCreatedErrorCallback(errors, challenge) {}
-
-  /**
    * Create a choice challenge.
    *
    * @param {its.ChoiceChallenge} challenge A choice challenge object.
    * @param {Sdk~choiceChallengeCreatedCallback} [cb] The callback that handles the response.
    * @param {Sdk~choiceChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
    */
-  createChoiceChallenge(connection, cb, ecb) {
+  createChoiceChallenge(connection) {
     var self = this;
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      self.id = data.id;
-      self.created = new Date(data.created);
-      self.updated = new Date(data.updated);
-      self.status = data.status;
-      self.choices = [];
-      data.choices.forEach(function(pair) {
-        self.choices.push(pair.choice);
-      });
-      if (cb) {
-        cb(self);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, self);
-      }
-    };
-
     // Validate required domain model fields.
     if (!this.organisationId) {
-      throw new Error('organisationId field is required');
+      return Promise.reject(new Error('organisationId field is required'));
     }
-
     var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/choice';
-
     var fd = new FormData();
     if (this.id !== undefined &&
       this.id !== null) {
@@ -121,24 +81,20 @@ class ChoiceChallenge {
     this.choices.forEach(function(choice) {
       fd.append('choices', choice);
     });
-    connection._secureAjaxPost(url, fd, _cb, _ecb);
+    return connection._secureAjaxPost(url, fd)
+      .then(data => {
+        // Update the id in case domain model didn't contain one.
+        this.id = data.id;
+        this.created = new Date(data.created);
+        this.updated = new Date(data.updated);
+        this.status = data.status;
+        this.choices = [];
+        data.choices.forEach(function(pair) {
+          self.choices.push(pair.choice);
+        });
+        return this;
+      });
   }
-
-  /**
-   * Callback used by getChoiceChallenge.
-   *
-   * @callback Sdk~getChoiceChallengeCallback
-   * @param {its.ChoiceChallenge} challenge Retrieved choice challenge domain model instance.
-   */
-  getChoiceChallengeCallback(challenge) {}
-
-  /**
-   * Error callback used by getChoiceChallenge.
-   *
-   * @callback Sdk~getChoiceChallengeErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  getChoiceChallengeErrorCallback(errors) {}
 
   /**
    * Get a choice challenge.
@@ -148,43 +104,23 @@ class ChoiceChallenge {
    * @param {Sdk~getChoiceChallengeCallback} [cb] The callback that handles the response.
    * @param {Sdk~getChoiceChallengeErrorCallback} [ecb] The callback that handles the error response.
    */
-  static getChoiceChallenge(
-    connection, organisationId, challengeId, cb, ecb) {
-    var _cb = function(data) {
-      var challenge = new ChoiceChallenge(organisationId, data.id,
-        data.question, data.choices);
-      challenge.created = new Date(data.created);
-      challenge.updated = new Date(data.updated);
-      challenge.status = data.status;
-      challenge.choices = [];
-      data.choices.forEach(function(pair) {
-        challenge.choices.push(pair.choice);
-      });
-      if (cb) {
-        cb(challenge);
-      }
-    };
-
+  static getChoiceChallenge(connection, organisationId, challengeId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice/' + challengeId;
-    connection._secureAjaxGet(url, _cb, ecb);
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var challenge = new ChoiceChallenge(organisationId, data.id,
+          data.question, data.choices);
+        challenge.created = new Date(data.created);
+        challenge.updated = new Date(data.updated);
+        challenge.status = data.status;
+        challenge.choices = [];
+        data.choices.forEach(function(pair) {
+          challenge.choices.push(pair.choice);
+        });
+        return challenge;
+      });
   }
-
-  /**
-   * Callback used by listChoiceChallenges.
-   *
-   * @callback Sdk~listChoiceChallengesCallback
-   * @param {its.ChoiceChallenge[]} challenges Retrieved choice challenge domain model instances.
-   */
-  listChoiceChallengesCallback(challenges) {}
-
-  /**
-   * Error callback used by listSpeechChallenges.
-   *
-   * @callback Sdk~listChoiceChallengesErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  listChoiceChallengesErrorCallback(errors) {}
 
   /**
    * List all choice challenges in the organisation.
@@ -193,30 +129,26 @@ class ChoiceChallenge {
    * @param {Sdk~listChoiceChallengesCallback} cb The callback that handles the response.
    * @param {Sdk~listChoiceChallengesErrorCallback} [ecb] The callback that handles the error response.
    */
-  static listChoiceChallenges(
-    connection, organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var challenges = [];
-      data.forEach(function(datum) {
-        var challenge = new ChoiceChallenge(
-          organisationId, datum.id, datum.question, datum.choices);
-        challenge.created = new Date(datum.created);
-        challenge.updated = new Date(datum.updated);
-        challenge.status = datum.status;
-        challenge.choices = [];
-        datum.choices.forEach(function(pair) {
-          challenge.choices.push(pair.choice);
-        });
-        challenges.push(challenge);
-      });
-      if (cb) {
-        cb(challenges);
-      }
-    };
-
+  static listChoiceChallenges(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice';
-    connection._secureAjaxGet(url, _cb, ecb);
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var challenges = [];
+        data.forEach(function(datum) {
+          var challenge = new ChoiceChallenge(
+            organisationId, datum.id, datum.question, datum.choices);
+          challenge.created = new Date(datum.created);
+          challenge.updated = new Date(datum.updated);
+          challenge.status = datum.status;
+          challenge.choices = [];
+          datum.choices.forEach(function(pair) {
+            challenge.choices.push(pair.choice);
+          });
+          challenges.push(challenge);
+        });
+        return challenges;
+      });
   }
 }
 
