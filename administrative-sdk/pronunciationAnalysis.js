@@ -265,7 +265,7 @@ class PronunciationAnalysis {
         var analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          self.addAccessToken(data.audioUrl));
+          connection.addAccessToken(data.audioUrl));
         ecb(analysis, data.message);
       }
     };
@@ -320,7 +320,7 @@ class PronunciationAnalysis {
     var analysisInitCb = function(analysisId) {
       connection._analysisId = analysisId;
       console.log('Got analysisId after initialisation: ' + connection._analysisId);
-      self.pronunciationAnalysisInitChallenge(challenge);
+      self.pronunciationAnalysisInitChallenge(connection, challenge);
       preparedCb(connection._analysisId);
 
       if (recorder.hasUserMediaApproval()) {
