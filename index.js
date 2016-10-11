@@ -1,6 +1,7 @@
 const BasicAuth = require('./administrative-sdk/basicAuth');
 const ChoiceChallenge = require('./administrative-sdk/choiceChallenge');
 const ChoiceRecognition = require('./administrative-sdk/choiceRecognition');
+const Connection = require('./administrative-sdk/connection');
 const Organisation = require('./administrative-sdk/organisation');
 const Phoneme = require('./administrative-sdk/pronunciationAnalysis');
 const PronunciationAnalysis = require('./administrative-sdk/pronunciationAnalysis');
@@ -25,6 +26,7 @@ module.exports = {
   BasicAuth: BasicAuth,
   ChoiceChallenge: ChoiceChallenge,
   ChoiceRecognition: ChoiceRecognition,
+  Connection: Connection,
   Organisation: Organisation,
   Phoneme: Phoneme,
   PronunciationAnalysis: PronunciationAnalysis,
