@@ -22,7 +22,8 @@ const Tenant = require('./administrative-sdk/tenant/tenant');
 const TenantController = require('./administrative-sdk/tenant/tenant-controller');
 const Word = require('./administrative-sdk/word/word');
 const WordChunk = require('./administrative-sdk/word-chunk/word-chunk');
-const audioSdk = require('./audio-sdk');
+const AudioPlayer = require('./audio-player');
+const AudioRecorder = require('./audio-recorder');
 const AudioTools = require('./audio-tools');
 const CordovaMediaPlayer = require('./cordova-media-player');
 const CordovaMediaRecorder = require('./cordova-media-recorder');
@@ -59,8 +60,8 @@ module.exports = {
   StudentController,
   TenantController,
 
-  AudioPlayer: audioSdk.AudioPlayer,
-  AudioRecorder: audioSdk.AudioRecorder,
+  AudioPlayer,
+  AudioRecorder,
 
   AudioTools,
 
