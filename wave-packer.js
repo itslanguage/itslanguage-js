@@ -5,7 +5,7 @@ module.exports = class WavePacker {
   init(recordingSampleRate, sampleRate, channels) {
     this.recordingSampleRate = recordingSampleRate;
     if ([48000, 44100].indexOf(this.recordingSampleRate) === -1) {
-      console.warn(
+      throw new Error(
         '48000 or 44100 are the only supported recordingSampleRates');
     }
 
@@ -15,7 +15,7 @@ module.exports = class WavePacker {
       this.recordingSampleRate / 2,
       this.recordingSampleRate / 4
     ].indexOf(this.sampleRate) === -1) {
-      console.warn(
+      throw new Error(
         'sampleRate must be equal, half or a quarter of the ' +
         'recording sample rate');
     }
