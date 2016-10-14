@@ -9,7 +9,6 @@
  describe,
  expect,
  it,
- fail,
  jasmine,
  window,
  FormData
@@ -58,29 +57,30 @@ describe('Organisation API interaction test', function() {
       updated: '2014-12-31T23:59:59Z',
       name: 'School of silly walks'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     organisation.createOrganisation(api)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
-        expect(request.data()).toEqual(expected);
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
         var stringDate = '2014-12-31T23:59:59Z';
         expect(result).toEqual(organisation);
-        expect(organisation.id).toBe('1');
-        expect(organisation.created).toEqual(new Date(stringDate));
-        expect(organisation.updated).toEqual(new Date(stringDate));
-        expect(organisation.name).toBe('School of silly walks');
-      }).catch(function(error) {
-        fail('No error should be thrown : ' + error);
-      }).then(done);
+        expect(result.id).toBe('1');
+        expect(result.created).toEqual(new Date(stringDate));
+        expect(result.updated).toEqual(new Date(stringDate));
+        expect(result.name).toBe('School of silly walks');
+      })
+       .catch(function(error) {
+         fail('No error should be thrown : ' + error);
+       }).then(done);
   });
 
   it('should handle errors while creating a new organisation', function(done) {
@@ -100,24 +100,25 @@ describe('Organisation API interaction test', function() {
         }
       ]
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     organisation.createOrganisation(api)
       .then(function(result) {
         fail('An error should be thrown! Instead got result ' + result);
-        expect(result).toBeUndefined();
-      }).catch(function(error) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
-        expect(error.errors).toEqual(content);
-      }).then(done);
+      })
+      .catch(function(error) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(error).toEqual(content);
+      })
+      .then(done);
   });
 
   it('should get an existing organisation through API', function(done) {
@@ -132,26 +133,29 @@ describe('Organisation API interaction test', function() {
       updated: '2014-12-31T23:59:59Z',
       name: 'School of silly walks'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
     Organisation.getOrganisation(api, '4')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
-
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var organisation = new Organisation('4', 'School of silly walks');
         organisation.created = new Date(stringDate);
         organisation.updated = new Date(stringDate);
         expect(result).toEqual(organisation);
-      }).catch(function(error) {
+      })
+      .catch(function(error) {
         fail('No error should be thrown: ' + error);
-      }).then(done);
+      })
+      .then(done);
   });
 
   it('should get a list of existing organisations through API', function(done) {
@@ -166,25 +170,28 @@ describe('Organisation API interaction test', function() {
       updated: '2014-12-31T23:59:59Z',
       name: 'School of silly walks'
     }];
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     Organisation.listOrganisations(api)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var organisation = new Organisation('4', 'School of silly walks');
         organisation.created = new Date(stringDate);
         organisation.updated = new Date(stringDate);
         expect(result[0]).toEqual(organisation);
         expect(result.length).toBe(1);
-      }).catch(function(error) {
+      })
+      .catch(function(error) {
         fail('No error should be thrown: ' + error);
-      }).then(done);
+      })
+      .then(done);
   });
 });

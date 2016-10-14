@@ -22,9 +22,10 @@ class Organisation {
   /**
    * Create an organisation.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.Organisation} organisation An organisation domain model instance.
-   * @param {Sdk~organisationCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~organisationCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing this.
+   * @throws If the server returned an error.
    */
   createOrganisation(connection) {
     var url = connection.settings.apiUrl + '/organisations';
@@ -42,9 +43,10 @@ class Organisation {
   /**
    * Get an organisation.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~getCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing an Organisation.
+   * @rejects If no result could not be found.
    */
   static getOrganisation(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' + organisationId;
@@ -61,8 +63,9 @@ class Organisation {
   /**
    * List all organisations in the organisation.
    *
-   * @param {Sdk~listCallback} cb The callback that handles the response.
-   * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
+   * @param {Connection} connection Object to connect to.
+   * @returns Promise containing a list of Organisations.
+   * @rejects If no result could not be found.
    */
   static listOrganisations(connection) {
     var url = connection.settings.apiUrl + '/organisations';

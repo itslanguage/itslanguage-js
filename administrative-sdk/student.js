@@ -50,9 +50,9 @@ class Student {
   /**
    * Create a student.
    *
-   * @param {its.Student} student A student domain model instance.
-   * @param {Sdk~studentCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~studentCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @param {Connection} connection Object to connect to.
+   * @returns Promise containing this.
+   * @rejects If the server returned an error.
    */
   createStudent(connection) {
     if (!this.organisationId) {
@@ -75,10 +75,11 @@ class Student {
   /**
    * Get a student.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} studentId Specify a student identifier.
-   * @param {Sdk~getCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a Student.
+   * @rejects If no result could not be found.
    */
   static getStudent(connection, organisationId, studentId) {
     var url = connection.settings.apiUrl + '/organisations/' +
@@ -96,9 +97,10 @@ class Student {
   /**
    * List all students in the organisation.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listCallback} cb The callback that handles the response.
-   * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of Students.
+   * @rejects If no result could not be found.
    */
   static listStudents(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +

@@ -60,9 +60,9 @@ class ChoiceChallenge {
   /**
    * Create a choice challenge.
    *
-   * @param {its.ChoiceChallenge} challenge A choice challenge object.
-   * @param {Sdk~choiceChallengeCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~choiceChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @param {Connection} connection Object to connect to.
+   * @returns Promise containing this.
+   * @rejects If the server returned an error.
    */
   createChoiceChallenge(connection) {
     var self = this;
@@ -99,10 +99,11 @@ class ChoiceChallenge {
   /**
    * Get a choice challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a choice challenge identifier.
-   * @param {Sdk~getChoiceChallengeCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getChoiceChallengeErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a ChoiceChallenge.
+   * @rejects If no result could not be found.
    */
   static getChoiceChallenge(connection, organisationId, challengeId) {
     var url = connection.settings.apiUrl + '/organisations/' +
@@ -125,9 +126,10 @@ class ChoiceChallenge {
   /**
    * List all choice challenges in the organisation.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listChoiceChallengesCallback} cb The callback that handles the response.
-   * @param {Sdk~listChoiceChallengesErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of ChoiceChallenges.
+   * @rejects If no result could not be found.
    */
   static listChoiceChallenges(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +

@@ -10,7 +10,6 @@
  expect,
  it,
  jasmine,
- fail,
  spyOn,
  window,
  FormData
@@ -82,17 +81,19 @@ describe('SpeechChallenge API interaction test', function() {
       updated: '2014-12-31T23:59:59Z',
       topic: 'Hi'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
     challenge.createSpeechChallenge(api)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
         expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
         expect(FormData.prototype.append.calls.count()).toEqual(2);
@@ -126,17 +127,18 @@ describe('SpeechChallenge API interaction test', function() {
       topic: 'Hi',
       referenceAudioUrl: referenceAudioUrl
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     challenge.createSpeechChallenge(api)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
         expect(FormData.prototype.append).toHaveBeenCalledWith(
           'referenceAudio', blob);
@@ -173,20 +175,21 @@ describe('SpeechChallenge API interaction test', function() {
         }
       ]
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     challenge.createSpeechChallenge(api)
       .then(function() {
         fail('An error should be thrown!');
       })
       .catch(function(error) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
         expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
         expect(FormData.prototype.append.calls.count()).toEqual(2);
@@ -195,7 +198,7 @@ describe('SpeechChallenge API interaction test', function() {
           field: 'topic',
           code: 'missing'
         }];
-        expect(error.errors.errors).toEqual(errors);
+        expect(error.errors).toEqual(errors);
       })
       .then(done);
   });
@@ -213,17 +216,19 @@ describe('SpeechChallenge API interaction test', function() {
       updated: '2014-12-31T23:59:59Z',
       topic: 'Hi'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
     SpeechChallenge.getSpeechChallenge(api, 'fb', '4')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var challenge = new SpeechChallenge('fb', '4', 'Hi');
         challenge.created = new Date(stringDate);
@@ -248,17 +253,19 @@ describe('SpeechChallenge API interaction test', function() {
       updated: '2014-12-31T23:59:59Z',
       topic: 'Hi'
     }];
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
     SpeechChallenge.listSpeechChallenges(api, 'fb')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var challenge = new SpeechChallenge('fb', '4', 'Hi');
         challenge.created = new Date(stringDate);

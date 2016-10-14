@@ -83,31 +83,33 @@ class SpeechRecording {
     // and reference audio to start the recording when audio is actually submitted.
     var specs = recorder.getAudioSpecs();
     connection._session.call('nl.itslanguage.recording.init_audio',
-      [connection._recordingId, specs.audioFormat], specs.audioParameters).then(
-      // RPC success callback
-      function(recordingId) {
+      [connection._recordingId, specs.audioFormat], specs.audioParameters)
+      .then(function(recordingId) {
         console.log('Accepted audio parameters for recordingId after init_audio: ' + connection._recordingId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
-      },
-      // RPC error callback
-      function(res) {
+        return recordingId;
+      })
+      .catch(function(res) {
         Connection.logRPCError(res);
-      }
-    );
+        return Promise.reject(res);
+      });
   }
 
   /**
    * Start a speech recording from streaming audio.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.SpeechChallenge} challenge The pronunciation challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Sdk~speechRecordingPreparedCallback} [preparedCb] The callback that signals server is prepared for
-   *   receiving data.
-   * @param {Sdk~speechRecordingCreatedCallback} [cb] The callback that handles the response. The success outcome is
-   *   returned as first parameter, whether the recording was forcedStopped due to timer timeout is returned as second
-   *   parameter.
-   * @param {Sdk~speechRecordingCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a SpeechRecording.
+   * @rejects If challenge is not an object or not defined.
+   * @rejects If challenge has no id.
+   * @rejects If challenge has no organisationId.
+   * @rejects If the connection is not open.
+   * @rejects If the recorder is already recording.
+   * @rejects If a session is already in progress.
+   * @rejects If something went wrong during recording.
    */
   startStreamingSpeechRecording(connection, challenge, recorder) {
     // Validate required domain model.
@@ -198,36 +200,35 @@ class SpeechRecording {
 
       recorder.addEventListener('recorded', recordedCb);
       connection._session.call('nl.itslanguage.recording.init_recording', [])
-          .then(startRecording)
-          .then(() => {
-            self.speechRecordingInitChallenge(connection, challenge)
-                .then(function() {
-                  var p = new Promise(function(resolve) {
-                    if (recorder.hasUserMediaApproval()) {
-                      resolve();
-                    } else {
-                      recorder.addEventListener('ready', resolve);
-                    }
-                  });
-                  p.then(self.speechRecordingInitAudio(connection, recorder, startStreaming));
+        .then(startRecording)
+        .then(function() {
+          self.speechRecordingInitChallenge(connection, challenge)
+              .then(function() {
+                var p = new Promise(function(resolve) {
+                  if (recorder.hasUserMediaApproval()) {
+                    resolve();
+                  } else {
+                    recorder.addEventListener('ready', resolve);
+                  }
                 });
-          },
-            function(res) {
-              Connection.logRPCError(res);
-              errorEncountered(res);
-            }
-          );
-    }
-    );
+                p.then(self.speechRecordingInitAudio(connection, recorder, startStreaming));
+              });
+        },
+          function(res) {
+            Connection.logRPCError(res);
+            errorEncountered(res);
+          });
+    });
   }
 
   /**
    * Get a speech recording in a speech challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {SpeechChallenge} challenge Specify a speech challenge.
    * @param {string} recordingId Specify a speech recording identifier.
-   * @param {Sdk~getSpeechRecordingCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getSpeechRecordingErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a SpeechRecording.
+   * @rejects If no result could not be found.
    */
   static getSpeechRecording(connection, challenge, recordingId) {
     if (!challenge || !challenge.id) {
@@ -255,9 +256,10 @@ class SpeechRecording {
   /**
    * List all speech recordings in a specific speech challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {SpeechChallenge} challenge Specify a speech challenge to list speech recordings for.
-   * @param {Sdk~listSpeechRecordingsCallback} cb The callback that handles the response.
-   * @param {Sdk~listSpeechRecordingsErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of SpeechRecording.
+   * @rejects If no result could not be found.
    */
   static listSpeechRecordings(connection, challenge) {
     if (!challenge || !challenge.id) {

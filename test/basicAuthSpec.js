@@ -10,11 +10,9 @@
  expect,
  it,
  jasmine,
- fail,
  window,
  FormData
  */
-
 require('jasmine-ajax');
 const Connection = require('../administrative-sdk/connection').Connection;
 const BasicAuth = require('../administrative-sdk/basicAuth').BasicAuth;
@@ -81,25 +79,27 @@ describe('BasicAuth API interaction test', function() {
       principal: 'principal',
       credentials: 'secret'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
     basicauth.createBasicAuth(api)
-      .then(function() {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         var expected = {tenantId: '4', principal: 'principal'};
-        expect(request.data()).toEqual(expected);
-        expect(basicauth.tenantId).toBe('4');
-        expect(basicauth.principal).toBe('principal');
-        expect(basicauth.credentials).toBe('secret');
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        expect(result.tenantId).toBe('4');
+        expect(result.principal).toBe('principal');
+        expect(result.credentials).toBe('secret');
       })
       .catch(function(error) {
-        fail('Error should not be thrown ' + error);
+        fail('No error should be thrown ' + error);
       })
       .then(done);
   });
@@ -118,28 +118,27 @@ describe('BasicAuth API interaction test', function() {
         code: 'missing'
       }]
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
 
-    var url = 'https://api.itslanguage.nl/basicauths';
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    var output = basicauth.createBasicAuth(api);
-
-    var expected = {tenantId: '4', principal: 'principal'};
-
-    output.then(function() {
-      fail('No result should be returned');
-    })
+    basicauth.createBasicAuth(api)
+      .then(function() {
+        fail('No result should be returned');
+      })
       .catch(function(error) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
-        expect(request.data()).toEqual(expected);
-        expect(error.errors).toEqual(content);
+        var expected = {tenantId: '4', principal: 'principal'};
+        var url = 'https://api.itslanguage.nl/basicauths';
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        expect(error).toEqual(content);
       })
       .then(done);
   });

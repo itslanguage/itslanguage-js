@@ -9,7 +9,6 @@
  describe,
  expect,
  it,
- fail,
  jasmine,
  spyOn,
  window,
@@ -127,17 +126,18 @@ describe('PronunciationChallenge API interaction test', function() {
       referenceAudioUrl: referenceAudioUrl,
       status: 'preparing'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 202,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     challenge.createPronunciationChallenge(api)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
         expect(FormData.prototype.append).toHaveBeenCalledWith(
           'referenceAudio', blob);
@@ -179,19 +179,22 @@ describe('PronunciationChallenge API interaction test', function() {
         }
       ]
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
-    challenge.createPronunciationChallenge(api).then(function() {
-      fail('An error should be thrown!');
-    })
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    challenge.createPronunciationChallenge(api)
+      .then(function() {
+        fail('An error should be thrown!');
+      })
       .catch(function(error) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', 'test');
         expect(FormData.prototype.append).toHaveBeenCalledWith(
           'transcription', 'hi');
@@ -203,7 +206,7 @@ describe('PronunciationChallenge API interaction test', function() {
           field: 'transcription',
           code: 'missing'
         }];
-        expect(error.errors.errors).toEqual(errors);
+        expect(error.errors).toEqual(errors);
       })
       .then(done);
   });
@@ -225,17 +228,19 @@ describe('PronunciationChallenge API interaction test', function() {
       referenceAudioUrl: referenceAudioUrl,
       status: 'prepared'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
     PronunciationChallenge.getPronunciationChallenge(api, 'fb', '4')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var challenge = new PronunciationChallenge('fb', '4', 'Hi');
         challenge.created = new Date(stringDate);
@@ -267,21 +272,19 @@ describe('PronunciationChallenge API interaction test', function() {
       referenceAudioUrl: referenceAudioUrl,
       status: 'prepared'
     }];
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     PronunciationChallenge.listPronunciationChallenges(api, 'fb')
-      .catch(function(error) {
-        fail('No error should be thrown: ' + error);
-      })
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var challenge = new PronunciationChallenge('fb', '4', 'Hi');
         challenge.created = new Date(stringDate);
@@ -290,6 +293,9 @@ describe('PronunciationChallenge API interaction test', function() {
         challenge.status = 'prepared';
         expect(result[0]).toEqual(challenge);
         expect(result.length).toBe(1);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
       })
       .then(done);
   });
@@ -304,16 +310,24 @@ describe('PronunciationChallenge API interaction test', function() {
     var url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation/test';
 
-    jasmine.Ajax.stubRequest(url).andReturn({
-      status: 204,
-      contentType: 'application/json'
+    var content =
+      {
+        status: 204,
+        contentType: 'application/json'
+      };
+    var fakeResponse = new Response(JSON.stringify(content), {
+      status: 200,
+      header: {
+        'Content-type': 'application/json'
+      }
     });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     challenge.deletePronunciationChallenge(api)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('DELETE');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('DELETE');
         expect(result).toEqual(challenge);
       })
       .catch(function(error) {
@@ -321,34 +335,35 @@ describe('PronunciationChallenge API interaction test', function() {
       })
       .then(done);
   });
+});
 
-  it('should not delete a non existing challenge', function(done) {
-    var api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
+it('should not delete a non existing challenge', function(done) {
+  var api = new Connection({
+    authPrincipal: 'principal',
+    authPassword: 'secret'
+  });
 
-    var blob = new Blob(['1234567890']);
-    var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/test';
-    var content = {
-      message: 'Validation failed',
-      errors: [
-        {
-          resource: 'PronunciationChallenge',
-          field: 'id',
-          code: 'missing'
-        }
-      ]
-    };
-    var fakeResponse = {
-      status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
-    challenge.deletePronunciationChallenge(api)
+  var blob = new Blob(['1234567890']);
+  var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+  var content = {
+    message: 'Validation failed',
+    errors: [
+      {
+        resource: 'PronunciationChallenge',
+        field: 'id',
+        code: 'missing'
+      }
+    ]
+  };
+  var fakeResponse = new Response(JSON.stringify(content), {
+    status: 422,
+    header: {
+      'Content-type': 'application/json'
+    }
+  });
+  spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+  challenge.deletePronunciationChallenge(api)
       .then(function() {
         fail('An error should be a thrown');
       })
@@ -361,5 +376,4 @@ describe('PronunciationChallenge API interaction test', function() {
         expect(error.errors).toEqual(errors);
       })
       .then(done);
-  });
 });

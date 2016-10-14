@@ -8,7 +8,6 @@
  beforeEach,
  describe,
  expect,
- fail,
  it,
  jasmine,
  spyOn,
@@ -104,24 +103,27 @@ describe('ChoiceChallenge API interaction test', function() {
       }]
     };
 
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     challenge.createChoiceChallenge(api)
       .then(function() {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('POST');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
         expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
         expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
         expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'b');
         expect(FormData.prototype.append.calls.count()).toEqual(4);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
       })
       .then(done);
   });
@@ -143,15 +145,14 @@ describe('ChoiceChallenge API interaction test', function() {
         }
       ]
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice';
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
     challenge.createChoiceChallenge(api)
       .then(function() {
         fail('No result should be returned');
@@ -165,8 +166,9 @@ describe('ChoiceChallenge API interaction test', function() {
           field: 'question',
           code: 'missing'
         }];
-        expect(error.errors.errors).toEqual(errors);
-      }).then(done);
+        expect(error.errors).toEqual(errors);
+      })
+      .then(done);
   });
 
   it('should get an existing choice challenge', function(done) {
@@ -191,13 +193,14 @@ describe('ChoiceChallenge API interaction test', function() {
       ]
     };
 
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
     var stringDate = '2014-12-31T23:59:59Z';
     var challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
     challenge.created = new Date(stringDate);
@@ -205,9 +208,9 @@ describe('ChoiceChallenge API interaction test', function() {
     challenge.status = 'preparing';
     ChoiceChallenge.getChoiceChallenge(api, 'fb', '1')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         expect(result).toEqual(challenge);
       }).catch(function(error) {
         fail('No error should be thrown: ' + error);
@@ -235,11 +238,13 @@ describe('ChoiceChallenge API interaction test', function() {
       }]
     }];
 
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     var url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice';
@@ -249,13 +254,12 @@ describe('ChoiceChallenge API interaction test', function() {
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
 
     ChoiceChallenge.listChoiceChallenges(api, 'fb')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         expect(result.length).toBe(1);
         expect(result[0]).toEqual(challenge);
       }).catch(function(error) {

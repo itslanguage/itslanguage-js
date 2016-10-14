@@ -8,7 +8,6 @@
  beforeEach,
  describe,
  expect,
- fail,
  it,
  jasmine,
  window,
@@ -40,20 +39,18 @@ describe('Secure GET test', function() {
       authCredentials: 'secret'
     });
     var url = api.settings.apiUrl;
-    jasmine.Ajax.stubRequest(url).andReturn(
-      {
-        status: 200,
-        contentType: 'application/json',
-        responseText: JSON.stringify({})
+    var fakeResponse = new Response(JSON.stringify({}), {
+      status: 200,
+      header: {
+        'Content-type': 'application/json'
       }
-    );
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     api._secureAjaxGet(url)
       .then(function() {
-        var request = jasmine.Ajax.requests.mostRecent();
+        var request = window.fetch.calls.mostRecent().args;
         // That's the correct base64 representation of 'principal:secret'
-        expect(request.requestHeaders).toEqual({
-          Authorization: 'Basic cHJpbmNpcGFsOnNlY3JldA=='
-        });
+        expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
       })
       .catch(function(error) {
         fail('No error should be thrown: ' + error);
@@ -84,20 +81,18 @@ describe('Secure POST test', function() {
       authCredentials: 'secret'
     });
     var url = api.settings.apiUrl;
-    jasmine.Ajax.stubRequest(url).andReturn(
-      {
-        status: 200,
-        contentType: 'application/json',
-        responseText: JSON.stringify({})
+    var fakeResponse = new Response(JSON.stringify({}), {
+      status: 200,
+      header: {
+        'Content-type': 'application/json'
       }
-    );
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     api._secureAjaxPost(url)
       .then(function() {
-        var request = jasmine.Ajax.requests.mostRecent();
+        var request = window.fetch.calls.mostRecent().args;
         // That's the correct base64 representation of 'principal:secret'
-        expect(request.requestHeaders).toEqual({
-          Authorization: 'Basic cHJpbmNpcGFsOnNlY3JldA=='
-        });
+        expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
       })
       .catch(function(error) {
         fail('No error should be thrown: ' + error);

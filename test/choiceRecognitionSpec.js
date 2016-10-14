@@ -10,7 +10,6 @@
  expect,
  it,
  jasmine,
- fail,
  spyOn,
  window,
  FormData
@@ -155,7 +154,6 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
     var audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     var content = {
       id: '5',
@@ -164,20 +162,21 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       audioUrl: audioUrl,
       studentId: '6'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     var url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice/4/recognitions/5';
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
     var challenge = new SpeechChallenge('fb', '4');
-    ChoiceRecognition.getChoiceRecognition(api, challenge, '5', cb)
+    ChoiceRecognition.getChoiceRecognition(api, challenge, '5')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var student = new Student('fb', '6');
         var recognition = new ChoiceRecognition(challenge, student,
@@ -213,17 +212,18 @@ describe('ChoiceRecognition Websocket API interaction test', function() {
       studentId: '24',
       recognised: 'Hi'
     }];
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     ChoiceRecognition.listChoiceRecognitions(api, challenge)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var student = new Student('fb', '6');
         var recognition = new ChoiceRecognition(challenge, student,

@@ -10,7 +10,6 @@
  expect,
  it,
  jasmine,
- fail,
  spyOn,
  window,
  FormData
@@ -187,27 +186,29 @@ describe('PronunciationAnalyses API interaction test', function() {
       audioUrl: audioUrl,
       studentId: '6'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    var output = PronunciationAnalysis.getPronunciationAnalysis(api, challenge, '5');
-    expect(output).toEqual(jasmine.any(Promise));
-    return output.then(function(result) {
-      var request = jasmine.Ajax.requests.mostRecent();
-      expect(request.url).toBe(url);
-      expect(request.method).toBe('GET');
-      var stringDate = '2014-12-31T23:59:59Z';
-      var student = new Student('fb', '6');
-      var analysis = new PronunciationAnalysis(challenge, student,
-        '5', new Date(stringDate), new Date(stringDate), audioUrl);
-      expect(result).toEqual(analysis);
-    }).catch(function(error) {
-      fail('No error should be thrown: ' + error);
-    }).then(done);
+    PronunciationAnalysis.getPronunciationAnalysis(api, challenge, '5')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
+        var stringDate = '2014-12-31T23:59:59Z';
+        var student = new Student('fb', '6');
+        var analysis = new PronunciationAnalysis(challenge, student,
+          '5', new Date(stringDate), new Date(stringDate), audioUrl);
+        expect(result).toEqual(analysis);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 
   it('should get a list of existing pronunciation analyses', function(done) {
@@ -254,21 +255,20 @@ describe('PronunciationAnalyses API interaction test', function() {
       ]
     }];
 
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     var url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation/4/analyses';
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
-
     PronunciationAnalysis.listPronunciationAnalyses(api, challenge, false)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var student = new Student('fb', '6');
         var analysis = new PronunciationAnalysis(challenge, student,
@@ -292,7 +292,8 @@ describe('PronunciationAnalyses API interaction test', function() {
       })
       .catch(function(error) {
         fail('No error should be thrown: ' + error);
-      }).then(done);
+      })
+      .then(done);
   });
 
   it('should get a detailed list of pronunciation analyses', function(done) {
@@ -370,19 +371,19 @@ describe('PronunciationAnalyses API interaction test', function() {
       ]
     }];
 
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     PronunciationAnalysis.listPronunciationAnalyses(api, challenge, true)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var stringDate = '2014-12-31T23:59:59Z';
         var student = new Student('fb', '6');
         var analysis = new PronunciationAnalysis(challenge, student,
@@ -424,6 +425,7 @@ describe('PronunciationAnalyses API interaction test', function() {
       })
       .catch(function(error) {
         fail('No error should be thrown: ' + error);
-      }).then(done);
+      })
+      .then(done);
   });
 });

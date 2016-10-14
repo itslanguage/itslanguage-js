@@ -55,9 +55,10 @@ class PronunciationChallenge {
   /**
    * Create a pronunciation challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.PronunciationChallenge} challenge A pronunciation challenge object.
-   * @param {Sdk~pronunciationChallengeCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~pronunciationChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing this object.
+   * @rejects If the server returned an error.
    */
   createPronunciationChallenge(connection) {
     if (!this.organisationId) {
@@ -92,10 +93,11 @@ class PronunciationChallenge {
   /**
    * Get a pronunciation challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a pronunciation challenge identifier.
-   * @param {Sdk~getPronunciationChallengeCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getPronunciationChallengeErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a PronunciationChallenge.
+   * @rejects If no result could not be found.
    */
   static getPronunciationChallenge(connection, organisationId, challengeId) {
     var url = connection.settings.apiUrl + '/organisations/' +
@@ -115,9 +117,10 @@ class PronunciationChallenge {
   /**
    * List all pronunciation challenges in the organisation.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listPronunciationChallengesCallback} cb The callback that handles the response.
-   * @param {Sdk~listPronunciationChallengesErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of PronunciationChallenges.
+   * @rejects If no result could not be found.
    */
   static listPronunciationChallenges(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +
@@ -141,9 +144,10 @@ class PronunciationChallenge {
   /**
    * Delete a pronunciation challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.PronunciationChallenge} challenge A pronunciation challenge object.
-   * @param {Sdk~pronunciationChallengeDeletedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~pronunciationChallengeDeletedErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing this.
+   * @rejects If the server returned an error.
    */
   deletePronunciationChallenge(connection) {
     if (!this.organisationId) {

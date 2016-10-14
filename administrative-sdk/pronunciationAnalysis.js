@@ -9,16 +9,14 @@
 const Student = require('../administrative-sdk/student').Student;
 const Base64Utils = require('./base64Utils').Base64Utils;
 const Connection = require('../administrative-sdk/connection').Connection;
-var when = require('autobahn').when;
+const when = require('autobahn').when;
 
 /**
  * @class WordChunk
  *
  * @member {string} graphemes The graphemes this chunk consists of.
- * @member {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the
- *   perfect score.
- * @member {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6.
- *   `good` when the score is 0.6 or above.
+ * @member {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
+ * @member {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
  * @member {its.Phoneme[]} phonemes The phonemes this chunk consists of.
  */
 class WordChunk {
@@ -27,10 +25,8 @@ class WordChunk {
    *
    * @constructor
    * @param {string} graphemes The graphemes this chunk consists of.
-   * @param {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the
-   *   perfect score.
-   * @param {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6.
-   *   `good` when the score is 0.6 or above.
+   * @param {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
+   * @param {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
    * @param {its.Phoneme[]} phonemes The phonemes this chunk consists of.
    * @return {WordChunk}
    */
@@ -64,10 +60,8 @@ class Word {
  * @class Phoneme
  *
  * @member {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
- * @member {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the
- *   perfect score.
- * @member {string} bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the
- *   score is 0.6 or above.
+ * @member {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
+ * @member {string} bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
  */
 class Phoneme {
   /**
@@ -75,12 +69,9 @@ class Phoneme {
    *
    * @constructor
    * @param {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
-   * @param {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the
-   *   perfect score.
-   * @param {float} confidenceScore This value provides a reliable prediction that the pronounced phoneme is actually
-   *   the phoneme that is supposed to be pronounced. There is no absolute scale defined yet.
-   * @param {string} verdict bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good
-   *   when the score is 0.6 or above.
+   * @param {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
+   * @param {float} confidenceScore This value provides a reliable prediction that the pronounced phoneme is actually the phoneme that is supposed to be pronounced. There is no absolute scale defined yet.
+   * @param {string} verdict bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
    * @return {Phoneme}
    */
   constructor(ipa, score, confidenceScore, verdict) {
@@ -102,8 +93,7 @@ class Phoneme {
  * @member {blob} audio The recorded audio fragment.
  * @member {string} audioUrl The audio fragment as streaming audio link.
  * @member {number} score The average score of all phonemes grading the entire attempt.
- * @member {float} confidenceScore This value provides a reliable prediction that the pronounced phonemes are actually
- *   the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
+ * @member {float} confidenceScore This value provides a reliable prediction that the pronounced phonemes are actually the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
  * @member {its.Word[][]} words The spoken sentence, split in graphemes per word.
  */
 class PronunciationAnalysis {
@@ -196,32 +186,34 @@ class PronunciationAnalysis {
     // and reference audio to start the analysis when audio is actually submitted.
     var specs = recorder.getAudioSpecs();
     connection._session.call('nl.itslanguage.pronunciation.init_audio',
-      [connection._analysisId, specs.audioFormat], specs.audioParameters).then(
-      // RPC success callback
-      function(analysisId) {
+      [connection._analysisId, specs.audioFormat], specs.audioParameters)
+      .then(function(analysisId) {
         console.log('Accepted audio parameters for analysisId after init_audio: ' + connection._analysisId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
-      },
-      // RPC error callback
-      function(res) {
+        return analysisId;
+      })
+      .catch(function(res) {
         Connection.logRPCError(res);
-      }
-    );
+        return Promise.reject(res);
+      });
   }
 
   /**
    * Start a pronunciation analysis from streaming audio.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.PronunciationChallenge} challenge The pronunciation challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Sdk~pronunciationAnalysisPreparedCallback} [preparedCb] The callback that signals server is prepared for
-   *   receiving data.
-   * @param {Sdk~pronunciationAnalysisCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~pronunciationAnalysisCreatedErrorCallback} [ecb] The callback that handles the error response.
-   * @param {Sdk~pronunciationAnalysisProgressCallback} [progressCb] The callback that handles the intermediate
-   *   results.
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
+   * @returns Promise containing a PronunciationAnalysis.
+   * @rejects If challenge is not an object or not defined.
+   * @rejects If challenge has no id.
+   * @rejects If challenge has no organisationId.
+   * @rejects If the connection is not open.
+   * @rejects If the recorder is already recording.
+   * @rejects If a session is already in progress.
+   * @rejects If something went wrong during analysis.
    */
   startStreamingPronunciationAnalysis(connection, challenge, recorder, trim) {
     if (typeof challenge !== 'object' || !challenge) {
@@ -290,7 +282,7 @@ class PronunciationAnalysis {
             Connection.logRPCError(res);
             reportError(res);
           })
-          .then(function(res) {
+          .then(function() {
             console.debug('Delivered audio successfully');
           });
       };
@@ -337,7 +329,7 @@ class PronunciationAnalysis {
           trimEnd: trimAudioEnd
         })
         .then(initAnalysis)
-        .then(() => {
+        .then(function() {
           self.pronunciationAnalysisInitChallenge(connection, challenge)
             .then(function() {
               var p = new Promise(function(resolve) {
@@ -361,10 +353,11 @@ class PronunciationAnalysis {
   /**
    * Get a pronunciation analysis in a pronunciation challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {PronunciationChallenge} challenge Specify a pronunciation challenge.
    * @param {string} analysisId Specify a pronunciation analysis identifier.
-   * @param {Sdk~getPronunciationAnalysisCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getPronunciationAnalysisErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a PronunciationAnalysis.
+   * @rejects If no result could not be found.
    */
   static getPronunciationAnalysis(connection, challenge, analysisId) {
     if (!challenge || !challenge.id) {
@@ -396,10 +389,11 @@ class PronunciationAnalysis {
   /**
    * List all pronunciation analyses in a specific pronunciation challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {PronunciationChallenge} challenge Specify a pronunciation challenge to list speech recordings for.
    * @param {Boolean} detailed Returns extra analysis metadata when true. false by default.
-   * @param {Sdk~listPronunciationAnalysesCallback} cb The callback that handles the response.
-   * @param {Sdk~listPronunciationAnalysesErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of PronunciationAnalyses.
+   * @rejects If no result could not be found.
    */
   static listPronunciationAnalyses(connection, challenge, detailed) {
     if (!challenge || !challenge.id) {

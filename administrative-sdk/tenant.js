@@ -22,9 +22,10 @@ class Tenant {
   /**
    * Create a tenant.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.Tenant} tenant A tenant domain model instance.
-   * @param {Sdk~tenantCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~tenantCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing this.
+   * @rejects If the server returned an error..
    */
   createTenant(connection) {
     var url = connection.settings.apiUrl + '/tenants';

@@ -10,7 +10,6 @@
  expect,
  it,
  jasmine,
- fail
  spyOn,
  window,
  FormData
@@ -113,18 +112,20 @@ describe('SpeechRecording API interaction test', function() {
       audioUrl: audioUrl,
       studentId: '6'
     };
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
     var challenge = new SpeechChallenge('fb', '4');
     SpeechRecording.getSpeechRecording(api, challenge, '5')
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var student = new Student('fb', '6');
         var recording = new SpeechRecording(challenge, student, '5');
         var stringDate = '2014-12-31T23:59:59Z';
@@ -155,18 +156,19 @@ describe('SpeechRecording API interaction test', function() {
       audioUrl: audioUrl,
       studentId: '6'
     }];
-    var fakeResponse = {
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    };
-    jasmine.Ajax.stubRequest(url).andReturn(fakeResponse);
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     var challenge = new SpeechChallenge('fb', '4');
     SpeechRecording.listSpeechRecordings(api, challenge)
       .then(function(result) {
-        var request = jasmine.Ajax.requests.mostRecent();
-        expect(request.url).toBe(url);
-        expect(request.method).toBe('GET');
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
         var student = new Student('fb', '6');
         var recording = new SpeechRecording(challenge, student, '5');
         var stringDate = '2014-12-31T23:59:59Z';

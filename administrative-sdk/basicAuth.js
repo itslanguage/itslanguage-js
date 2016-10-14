@@ -40,9 +40,9 @@ class BasicAuth {
   /**
    * Create a basic auth.
    *
-   * @param {its.BasicAuth} basicAuth A basic auth domain model instance.
-   * @param {Sdk~basicAuthCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~basicAuthCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @param {Connection} connection Object to connect to.
+   * @returns {Promise} Promise containing this.
+   * @rejects If the server returned an error.
    */
   createBasicAuth(connection) {
     var url = connection.settings.apiUrl + '/basicauths';

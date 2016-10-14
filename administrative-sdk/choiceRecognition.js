@@ -92,13 +92,18 @@ class ChoiceRecognition {
   /**
    * Start a choice recognition from streaming audio.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.ChoiceChallenge} challenge The choice challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Sdk~choiceRecognitionPreparedCallback} [preparedCb] The callback that signals server is prepared for
-   *   receiving data.
-   * @param {Sdk~choiceRecognitionCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~choiceRecognitionCreatedErrorCallback} [ecb] The callback that handles the error response.
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
+   * @returns Promise containing a SpeechRecognition.
+   * @rejects If challenge is not an object or not defined.
+   * @rejects If challenge has no id.
+   * @rejects If challenge has no organisationId.
+   * @rejects If the connection is not open.
+   * @rejects If the recorder is already recording.
+   * @rejects If a session is already in progress.
+   * @rejects If something went wrong during analysis.
    */
   startStreamingChoiceRecognition(connection, challenge, recorder, trim) {
     if (typeof challenge !== 'object' || !challenge) {
@@ -186,9 +191,9 @@ class ChoiceRecognition {
           trimEnd: trimAudioEnd
         })
         .then(recognitionInitCb)
-        .then(() => {
+        .then(function() {
           self.choiceRecognitionInitChallenge(connection, challenge)
-            .then(() => {
+            .then(function() {
               var p = new Promise(function(resolve) {
                 if (recorder.hasUserMediaApproval()) {
                   resolve();
@@ -196,13 +201,13 @@ class ChoiceRecognition {
                   recorder.addEventListener('ready', resolve);
                 }
               });
-              p.then(() => {
+              p.then(function() {
                 recorder.removeEventListener('ready', resolve);
                 self.choiceRecognitionInitAudio(connection, recorder, dataavailableCb);
               });
             });
         })
-        .catch(res => {
+        .catch(function(res) {
           console.error('RPC error returned:', res.error);
         });
 
@@ -240,10 +245,11 @@ class ChoiceRecognition {
   /**
    * Get a choice recognition in a choice challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {ChoiceChallenge} challenge Specify a choice challenge.
    * @param {string} recognitionId Specify a choice recognition identifier.
-   * @param {Sdk~getChoiceRecognitionCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getChoiceRecognitionErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a ChoiceRecognition.
+   * @rejects If no result could not be found.
    */
   static getChoiceRecognition(connection, challenge, recognitionId) {
     if (!challenge || !challenge.id) {
@@ -275,9 +281,10 @@ class ChoiceRecognition {
   /**
    * List all choice recognitions in a specific choice challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {ChoiceChallenge} challenge Specify a choice challenge to list speech recognitions for.
-   * @param {Sdk~listChoiceRecognitionsCallback} cb The callback that handles the response.
-   * @param {Sdk~listChoiceRecognitionsErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of ChoiceRecognitions.
+   * @rejects If no result could not be found.
    */
   static listChoiceRecognitions(connection, challenge) {
     if (!challenge || !challenge.id) {

@@ -56,9 +56,9 @@ class SpeechChallenge {
   /**
    * Create a speech challenge.
    *
-   * @param {its.SpeechChallenge} challenge A speech challenge object.
-   * @param {Sdk~speechChallengeCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~speechChallengeCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @param {Connection} connection Object to connect to.
+   * @returns Promise containing this.
+   * @rejects If the server returned an error.
    */
   createSpeechChallenge(connection) {
     if (!this.organisationId) {
@@ -90,10 +90,11 @@ class SpeechChallenge {
   /**
    * Get a speech challenge.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a speech challenge identifier.
-   * @param {Sdk~getSpeechChallengeCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getSpeechChallengeErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a SpeechChallenge.
+   * @rejects If no result could not be found.
    */
   static getSpeechChallenge(connection, organisationId, challengeId) {
     var url = connection.settings.apiUrl + '/organisations/' +
@@ -111,9 +112,10 @@ class SpeechChallenge {
   /**
    * List all speech challenges in the organisation.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listSpeechChallengesCallback} cb The callback that handles the response.
-   * @param {Sdk~listSpeechChallengesErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of SpeechChallenges.
+   * @rejects If no result could not be found.
    */
   static listSpeechChallenges(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +
