@@ -1,16 +1,17 @@
-const BasicAuth = require('./administrative-sdk/basicAuth');
-const ChoiceChallenge = require('./administrative-sdk/choiceChallenge');
-const ChoiceRecognition = require('./administrative-sdk/choiceRecognition');
-const Organisation = require('./administrative-sdk/organisation');
-const Phoneme = require('./administrative-sdk/pronunciationAnalysis');
-const PronunciationAnalysis = require('./administrative-sdk/pronunciationAnalysis');
-const PronunciationChallenge = require('./administrative-sdk/pronunciationChallenge');
-const SpeechChallenge = require('./administrative-sdk/speechChallenge');
-const SpeechRecording = require('./administrative-sdk/speechRecording');
-const Student = require('./administrative-sdk/student');
-const Tenant = require('./administrative-sdk/tenant');
-const Word = require('./administrative-sdk/pronunciationAnalysis');
-const WordChunk = require('./administrative-sdk/pronunciationAnalysis');
+const BasicAuth = require('./administrative-sdk/basicAuth').BasicAuth;
+const ChoiceChallenge = require('./administrative-sdk/choiceChallenge').ChoiceChallenge;
+const ChoiceRecognition = require('./administrative-sdk/choiceRecognition').ChoiceRecognition;
+const Connection = require('./administrative-sdk/connection').Connection;
+const Organisation = require('./administrative-sdk/organisation').Organisation;
+const Phoneme = require('./administrative-sdk/pronunciationAnalysis').Phoneme;
+const PronunciationAnalysis = require('./administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;
+const PronunciationChallenge = require('./administrative-sdk/pronunciationChallenge').PronunciationChallenge;
+const SpeechChallenge = require('./administrative-sdk/speechChallenge').SpeechChallenge;
+const SpeechRecording = require('./administrative-sdk/speechRecording').SpeechRecording;
+const Student = require('./administrative-sdk/student').Student;
+const Tenant = require('./administrative-sdk/tenant').Tenant;
+const Word = require('./administrative-sdk/pronunciationAnalysis').Word;
+const WordChunk = require('./administrative-sdk/pronunciationAnalysis').WordChunk;
 const audioSdk = require('./audio-sdk');
 const AudioTools = require('./audio-tools');
 const CordovaMediaPlayer = require('./cordova-media-player');
@@ -25,6 +26,7 @@ module.exports = {
   BasicAuth: BasicAuth,
   ChoiceChallenge: ChoiceChallenge,
   ChoiceRecognition: ChoiceRecognition,
+  Connection: Connection,
   Organisation: Organisation,
   Phoneme: Phoneme,
   PronunciationAnalysis: PronunciationAnalysis,
