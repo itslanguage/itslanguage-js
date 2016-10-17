@@ -21,6 +21,7 @@ ITSLanguage Audio module.
 const CordovaMediaPlayer = require('./cordova-media-player');
 const CordovaMediaRecorder = require('./cordova-media-recorder');
 const MediaRecorder = require('./media-recorder');
+const WavePacker = require('./wave-packer');
 const WebAudioPlayer = require('./web-audio-player');
 const WebAudioRecorder = require('./web-audio-recorder');
 const guid = require('guid');
@@ -590,7 +591,7 @@ class AudioRecorder {
       var self = this;
       recorder = new WebAudioRecorder(micInputGain, function(data) {
         self.streamCallback(data);
-      });
+      }, new WavePacker());
     } else {
       throw new Error('Unable to find a proper recorder.');
     }
