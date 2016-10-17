@@ -84,7 +84,8 @@ module.exports = class WebAudioRecorder {
       audioParameters: {
         channels: this.channels,
         sampleWidth: 16,
-        frameRate: this.sampleRate
+        frameRate: this.sampleRate,
+        sampleRate: this.sampleRate
       }
     };
   }
