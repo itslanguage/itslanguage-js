@@ -1,5 +1,3 @@
-const WavePacker = require('./wave-packer');
-
 module.exports = class WebAudioRecorder {
   /**
    * WebAudioRecorder
@@ -13,8 +11,9 @@ module.exports = class WebAudioRecorder {
    * @param {GainNode} source - The source to record.
    * @param {function} [streamingCallback] - The callback to deliver
    *    audio chunks to.
+   * @param {WavePacker} packer to use.
    */
-  constructor(source, streamingCallback) {
+  constructor(source, streamingCallback, packer) {
     this.recording = false;
 
     var context = source.context;
@@ -33,7 +32,7 @@ module.exports = class WebAudioRecorder {
     console.log('Recording at: ' +
                   this.getAudioSpecs().audioParameters.sampleRate);
 
-    this.packer = new WavePacker();
+    this.packer = packer;
     this.packer.init(this.recordedSampleRate, this.sampleRate, this.channels);
 
     // From the spec: This value controls how frequently the audioprocess
