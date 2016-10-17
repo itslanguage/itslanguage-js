@@ -51,66 +51,57 @@ describe('Student API interaction test', function() {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new student through API', function() {
+  it('should create a new student through API', function(done) {
     var student = new Student('fb', '1', 'Mark');
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var output = student.createStudent(api, cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/students';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    var expected = {id: '1',
-      organisationId: 'fb',
-      firstName: 'Mark'};
-    expect(request.data()).toEqual(expected);
-
     var content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       firstName: 'Mark'
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
-
-    var stringDate = '2014-12-31T23:59:59Z';
-    expect(cb).toHaveBeenCalledWith(student);
-    expect(student.id).toBe('1');
-    expect(student.created).toEqual(new Date(stringDate));
-    expect(student.updated).toEqual(new Date(stringDate));
-    expect(student.firstName).toBe('Mark');
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    student.createStudent(api)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        var expected = {
+          id: '1',
+          organisationId: 'fb',
+          firstName: 'Mark'
+        };
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        var stringDate = '2014-12-31T23:59:59Z';
+        expect(result).toEqual(student);
+        expect(result.id).toBe('1');
+        expect(result.created).toEqual(new Date(stringDate));
+        expect(result.updated).toEqual(new Date(stringDate));
+        expect(result.firstName).toBe('Mark');
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 
-  it('should handle errors while creating a new student', function() {
+  it('should handle errors while creating a new student', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var student = new Student('fb', '1', 'Mark');
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
-
-    var output = student.createStudent(api, cb, ecb);
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/students';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    var expected = {id: '1',
-      organisationId: 'fb',
-      firstName: 'Mark'};
-    expect(request.data()).toEqual(expected);
-
     var content = {
       message: 'Validation failed',
       errors: [
@@ -121,87 +112,107 @@ describe('Student API interaction test', function() {
         }
       ]
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
-
-    expect(cb).not.toHaveBeenCalled();
-    var errors = [{
-      resource: 'Student',
-      field: 'lastName',
-      code: 'missing'
-    }];
-    expect(ecb).toHaveBeenCalledWith(errors, student);
-    expect(output).toBeUndefined();
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    student.createStudent(api)
+      .then(function() {
+        fail('An error should be thrown!');
+      })
+      .catch(function(error) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        var expected = {
+          id: '1',
+          organisationId: 'fb',
+          firstName: 'Mark'
+        };
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        var errors = [{
+          resource: 'Student',
+          field: 'lastName',
+          code: 'missing'
+        }];
+        expect(error.errors).toEqual(errors);
+      })
+      .then(done);
   });
 
-  it('should get an existing student through API', function() {
+  it('should get an existing student through API', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var output = Student.getStudent(api, 'fb', '4', cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/students/4';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
-
     var content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       firstName: 'Mark'
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
-
-    var stringDate = '2014-12-31T23:59:59Z';
-    var student = new Student('fb', '4', 'Mark');
-    student.created = new Date(stringDate);
-    student.updated = new Date(stringDate);
-    expect(cb).toHaveBeenCalledWith(student);
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    Student.getStudent(api, 'fb', '4')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
+        var stringDate = '2014-12-31T23:59:59Z';
+        var student = new Student('fb', '4', 'Mark');
+        student.created = new Date(stringDate);
+        student.updated = new Date(stringDate);
+        expect(result).toEqual(student);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 
-  it('should get a list of existing students through API', function() {
+  it('should get a list of existing students through API', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var output = Student.listStudents(api, 'fb', cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb/students';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
-
     var content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       firstName: 'Mark'
     }];
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
-
-    var stringDate = '2014-12-31T23:59:59Z';
-    var student = new Student('fb', '4', 'Mark');
-    student.created = new Date(stringDate);
-    student.updated = new Date(stringDate);
-    expect(cb).toHaveBeenCalledWith([student]);
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    Student.listStudents(api, 'fb')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
+        var stringDate = '2014-12-31T23:59:59Z';
+        var student = new Student('fb', '4', 'Mark');
+        student.created = new Date(stringDate);
+        student.updated = new Date(stringDate);
+        expect(result[0]).toEqual(student);
+        expect(result.length).toBe(1);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 });

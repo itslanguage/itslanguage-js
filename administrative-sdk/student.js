@@ -48,138 +48,75 @@ class Student {
   }
 
   /**
-   * Callback used by createStudent.
-   *
-   * @callback Sdk~studentCreatedCallback
-   * @param {its.Student} student Updated student domain model instance.
-   */
-  studentCreatedCallback(student) {}
-
-  /**
-   * Error callback used by createStudent.
-   *
-   * @callback Sdk~studentCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.Student} student Student domain model instance with unapplied changes.
-   */
-  studentCreatedErrorCallback(errors, student) {}
-
-  /**
    * Create a student.
    *
-   * @param {its.Student} student A student domain model instance.
-   * @param {Sdk~studentCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~studentCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @param {Connection} connection Object to connect to.
+   * @returns Promise containing this.
+   * @rejects If the server returned an error.
    */
-  createStudent(connection, cb, ecb) {
-    var self = this;
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      self.id = data.id;
-      self.created = new Date(data.created);
-      self.updated = new Date(data.updated);
-      if (cb) {
-        cb(self);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, self);
-      }
-    };
-
+  createStudent(connection) {
     if (!this.organisationId) {
-      throw new Error('organisationId field is required');
+      return Promise.reject(new Error('organisationId field is required'));
     }
-
     var url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/students';
     var fd = JSON.stringify(this);
-    connection._secureAjaxPost(url, fd, _cb, _ecb);
+
+    return connection._secureAjaxPost(url, fd)
+      .then(data => {
+        // Update the id in case domain model didn't contain one.
+        this.id = data.id;
+        this.created = new Date(data.created);
+        this.updated = new Date(data.updated);
+        return this;
+      });
   }
-
-  /**
-   * Callback used by getStudent.
-   *
-   * @callback Sdk~studentGetCallback
-   * @param {its.Student} student Retrieved student domain model instance.
-   */
-  studentGetCallback(student) {}
-
-  /**
-   * Error callback used by getStudent.
-   *
-   * @callback Sdk~studentGetErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  studentGetErrorCallback(errors) {}
 
   /**
    * Get a student.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} studentId Specify a student identifier.
-   * @param {Sdk~getCallback} [cb] The callback that handles the response.
-   * @param {Sdk~getErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a Student.
+   * @rejects If no result could not be found.
    */
-  static getStudent(connection, organisationId, studentId, cb, ecb) {
-    var _cb = function(data) {
-      var student = new Student(organisationId, data.id, data.firstName,
-        data.lastName, data.gender, data.birthYear);
-      student.created = new Date(data.created);
-      student.updated = new Date(data.updated);
-      if (cb) {
-        cb(student);
-      }
-    };
-
+  static getStudent(connection, organisationId, studentId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
-    connection._secureAjaxGet(url, _cb, ecb);
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var student = new Student(organisationId, data.id, data.firstName,
+          data.lastName, data.gender, data.birthYear);
+        student.created = new Date(data.created);
+        student.updated = new Date(data.updated);
+        return student;
+      });
   }
-
-  /**
-   * Callback used by listStudents.
-   *
-   * @callback Sdk~listCallback
-   * @param {its.Student[]} student Retrieved student domain model instances.
-   */
-  studentListCallback(student) {}
-
-  /**
-   * Error callback used by listStudents.
-   *
-   * @callback Sdk~listErrorCallback
-   * @param {object[]} errors Array of errors.
-   */
-  studentListErrorCallback(errors) {}
 
   /**
    * List all students in the organisation.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
-   * @param {Sdk~listCallback} cb The callback that handles the response.
-   * @param {Sdk~listErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a list of Students.
+   * @rejects If no result could not be found.
    */
-  static listStudents(connection, organisationId, cb, ecb) {
-    var _cb = function(data) {
-      var students = [];
-      data.forEach(function(datum) {
-        var student = new Student(organisationId, datum.id,
-          datum.firstName, datum.lastName, datum.gender, datum.birthYear);
-        student.created = new Date(datum.created);
-        student.updated = new Date(datum.updated);
-        students.push(student);
-      });
-      if (cb) {
-        cb(students);
-      }
-    };
-
+  static listStudents(connection, organisationId) {
     var url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students';
-    connection._secureAjaxGet(url, _cb, ecb);
+    return connection._secureAjaxGet(url)
+      .then(data => {
+        var students = [];
+        data.forEach(function(datum) {
+          var student = new Student(organisationId, datum.id,
+            datum.firstName, datum.lastName, datum.gender, datum.birthYear);
+          student.created = new Date(datum.created);
+          student.updated = new Date(datum.updated);
+          students.push(student);
+        });
+        return students;
+      });
   }
 }
 

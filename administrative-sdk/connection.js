@@ -139,11 +139,10 @@ class Connection {
    * Perform a HTTP GET to the API using authentication.
    *
    * @param {string} URL to retrieve.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a result.
    */
-  _secureAjaxGet(url, cb, ecb) {
-    return this._ajaxGet(url, cb, ecb, this._getAuthHeaders());
+  _secureAjaxGet(url) {
+    return this._ajaxGet(url, this._getAuthHeaders());
   }
 
   /**
@@ -151,22 +150,20 @@ class Connection {
    *
    * @param {string} URL to submit to.
    * @param {FormData} formdata The form to POST.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a result.
    */
-  _secureAjaxPost(url, formdata, cb, ecb) {
-    return this._ajaxPost(url, formdata, cb, ecb, this._getAuthHeaders());
+  _secureAjaxPost(url, formdata) {
+    return this._ajaxPost(url, formdata, this._getAuthHeaders());
   }
 
   /**
    * Perform a HTTP DELETE to the API using authentication.
    *
    * @param {string} URL to submit to.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
+   * @returns Promise containing a result.
    */
-  _secureAjaxDelete(url, cb, ecb) {
-    return this._ajaxDelete(url, cb, ecb, this._getAuthHeaders());
+  _secureAjaxDelete(url) {
+    return this._ajaxDelete(url, this._getAuthHeaders());
   }
 
   /**
@@ -184,40 +181,34 @@ class Connection {
       encodeURIComponent(accessToken);
     return secureUrl;
   }
+
   /**
    * Perform a HTTP GET to the API.
    *
    * @param {string} url URL to retrieve.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
+   * @returns Promise containing a result.
+   * @throws If the server returned an error.
    */
-  _ajaxGet(url, cb, ecb, auth) {
-    var self = this;
-    var request = new XMLHttpRequest();
-    var response = null;
-    request.open('GET', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        if (request.status >= 100 && request.status < 300) {
-          // Perfect!
-          response = Connection._parseResponse(request.responseText);
-          if (cb) {
-            return cb(response);
-          }
-        } else if (ecb) {
-          // Some error occured.
-          response = Connection._parseResponse(request.responseText);
-          ecb(response.errors || {
-            status: request.status
-          }, response);
-        }
-      }
-    };
+  _ajaxGet(url, auth) {
+    const headers = new Headers();
     if (typeof auth !== 'undefined') {
-      request.setRequestHeader('Authorization', auth);
+      headers.append('Authorization', auth);
     }
-    request.send();
+    const options = {
+      method: 'GET',
+      headers: headers
+    };
+    return fetch(url, options)
+      .then(response =>
+        (response.json()
+            .then(data => {
+              if (response.ok) {
+                return data;
+              }
+              throw data;
+            })
+        ));
   }
 
   /**
@@ -225,106 +216,63 @@ class Connection {
    *
    * @param {string} URL to submit to.
    * @param {FormData|string} formdata FormData or stringified JSON to POST.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
+   * @returns Promise containing a result.
+   * @throws If the server returned an error.
    */
-  _ajaxPost(url, formdata, cb, ecb, auth) {
-    var self = this;
-    var request = new XMLHttpRequest();
-    var response = null;
-    request.open('POST', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        // The response is received
-        if (request.status >= 100 && request.status < 300) {
-          // Perfect!
-          response = Connection._parseResponse(request.responseText);
-          if (cb) {
-            return cb(response);
-          }
-        } else if (ecb) {
-          // Some error occured.
-          try {
-            response = Connection._parseResponse(request.responseText);
-            ecb(response.errors || {
-              status: request.status
-            }, response);
-          } catch (e) {
-            ecb(response || e);
-          }
-        }
-      }
-    };
+  _ajaxPost(url, formdata, auth) {
+    var headers = new Headers();
     if (typeof auth !== 'undefined') {
-      request.setRequestHeader('Authorization', auth);
+      headers.append('Authorization', auth);
     }
-    if (typeof formdata === 'object') {
-      // The only way to send blob data is using FormData, which is
-      // supported everywhere except for IE <10.
-      request.send(formdata);
-    } else if (typeof formdata === 'string') {
-      // Send JSON by default
-      request.setRequestHeader('Content-Type',
+    if (typeof formdata === 'string') {
+      headers.append('Content-Type',
         'application/json; charset=utf-8');
-      request.send(formdata);
     }
+    var options = {
+      method: 'POST',
+      headers: headers,
+      body: formdata
+    };
+    return fetch(url, options)
+      .then(response =>
+        (response.json()
+            .then(data => {
+              if (response.ok) {
+                return data;
+              }
+              throw data;
+            })
+        ));
   }
 
   /**
    * Perform a HTTP DELETE to the API.
    *
    * @param {string} URL to submit to.
-   * @param {callback} [cb] The callback that handles the response.
-   * @param {callback} [ecb] The callback that handles the error response.
    * @param {string} [auth] The authorization header value to pass along with the request.
+   * @returns Promise containing a result.
+   * @throws If the server returned an error.
    */
-  _ajaxDelete(url, cb, ecb, auth) {
-    var self = this;
-    var request = new XMLHttpRequest();
-    var response = null;
-    request.open('DELETE', url);
-    request.onreadystatechange = function() {
-      if (request.readyState === 4) {
-        // The response is received
-        if (request.status >= 100 && request.status < 300) {
-          // A delete call usually has no body to parse.
-          if (cb) {
-            cb();
-          }
-        } else if (ecb) {
-          // Some error occured.
-          try {
-            response = Connection._parseResponse(request.responseText);
-            ecb(response.errors || {
-              status: request.status
-            }, response);
-          } catch (e) {
-            ecb(response || e);
-          }
-        }
-      }
-    };
+  _ajaxDelete(url, auth) {
+    const headers = new Headers();
     if (typeof auth !== 'undefined') {
-      request.setRequestHeader('Authorization', auth);
+      headers.append('Authorization', auth);
     }
-    request.send();
-  }
-
-  /**
-   * Parse JSON reponse from API response.
-   *
-   * @param {string} responseText The response body as text.
-   * @return {object} Parsed JSON object.
-   */
-  static _parseResponse(responseText) {
-    try {
-      return JSON.parse(responseText);
-    } catch (error) {
-      console.error('Response: ' + responseText);
-      console.error('Unhandled exception: ' + error);
-      throw error;
-    }
+    const options = {
+      method: 'DELETE',
+      headers: headers
+    };
+    return fetch(url, options)
+      .then(response =>
+        (response.json()
+            .then(data => {
+              if (response.ok) {
+                return data;
+              }
+              throw data;
+            })
+        ));
   }
 
   /**
@@ -369,7 +317,7 @@ class Connection {
     self._recognitionId = null;
   }
 
-    /**
+  /**
    * Log a RPC error to the console.
    *
    * @param {object} result Autobahn error object.

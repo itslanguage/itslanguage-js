@@ -20,50 +20,24 @@ class Tenant {
   }
 
   /**
-   * Callback used by createTenant.
-   *
-   * @callback Sdk~tenantCreatedCallback
-   * @param {its.Tenant} tenant Updated tenant domain model instance.
-   */
-  tenantCreatedCallback(tenant) {}
-
-  /**
-   * Error callback used by createTenant.
-   *
-   * @callback Sdk~tenantCreatedErrorCallback
-   * @param {object[]} errors Array of errors.
-   * @param {its.Tenant} tenant Tenant domain model instance with unapplied changes.
-   */
-  tenantCreatedErrorCallback(errors, tenant) {}
-
-  /**
    * Create a tenant.
    *
+   * @param {Connection} connection Object to connect to.
    * @param {its.Tenant} tenant A tenant domain model instance.
-   * @param {Sdk~tenantCreatedCallback} [cb] The callback that handles the response.
-   * @param {Sdk~tenantCreatedErrorCallback} [ecb] The callback that handles the error response.
+   * @returns Promise containing this.
+   * @rejects If the server returned an error..
    */
-  createTenant(connection, cb, ecb) {
-    var self = this;
-    var _cb = function(data) {
-      // Update the id in case domain model didn't contain one.
-      self.id = data.id;
-      self.created = new Date(data.created);
-      self.updated = new Date(data.updated);
-      if (cb) {
-        cb(self);
-      }
-    };
-
-    var _ecb = function(errors) {
-      if (ecb) {
-        ecb(errors, self);
-      }
-    };
-
+  createTenant(connection) {
     var url = connection.settings.apiUrl + '/tenants';
     var fd = JSON.stringify(this);
-    connection._secureAjaxPost(url, fd, _cb, _ecb);
+    return connection._secureAjaxPost(url, fd)
+      .then(data => {
+        // Update the id in case domain model didn't contain one.
+        this.id = data.id;
+        this.created = new Date(data.created);
+        this.updated = new Date(data.updated);
+        return this;
+      });
   }
 }
 

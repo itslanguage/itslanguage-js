@@ -16,7 +16,6 @@
  */
 
 require('jasmine-ajax');
-
 const ChoiceChallenge = require('../administrative-sdk/choiceChallenge').ChoiceChallenge;
 const Connection = require('../administrative-sdk/connection').Connection;
 
@@ -63,7 +62,6 @@ describe('ChoiceChallenge object test', function() {
   });
 });
 
-
 describe('ChoiceChallenge API interaction test', function() {
   beforeEach(function() {
     jasmine.Ajax.install();
@@ -78,27 +76,20 @@ describe('ChoiceChallenge API interaction test', function() {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new choice challenge through API', function() {
+  it('should create a new choice challenge through API', function(done) {
     var challenge = new ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
-    var cb = jasmine.createSpy('callback');
+    var stringDate = '2014-12-31T23:59:59Z';
+    challenge.created = new Date(stringDate);
+    challenge.updated = new Date(stringDate);
+    challenge.status = 'preparing';
+
+    var url = 'https://api.itslanguage.nl/organisations/fb' +
+      '/challenges/choice';
 
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var output = challenge.createChoiceChallenge(api, cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'b');
-    expect(FormData.prototype.append.calls.count()).toEqual(4);
 
     var content = {
       id: '1',
@@ -111,40 +102,39 @@ describe('ChoiceChallenge API interaction test', function() {
         audioUrl: ''
       }]
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
-      status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
-    });
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    challenge.created = new Date(stringDate);
-    challenge.updated = new Date(stringDate);
-    challenge.status = 'preparing';
-    expect(cb).toHaveBeenCalledWith(challenge);
+    var fakeResponse = new Response(JSON.stringify(content), {
+      status: 201,
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    challenge.createChoiceChallenge(api)
+      .then(function() {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'b');
+        expect(FormData.prototype.append.calls.count()).toEqual(4);
+      })
+      .catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
   });
 
-  it('should handle errors while creating a new challenge', function() {
+  it('should handle errors while creating a new challenge', function(done) {
     var challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
 
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var output = challenge.createChoiceChallenge(api, cb, ecb);
-
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
-    expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
-    expect(FormData.prototype.append.calls.count()).toEqual(3);
-
     var content = {
       message: 'Validation failed',
       errors: [
@@ -155,35 +145,39 @@ describe('ChoiceChallenge API interaction test', function() {
         }
       ]
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    expect(cb).not.toHaveBeenCalled();
-    var errors = [{resource: 'ChoiceChallenge',
-      field: 'question',
-      code: 'missing'}];
-    expect(ecb).toHaveBeenCalledWith(errors, challenge);
-    expect(output).toBeUndefined();
+    challenge.createChoiceChallenge(api)
+      .then(function() {
+        fail('No result should be returned');
+      }).catch(function(error) {
+        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
+        expect(FormData.prototype.append.calls.count()).toEqual(3);
+        var errors = [{
+          resource: 'ChoiceChallenge',
+          field: 'question',
+          code: 'missing'
+        }];
+        expect(error.errors).toEqual(errors);
+      })
+      .then(done);
   });
 
-  it('should get an existing choice challenge', function() {
+  it('should get an existing choice challenge', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var output = ChoiceChallenge.getChoiceChallenge(api, 'fb', '1', cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice/1';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
 
     var content = {
       id: '1',
@@ -191,40 +185,43 @@ describe('ChoiceChallenge API interaction test', function() {
       updated: '2014-12-31T23:59:59Z',
       question: 'q',
       status: 'preparing',
-      choices: [{
-        choice: 'a',
-        audioUrl: ''
-      }]
+      choices: [
+        {
+          choice: 'a',
+          audioUrl: ''
+        }
+      ]
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     var stringDate = '2014-12-31T23:59:59Z';
     var challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'preparing';
-    expect(cb).toHaveBeenCalledWith(challenge);
+    ChoiceChallenge.getChoiceChallenge(api, 'fb', '1')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
+        expect(result).toEqual(challenge);
+      }).catch(function(error) {
+        fail('No error should be thrown: ' + error);
+      }).then(done);
   });
 
-  it('should get a list of existing challenges', function() {
+  it('should get a list of existing challenges', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var output = ChoiceChallenge.listChoiceChallenges(api, 'fb', cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('GET');
 
     var content = [{
       id: '4',
@@ -240,17 +237,33 @@ describe('ChoiceChallenge API interaction test', function() {
         audioUrl: ''
       }]
     }];
-    jasmine.Ajax.requests.mostRecent().respondWith({
+
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    var url = 'https://api.itslanguage.nl/organisations/fb' +
+      '/challenges/choice';
 
     var stringDate = '2014-12-31T23:59:59Z';
     var challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'a2']);
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';
-    expect(cb).toHaveBeenCalledWith([challenge]);
+
+    ChoiceChallenge.listChoiceChallenges(api, 'fb')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
+        expect(result.length).toBe(1);
+        expect(result[0]).toEqual(challenge);
+      }).catch(function(error) {
+        fail('No error should be thrown : ' + error);
+      }).then(done);
   });
 });

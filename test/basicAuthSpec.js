@@ -13,9 +13,7 @@
  window,
  FormData
  */
-
 require('jasmine-ajax');
-
 const Connection = require('../administrative-sdk/connection').Connection;
 const BasicAuth = require('../administrative-sdk/basicAuth').BasicAuth;
 
@@ -69,81 +67,79 @@ describe('BasicAuth API interaction test', function() {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new BasicAuth through API', function() {
+  it('should create a new BasicAuth through API', function(done) {
     var basicauth = new BasicAuth('4', 'principal');
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var cb = jasmine.createSpy('callback');
-
-    var output = basicauth.createBasicAuth(api, cb);
-    expect(output).toBeUndefined();
-
-    var request = jasmine.Ajax.requests.mostRecent();
     var url = 'https://api.itslanguage.nl/basicauths';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    var expected = {tenantId: '4', principal: 'principal'};
-    expect(request.data()).toEqual(expected);
-
     var content = {
       tenantId: '4',
       principal: 'principal',
       credentials: 'secret'
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
-    expect(cb).toHaveBeenCalledWith(basicauth);
-    expect(basicauth.tenantId).toBe('4');
-    expect(basicauth.principal).toBe('principal');
-    expect(basicauth.credentials).toBe('secret');
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    basicauth.createBasicAuth(api)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        var expected = {tenantId: '4', principal: 'principal'};
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        expect(result.tenantId).toBe('4');
+        expect(result.principal).toBe('principal');
+        expect(result.credentials).toBe('secret');
+      })
+      .catch(function(error) {
+        fail('No error should be thrown ' + error);
+      })
+      .then(done);
   });
 
-  it('should handle errors while creating a new basicauth', function() {
+  it('should handle errors while creating a new basicauth', function(done) {
     var api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
     var basicauth = new BasicAuth('4', 'principal');
-    var cb = jasmine.createSpy('callback');
-    var ecb = jasmine.createSpy('callback');
-
-    var output = basicauth.createBasicAuth(api, cb, ecb);
-
-    var request = jasmine.Ajax.requests.mostRecent();
-    var url = 'https://api.itslanguage.nl/basicauths';
-    expect(request.url).toBe(url);
-    expect(request.method).toBe('POST');
-    var expected = {tenantId: '4', principal: 'principal'};
-    expect(request.data()).toEqual(expected);
-
     var content = {
       message: 'Validation failed',
-      errors: [
-        {
-          resource: 'BasicAuth',
-          field: 'credentials',
-          code: 'missing'
-        }
-      ]
+      errors: [{
+        resource: 'BasicAuth',
+        field: 'credentials',
+        code: 'missing'
+      }]
     };
-    jasmine.Ajax.requests.mostRecent().respondWith({
+    var fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      contentType: 'application/json',
-      responseText: JSON.stringify(content)
+      header: {
+        'Content-type': 'application/json'
+      }
     });
 
-    expect(cb).not.toHaveBeenCalled();
-    var errors = [{
-      resource: 'BasicAuth',
-      field: 'credentials',
-      code: 'missing'
-    }];
-    expect(ecb).toHaveBeenCalledWith(errors, basicauth);
-    expect(output).toBeUndefined();
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    basicauth.createBasicAuth(api)
+      .then(function() {
+        fail('No result should be returned');
+      })
+      .catch(function(error) {
+        var expected = {tenantId: '4', principal: 'principal'};
+        var url = 'https://api.itslanguage.nl/basicauths';
+        var request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        expect(error).toEqual(content);
+      })
+      .then(done);
   });
 });
