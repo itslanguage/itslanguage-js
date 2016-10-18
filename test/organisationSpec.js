@@ -1,6 +1,8 @@
 require('jasmine-ajax');
-const Organisation = require('../administrative-sdk/organisation').Organisation;
-const Connection = require('../administrative-sdk/connection').Connection;
+const Organisation = require('../administrative-sdk/models/organisation').Organisation;
+const OrganisationController = require('../administrative-sdk/controllers/organisationController')
+  .OrganisationController;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
 
 describe('Organisation object test', () => {
   it('should instantiate an Organisation without id', () => {
@@ -33,9 +35,10 @@ describe('Organisation API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const url = 'https://api.itslanguage.nl/organisations';
-    const expected = {id: '1', name: 'School of silly walks'};
-    const content = {
+    var controller = new OrganisationController(api);
+    var url = 'https://api.itslanguage.nl/organisations';
+    var expected = {id: '1', name: 'School of silly walks'};
+    var content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
@@ -49,9 +52,9 @@ describe('Organisation API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    organisation.createOrganisation(api)
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    controller.createOrganisation(organisation)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(request[1].body).toEqual(JSON.stringify(expected));
@@ -72,9 +75,10 @@ describe('Organisation API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const organisation = new Organisation('1');
-    const url = 'https://api.itslanguage.nl/organisations';
-    const content = {
+    var controller = new OrganisationController(api);
+    var organisation = new Organisation('1');
+    var url = 'https://api.itslanguage.nl/organisations';
+    var content = {
       message: 'Validation failed',
       errors: [
         {
@@ -92,8 +96,8 @@ describe('Organisation API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    organisation.createOrganisation(api)
-      .then(result => {
+    controller.createOrganisation(organisation)
+      .then(function(result) {
         fail('An error should be thrown! Instead got result ' + result);
       })
       .catch(error => {
@@ -125,9 +129,9 @@ describe('Organisation API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    Organisation.getOrganisation(api, '4')
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    OrganisationController.getOrganisation(api, '4')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
@@ -161,9 +165,9 @@ describe('Organisation API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    Organisation.listOrganisations(api)
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    OrganisationController.listOrganisations(api)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
