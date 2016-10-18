@@ -51,5 +51,5 @@ class ChoiceChallenge {
 }
 
 module.exports = {
-  ChoiceChallenge
+  ChoiceChallenge: ChoiceChallenge
 };

@@ -1,6 +1,8 @@
 require('jasmine-ajax');
-const ChoiceChallenge = require('../administrative-sdk/choiceChallenge').ChoiceChallenge;
-const Connection = require('../administrative-sdk/connection').Connection;
+const ChoiceChallenge = require('../administrative-sdk/models/choiceChallenge').ChoiceChallenge;
+const ChoiceChallengeController = require('../administrative-sdk/controllers/choiceChallengeController')
+  .ChoiceChallengeController;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
 
 describe('ChoiceChallenge object test', () => {
   it('should require all required fields in constructor', () => {
@@ -73,8 +75,8 @@ describe('ChoiceChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-
-    const content = {
+    var controller = new ChoiceChallengeController(api);
+    var content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
@@ -94,9 +96,9 @@ describe('ChoiceChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    challenge.createChoiceChallenge(api)
-      .then(() => {
-        const request = window.fetch.calls.mostRecent().args;
+    controller.createChoiceChallenge(challenge)
+      .then(function() {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
@@ -118,7 +120,8 @@ describe('ChoiceChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const content = {
+    var controller = new ChoiceChallengeController(api);
+    var content = {
       message: 'Validation failed',
       errors: [
         {
@@ -136,8 +139,8 @@ describe('ChoiceChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    challenge.createChoiceChallenge(api)
-      .then(() => {
+    controller.createChoiceChallenge(challenge)
+      .then(function() {
         fail('No result should be returned');
       }).catch(error => {
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
@@ -189,9 +192,9 @@ describe('ChoiceChallenge API interaction test', () => {
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'preparing';
-    ChoiceChallenge.getChoiceChallenge(api, 'fb', '1')
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    ChoiceChallengeController.getChoiceChallenge(api, 'fb', '1')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         expect(result).toEqual(challenge);
@@ -238,9 +241,9 @@ describe('ChoiceChallenge API interaction test', () => {
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';
 
-    ChoiceChallenge.listChoiceChallenges(api, 'fb')
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    ChoiceChallengeController.listChoiceChallenges(api, 'fb')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         expect(result.length).toBe(1);
