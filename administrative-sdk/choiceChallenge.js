@@ -57,20 +57,20 @@ class ChoiceChallenge {
    * @rejects If the server returned an error.
    */
   createChoiceChallenge(connection) {
-    var self = this;
+    const self = this;
     // Validate required domain model fields.
     if (!this.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/choice';
-    var fd = new FormData();
+    const fd = new FormData();
     if (this.id !== undefined &&
       this.id !== null) {
       fd.append('id', this.id);
     }
     fd.append('question', this.question);
-    this.choices.forEach(function(choice) {
+    this.choices.forEach(choice => {
       fd.append('choices', choice);
     });
     return connection._secureAjaxPost(url, fd)
@@ -81,7 +81,7 @@ class ChoiceChallenge {
         this.updated = new Date(data.updated);
         this.status = data.status;
         this.choices = [];
-        data.choices.forEach(function(pair) {
+        data.choices.forEach(pair => {
           self.choices.push(pair.choice);
         });
         return this;
@@ -98,17 +98,17 @@ class ChoiceChallenge {
    * @rejects If no result could not be found.
    */
   static getChoiceChallenge(connection, organisationId, challengeId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice/' + challengeId;
     return connection._secureAjaxGet(url)
       .then(data => {
-        var challenge = new ChoiceChallenge(organisationId, data.id,
+        const challenge = new ChoiceChallenge(organisationId, data.id,
           data.question, data.choices);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         challenge.status = data.status;
         challenge.choices = [];
-        data.choices.forEach(function(pair) {
+        data.choices.forEach(pair => {
           challenge.choices.push(pair.choice);
         });
         return challenge;
@@ -124,19 +124,19 @@ class ChoiceChallenge {
    * @rejects If no result could not be found.
    */
   static listChoiceChallenges(connection, organisationId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice';
     return connection._secureAjaxGet(url)
       .then(data => {
-        var challenges = [];
-        data.forEach(function(datum) {
-          var challenge = new ChoiceChallenge(
+        const challenges = [];
+        data.forEach(datum => {
+          const challenge = new ChoiceChallenge(
             organisationId, datum.id, datum.question, datum.choices);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenge.status = datum.status;
           challenge.choices = [];
-          datum.choices.forEach(function(pair) {
+          datum.choices.forEach(pair => {
             challenge.choices.push(pair.choice);
           });
           challenges.push(challenge);
@@ -147,5 +147,5 @@ class ChoiceChallenge {
 }
 
 module.exports = {
-  ChoiceChallenge: ChoiceChallenge
+  ChoiceChallenge
 };

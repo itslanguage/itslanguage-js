@@ -50,9 +50,9 @@ class Student {
     if (!this.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/students';
-    var fd = JSON.stringify(this);
+    const fd = JSON.stringify(this);
 
     return connection._secureAjaxPost(url, fd)
       .then(data => {
@@ -74,11 +74,11 @@ class Student {
    * @rejects If no result could not be found.
    */
   static getStudent(connection, organisationId, studentId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
     return connection._secureAjaxGet(url)
       .then(data => {
-        var student = new Student(organisationId, data.id, data.firstName,
+        const student = new Student(organisationId, data.id, data.firstName,
           data.lastName, data.gender, data.birthYear);
         student.created = new Date(data.created);
         student.updated = new Date(data.updated);
@@ -95,13 +95,13 @@ class Student {
    * @rejects If no result could not be found.
    */
   static listStudents(connection, organisationId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students';
     return connection._secureAjaxGet(url)
       .then(data => {
-        var students = [];
-        data.forEach(function(datum) {
-          var student = new Student(organisationId, datum.id,
+        const students = [];
+        data.forEach(datum => {
+          const student = new Student(organisationId, datum.id,
             datum.firstName, datum.lastName, datum.gender, datum.birthYear);
           student.created = new Date(datum.created);
           student.updated = new Date(datum.updated);
@@ -113,5 +113,5 @@ class Student {
 }
 
 module.exports = {
-  Student: Student
+  Student
 };

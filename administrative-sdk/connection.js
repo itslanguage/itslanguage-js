@@ -23,7 +23,7 @@ class Connection {
     // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
     this.events = {};
 
-    var self = this;
+    const self = this;
     this.addEventListener = function(name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
@@ -38,7 +38,7 @@ class Connection {
         return;
       }
 
-      var index = self.events[name].indexOf(handler);
+      const index = self.events[name].indexOf(handler);
       if (index !== -1) {
         self.events[name].splice(index, 1);
       }
@@ -52,9 +52,9 @@ class Connection {
         args = [];
       }
 
-      var evs = self.events[name];
-      evs.forEach(function(ev) {
-        ev.apply(null, args);
+      const evs = self.events[name];
+      evs.forEach(ev => {
+        Reflect.apply(ev, null, args);
       });
     };
   }
@@ -66,8 +66,8 @@ class Connection {
     if (!this.settings.authPrincipal && !this.settings.authCredentials) {
       throw new Error('Please set authPrincipal and authCredentials');
     }
-    var combo = this.settings.authPrincipal + ':' + this.settings.authCredentials;
-    var authHeader = 'Basic ' + btoa(unescape(encodeURIComponent(combo)));
+    const combo = this.settings.authPrincipal + ':' + this.settings.authCredentials;
+    const authHeader = 'Basic ' + btoa(unescape(encodeURIComponent(combo)));
     return authHeader;
   }
 
@@ -87,8 +87,8 @@ class Connection {
       throw new Error(`don't know how to authenticate using '${method}'`);
     }
 
-    var authUrl = this.settings.wsUrl;
-    var connection = null;
+    const authUrl = this.settings.wsUrl;
+    let connection = null;
     // Open a websocket connection for streaming audio
     try {
       // Set up WAMP connection to router
@@ -104,7 +104,7 @@ class Connection {
       console.log('WebSocket creation error: ' + e);
       return;
     }
-    var self = this;
+    const self = this;
     connection.onerror = function(e) {
       console.log('WebSocket error: ' + e);
       self.fireEvent('websocketError', [e]);
@@ -112,10 +112,10 @@ class Connection {
     connection.onopen = function(session) {
       console.log('WebSocket connection opened');
       self._session = session;
-      var _call = self._session.call;
+      const _call = self._session.call;
       self._session.call = function(url) {
         console.debug('Calling RPC: ' + url);
-        return _call.apply(this, arguments);
+        return Reflect.apply(_call.apply, this, []);
       };
       self.fireEvent('websocketOpened');
     };
@@ -167,9 +167,9 @@ class Connection {
     if (!this.settings.authPrincipal && !this.settings.authCredentials) {
       throw new Error('Please set authPrincipal and authCredentials');
     }
-    var combo = this.settings.authPrincipal + ':' + this.settings.authCredentials;
-    var accessToken = btoa(unescape(encodeURIComponent(combo)));
-    var secureUrl = url + (url.match(/\?/) ? '&' : '?') + 'access_token=' +
+    const combo = this.settings.authPrincipal + ':' + this.settings.authCredentials;
+    const accessToken = btoa(unescape(encodeURIComponent(combo)));
+    const secureUrl = url + (url.match(/\?/) ? '&' : '?') + 'access_token=' +
       encodeURIComponent(accessToken);
     return secureUrl;
   }
@@ -189,18 +189,18 @@ class Connection {
     }
     const options = {
       method: 'GET',
-      headers: headers
+      headers
     };
     return fetch(url, options)
       .then(response =>
-        (response.json()
+        response.json()
             .then(data => {
               if (response.ok) {
                 return data;
               }
               throw data;
             })
-        ));
+        );
   }
 
   /**
@@ -213,7 +213,7 @@ class Connection {
    * @throws If the server returned an error.
    */
   _ajaxPost(url, formdata, auth) {
-    var headers = new Headers();
+    const headers = new Headers();
     if (typeof auth !== 'undefined') {
       headers.append('Authorization', auth);
     }
@@ -221,21 +221,21 @@ class Connection {
       headers.append('Content-Type',
         'application/json; charset=utf-8');
     }
-    var options = {
+    const options = {
       method: 'POST',
-      headers: headers,
+      headers,
       body: formdata
     };
     return fetch(url, options)
       .then(response =>
-        (response.json()
+        response.json()
             .then(data => {
               if (response.ok) {
                 return data;
               }
               throw data;
             })
-        ));
+        );
   }
 
   /**
@@ -253,18 +253,18 @@ class Connection {
     }
     const options = {
       method: 'DELETE',
-      headers: headers
+      headers
     };
     return fetch(url, options)
       .then(response =>
-        (response.json()
+        response.json()
             .then(data => {
               if (response.ok) {
                 return data;
               }
               throw data;
             })
-        ));
+        );
   }
 
   /**
@@ -274,7 +274,7 @@ class Connection {
   static _sdkCompatibility() {
     // WebSocket
     // http://caniuse.com/#feat=websockets
-    var canCreateWebSocket = 'WebSocket' in window;
+    const canCreateWebSocket = 'WebSocket' in window;
     console.log('Native WebSocket capability: ' +
       canCreateWebSocket);
 
@@ -289,7 +289,7 @@ class Connection {
    * @param {its.AudioRecorder} recorder The audio recorder currently recording.
    */
   cancelStreaming(recorder) {
-    var self = this;
+    const self = this;
 
     if (this._recordingId === null && this._analysisId === null && this._recognitionId === null) {
       console.info('No session in progress, nothing to cancel.');
@@ -320,5 +320,5 @@ class Connection {
 }
 
 module.exports = {
-  Connection: Connection
+  Connection
 };

@@ -37,8 +37,8 @@ class BasicAuth {
    * @rejects If the server returned an error.
    */
   createBasicAuth(connection) {
-    var url = connection.settings.apiUrl + '/basicauths';
-    var formData = JSON.stringify(this);
+    const url = connection.settings.apiUrl + '/basicauths';
+    const formData = JSON.stringify(this);
     return connection._secureAjaxPost(url, formData)
       .then(data => {
         this.principal = data.principal;
@@ -54,5 +54,5 @@ class BasicAuth {
 }
 
 module.exports = {
-  BasicAuth: BasicAuth
+  BasicAuth
 };

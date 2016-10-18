@@ -20,8 +20,8 @@ class Tenant {
    * @rejects If the server returned an error..
    */
   createTenant(connection) {
-    var url = connection.settings.apiUrl + '/tenants';
-    var fd = JSON.stringify(this);
+    const url = connection.settings.apiUrl + '/tenants';
+    const fd = JSON.stringify(this);
     return connection._secureAjaxPost(url, fd)
       .then(data => {
         // Update the id in case domain model didn't contain one.
@@ -34,5 +34,5 @@ class Tenant {
 }
 
 module.exports = {
-  Tenant: Tenant
+  Tenant
 };
