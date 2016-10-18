@@ -1,10 +1,3 @@
-/* eslint-disable
-  max-len,
-  no-unused-vars,
-  no-use-before-define
-*/
-
-
 /**
  * @title ITSLanguage Javascript Audio
  * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.

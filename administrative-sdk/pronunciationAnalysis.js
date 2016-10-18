@@ -1,10 +1,5 @@
 /* eslint-disable
- callback-return,
- camelcase,
- func-style,
- handle-callback-err,
- max-len,
- no-unused-vars
+ camelcase
  */
 const Student = require('../administrative-sdk/student').Student;
 const Base64Utils = require('./base64Utils').Base64Utils;

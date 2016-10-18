@@ -1,19 +1,3 @@
-/* eslint-disable
- camelcase,
- new-cap
- */
-
-/* global
- afterEach,
- beforeEach,
- describe,
- expect,
- it,
- jasmine,
- window,
- FormData
- */
-
 require('jasmine-ajax');
 const Organisation = require('../administrative-sdk/organisation').Organisation;
 const Connection = require('../administrative-sdk/connection').Connection;

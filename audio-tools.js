@@ -1,10 +1,6 @@
 /* eslint-disable
-  callback-return,
-  max-len,
-  new-cap
-*/
-
-
+ new-cap
+ */
 /**
  * @title ITSLanguage Javascript Audio
  * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.

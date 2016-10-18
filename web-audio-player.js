@@ -1,8 +1,3 @@
-/* eslint-disable
-  max-len
-*/
-
-
 /**
  * @title ITSLanguage Javascript Audio
  * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.

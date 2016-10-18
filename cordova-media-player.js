@@ -1,13 +1,7 @@
-/* eslint-disable
-  handle-callback-err,
-  max-len,
-  no-unused-vars
-*/
-
-/* global
-  device
-*/
-
+/*
+global
+device
+ */
 
 /**
  * @title ITSLanguage Javascript Audio

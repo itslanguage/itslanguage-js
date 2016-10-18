@@ -1,20 +1,3 @@
-/* eslint-disable
- camelcase,
- new-cap
- */
-
-/* global
- afterEach,
- beforeEach,
- describe,
- expect,
- it,
- jasmine,
- spyOn,
- window,
- FormData
- */
-
 require('jasmine-ajax');
 const when = require('when');
 const PronunciationAnalysis = require('../administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;

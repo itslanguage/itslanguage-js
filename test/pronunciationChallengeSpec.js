@@ -1,20 +1,3 @@
-/* eslint-disable
- camelcase,
- new-cap
- */
-
-/* global
- afterEach,
- beforeEach,
- describe,
- expect,
- it,
- jasmine,
- spyOn,
- window,
- FormData
- */
-
 require('jasmine-ajax');
 const PronunciationChallenge = require('../administrative-sdk/pronunciationChallenge').PronunciationChallenge;
 const Connection = require('../administrative-sdk/connection').Connection;
