@@ -1,10 +1,5 @@
 /* eslint-disable
- callback-return,
- camelcase,
- func-style,
- handle-callback-err,
- max-len,
- no-unused-vars
+ camelcase
  */
 const Student = require('../administrative-sdk/student').Student;
 const Base64Utils = require('./base64Utils').Base64Utils;
@@ -15,8 +10,10 @@ const when = require('autobahn').when;
  * @class WordChunk
  *
  * @member {string} graphemes The graphemes this chunk consists of.
- * @member {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
- * @member {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
+ * @member {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad,
+ * 1 the perfect score.
+ * @member {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6.
+ * `good` when the score is 0.6 or above.
  * @member {its.Phoneme[]} phonemes The phonemes this chunk consists of.
  */
 class WordChunk {
@@ -25,8 +22,10 @@ class WordChunk {
    *
    * @constructor
    * @param {string} graphemes The graphemes this chunk consists of.
-   * @param {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad, 1 the perfect score.
-   * @param {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6. `good` when the score is 0.6 or above.
+   * @param {float} score The audio is scored per grapheme and consists of several measurements. 0 would be bad,
+   * 1 the perfect score.
+   * @param {string} verdict `bad` when the score is below 0.4, `moderate` when equal to 0.4 or between 0.4 and 0.6.
+   * `good` when the score is 0.6 or above.
    * @param {its.Phoneme[]} phonemes The phonemes this chunk consists of.
    * @return {WordChunk}
    */
@@ -60,8 +59,10 @@ class Word {
  * @class Phoneme
  *
  * @member {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
- * @member {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
- * @member {string} bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
+ * @member {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad,
+ * 1 the perfect score.
+ * @member {string} bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6.
+ * good when the score is 0.6 or above.
  */
 class Phoneme {
   /**
@@ -69,9 +70,12 @@ class Phoneme {
    *
    * @constructor
    * @param {string} ipa The pronunciation of the grapheme(s) indicated as International Phonetic Alphabet (IPA).
-   * @param {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad, 1 the perfect score.
-   * @param {float} confidenceScore This value provides a reliable prediction that the pronounced phoneme is actually the phoneme that is supposed to be pronounced. There is no absolute scale defined yet.
-   * @param {string} verdict bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6. good when the score is 0.6 or above.
+   * @param {float} score The audio is scored per phoneme and consists of several measurements. 0 would be bad,
+   * 1 the perfect score.
+   * @param {float} confidenceScore This value provides a reliable prediction that the pronounced phoneme is
+   * actually the phoneme that is supposed to be pronounced. There is no absolute scale defined yet.
+   * @param {string} verdict bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6.
+   * good when the score is 0.6 or above.
    * @return {Phoneme}
    */
   constructor(ipa, score, confidenceScore, verdict) {
@@ -93,7 +97,8 @@ class Phoneme {
  * @member {blob} audio The recorded audio fragment.
  * @member {string} audioUrl The audio fragment as streaming audio link.
  * @member {number} score The average score of all phonemes grading the entire attempt.
- * @member {float} confidenceScore This value provides a reliable prediction that the pronounced phonemes are actually the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
+ * @member {float} confidenceScore This value provides a reliable prediction that the pronounced phonemes are
+ * actually the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
  * @member {its.Word[][]} words The spoken sentence, split in graphemes per word.
  */
 class PronunciationAnalysis {
@@ -164,6 +169,7 @@ class PronunciationAnalysis {
       })
       .then(function(analysisId) {
         console.log('Challenge initialised for analysisId: ' + connection._analysisId);
+        return analysisId;
       })
       .then(connection._session.call('nl.itslanguage.pronunciation.alignment',
         [connection._analysisId]))
@@ -244,7 +250,7 @@ class PronunciationAnalysis {
       trimAudioStart = 0.0;
     }
     return new when.Promise(function(resolve, reject, notify) {
-      var reportDone = function(data) {
+      function reportDone(data) {
         var analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           null, null,
@@ -253,13 +259,13 @@ class PronunciationAnalysis {
         analysis.confidenceScore = data.confidenceScore;
         analysis.words = PronunciationAnalysis._wordsToModels(data.words);
         resolve({analysisId: connection._analysisId, analysis: analysis});
-      };
+      }
 
-      var reportProgress = function(progress) {
+      function reportProgress(progress) {
         notify(progress, self.referenceAlignment);
-      };
+      }
 
-      var reportError = function(data) {
+      function reportError(data) {
         // Either there was an unexpected error, or the audio failed to
         // align, in which case no analysis is provided, but just the
         // basic metadata.
@@ -268,11 +274,11 @@ class PronunciationAnalysis {
           new Date(data.created), new Date(data.updated),
           connection.addAccessToken(data.audioUrl));
         reject({analysis: analysis, message: data.message});
-      };
+      }
 
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
-      var startStreaming = function(chunk) {
+      function startStreaming(chunk) {
         var encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for analysisId: ' +
           connection._analysisId);
@@ -285,15 +291,15 @@ class PronunciationAnalysis {
           .then(function() {
             console.debug('Delivered audio successfully');
           });
-      };
+      }
 
-      var initAnalysis = function(analysisId) {
+      function initAnalysis(analysisId) {
         connection._analysisId = analysisId;
         console.log('Got analysisId after initialisation: ' + connection._analysisId);
-      };
+      }
 
       // Stop listening when the audio recorder stopped.
-      var stopListening = function(id) {
+      function stopListening() {
         recorder.removeEventListener('recorded', stopListening);
         recorder.removeEventListener('dataavailable', startStreaming);
 
@@ -320,7 +326,7 @@ class PronunciationAnalysis {
           .tap(function(progress) {
             reportProgress(progress);
           });
-      };
+      }
 
       recorder.addEventListener('recorded', stopListening);
       connection._session.call('nl.itslanguage.pronunciation.init_analysis', [],

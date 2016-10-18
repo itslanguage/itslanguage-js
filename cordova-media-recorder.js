@@ -1,7 +1,8 @@
-/* global
-  device,
-  Media
-*/
+/*
+global
+device,
+Media
+ */
 
 /*
  * Use the Cordova Media recorder for recording and encoding audio

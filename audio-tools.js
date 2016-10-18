@@ -1,10 +1,6 @@
 /* eslint-disable
-  callback-return,
-  max-len,
-  new-cap
-*/
-
-
+ new-cap
+ */
 /**
  * @title ITSLanguage Javascript Audio
  * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.
@@ -59,7 +55,8 @@ class VolumeMeter {
   /**
    * Start analysing the audio stream and provide updates to the specified callback function.
    *
-   * @param {function} callback This function is called when there's a new volume reading is available. First parameter is the volume.
+   * @param {function} callback This function is called when there's a new volume reading is available.
+   * First parameter is the volume.
    * @param {Array} [args] Optional array of parameters to pass to the callback after the volume parameter.
    */
   getVolumeIndication(callback, args) {
@@ -161,7 +158,7 @@ class VolumeMeter {
           return true;
         }
         if (cb) {
-          cb(args);
+          return cb(args);
         }
       });
     }
