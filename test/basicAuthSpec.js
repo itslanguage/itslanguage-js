@@ -14,8 +14,9 @@
  FormData
  */
 require('jasmine-ajax');
-const Connection = require('../administrative-sdk/connection').Connection;
-const BasicAuth = require('../administrative-sdk/basicAuth').BasicAuth;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
+const BasicAuth = require('../administrative-sdk/models/basicAuth').BasicAuth;
+const BasicAuthController = require('../administrative-sdk/controllers/basicAuthController').BasicAuthController;
 
 describe('BasicAuth object test', () => {
   it('should require all required fields in constructor', () => {
@@ -73,8 +74,9 @@ describe('BasicAuth API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const url = 'https://api.itslanguage.nl/basicauths';
-    const content = {
+    var controller = new BasicAuthController(api);
+    var url = 'https://api.itslanguage.nl/basicauths';
+    var content = {
       tenantId: '4',
       principal: 'principal',
       credentials: 'secret'
@@ -87,10 +89,10 @@ describe('BasicAuth API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    basicauth.createBasicAuth(api)
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
-        const expected = {tenantId: '4', principal: 'principal'};
+    controller.createBasicAuth(basicauth)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
+        var expected = {tenantId: '4', principal: 'principal'};
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(request[1].body).toEqual(JSON.stringify(expected));
@@ -109,8 +111,9 @@ describe('BasicAuth API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const basicauth = new BasicAuth('4', 'principal');
-    const content = {
+    var basicauth = new BasicAuth('4', 'principal');
+    var controller = new BasicAuthController(api);
+    var content = {
       message: 'Validation failed',
       errors: [{
         resource: 'BasicAuth',
@@ -127,8 +130,8 @@ describe('BasicAuth API interaction test', () => {
 
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    basicauth.createBasicAuth(api)
-      .then(() => {
+    controller.createBasicAuth(basicauth)
+      .then(function() {
         fail('No result should be returned');
       })
       .catch(error => {
