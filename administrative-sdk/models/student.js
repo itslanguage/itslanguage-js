@@ -41,5 +41,5 @@ class Student {
 }
 
 module.exports = {
-  Student
+  Student: Student
 };
