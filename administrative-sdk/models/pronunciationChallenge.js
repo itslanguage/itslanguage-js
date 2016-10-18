@@ -46,5 +46,5 @@ class PronunciationChallenge {
 }
 
 module.exports = {
-  PronunciationChallenge
+  PronunciationChallenge: PronunciationChallenge
 };
