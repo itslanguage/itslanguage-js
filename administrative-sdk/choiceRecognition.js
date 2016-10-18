@@ -42,8 +42,8 @@ class ChoiceRecognition {
    *
    */
   choiceRecognitionInitChallenge(connection, challenge) {
-    return Reflect.apply(connection._session.call, null, ['nl.itslanguage.choice.init_challenge',
-      [connection._recognitionId, challenge.organisationId, challenge.id]])
+    return connection._session.call('nl.itslanguage.choice.init_challenge',
+      [connection._recognitionId, challenge.organisationId, challenge.id])
       .then(
         // RPC success callback
         recognitionId => {
@@ -66,8 +66,8 @@ class ChoiceRecognition {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    Reflect.apply(connection._session.call, null, ['nl.itslanguage.choice.init_audio',
-      [connection._recognitionId, specs.audioFormat], specs.audioParameters]).then(
+    connection._session.call('nl.itslanguage.choice.init_audio',
+      [connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
       recognitionId => {
         console.log('Accepted audio parameters for recognitionId after init_audio: ' + connection._recognitionId);
@@ -161,8 +161,8 @@ class ChoiceRecognition {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
           connection._recognitionId);
-        Reflect.apply(connection._session.call, null, ['nl.itslanguage.choice.write',
-          [connection._recognitionId, encoded, 'base64']]).then(
+        connection._session.call('nl.itslanguage.choice.write',
+          [connection._recognitionId, encoded, 'base64']).then(
           // RPC success callback
           res => {
             console.debug('Delivered audio successfully');
@@ -180,11 +180,11 @@ class ChoiceRecognition {
         connection._recognitionId = recognitionId;
         console.log('Got recognitionId after initialisation: ' + connection._recognitionId);
       }
-      Reflect.apply(connection._session.call, null, ['nl.itslanguage.choice.init_recognition', [],
+      connection._session.call('nl.itslanguage.choice.init_recognition', [],
         {
           trimStart: trimAudioStart,
           trimEnd: trimAudioEnd
-        }])
+        })
         .then(recognitionInitCb)
         .then(() => {
           self.choiceRecognitionInitChallenge(connection, challenge)
@@ -208,8 +208,8 @@ class ChoiceRecognition {
       // Stop listening when the audio recorder stopped.
       function recordedCb() {
         // When done, submit any plain text (non-JSON) to start analysing.
-        Reflect.apply(connection._session.call, null, ['nl.itslanguage.choice.recognise',
-          [connection._recognitionId]]).then(
+        connection._session.call('nl.itslanguage.choice.recognise',
+          [connection._recognitionId]).then(
           // RPC success callback
           res => {
             // Wait for analysis results to come back.

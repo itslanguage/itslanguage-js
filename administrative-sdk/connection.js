@@ -115,7 +115,7 @@ class Connection {
       const _call = self._session.call;
       self._session.call = function(url) {
         console.debug('Calling RPC: ' + url);
-        return Reflect.apply(_call.apply, this, []);
+        return Reflect.apply(_call, this, url);
       };
       self.fireEvent('websocketOpened');
     };

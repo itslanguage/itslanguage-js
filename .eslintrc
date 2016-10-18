@@ -10,3 +10,4 @@ env:
 
 rules:
   no-console: 0  # This project purposely uses console.
+  prefer-reflect: 0

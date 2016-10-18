@@ -52,8 +52,8 @@ class SpeechRecording {
    *
    */
   speechRecordingInitChallenge(connection, challenge) {
-    return Reflect.apply(connection._session.call, null, ['nl.itslanguage.recording.init_challenge',
-      [connection._recordingId, challenge.organisationId, challenge.id]]).then(
+    return connection._session.call('nl.itslanguage.recording.init_challenge',
+      [connection._recordingId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
       recordingId => {
         console.log('Challenge initialised for recordingId: ' + connection._recordingId);
@@ -75,8 +75,8 @@ class SpeechRecording {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the recording when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    Reflect.apply(connection._session.call, null, ['nl.itslanguage.recording.init_audio',
-      [connection._recordingId, specs.audioFormat], specs.audioParameters])
+    connection._session.call('nl.itslanguage.recording.init_audio',
+      [connection._recordingId, specs.audioFormat], specs.audioParameters)
       .then(recordingId => {
         console.log('Accepted audio parameters for recordingId after init_audio: ' + connection._recordingId);
         // Start listening for streaming data.
@@ -146,8 +146,8 @@ class SpeechRecording {
       }
 
       function recordedCb(activeRecordingId, audioBlob, forcedStop) {
-        Reflect.apply(connection._session.call, null, ['nl.itslanguage.recording.close',
-            [connection._recordingId]]).then(
+        connection._session.call('nl.itslanguage.recording.close',
+            [connection._recordingId]).then(
             // RPC success callback
             res => {
               // Pass along details to the success callback
@@ -170,8 +170,8 @@ class SpeechRecording {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recordingId: ' +
             connection._recordingId);
-        Reflect.apply(connection._session.call, null, ['nl.itslanguage.recording.write',
-            [connection._recordingId, encoded, 'base64']]).then(
+        connection._session.call('nl.itslanguage.recording.write',
+            [connection._recordingId, encoded, 'base64']).then(
             // RPC success callback
             res => {
               // Wrote data.
@@ -192,7 +192,7 @@ class SpeechRecording {
       }
 
       recorder.addEventListener('recorded', recordedCb);
-      Reflect.apply(connection._session.call, null, ['nl.itslanguage.recording.init_recording', []])
+      connection._session.call('nl.itslanguage.recording.init_recording', [])
         .then(startRecording)
         .then(() => {
           self.speechRecordingInitChallenge(connection, challenge)

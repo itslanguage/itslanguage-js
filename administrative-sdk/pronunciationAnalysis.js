@@ -162,8 +162,8 @@ class PronunciationAnalysis {
   pronunciationAnalysisInitChallenge(connection, challenge) {
     const self = this;
 
-    return Reflect.apply(connection._session.call, null, ['nl.itslanguage.pronunciation.init_challenge',
-      [connection._analysisId, challenge.organisationId, challenge.id]])
+    return connection._session.call('nl.itslanguage.pronunciation.init_challenge',
+      [connection._analysisId, challenge.organisationId, challenge.id])
       .catch(res => {
         Connection.logRPCError(res);
       })
@@ -171,8 +171,8 @@ class PronunciationAnalysis {
         console.log('Challenge initialised for analysisId: ' + connection._analysisId);
         return analysisId;
       })
-      .then(Reflect.apply(connection._session.call, null, ['nl.itslanguage.pronunciation.alignment',
-        [connection._analysisId]]))
+      .then(connection._session.call('nl.itslanguage.pronunciation.alignment',
+        [connection._analysisId]))
       .catch(res => {
         Connection.logRPCError(res);
       })
@@ -191,8 +191,8 @@ class PronunciationAnalysis {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    Reflect.apply(connection._session.call, null, ['nl.itslanguage.pronunciation.init_audio',
-      [connection._analysisId, specs.audioFormat], specs.audioParameters])
+    connection._session.call('nl.itslanguage.pronunciation.init_audio',
+      [connection._analysisId, specs.audioFormat], specs.audioParameters)
       .then(analysisId => {
         console.log('Accepted audio parameters for analysisId after init_audio: ' + connection._analysisId);
         // Start listening for streaming data.
@@ -282,8 +282,8 @@ class PronunciationAnalysis {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for analysisId: ' +
           connection._analysisId);
-        Reflect.apply(connection._session.call, null, ['nl.itslanguage.pronunciation.write',
-          [connection._analysisId, encoded, 'base64']])
+        connection._session.call('nl.itslanguage.pronunciation.write',
+          [connection._analysisId, encoded, 'base64'])
           .catch(res => {
             Connection.logRPCError(res);
             reportError(res);
@@ -307,8 +307,8 @@ class PronunciationAnalysis {
         connection._analysisId = null;
 
         // When done, submit any plain text (non-JSON) to start analysing.
-        Reflect.apply(connection._session.call, null, ['nl.itslanguage.pronunciation.analyse',
-          [connection._analysisId], {}, {receive_progress: true}])
+        connection._session.call('nl.itslanguage.pronunciation.analyse',
+          [connection._analysisId], {}, {receive_progress: true})
           .then(reportDone)
           .catch(res => {
             if (res.error === 'nl.itslanguage.ref_alignment_failed') {
@@ -329,11 +329,11 @@ class PronunciationAnalysis {
       }
 
       recorder.addEventListener('recorded', stopListening);
-      Reflect.apply(connection._session.call, null, ['nl.itslanguage.pronunciation.init_analysis', [],
+      connection._session.call('nl.itslanguage.pronunciation.init_analysis', [],
         {
           trimStart: trimAudioStart,
           trimEnd: trimAudioEnd
-        }])
+        })
         .then(initAnalysis)
         .then(() => {
           self.pronunciationAnalysisInitChallenge(connection, challenge)
