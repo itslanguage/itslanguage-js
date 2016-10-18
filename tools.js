@@ -31,8 +31,8 @@ class Stopwatch {
   start() {
     console.debug('Start counting');
     // Tick every 100ms (0.1s)
-    var self = this;
-    this.interval = setInterval(function() {
+    const self = this;
+    this.interval = setInterval(() => {
       self.update();
     }, 100);
   }
@@ -65,7 +65,7 @@ class Stopwatch {
 
 function extend(target, source) {
   target = target || {};
-  for (var prop in source) {
+  for (const prop in source) {
     if (typeof source[prop] === 'object') {
       target[prop] = extend(target[prop], source[prop]);
     } else {
@@ -77,6 +77,6 @@ function extend(target, source) {
 
 
 module.exports = {
-  extend: extend,
-  Stopwatch: Stopwatch
+  extend,
+  Stopwatch
 };

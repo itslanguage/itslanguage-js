@@ -39,8 +39,8 @@ module.exports = class WavePacker {
 
   recordStreaming(left, right, callback) {
     function convertFloat32ToInt16(buffer) {
-      var l = buffer.length;
-      var buf = new Int16Array(l);
+      let l = buffer.length;
+      const buf = new Int16Array(l);
       while (l--) {
         buf[l] = Math.min(1, buffer[l]) * 0x7FFF;
       }
@@ -51,17 +51,17 @@ module.exports = class WavePacker {
     // have value between -1 and 1.
     // The audio to export are 16 bit PCM samples that are wrapped in
     // a WAVE file at the server. Therefore convert from float here.
-    var converted = convertFloat32ToInt16(left);
+    const converted = convertFloat32ToInt16(left);
     console.debug('Streaming bytes: ' + converted.byteLength);
     callback(converted);
   }
 
   exportWAV(callback) {
-    var bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
-    var bufferR = WavePacker.mergeBuffers(this.recBuffersR, this.recLength);
-    var interleaved = this.interleave(bufferL, bufferR);
-    var dataview = this.encodeWAV(interleaved);
-    var audioBlob = new Blob([dataview], {
+    const bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
+    const bufferR = WavePacker.mergeBuffers(this.recBuffersR, this.recLength);
+    const interleaved = this.interleave(bufferL, bufferR);
+    const dataview = this.encodeWAV(interleaved);
+    const audioBlob = new Blob([dataview], {
       type: 'audio/wav'
     });
     callback(audioBlob);
@@ -69,9 +69,9 @@ module.exports = class WavePacker {
 
 
   exportMonoWAV(callback) {
-    var bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
-    var dataview = this.encodeWAV(bufferL, true);
-    var audioBlob = new Blob([dataview], {
+    const bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
+    const dataview = this.encodeWAV(bufferL, true);
+    const audioBlob = new Blob([dataview], {
       type: 'audio/wav'
     });
     callback(audioBlob);
@@ -83,8 +83,8 @@ module.exports = class WavePacker {
    * Specs: https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
    */
   encodeWAV(interleaved) {
-    var buffer = new ArrayBuffer(44 + interleaved.length * 2);
-    var view = new DataView(buffer);
+    const buffer = new ArrayBuffer(44 + interleaved.length * 2);
+    const view = new DataView(buffer);
 
     // RIFF chunk descriptor
     WavePacker.writeUTFBytes(view, 0, 'RIFF');
@@ -113,16 +113,16 @@ module.exports = class WavePacker {
     view.setUint32(40, interleaved.length * 2, true);
 
     // write the PCM samples
-    var lng = interleaved.length;
-    var index = 44;
-    var volume = 1;
-    for (var i = 0; i < lng; i++) {
+    const lng = interleaved.length;
+    let index = 44;
+    const volume = 1;
+    for (let i = 0; i < lng; i++) {
       view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
       index += 2;
     }
 
     // Wrap in HTML5 Blob for transport
-    var blob = new Blob([view], {
+    const blob = new Blob([view], {
       type: 'audio/wav'
     });
     console.log('Recorded audio/wav Blob size: ' + blob.size);
@@ -130,10 +130,10 @@ module.exports = class WavePacker {
   }
 
   interleave(leftChannel, rightChannel) {
-    var result = null;
-    var length = null;
-    var i = null;
-    var inputIndex = null;
+    let result = null;
+    let length = null;
+    let i = null;
+    let inputIndex = null;
     if (this.channels === 1) {
       // Keep both right and left input channels, but "pan" them both
       // in the center (to the single mono channel)
@@ -157,13 +157,13 @@ module.exports = class WavePacker {
     // Also downsample if needed.
     if (this.recordingSampleRate !== this.sampleRate) {
       // E.g. 44100/11025 = 4
-      var reduceBy = this.recordingSampleRate / this.sampleRate;
-      var resampledResult = new Float32Array(length / reduceBy);
+      const reduceBy = this.recordingSampleRate / this.sampleRate;
+      const resampledResult = new Float32Array(length / reduceBy);
 
       inputIndex = 0;
       for (i = 0; i < length;) {
-        var value = 0;
-        for (var j = 0; j < reduceBy; j++) {
+        let value = 0;
+        for (let j = 0; j < reduceBy; j++) {
           value += result[inputIndex++];
         }
         resampledResult[i++] = 1 / reduceBy * value;
@@ -174,11 +174,11 @@ module.exports = class WavePacker {
   }
 
   static mergeBuffers(channelBuffer, recordingLength) {
-    var result = new Float32Array(recordingLength);
-    var offset = 0;
-    var lng = channelBuffer.length;
-    for (var i = 0; i < lng; i++) {
-      var buffer = channelBuffer[i];
+    const result = new Float32Array(recordingLength);
+    let offset = 0;
+    const lng = channelBuffer.length;
+    for (let i = 0; i < lng; i++) {
+      const buffer = channelBuffer[i];
       result.set(buffer, offset);
       offset += buffer.length;
     }
@@ -186,8 +186,8 @@ module.exports = class WavePacker {
   }
 
   static writeUTFBytes(view, offset, string) {
-    var lng = string.length;
-    for (var i = 0; i < lng; i++) {
+    const lng = string.length;
+    for (let i = 0; i < lng; i++) {
       view.setUint8(offset + i, string.charCodeAt(i));
     }
   }

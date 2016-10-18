@@ -28,39 +28,39 @@ module.exports = class WebAudioPlayer {
 
     // The its.AudioPlayer API is based upon the same API calls as the
     // HTML5 Audio element itself, therefore, just bubble up all events.
-    var self = this;
+    const self = this;
 
-    this.sound.addEventListener('playing', function() {
+    this.sound.addEventListener('playing', () => {
       if (self.settings.playingCb) {
         self.settings.playingCb();
       }
     });
 
-    this.sound.addEventListener('timeupdate', function() {
+    this.sound.addEventListener('timeupdate', () => {
       if (self.settings.timeupdateCb) {
         self.settings.timeupdateCb();
       }
     });
 
-    this.sound.addEventListener('durationchange', function() {
+    this.sound.addEventListener('durationchange', () => {
       if (self.settings.durationchangeCb) {
         self.settings.durationchangeCb();
       }
     });
 
-    this.sound.addEventListener('canplay', function() {
+    this.sound.addEventListener('canplay', () => {
       if (self.settings.canplayCb) {
         self.settings.canplayCb();
       }
     });
 
-    this.sound.addEventListener('ended', function() {
+    this.sound.addEventListener('ended', () => {
       if (self.settings.endedCb) {
         self.settings.endedCb();
       }
     });
 
-    this.sound.addEventListener('pause', function() {
+    this.sound.addEventListener('pause', () => {
       // The HTML5 audio player only has a pause(), no stop().
       // To differentiate between the two, a flag is set in case the user
       // explicitly stopped (not paused) the audio.
@@ -72,13 +72,13 @@ module.exports = class WebAudioPlayer {
       }
     });
 
-    this.sound.addEventListener('progress', function() {
+    this.sound.addEventListener('progress', () => {
       if (self.settings.progressCb) {
         self.settings.progressCb();
       }
     });
 
-    this.sound.addEventListener('error', function(e) {
+    this.sound.addEventListener('error', e => {
       switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
           console.error('You aborted the playback.');
@@ -120,7 +120,7 @@ module.exports = class WebAudioPlayer {
    * is first known.
    */
   load(url, preload, loadedCb) {
-    preload = (preload === undefined ? true : preload);
+    preload = preload === undefined ? true : preload;
 
     // Automatically begin buffering the file, even if autoplay is off.
     this.sound.autobuffer = Boolean(preload);
@@ -135,9 +135,9 @@ module.exports = class WebAudioPlayer {
     // again for the preload proper.
     this.sound.preload = preload ? 'auto' : 'none';
 
-    var self = this;
+    const self = this;
     if (loadedCb) {
-      this.sound.addEventListener('durationchange', function() {
+      this.sound.addEventListener('durationchange', () => {
         console.log('Duration change for ' + url + ' to : ' +
           self.sound.duration);
         loadedCb(self.sound);
@@ -217,7 +217,7 @@ module.exports = class WebAudioPlayer {
       return;
     }
 
-    var newTime = (this.sound.duration / 100) * percentage;
+    const newTime = this.sound.duration / 100 * percentage;
     console.log('Moving audio position to: ' + percentage + '%: ' +
       newTime + 's of total playing time: ' + this.sound.duration);
     this.sound.currentTime = newTime;
@@ -245,10 +245,10 @@ module.exports = class WebAudioPlayer {
     // the total audio duration.
     // More info:
     // http://html5doctor.com/html5-audio-the-state-of-play/#time-ranges
-    var probableEnd = 0;
-    for (var i = 0; i < this.sound.buffered.length; i++) {
-      var start = this.sound.buffered.start(i);
-      var end = this.sound.buffered.end(i);
+    let probableEnd = 0;
+    for (let i = 0; i < this.sound.buffered.length; i++) {
+      const start = this.sound.buffered.start(i);
+      const end = this.sound.buffered.end(i);
       // console.log('Got segment from: ' + start + ' to: ' + end);
       // Often, the segment that starts from 0 keeps growing and
       // indicates -most likely- the biggest buffer.
@@ -259,7 +259,7 @@ module.exports = class WebAudioPlayer {
 
     // Round up,so the buffer won't get stuck on 99% when
     // duration and buffer are equal, except for some far decimal.
-    var loaded = Math.round((probableEnd * 100) / this.sound.duration);
+    const loaded = Math.round(probableEnd * 100 / this.sound.duration);
     console.log('Buffer filled to ' + loaded + '%');
     return loaded;
   }
@@ -279,7 +279,7 @@ module.exports = class WebAudioPlayer {
    * @returns {number} time in seconds of fragment duration. 0 if no audio is loaded.
    */
   getDuration() {
-    var duration = this.sound.duration;
+    let duration = this.sound.duration;
     // When no audio is loaded, the duration may be NaN
     if (!duration) {
       duration = 0;
@@ -305,7 +305,7 @@ module.exports = class WebAudioPlayer {
   canPlay() {
     // Either the player is in a valid readyState (preloaded), or
     // the player has a source attached and doesn't show any loading error (non-preloaded).
-    return (this.sound.readyState >= this.sound.HAVE_METADATA ||
-      (this.sound.src && !this.sound.error));
+    return this.sound.readyState >= this.sound.HAVE_METADATA ||
+      this.sound.src && !this.sound.error;
   }
 };

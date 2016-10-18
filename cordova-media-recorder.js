@@ -23,8 +23,8 @@ module.exports = class CordovaMediaRecorder {
   constructor() {
     this._isRecording = false;
 
-    var platform = device.platform;
-    var filepath = null;
+    const platform = device.platform;
+    let filepath = null;
     if (platform === 'Android') {
       // See the 'cordova-plugin-media' documentation for more Android quirks:
       // Android devices record audio in Adaptive Multi-Rate format.
@@ -56,12 +56,12 @@ module.exports = class CordovaMediaRecorder {
 
     this.mediaRecorder = new Media(filepath,
       // success callback
-      function() {
+      () => {
         console.log('Final recording written to: ' + filepath);
       },
 
       // error callback
-      function(err) {
+      err => {
         console.debug('recordAudio(): Audio Error: ' + err.code);
       }
     );
@@ -99,7 +99,7 @@ module.exports = class CordovaMediaRecorder {
     // org.apache.cordova.file provides the HTML5 Filesystem API.
 
     // var fs = window.TEMPORARY;
-    var fs = window.PERSISTENT;
+    const fs = window.PERSISTENT;
 
     window.requestFileSystem(
       fs, 0, fileSystemCallback, fileSystemErrorCallback);
@@ -143,10 +143,10 @@ module.exports = class CordovaMediaRecorder {
     this._requestFilepath(this.filename, readDataUrl);
 
     function readDataUrl(file) {
-      var reader = new FileReader();
+      const reader = new FileReader();
       reader.onloadend = function(evt) {
-        var arraybuffer = evt.target.result;
-        var b = new Blob([arraybuffer], {
+        const arraybuffer = evt.target.result;
+        const b = new Blob([arraybuffer], {
           type: this.mimetype
         });
         callback(b);

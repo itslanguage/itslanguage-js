@@ -29,7 +29,7 @@ module.exports = class CordovaMediaPlayer {
     this._isPlaying = false;
     this._canPlay = false;
 
-    var platform = device.platform;
+    const platform = device.platform;
     if (platform === 'Android') {
       // See the 'cordova-plugin-media' documentation for more Android quirks:
       // Android devices record audio in Adaptive Multi-Rate format.
@@ -54,7 +54,7 @@ module.exports = class CordovaMediaPlayer {
     // org.apache.cordova.file provides the HTML5 Filesystem API.
 
     // var fs = window.TEMPORARY;
-    var fs = window.PERSISTENT;
+    const fs = window.PERSISTENT;
 
     window.requestFileSystem(
       fs, 0, fileSystemCallback, fileSystemErrorCallback);
@@ -100,15 +100,15 @@ module.exports = class CordovaMediaPlayer {
   _loadMedia(
         filepath, closure, loadedCb) {
     console.debug('Loading media: ' + filepath);
-    var self = this;
+    const self = this;
     // Cordova Media can only be loaded during instantiation.
-    this.sound = new window.Media(filepath, function() {
+    this.sound = new window.Media(filepath, () => {
       console.debug('Playback ended successfully.');
     },
-      function(e) {
+      e => {
         console.debug('Playback failed: ' + e.code);
       },
-      function(mediaStatus) {
+      mediaStatus => {
         console.debug('Playback status update: ' + mediaStatus);
         if (mediaStatus === window.Media.MEDIA_STARTING) {
           console.debug('Metadata is being loaded.');
@@ -116,7 +116,7 @@ module.exports = class CordovaMediaPlayer {
         // We could have the duration known by now,
         // but Cordova should do better. Improvement reported:
         // https://issues.apache.org/jira/browse/CB-6880
-        var duration = self.sound.getDuration();
+        const duration = self.sound.getDuration();
         console.debug('Duration: ' + duration);
 
         if (duration > 0 && closure.settings.durationchangeCb) {
@@ -150,21 +150,21 @@ module.exports = class CordovaMediaPlayer {
    * the audio file is first known.
    */
   load(url, preload, loadedCb) {
-    var self = this;
+    const self = this;
 
     // The incoming url is actually a blob URL. (blob:file://xyz)
     // This blob URL needs to be 'downloaded' first.
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'blob';
     xhr.onload = function() {
       if (this.status === 200) {
-        var blob = this.response;
+        const blob = this.response;
         console.debug('Downloaded blob');
 
         console.debug('Writing blob to file');
-        self._writeFile(self.filename, function(file) {
-          file.createWriter(function(writer) {
+        self._writeFile(self.filename, file => {
+          file.createWriter(writer => {
             writer.onwriteend = function() {
               // File has been written, now load it.
               self._loadMedia(self.filepath, self, loadedCb);
@@ -252,7 +252,7 @@ module.exports = class CordovaMediaPlayer {
     if (!this.sound) {
       return 0;
     }
-    var duration = this.sound.getDuration();
+    const duration = this.sound.getDuration();
     // duration may be -1 when undefined.
     return Math.min(duration, 0);
   }
