@@ -1,4 +1,3 @@
-const autobahn = require('autobahn');
 const Student = require('../administrative-sdk/student').Student;
 const PronunciationAnalysis = require('../administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;
 const Base64Utils = require('./base64Utils').Base64Utils;
@@ -49,6 +48,7 @@ class ChoiceRecognition {
         // RPC success callback
         function(recognitionId) {
           console.log('Challenge initialised for recognitionId: ' + connection._recognitionId);
+          return recognitionId;
         },
         // RPC error callback
         function(res) {
@@ -73,6 +73,7 @@ class ChoiceRecognition {
         console.log('Accepted audio parameters for recognitionId after init_audio: ' + connection._recognitionId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
+        return recognitionId;
       },
       // RPC error callback
       function(res) {
@@ -119,7 +120,8 @@ class ChoiceRecognition {
     }
 
     if (connection._recognitionId !== null) {
-      return Promise.reject(new Error('Session with recognitionId ' + connection._recognitionId + ' still in progress.'));
+      return Promise.reject(new Error('Session with recognitionId ' + connection._recognitionId +
+        ' still in progress.'));
     }
 
     var self = this;
@@ -129,15 +131,15 @@ class ChoiceRecognition {
       trimAudioStart = 0.0;
     }
     return new Promise(function(resolve, reject) {
-      var _cb = function(data) {
+      function _cb(data) {
         var recognition = new ChoiceRecognition(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           connection.addAccessToken(data.audioUrl), data.recognised);
         resolve(recognition);
-      };
+      }
 
-      var _ecb = function(data) {
+      function _ecb(data) {
         // There was an unexpected error.
         var analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
@@ -149,13 +151,13 @@ class ChoiceRecognition {
             message: data.message
           }
         );
-      };
+      }
 
       connection._recognitionId = null;
 
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
-      var dataavailableCb = function(chunk) {
+      function dataavailableCb(chunk) {
         var encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
           connection._recognitionId);
@@ -164,6 +166,7 @@ class ChoiceRecognition {
           // RPC success callback
           function(res) {
             console.debug('Delivered audio successfully');
+            return res;
           },
           // RPC error callback
           function(res) {
@@ -171,12 +174,12 @@ class ChoiceRecognition {
             _ecb(res);
           }
         );
-      };
+      }
 
-      var recognitionInitCb = function(recognitionId) {
+      function recognitionInitCb(recognitionId) {
         connection._recognitionId = recognitionId;
         console.log('Got recognitionId after initialisation: ' + connection._recognitionId);
-      };
+      }
       connection._session.call('nl.itslanguage.choice.init_recognition', [],
         {
           trimStart: trimAudioStart,
@@ -204,7 +207,7 @@ class ChoiceRecognition {
         });
 
       // Stop listening when the audio recorder stopped.
-      var recordedCb = function(id) {
+      function recordedCb() {
         // When done, submit any plain text (non-JSON) to start analysing.
         connection._session.call('nl.itslanguage.choice.recognise',
           [connection._recognitionId]).then(
@@ -229,7 +232,7 @@ class ChoiceRecognition {
         recorder.removeEventListener('dataavailable', dataavailableCb);
         // This session is over.
         connection._recognitionId = null;
-      };
+      }
       recorder.addEventListener('recorded', recordedCb);
     });
   }

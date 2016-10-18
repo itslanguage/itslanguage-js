@@ -31,7 +31,7 @@ class AudioPlayer {
     this.settings = Object.assign({}, options);
 
     this._playbackCompatibility();
-
+    var self = this;
     var callbacks = {
       playingCb: function() {
         self.fireEvent('playing', []);
@@ -68,7 +68,6 @@ class AudioPlayer {
     // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener
     // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
 
-    var self = this;
     this.events = {};
 
     this.resetEventListeners = function() {
@@ -207,8 +206,10 @@ class AudioPlayer {
    * Preload audio from an URL.
    *
    * @param {string} url The URL that contains the audio.
-   * @param {bool} preload Try preloading metadata and possible some audio (default). Set to false to not download anything until playing.
-   * @param {AudioPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of the audio file is first known.
+   * @param {bool} preload Try preloading metadata and possible some audio (default). Set to false to not download
+   * anything until playing.
+   * @param {AudioPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of the audio file
+   * is first known.
    */
   load(url, preload, loadedCb) {
     this.player.load(url, preload, loadedCb);
@@ -311,7 +312,8 @@ class AudioPlayer {
   /**
    * Returns ready state of the player.
    *
-   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded or preparing.
+   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded
+   * or preparing.
    */
   canPlay() {
     return this.player.canPlay();
@@ -407,7 +409,12 @@ class AudioRecorder {
    * @param {AudioContext} audioContext The active AudioContext object.
    * @param {AudioStream} audioStream The microphone AudioStream.
    */
-  ready(audioContext, audioStream) {}
+  ready(audioContext, audioStream) {
+    return {
+      context: audioContext,
+      stream: audioStream
+    };
+  }
 
   /**
    * Check if the user has already given permission to access the microphone.
@@ -437,7 +444,9 @@ class AudioRecorder {
     // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/mediaDevices.getUserMedia
     this.canMediaDevicesGetUserMedia = false;
     if (navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia;
+      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
+        navigator.mediaDevices.webkitGetUserMedia ||
+        navigator.mediaDevices.mozGetUserMedia;
       this.canMediaDevicesGetUserMedia = Boolean(navigator.mediaDevices.getUserMedia);
     }
     console.log('Native navigator.mediaDevices.getUserMedia API capability:',
@@ -634,7 +643,9 @@ class AudioRecorder {
    * @callback Sdk~recordDataAvailableCallback
    * @param {arraybuffer} buffer A chunk of recorded audio.
    */
-  recordDataAvailableCallback(buffer) {}
+  recordDataAvailableCallback(buffer) {
+    return buffer;
+  }
 
   /**
    * Event fired by record.
@@ -642,12 +653,15 @@ class AudioRecorder {
    * @event AudioRecorder~recording
    * @param {number} id Recording session (if any was defined).
    */
-  recording(id) {}
+  recording(id) {
+    return id;
+  }
 
   /**
    * Start recording microphone input until stopped.
    *
-   * @param {AudioRecorder~recordDataAvailableCallback} [cb] The callback that provides a piece of raw audio when it becomes available. It may be used for streaming.
+   * @param {AudioRecorder~recordDataAvailableCallback} [cb] The callback that provides a piece of raw audio when
+   * it becomes available. It may be used for streaming.
    * @fires {AudioRecorder~recording} The event that is triggered when recording has started.
    */
   record(cb) {
@@ -667,6 +681,7 @@ class AudioRecorder {
     console.log('Recording as id: ' + this.activeRecordingId);
 
     this.fireEvent('recording', [this.activeRecordingId]);
+    return cb;
   }
 
   /**
@@ -677,7 +692,13 @@ class AudioRecorder {
    * @param {Blob} blob The recorded audio as Blob (including the mime type).
    * @param {bool} forced true when the reason for the stopped recording was reaching the maximum recording duration.
    */
-  recorded(id, blob, forced) {}
+  recorded(id, blob, forced) {
+    return {
+      id: id,
+      blob: blob,
+      forced: forced
+    };
+  }
 
   /**
    * Stop recording microphone input.

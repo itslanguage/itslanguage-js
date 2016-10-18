@@ -93,7 +93,9 @@ module.exports = class CordovaMediaPlayer {
    * @callback CordovaMediaPlayer~loadedCallback
    * @param {Audio} audio The Audio element that has the duration property set.
    */
-  loadedCallback(audio) {}
+  loadedCallback(audio) {
+    return audio;
+  }
 
   _loadMedia(
         filepath, closure, loadedCb) {
@@ -142,8 +144,10 @@ module.exports = class CordovaMediaPlayer {
    * Preload audio from an URL.
    *
    * @param {string} url The URL that contains the audio.
-   * @param {bool} preload Try preloading metadata and possible some audio (default). Set to false to not download anything until playing.
-   * @param {CordovaMediaPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of the audio file is first known.
+   * @param {bool} preload Try preloading metadata and possible some audio (default).
+   * Set to false to not download anything until playing.
+   * @param {CordovaMediaPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of
+   * the audio file is first known.
    */
   load(url, preload, loadedCb) {
     var self = this;
@@ -153,7 +157,7 @@ module.exports = class CordovaMediaPlayer {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'blob';
-    xhr.onload = function(e) {
+    xhr.onload = function() {
       if (this.status === 200) {
         var blob = this.response;
         console.debug('Downloaded blob');
@@ -161,7 +165,7 @@ module.exports = class CordovaMediaPlayer {
         console.debug('Writing blob to file');
         self._writeFile(self.filename, function(file) {
           file.createWriter(function(writer) {
-            writer.onwriteend = function(e) {
+            writer.onwriteend = function() {
               // File has been written, now load it.
               self._loadMedia(self.filepath, self, loadedCb);
             };
@@ -182,6 +186,7 @@ module.exports = class CordovaMediaPlayer {
   play(position) {
     this._isPlaying = true;
     this.sound.play();
+    return position;
   }
 
   /**
@@ -215,6 +220,7 @@ module.exports = class CordovaMediaPlayer {
    */
   scrub(percentage) {
     // XXX: Not implemented yet.
+    return percentage;
   }
 
   /**
@@ -254,7 +260,8 @@ module.exports = class CordovaMediaPlayer {
   /**
    * Returns ready state of the player.
    *
-   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded or preparing.
+   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded
+   * or preparing.
    */
   canPlay() {
     return this._canPlay;

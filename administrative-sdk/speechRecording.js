@@ -57,6 +57,7 @@ class SpeechRecording {
       // RPC success callback
       function(recordingId) {
         console.log('Challenge initialised for recordingId: ' + connection._recordingId);
+        return recordingId;
       },
       // RPC error callback
       function(res) {
@@ -127,14 +128,13 @@ class SpeechRecording {
     var self = this;
     return new Promise(function(resolve, reject) {
       connection._recordingId = null;
-      var errorEncountered = function(errors, recording) {
-          // Either there was an unexpected error, or the audio failed to
-          // align, in which case no recording is provided, but just the
-          // basic metadata.
-        reject(errors);
-      };
 
-      var _cb = function(data) {
+      // Either there was an unexpected error, or the audio failed to
+      // align, in which case no recording is provided, but just the
+      // basic metadata.
+      var errorEncountered = reject;
+
+      function _cb(data) {
         var student = new Student(challenge.organisationId, data.studentId);
         var recording = new SpeechRecording(
             challenge, student, data.id);
@@ -143,9 +143,9 @@ class SpeechRecording {
         recording.audioUrl = connection.addAccessToken(data.audioUrl);
         recording.recordingId = connection._recordingId;
         resolve(recording);
-      };
+      }
 
-      var recordedCb = function(activeRecordingId, audioBlob, forcedStop) {
+      function recordedCb(activeRecordingId, audioBlob, forcedStop) {
         connection._session.call('nl.itslanguage.recording.close',
             [connection._recordingId]).then(
             // RPC success callback
@@ -162,7 +162,7 @@ class SpeechRecording {
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', startStreaming);
         connection._recordingId = null;
-      };
+      }
 
         // Start streaming the binary audio when the user instructs
         // the audio recorder to start recording.
@@ -176,6 +176,7 @@ class SpeechRecording {
             function(res) {
               // Wrote data.
               console.log('Wrote data');
+              return res;
             },
             // RPC error callback
             function(res) {

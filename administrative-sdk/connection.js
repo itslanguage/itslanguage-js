@@ -80,7 +80,7 @@ class Connection {
      * This callback is fired during Ticket-based authentication
      *
      */
-    function onOAuth2Challenge(session, method, extra) {
+    function onOAuth2Challenge(session, method) {
       if (method === 'ticket') {
         return accessToken;
       }
@@ -119,7 +119,7 @@ class Connection {
       };
       self.fireEvent('websocketOpened');
     };
-    connection.onclose = function(e) {
+    connection.onclose = function() {
       console.log('WebSocket disconnected');
       self._session = null;
       self.fireEvent('websocketClosed');

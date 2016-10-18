@@ -114,8 +114,10 @@ module.exports = class WebAudioPlayer {
    * Preload audio from an URL.
    *
    * @param {string} url The URL that contains the audio.
-   * @param {bool} preload Try preloading metadata and possible some audio (default). Set to false to not download anything until playing.
-   * @param {WebAudioPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of the audio file is first known.
+   * @param {bool} preload Try preloading metadata and possible some audio (default).
+   * Set to false to not download anything until playing.
+   * @param {WebAudioPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of the audio file
+   * is first known.
    */
   load(url, preload, loadedCb) {
     preload = (preload === undefined ? true : preload);
@@ -297,7 +299,8 @@ module.exports = class WebAudioPlayer {
   /**
    * Returns ready state of the player.
    *
-   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded or preparing.
+   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded
+   * or preparing.
    */
   canPlay() {
     // Either the player is in a valid readyState (preloaded), or
