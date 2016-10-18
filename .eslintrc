@@ -10,14 +10,3 @@ env:
 
 rules:
   no-console: 0  # This project purposely uses console.
-
-  # The code base is not yet compliant with these rules:
-  no-extra-parens: 0
-  no-shadow: 0
-  no-var: 0
-  object-shorthand: 0
-  prefer-arrow-callback: 0
-  prefer-reflect: 0
-  prefer-rest-params: 0
-  prefer-spread: 0
-  # In addition some rules have been disabled in individual files.
