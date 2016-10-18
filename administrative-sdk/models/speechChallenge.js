@@ -47,5 +47,5 @@ class SpeechChallenge {
 }
 
 module.exports = {
-  SpeechChallenge
+  SpeechChallenge: SpeechChallenge
 };
