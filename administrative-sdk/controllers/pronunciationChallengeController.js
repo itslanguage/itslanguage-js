@@ -1,6 +1,12 @@
 const PronunciationChallenge = require('../models/pronunciationChallenge').PronunciationChallenge;
 
+/**
+ * Controller class for the PronunciationChallenge model.
+ */
 class PronunciationChallengeController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

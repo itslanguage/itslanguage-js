@@ -1,4 +1,10 @@
+/**
+ * Controller class for the Tenant model.
+ */
 class TenantController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

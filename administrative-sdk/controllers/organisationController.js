@@ -1,6 +1,12 @@
 const Organisation = require('../models/organisation').Organisation;
 
+/**
+ * Controller class for the Organisation model.
+ */
 class OrganisationController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

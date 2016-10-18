@@ -1,4 +1,8 @@
 const autobahn = require('autobahn');
+
+/**
+ * Controller class for managing connection interaction.
+ */
 class Connection {
 
   constructor(options) {

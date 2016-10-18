@@ -1,6 +1,12 @@
 const ChoiceChallenge = require('../models/choiceChallenge').ChoiceChallenge;
 
+/**
+ * Controller class for the ChoiceChallenge model.
+ */
 class ChoiceChallengeController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

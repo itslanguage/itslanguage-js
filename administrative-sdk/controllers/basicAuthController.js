@@ -1,4 +1,10 @@
+/**
+ * Controller class for the BasicAuth model.
+ */
 class BasicAuthController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

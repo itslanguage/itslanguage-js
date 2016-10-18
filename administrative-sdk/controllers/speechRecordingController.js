@@ -3,7 +3,13 @@ const Connection = require('./connectionController').Connection;
 const SpeechRecording = require('../models/speechRecording').SpeechRecording;
 const Student = require('../models/student').Student;
 
+/**
+ * Controller class for the SpeechRecording model.
+ */
 class SpeechRecordingController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

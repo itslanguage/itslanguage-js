@@ -1,6 +1,12 @@
 const Student = require('../models/student').Student;
 
+/**
+ * Controller class for the Student model.
+ */
 class StudentController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

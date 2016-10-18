@@ -31,5 +31,5 @@ class BasicAuth {
 }
 
 module.exports = {
-  BasicAuth
+  BasicAuth: BasicAuth
 };

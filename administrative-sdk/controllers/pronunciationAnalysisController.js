@@ -10,7 +10,13 @@ const Word = require('../models/pronunciationAnalysis').Word;
 const WordChunk = require('../models/pronunciationAnalysis').WordChunk;
 const when = require('autobahn').when;
 
+/**
+ * Controller class for the PronunciationAnalysis model.
+ */
 class PronunciationAnalysisController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

@@ -3,7 +3,13 @@ const Student = require('../models/student').Student;
 const PronunciationAnalysis = require('../models/pronunciationAnalysis').PronunciationAnalysis;
 const Base64Utils = require('../base64Utils').Base64Utils;
 
+/**
+ * Controller class for the ChoiceRecognition model.
+ */
 class ChoiceRecognitionController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }

@@ -1,6 +1,12 @@
 const SpeechChallenge = require('../models/speechChallenge').SpeechChallenge;
 
+/**
+ * Controller class for the SpeechChallenge model.
+ */
 class SpeechChallengeController {
+  /**
+   * @param connection Object to connect to.
+   */
   constructor(connection) {
     this.connection = connection;
   }
