@@ -1,10 +1,12 @@
 require('jasmine-ajax');
 const autobahn = require('autobahn');
-const ChoiceRecognition = require('../administrative-sdk/choiceRecognition').ChoiceRecognition;
-const ChoiceChallenge = require('../administrative-sdk/choiceChallenge').ChoiceChallenge;
-const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
-const Student = require('../administrative-sdk/student').Student;
-const Connection = require('../administrative-sdk/connection').Connection;
+const ChoiceRecognition = require('../administrative-sdk/models/choiceRecognition').ChoiceRecognition;
+const ChoiceRecognitionController = require('../administrative-sdk/controllers/choiceRecognitionController')
+  .ChoiceRecognitionController;
+const ChoiceChallenge = require('../administrative-sdk/models/choiceChallenge').ChoiceChallenge;
+const SpeechChallenge = require('../administrative-sdk/models/speechChallenge').SpeechChallenge;
+const Student = require('../administrative-sdk/models/student').Student;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
 
 describe('ChoiceRecognition Websocket API interaction test', () => {
   beforeEach(() => {
@@ -36,12 +38,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     const old = window.WebSocket;
     window.WebSocket = jasmine.createSpy('WebSocket');
 
-    const challenge = new ChoiceChallenge('fb', '4', null, []);
-    const recognition = new ChoiceRecognition();
-    const recorder = new RecorderMock();
-
-    recognition.startStreamingChoiceRecognition(api, challenge, recorder)
-      .then(() => {
+    var challenge = new ChoiceChallenge('fb', '4', null, []);
+    var recorder = new RecorderMock();
+    var controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
+      .then(function() {
         fail('An error should be thrown!');
       })
       .catch(error => {
@@ -93,11 +94,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       };
     }
 
-    const challenge = new ChoiceChallenge('fb', '4', null, []);
-    const recognition = new ChoiceRecognition();
-    const recorder = new RecorderMock();
-    const stringDate = '2014-12-31T23:59:59Z';
-    const fakeResponse = {
+    var challenge = new ChoiceChallenge('fb', '4', null, []);
+    var recorder = new RecorderMock();
+    var stringDate = '2014-12-31T23:59:59Z';
+    var fakeResponse = {
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -119,8 +119,9 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
 
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-    recognition.startStreamingChoiceRecognition(api, challenge, recorder)
-      .then(() => {
+    var controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
+      .then(function() {
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.choice.init_recognition', [],
@@ -154,10 +155,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice/4/recognitions/5';
-    const challenge = new SpeechChallenge('fb', '4');
-    ChoiceRecognition.getChoiceRecognition(api, challenge, '5')
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    var challenge = new SpeechChallenge('fb', '4');
+    ChoiceRecognitionController.getChoiceRecognition(api, challenge, '5')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
@@ -202,9 +203,9 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    ChoiceRecognition.listChoiceRecognitions(api, challenge)
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    ChoiceRecognitionController.listChoiceRecognitions(api, challenge)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
