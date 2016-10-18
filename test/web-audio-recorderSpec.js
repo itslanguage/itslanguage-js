@@ -1,13 +1,13 @@
 const WebAudioRecorder = require('../web-audio-recorder');
 
 describe('WebAudioRecorder', () => {
-  var webAudioRecorder;
-  var mockRecorder;
-  var source;
-  var packerMock;
-  var mockEvent;
-  var f32array;
-  var cb;
+  let webAudioRecorder;
+  let mockRecorder;
+  let source;
+  let packerMock;
+  let mockEvent;
+  let f32array;
+  let cb;
 
   beforeEach(() => {
     mockRecorder = {
@@ -105,7 +105,7 @@ describe('WebAudioRecorder', () => {
 
   it('should get encoded audio', () => {
     packerMock.exportWAV = jasmine.createSpy();
-    var encodedCb = jasmine.createSpy();
+    const encodedCb = jasmine.createSpy();
     webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
     webAudioRecorder.getEncodedAudio(encodedCb);
     expect(packerMock.exportWAV).toHaveBeenCalledTimes(1);
@@ -117,7 +117,7 @@ describe('WebAudioRecorder', () => {
     webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
 
     webAudioRecorder.record();
-    var isRecording = webAudioRecorder.isRecording();
+    let isRecording = webAudioRecorder.isRecording();
     expect(isRecording).toBeTruthy();
 
     webAudioRecorder.stop();

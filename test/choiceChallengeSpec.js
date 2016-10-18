@@ -2,41 +2,41 @@ require('jasmine-ajax');
 const ChoiceChallenge = require('../administrative-sdk/choiceChallenge').ChoiceChallenge;
 const Connection = require('../administrative-sdk/connection').Connection;
 
-describe('ChoiceChallenge object test', function() {
-  it('should require all required fields in constructor', function() {
-    [0, 4, undefined, false, null].map(function(v) {
-      expect(function() {
+describe('ChoiceChallenge object test', () => {
+  it('should require all required fields in constructor', () => {
+    [0, 4, undefined, false, null].map(v => {
+      expect(() => {
         new ChoiceChallenge(v);
       }).toThrowError(
         'organisationId parameter of type "string" is required');
     });
 
-    [0, 4, false].map(function(v) {
-      expect(function() {
+    [0, 4, false].map(v => {
+      expect(() => {
         new ChoiceChallenge('org', v);
       }).toThrowError(
         'id parameter of type "string|null|undefined" is required');
     });
-    expect(function() {
+    expect(() => {
       new ChoiceChallenge('org', '');
     }).toThrowError(
       'id parameter should not be an empty string');
 
-    [0, 4, false].map(function(v) {
-      expect(function() {
+    [0, 4, false].map(v => {
+      expect(() => {
         new ChoiceChallenge('org', null, v);
       }).toThrowError(
         'question parameter of type "string|null|undefined" is required');
     });
 
-    [0, 4, undefined, false].map(function(v) {
-      expect(function() {
+    [0, 4, undefined, false].map(v => {
+      expect(() => {
         new ChoiceChallenge('org', null, 'question', v);
       }).toThrowError('choices parameter of type "Array" is required');
     });
   });
-  it('should instantiate a ChoiceChallenge', function() {
-    var s = new ChoiceChallenge('fb', 'test', 'q', ['a', 'a2']);
+  it('should instantiate a ChoiceChallenge', () => {
+    const s = new ChoiceChallenge('fb', 'test', 'q', ['a', 'a2']);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -45,8 +45,8 @@ describe('ChoiceChallenge object test', function() {
   });
 });
 
-describe('ChoiceChallenge API interaction test', function() {
-  beforeEach(function() {
+describe('ChoiceChallenge API interaction test', () => {
+  beforeEach(() => {
     jasmine.Ajax.install();
 
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
@@ -55,26 +55,26 @@ describe('ChoiceChallenge API interaction test', function() {
     spyOn(FormData.prototype, 'append');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should create a new choice challenge through API', function(done) {
-    var challenge = new ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
-    var stringDate = '2014-12-31T23:59:59Z';
+  it('should create a new choice challenge through API', done => {
+    const challenge = new ChoiceChallenge('fb', '1', 'q', ['a', 'b']);
+    const stringDate = '2014-12-31T23:59:59Z';
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'preparing';
 
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice';
 
-    var api = new Connection({
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
 
-    var content = {
+    const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
@@ -86,7 +86,7 @@ describe('ChoiceChallenge API interaction test', function() {
       }]
     };
 
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
       header: {
         'Content-type': 'application/json'
@@ -95,8 +95,8 @@ describe('ChoiceChallenge API interaction test', function() {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     challenge.createChoiceChallenge(api)
-      .then(function() {
-        var request = window.fetch.calls.mostRecent().args;
+      .then(() => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
@@ -105,20 +105,20 @@ describe('ChoiceChallenge API interaction test', function() {
         expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'b');
         expect(FormData.prototype.append.calls.count()).toEqual(4);
       })
-      .catch(function(error) {
+      .catch(error => {
         fail('No error should be thrown: ' + error);
       })
       .then(done);
   });
 
-  it('should handle errors while creating a new challenge', function(done) {
-    var challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
+  it('should handle errors while creating a new challenge', done => {
+    const challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
 
-    var api = new Connection({
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var content = {
+    const content = {
       message: 'Validation failed',
       errors: [
         {
@@ -128,7 +128,7 @@ describe('ChoiceChallenge API interaction test', function() {
         }
       ]
     };
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
       header: {
         'Content-type': 'application/json'
@@ -137,14 +137,14 @@ describe('ChoiceChallenge API interaction test', function() {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     challenge.createChoiceChallenge(api)
-      .then(function() {
+      .then(() => {
         fail('No result should be returned');
-      }).catch(function(error) {
+      }).catch(error => {
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
         expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
         expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
         expect(FormData.prototype.append.calls.count()).toEqual(3);
-        var errors = [{
+        const errors = [{
           resource: 'ChoiceChallenge',
           field: 'question',
           code: 'missing'
@@ -154,15 +154,15 @@ describe('ChoiceChallenge API interaction test', function() {
       .then(done);
   });
 
-  it('should get an existing choice challenge', function(done) {
-    var api = new Connection({
+  it('should get an existing choice challenge', done => {
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice/1';
 
-    var content = {
+    const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
@@ -176,7 +176,7 @@ describe('ChoiceChallenge API interaction test', function() {
       ]
     };
 
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
       header: {
         'Content-type': 'application/json'
@@ -184,29 +184,29 @@ describe('ChoiceChallenge API interaction test', function() {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    var challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
+    const stringDate = '2014-12-31T23:59:59Z';
+    const challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'preparing';
     ChoiceChallenge.getChoiceChallenge(api, 'fb', '1')
-      .then(function(result) {
-        var request = window.fetch.calls.mostRecent().args;
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         expect(result).toEqual(challenge);
-      }).catch(function(error) {
+      }).catch(error => {
         fail('No error should be thrown: ' + error);
       }).then(done);
   });
 
-  it('should get a list of existing challenges', function(done) {
-    var api = new Connection({
+  it('should get a list of existing challenges', done => {
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
 
-    var content = [{
+    const content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
@@ -221,7 +221,7 @@ describe('ChoiceChallenge API interaction test', function() {
       }]
     }];
 
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
       header: {
         'Content-type': 'application/json'
@@ -229,23 +229,23 @@ describe('ChoiceChallenge API interaction test', function() {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice';
 
-    var stringDate = '2014-12-31T23:59:59Z';
-    var challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'a2']);
+    const stringDate = '2014-12-31T23:59:59Z';
+    const challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'a2']);
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';
 
     ChoiceChallenge.listChoiceChallenges(api, 'fb')
-      .then(function(result) {
-        var request = window.fetch.calls.mostRecent().args;
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         expect(result.length).toBe(1);
         expect(result[0]).toEqual(challenge);
-      }).catch(function(error) {
+      }).catch(error => {
         fail('No error should be thrown : ' + error);
       }).then(done);
   });
