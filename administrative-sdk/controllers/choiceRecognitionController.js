@@ -1,12 +1,12 @@
-const ChoiceRecognition = require('../models/choiceRecognition').ChoiceRecognition;
-const Student = require('../models/student').Student;
-const PronunciationAnalysis = require('../models/pronunciationAnalysis').PronunciationAnalysis;
-const Base64Utils = require('../base64Utils').Base64Utils;
+const ChoiceRecognition = require('../models/choiceRecognition');
+const Student = require('../models/student');
+const PronunciationAnalysis = require('../models/pronunciationAnalysis');
+const Base64Utils = require('../base64Utils');
 
 /**
  * Controller class for the ChoiceRecognition model.
  */
-class ChoiceRecognitionController {
+module.exports = class ChoiceRecognitionController {
   /**
    * @param connection Object to connect to.
    */
@@ -285,8 +285,4 @@ class ChoiceRecognitionController {
         return recognitions;
       });
   }
-}
-
-module.exports = {
-  ChoiceRecognitionController
 };

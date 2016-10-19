@@ -1,9 +1,9 @@
-const PronunciationChallenge = require('../models/pronunciationChallenge').PronunciationChallenge;
+const PronunciationChallenge = require('../models/pronunciationChallenge');
 
 /**
  * Controller class for the PronunciationChallenge model.
  */
-class PronunciationChallengeController {
+module.exports = class PronunciationChallengeController {
   /**
    * @param connection Object to connect to.
    */
@@ -119,8 +119,4 @@ class PronunciationChallengeController {
     return this.connection._secureAjaxDelete(url)
       .then(() => challenge);
   }
-}
-
-module.exports = {
-  PronunciationChallengeController
 };

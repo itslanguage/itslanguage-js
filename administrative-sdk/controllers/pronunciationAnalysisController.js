@@ -1,11 +1,11 @@
 /* eslint-disable
  camelcase
  */
-const Base64Utils = require('./../base64Utils').Base64Utils;
-const Connection = require('./connectionController').Connection;
+const Base64Utils = require('./../base64Utils');
+const Connection = require('./connectionController');
 const Phoneme = require('../models/phoneme');
-const PronunciationAnalysis = require('../models/pronunciationAnalysis').PronunciationAnalysis;
-const Student = require('../models/student').Student;
+const PronunciationAnalysis = require('../models/pronunciationAnalysis');
+const Student = require('../models/student');
 const Word = require('../models/word');
 const WordChunk = require('../models/word-chunk');
 const when = require('autobahn').when;
@@ -13,7 +13,7 @@ const when = require('autobahn').when;
 /**
  * Controller class for the PronunciationAnalysis model.
  */
-class PronunciationAnalysisController {
+module.exports = class PronunciationAnalysisController {
   /**
    * @param connection Object to connect to.
    */
@@ -330,8 +330,4 @@ class PronunciationAnalysisController {
         return analyses;
       });
   }
-}
-
-module.exports = {
-  PronunciationAnalysisController
 };

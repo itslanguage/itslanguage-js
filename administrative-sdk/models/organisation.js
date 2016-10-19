@@ -1,4 +1,4 @@
-class Organisation {
+module.exports = class Organisation {
   /**
    * Organisation domain model.
    *
@@ -10,8 +10,4 @@ class Organisation {
     this.id = id;
     this.name = name;
   }
-}
-
-module.exports = {
-  Organisation
 };

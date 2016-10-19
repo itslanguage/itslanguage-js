@@ -9,7 +9,7 @@
  * @member {blob} [referenceAudio] The reference audio fragment.
  * @member {string} [referenceAudioUrl] The reference audio fragment as streaming audio link.
  */
-class SpeechChallenge {
+module.exports = class SpeechChallenge {
   /**
    * Create a speech choiceChall domain model.
    *
@@ -44,8 +44,4 @@ class SpeechChallenge {
     this.referenceAudio = referenceAudio || null;
     this.referenceAudioUrl = null;
   }
-}
-
-module.exports = {
-  SpeechChallenge
 };

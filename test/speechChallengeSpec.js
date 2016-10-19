@@ -1,8 +1,7 @@
 require('jasmine-ajax');
-const SpeechChallenge = require('../administrative-sdk/models/speechChallenge').SpeechChallenge;
-const SpeechChallengeController = require('../administrative-sdk/controllers/speechChallengeController')
-  .SpeechChallengeController;
-const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
+const SpeechChallenge = require('../administrative-sdk/models/speechChallenge');
+const SpeechChallengeController = require('../administrative-sdk/controllers/speechChallengeController');
+const Connection = require('../administrative-sdk/controllers/connectionController');
 
 describe('SpeechChallenge object test', () => {
   it('should require all required fields in constructor', () => {

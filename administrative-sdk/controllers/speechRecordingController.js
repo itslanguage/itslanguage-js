@@ -1,12 +1,12 @@
-const Base64Utils = require('../base64Utils').Base64Utils;
-const Connection = require('./connectionController').Connection;
-const SpeechRecording = require('../models/speechRecording').SpeechRecording;
-const Student = require('../models/student').Student;
+const Base64Utils = require('../base64Utils');
+const Connection = require('./connectionController');
+const SpeechRecording = require('../models/speechRecording');
+const Student = require('../models/student');
 
 /**
  * Controller class for the SpeechRecording model.
  */
-class SpeechRecordingController {
+module.exports = class SpeechRecordingController {
   /**
    * @param connection Object to connect to.
    */
@@ -246,8 +246,4 @@ class SpeechRecordingController {
         return recordings;
       });
   }
-}
-
-module.exports = {
-  SpeechRecordingController
 };

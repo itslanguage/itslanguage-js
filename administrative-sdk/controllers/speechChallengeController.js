@@ -1,9 +1,9 @@
-const SpeechChallenge = require('../models/speechChallenge').SpeechChallenge;
+const SpeechChallenge = require('../models/speechChallenge');
 
 /**
  * Controller class for the SpeechChallenge model.
  */
-class SpeechChallengeController {
+module.exports = class SpeechChallengeController {
   /**
    * @param connection Object to connect to.
    */
@@ -92,8 +92,4 @@ class SpeechChallengeController {
         return challenges;
       });
   }
-}
-
-module.exports = {
-  SpeechChallengeController
 };

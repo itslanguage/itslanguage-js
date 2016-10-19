@@ -1,7 +1,7 @@
 /**
  * Controller class for the BasicAuth model.
  */
-class BasicAuthController {
+module.exports = class BasicAuthController {
   /**
    * @param connection Object to connect to.
    */
@@ -31,8 +31,4 @@ class BasicAuthController {
         return basicAuth;
       });
   }
-}
-
-module.exports = {
-  BasicAuthController
 };

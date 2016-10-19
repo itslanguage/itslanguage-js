@@ -1,9 +1,9 @@
-const ChoiceChallenge = require('../models/choiceChallenge').ChoiceChallenge;
+const ChoiceChallenge = require('../models/choiceChallenge');
 
 /**
  * Controller class for the ChoiceChallenge model.
  */
-class ChoiceChallengeController {
+module.exports = class ChoiceChallengeController {
   /**
    * @param connection Object to connect to.
    */
@@ -105,8 +105,4 @@ class ChoiceChallengeController {
         return challenges;
       });
   }
-}
-
-module.exports = {
-  ChoiceChallengeController
 };

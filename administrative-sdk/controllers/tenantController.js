@@ -1,7 +1,7 @@
 /**
  * Controller class for the Tenant model.
  */
-class TenantController {
+module.exports = class TenantController {
   /**
    * @param connection Object to connect to.
    */
@@ -28,8 +28,4 @@ class TenantController {
         return tenant;
       });
   }
-}
-
-module.exports = {
-  TenantController
 };

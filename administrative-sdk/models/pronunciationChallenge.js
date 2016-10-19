@@ -10,7 +10,7 @@
  * @member {string} [referenceAudioUrl] The reference audio fragment as streaming audio link.
  * @member {string} [status] The status of the challenge's preparation. Either 'unprepared', 'preparing' or 'prepared'.
  */
-class PronunciationChallenge {
+module.exports = class PronunciationChallenge {
   /**
    * Create a pronunciation challenge domain model.
    *
@@ -43,8 +43,4 @@ class PronunciationChallenge {
     }
     this.referenceAudio = referenceAudio;
   }
-}
-
-module.exports = {
-  PronunciationChallenge
 };

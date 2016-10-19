@@ -10,7 +10,7 @@
  * @member {string} audioUrl The audio fragment as streaming audio link.
  * @member {string} recognised The recognised sentence.
  */
-class ChoiceRecognition {
+module.exports = class ChoiceRecognition {
   /**
    * Create a choice recognition domain model.
    *
@@ -34,8 +34,4 @@ class ChoiceRecognition {
   }
 
 
-}
-
-module.exports = {
-  ChoiceRecognition
 };

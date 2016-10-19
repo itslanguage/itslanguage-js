@@ -1,9 +1,9 @@
-const Organisation = require('../models/organisation').Organisation;
+const Organisation = require('../models/organisation');
 
 /**
  * Controller class for the Organisation model.
  */
-class OrganisationController {
+module.exports = class OrganisationController {
   /**
    * @param connection Object to connect to.
    */
@@ -72,8 +72,4 @@ class OrganisationController {
         return organisations;
       });
   }
-}
-
-module.exports = {
-  OrganisationController
 };

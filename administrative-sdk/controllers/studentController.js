@@ -1,9 +1,9 @@
-const Student = require('../models/student').Student;
+const Student = require('../models/student');
 
 /**
  * Controller class for the Student model.
  */
-class StudentController {
+module.exports = class StudentController {
   /**
    * @param connection Object to connect to.
    */
@@ -82,8 +82,4 @@ class StudentController {
         return students;
       });
   }
-}
-
-module.exports = {
-  StudentController
 };

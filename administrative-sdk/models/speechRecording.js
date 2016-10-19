@@ -9,7 +9,7 @@
  * @member {blob} audio The recorded audio fragment.
  * @member {string} audioUrl The audio fragment as streaming audio link.
  */
-class SpeechRecording {
+module.exports = class SpeechRecording {
   /**
    * Create a speech recording domain model.
    *
@@ -42,8 +42,4 @@ class SpeechRecording {
     }
     this.audio = audio;
   }
-}
-
-module.exports = {
-  SpeechRecording
 };
