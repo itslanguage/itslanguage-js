@@ -106,7 +106,7 @@ class AudioPlayer {
 
       const evs = self.events[name];
       evs.forEach(ev => {
-        Reflect.apply(ev, null, args);
+        ev(...args);
       });
     };
   }
@@ -391,7 +391,7 @@ class AudioRecorder {
 
       const evs = self.events[name];
       evs.forEach(ev => {
-        Reflect.apply(ev, null, args);
+        ev(...args);
       });
     };
 
