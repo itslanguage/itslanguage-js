@@ -1,18 +1,3 @@
-/* eslint-disable
- camelcase,
- new-cap
- */
-
-/* global
- afterEach,
- beforeEach,
- describe,
- expect,
- it,
- jasmine,
- window,
- FormData
- */
 require('jasmine-ajax');
 const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
 const BasicAuth = require('../administrative-sdk/models/basicAuth').BasicAuth;

@@ -1,7 +1,3 @@
-/* eslint-disable
- camelcase
- */
-
 /**
  * @class WordChunk
  *
