@@ -1,3 +1,7 @@
+/* eslint-disable
+camelcase
+ */
+
 const autobahn = require('autobahn');
 
 /**
@@ -102,6 +106,9 @@ module.exports = class Connection {
         // the following attributes must be set for Ticket-based authentication
         authmethods: ['ticket'],
         authid: 'oauth2',
+        details: {
+          ticket: accessToken
+        },
         onchallenge: onOAuth2Challenge
       });
     } catch (e) {
@@ -146,10 +153,12 @@ module.exports = class Connection {
    *
    * @param {string} URL to submit to.
    * @param {FormData} formdata The form to POST.
+   * @param {Boolean} encoded True if the POST should be made with content-type 'application/x-www-form-urlencoded',
+   * false if content-type should be 'application/json'. Default false.
    * @returns Promise containing a result.
    */
-  _secureAjaxPost(url, formdata) {
-    return this._ajaxPost(url, formdata, this._getAuthHeaders());
+  _secureAjaxPost(url, formdata, encoded) {
+    return this._ajaxPost(url, formdata, this._getAuthHeaders(), encoded);
   }
 
   /**
@@ -213,17 +222,24 @@ module.exports = class Connection {
    * @param {string} URL to submit to.
    * @param {FormData|string} formdata FormData or stringified JSON to POST.
    * @param {string} [auth] The authorization header value to pass along with the request.
+   * @param {Boolean} encoded True if the POST should be made with content-type 'application/x-www-form-urlencoded' or
+   * false if content-type should be 'application/json'. Default false.
    * @returns Promise containing a result.
    * @throws If the server returned an error.
    */
-  _ajaxPost(url, formdata, auth) {
+  _ajaxPost(url, formdata, auth, encoded) {
     const headers = new Headers();
     if (typeof auth !== 'undefined') {
       headers.append('Authorization', auth);
     }
     if (typeof formdata === 'string') {
-      headers.append('Content-Type',
+      if (encoded) {
+        headers.append('Content-Type',
+          'application/x-www-form-urlencoded; charset=utf8');
+      } else {
+        headers.append('Content-Type',
         'application/json; charset=utf-8');
+      }
     }
     const options = {
       method: 'POST',
@@ -320,5 +336,23 @@ module.exports = class Connection {
    */
   static logRPCError(result) {
     console.error('RPC error returned:', result.error);
+  }
+
+  /**
+   * Ask the server for an OAuth2 token.
+   * @param {BasicAuth} basicAuth Basic Auth to obtain credentials from.
+   * @returns {Promise} Promise containing a access_token, token_type and scope.
+   * @rejects If the server returned an error.
+   */
+  getOauth2Token(basicAuth) {
+    const url = this.apiUrl + '/tokens';
+    const formData = JSON.stringify(
+      {
+        grant_type: 'password',
+        scope: 'tenant/' + basicAuth.tenantId,
+        username: basicAuth.principal,
+        password: basicAuth.credentials
+      });
+    return this._secureAjaxPost(url, formData, true);
   }
 };
