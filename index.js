@@ -1,17 +1,34 @@
-const BasicAuth = require('./administrative-sdk/basicAuth').BasicAuth;
-const ChoiceChallenge = require('./administrative-sdk/choiceChallenge').ChoiceChallenge;
-const ChoiceRecognition = require('./administrative-sdk/choiceRecognition').ChoiceRecognition;
-const Connection = require('./administrative-sdk/connection').Connection;
-const Organisation = require('./administrative-sdk/organisation').Organisation;
-const Phoneme = require('./administrative-sdk/pronunciationAnalysis').Phoneme;
-const PronunciationAnalysis = require('./administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;
-const PronunciationChallenge = require('./administrative-sdk/pronunciationChallenge').PronunciationChallenge;
-const SpeechChallenge = require('./administrative-sdk/speechChallenge').SpeechChallenge;
-const SpeechRecording = require('./administrative-sdk/speechRecording').SpeechRecording;
-const Student = require('./administrative-sdk/student').Student;
-const Tenant = require('./administrative-sdk/tenant').Tenant;
-const Word = require('./administrative-sdk/pronunciationAnalysis').Word;
-const WordChunk = require('./administrative-sdk/pronunciationAnalysis').WordChunk;
+const BasicAuth = require('./administrative-sdk/models/basicAuth').BasicAuth;
+const BasicAuthController = require('./administrative-sdk/controllers/basicAuthController').BasicAuthController;
+const ChoiceChallenge = require('./administrative-sdk/models/choiceChallenge').ChoiceChallenge;
+const ChoiceChallengeController = require('./administrative-sdk/controllers/choiceChallengeController')
+  .ChoiceChallengeController;
+const ChoiceRecognition = require('./administrative-sdk/models/choiceRecognition').ChoiceRecognition;
+const ChoiceRecognitionController = require('./administrative-sdk/controllers/choiceRecognitionController')
+  .ChoiceRecognitionController;
+const Connection = require('./administrative-sdk/controllers/connectionController').Connection;
+const Organisation = require('./administrative-sdk/models/organisation').Organisation;
+const OrganisationController = require('./administrative-sdk/controllers/organisationController')
+  .OrganisationController;
+const Phoneme = require('./administrative-sdk/models/pronunciationAnalysis').Phoneme;
+const PronunciationAnalysis = require('./administrative-sdk/models/pronunciationAnalysis').PronunciationAnalysis;
+const PronunciationAnalysisController = require('./administrative-sdk/controllers/pronunciationAnalysisController')
+  .PronunciationAnalysisController;
+const PronunciationChallenge = require('./administrative-sdk/models/pronunciationChallenge').PronunciationChallenge;
+const PronunciationChallengeController = require('./administrative-sdk/controllers/pronunciationChallengeController')
+  .PronunciationChallengeController;
+const SpeechChallenge = require('./administrative-sdk/models/speechChallenge').SpeechChallenge;
+const SpeechChallengeController = require('./administrative-sdk/controllers/speechChallengeController')
+  .SpeechChallengeController;
+const SpeechRecording = require('./administrative-sdk/models/speechRecording').SpeechRecording;
+const SpeechRecordingController = require('./administrative-sdk/controllers/speechRecordingController')
+  .SpeechRecordingController;
+const Student = require('./administrative-sdk/models/student').Student;
+const StudentController = require('./administrative-sdk/controllers/studentController').StudentController;
+const Tenant = require('./administrative-sdk/models/tenant').Tenant;
+const TenantController = require('./administrative-sdk/controllers/tenantController').TenantController;
+const Word = require('./administrative-sdk/models/pronunciationAnalysis').Word;
+const WordChunk = require('./administrative-sdk/models/pronunciationAnalysis').WordChunk;
 const audioSdk = require('./audio-sdk');
 const AudioTools = require('./audio-tools');
 const CordovaMediaPlayer = require('./cordova-media-player');
@@ -37,6 +54,17 @@ module.exports = {
   Tenant,
   Word,
   WordChunk,
+
+  BasicAuthController,
+  ChoiceChallengeController,
+  ChoiceRecognitionController,
+  OrganisationController,
+  PronunciationAnalysisController,
+  PronunciationChallengeController,
+  SpeechChallengeController,
+  SpeechRecordingController,
+  StudentController,
+  TenantController,
 
   AudioPlayer: audioSdk.AudioPlayer,
   AudioRecorder: audioSdk.AudioRecorder,
