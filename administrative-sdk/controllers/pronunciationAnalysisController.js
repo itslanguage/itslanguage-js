@@ -3,11 +3,11 @@
  */
 const Base64Utils = require('./../base64Utils').Base64Utils;
 const Connection = require('./connectionController').Connection;
-const Phoneme = require('../models/pronunciationAnalysis').Phoneme;
+const Phoneme = require('../models/phoneme');
 const PronunciationAnalysis = require('../models/pronunciationAnalysis').PronunciationAnalysis;
 const Student = require('../models/student').Student;
-const Word = require('../models/pronunciationAnalysis').Word;
-const WordChunk = require('../models/pronunciationAnalysis').WordChunk;
+const Word = require('../models/word');
+const WordChunk = require('../models/word-chunk');
 const when = require('autobahn').when;
 
 /**

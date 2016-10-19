@@ -10,7 +10,7 @@ const Connection = require('./administrative-sdk/controllers/connectionControlle
 const Organisation = require('./administrative-sdk/models/organisation').Organisation;
 const OrganisationController = require('./administrative-sdk/controllers/organisationController')
   .OrganisationController;
-const Phoneme = require('./administrative-sdk/models/pronunciationAnalysis').Phoneme;
+const Phoneme = require('./administrative-sdk/models/phoneme');
 const PronunciationAnalysis = require('./administrative-sdk/models/pronunciationAnalysis').PronunciationAnalysis;
 const PronunciationAnalysisController = require('./administrative-sdk/controllers/pronunciationAnalysisController')
   .PronunciationAnalysisController;
@@ -27,8 +27,8 @@ const Student = require('./administrative-sdk/models/student').Student;
 const StudentController = require('./administrative-sdk/controllers/studentController').StudentController;
 const Tenant = require('./administrative-sdk/models/tenant').Tenant;
 const TenantController = require('./administrative-sdk/controllers/tenantController').TenantController;
-const Word = require('./administrative-sdk/models/pronunciationAnalysis').Word;
-const WordChunk = require('./administrative-sdk/models/pronunciationAnalysis').WordChunk;
+const Word = require('./administrative-sdk/models/word');
+const WordChunk = require('./administrative-sdk/models/word-chunk');
 const audioSdk = require('./audio-sdk');
 const AudioTools = require('./audio-tools');
 const CordovaMediaPlayer = require('./cordova-media-player');

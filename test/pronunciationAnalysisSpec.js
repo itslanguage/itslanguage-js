@@ -6,9 +6,9 @@ const PronunciationAnalysisController = require('../administrative-sdk/controlle
 const PronunciationChallenge = require('../administrative-sdk/models/pronunciationChallenge').PronunciationChallenge;
 const Student = require('../administrative-sdk/models/student').Student;
 const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
-const WordChunk = require('../administrative-sdk/models/pronunciationAnalysis').WordChunk;
-const Word = require('../administrative-sdk/models/pronunciationAnalysis').Word;
-const Phoneme = require('../administrative-sdk/models/pronunciationAnalysis').Phoneme;
+const WordChunk = require('../administrative-sdk/models/word-chunk');
+const Word = require('../administrative-sdk/models/word');
+const Phoneme = require('../administrative-sdk/models/phoneme');
 
 describe('Pronunciation Analyisis Websocket API interaction test', () => {
   beforeEach(() => {
