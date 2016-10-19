@@ -129,15 +129,15 @@ class PronunciationAnalysis {
    * @returns an array of the `its.Word` domain models.
    */
   static _wordsToModels(inWords) {
-    var words = [];
-    inWords.forEach(function(word) {
-      var chunks = [];
-      word.chunks.forEach(function(chunk) {
-        var phonemes = [];
+    const words = [];
+    inWords.forEach(word => {
+      const chunks = [];
+      word.chunks.forEach(chunk => {
+        const phonemes = [];
         // Phonemes are only provided on detailed analysis.
         chunk.phonemes = chunk.phonemes || [];
-        chunk.phonemes.forEach(function(phoneme) {
-          var newPhoneme = new Phoneme(
+        chunk.phonemes.forEach(phoneme => {
+          const newPhoneme = new Phoneme(
             phoneme.ipa, phoneme.score, phoneme.confidenceScore,
             phoneme.verdict);
           // Copy all properties as API docs indicate there may be a
@@ -145,11 +145,11 @@ class PronunciationAnalysis {
           Object.assign(newPhoneme, phoneme);
           phonemes.push(newPhoneme);
         });
-        var wordChunk = new WordChunk(chunk.graphemes, chunk.score,
+        const wordChunk = new WordChunk(chunk.graphemes, chunk.score,
           chunk.verdict, phonemes);
         chunks.push(wordChunk);
       });
-      var newWord = new Word(chunks);
+      const newWord = new Word(chunks);
       words.push(newWord);
     });
     return words;
@@ -160,23 +160,23 @@ class PronunciationAnalysis {
    *
    */
   pronunciationAnalysisInitChallenge(connection, challenge) {
-    var self = this;
+    const self = this;
 
     return connection._session.call('nl.itslanguage.pronunciation.init_challenge',
       [connection._analysisId, challenge.organisationId, challenge.id])
-      .catch(function(res) {
+      .catch(res => {
         Connection.logRPCError(res);
       })
-      .then(function(analysisId) {
+      .then(analysisId => {
         console.log('Challenge initialised for analysisId: ' + connection._analysisId);
         return analysisId;
       })
       .then(connection._session.call('nl.itslanguage.pronunciation.alignment',
         [connection._analysisId]))
-      .catch(function(res) {
+      .catch(res => {
         Connection.logRPCError(res);
       })
-      .then(function(alignment) {
+      .then(alignment => {
         self.referenceAlignment = alignment;
         console.log('Reference alignment retrieved');
       });
@@ -190,16 +190,16 @@ class PronunciationAnalysis {
     // Indicate to the socket server that we're about to start recording a
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
-    var specs = recorder.getAudioSpecs();
+    const specs = recorder.getAudioSpecs();
     connection._session.call('nl.itslanguage.pronunciation.init_audio',
       [connection._analysisId, specs.audioFormat], specs.audioParameters)
-      .then(function(analysisId) {
+      .then(analysisId => {
         console.log('Accepted audio parameters for analysisId after init_audio: ' + connection._analysisId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return analysisId;
       })
-      .catch(function(res) {
+      .catch(res => {
         Connection.logRPCError(res);
         return Promise.reject(res);
       });
@@ -242,23 +242,23 @@ class PronunciationAnalysis {
     if (connection._analysisId !== null) {
       return Promise.reject(new Error('Session with analysisId ' + connection._analysisId + ' still in progress.'));
     }
-    var self = this;
+    const self = this;
     connection._analyisId = null;
-    var trimAudioStart = 0.15;
-    var trimAudioEnd = 0.0;
+    let trimAudioStart = 0.15;
+    const trimAudioEnd = 0.0;
     if (trim === false) {
       trimAudioStart = 0.0;
     }
-    return new when.Promise(function(resolve, reject, notify) {
+    return new when.Promise((resolve, reject, notify) => {
       function reportDone(data) {
-        var analysis = new PronunciationAnalysis(
+        const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           null, null,
           connection.addAccessToken(data.audioUrl));
         analysis.score = data.score;
         analysis.confidenceScore = data.confidenceScore;
         analysis.words = PronunciationAnalysis._wordsToModels(data.words);
-        resolve({analysisId: connection._analysisId, analysis: analysis});
+        resolve({analysisId: connection._analysisId, analysis});
       }
 
       function reportProgress(progress) {
@@ -269,26 +269,26 @@ class PronunciationAnalysis {
         // Either there was an unexpected error, or the audio failed to
         // align, in which case no analysis is provided, but just the
         // basic metadata.
-        var analysis = new PronunciationAnalysis(
+        const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           connection.addAccessToken(data.audioUrl));
-        reject({analysis: analysis, message: data.message});
+        reject({analysis, message: data.message});
       }
 
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        var encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for analysisId: ' +
           connection._analysisId);
         connection._session.call('nl.itslanguage.pronunciation.write',
           [connection._analysisId, encoded, 'base64'])
-          .catch(function(res) {
+          .catch(res => {
             Connection.logRPCError(res);
             reportError(res);
           })
-          .then(function() {
+          .then(() => {
             console.debug('Delivered audio successfully');
           });
       }
@@ -310,7 +310,7 @@ class PronunciationAnalysis {
         connection._session.call('nl.itslanguage.pronunciation.analyse',
           [connection._analysisId], {}, {receive_progress: true})
           .then(reportDone)
-          .catch(function(res) {
+          .catch(res => {
             if (res.error === 'nl.itslanguage.ref_alignment_failed') {
               res.kwargs.analysis.message = 'Reference alignment failed';
             } else if (res.error === 'nl.itslanguage.alignment_failed') {
@@ -323,7 +323,7 @@ class PronunciationAnalysis {
             }
             reportError(res.kwargs.analysis);
           })
-          .tap(function(progress) {
+          .tap(progress => {
             reportProgress(progress);
           });
       }
@@ -335,19 +335,18 @@ class PronunciationAnalysis {
           trimEnd: trimAudioEnd
         })
         .then(initAnalysis)
-        .then(function() {
+        .then(() => {
           self.pronunciationAnalysisInitChallenge(connection, challenge)
-            .then(function() {
-              var p = new Promise(function(resolve) {
+            .then(() => {
+              const p = new Promise(resolve_ => {
                 if (recorder.hasUserMediaApproval()) {
-                  resolve();
+                  resolve_();
                 } else {
-                  recorder.addEventListener('ready', resolve);
+                  recorder.addEventListener('ready', resolve_);
                 }
               });
 
-              p.then(function() {
-                recorder.removeEventListener('ready', resolve);
+              p.then(() => {
                 self.pronunciationAnalysisInitAudio(connection, recorder, startStreaming);
               });
             });
@@ -372,13 +371,13 @@ class PronunciationAnalysis {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses/' + analysisId;
     return connection._secureAjaxGet(url)
       .then(datum => {
-        var student = new Student(challenge.organisationId, datum.studentId);
-        var analysis = new PronunciationAnalysis(challenge, student,
+        const student = new Student(challenge.organisationId, datum.studentId);
+        const analysis = new PronunciationAnalysis(challenge, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl);
         // Alignment may not be successful, in which case the analysis
@@ -408,7 +407,7 @@ class PronunciationAnalysis {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    let url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses';
     if (detailed) {
@@ -416,10 +415,10 @@ class PronunciationAnalysis {
     }
     return connection._secureAjaxGet(url)
       .then(data => {
-        var analyses = [];
-        data.forEach(function(datum) {
-          var student = new Student(challenge.organisationId, datum.studentId);
-          var analysis = new PronunciationAnalysis(challenge, student,
+        const analyses = [];
+        data.forEach(datum => {
+          const student = new Student(challenge.organisationId, datum.studentId);
+          const analysis = new PronunciationAnalysis(challenge, student,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl);
           // Alignment may not be successful, in which case the analysis
@@ -436,8 +435,8 @@ class PronunciationAnalysis {
   }
 }
 module.exports = {
-  Phoneme: Phoneme,
-  PronunciationAnalysis: PronunciationAnalysis,
-  Word: Word,
-  WordChunk: WordChunk
+  Phoneme,
+  PronunciationAnalysis,
+  Word,
+  WordChunk
 };

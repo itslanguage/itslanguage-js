@@ -60,9 +60,9 @@ class PronunciationChallenge {
       return Promise.reject(new Error(
         'referenceAudio parameter of type "Blob" is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/pronunciation';
-    var fd = new FormData();
+    const fd = new FormData();
     if (typeof this.id !== 'undefined' &&
       this.id !== null) {
       fd.append('id', this.id);
@@ -92,11 +92,11 @@ class PronunciationChallenge {
    * @rejects If no result could not be found.
    */
   static getPronunciationChallenge(connection, organisationId, challengeId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation/' + challengeId;
     return connection._secureAjaxGet(url)
       .then(data => {
-        var challenge = new PronunciationChallenge(organisationId, data.id,
+        const challenge = new PronunciationChallenge(organisationId, data.id,
           data.transcription);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
@@ -115,13 +115,13 @@ class PronunciationChallenge {
    * @rejects If no result could not be found.
    */
   static listPronunciationChallenges(connection, organisationId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation';
     return connection._secureAjaxGet(url)
       .then(data => {
-        var challenges = [];
-        data.forEach(function(datum) {
-          var challenge = new PronunciationChallenge(
+        const challenges = [];
+        data.forEach(datum => {
+          const challenge = new PronunciationChallenge(
             organisationId, datum.id, datum.transcription);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
@@ -148,14 +148,14 @@ class PronunciationChallenge {
     if (!this.id) {
       return Promise.reject(new Error('id field is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/pronunciation/' +
       this.id;
     return connection._secureAjaxDelete(url)
-      .then(() => (this));
+      .then(() => this);
   }
 }
 
 module.exports = {
-  PronunciationChallenge: PronunciationChallenge
+  PronunciationChallenge
 };

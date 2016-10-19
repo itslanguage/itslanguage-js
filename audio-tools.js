@@ -26,14 +26,14 @@ const pcm = require('pcmjs');
  * @returns A new URL containing the Wave file.
  */
 function generateWaveSample(duration) {
-  var effect = [];
-  var sampleRate = 22000;
-  var loops = duration * sampleRate;
-  for (var i = 0; i < loops; i++) {
+  const effect = [];
+  const sampleRate = 22000;
+  const loops = duration * sampleRate;
+  for (let i = 0; i < loops; i++) {
     effect[i] = 64 + Math.round(
       32 * (Math.cos(i * i / 2000) + Math.sin(i * i / 4000)));
   }
-  var wave = new pcm({channels: 1, rate: 22000, depth: 8}).toWav(effect);
+  const wave = new pcm({channels: 1, rate: 22000, depth: 8}).toWav(effect);
   return wave.encode();
 }
 
@@ -80,17 +80,16 @@ class VolumeMeter {
   }
 
   static _getAverageVolume(array) {
-    var values = 0;
-    var average;
+    let values = 0;
 
-    var length = array.length;
+    const length = array.length;
 
     // Get all the frequency amplitudes
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       values += array[i];
     }
 
-    average = values / length;
+    const average = values / length;
     return average;
   }
 
@@ -99,14 +98,14 @@ class VolumeMeter {
    * Repeat indefinitely.
    */
   _updateAnalysers() {
-    var volumeIndicationCallback = this.volumeIndicationCallback;
-    var volumeIndicationCallbackArgs = this.volumeIndicationCallbackArgs;
-    var analyserNode = this.analyserNode;
-    var willAnimate = this.willAnimate = {
+    const volumeIndicationCallback = this.volumeIndicationCallback;
+    const volumeIndicationCallbackArgs = this.volumeIndicationCallbackArgs;
+    const analyserNode = this.analyserNode;
+    const willAnimate = this.willAnimate = {
       anim: true
     };
-    var skippedCallbacks = 0;
-    var lastVolume = -1;
+    let skippedCallbacks = 0;
+    let lastVolume = -1;
 
     animloop();
 
@@ -118,15 +117,15 @@ class VolumeMeter {
        * takes as an argument a callback to be invoked before
        * the repaint.
        */
-      var requestAnimationFrame = window.requestAnimationFrame ||
+      const requestAnimationFrame = window.requestAnimationFrame ||
         window.mozRequestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.msRequestAnimationFrame;
 
-      var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
+      const freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
 
       analyserNode.getByteFrequencyData(freqByteData);
-      var averageVolume = VolumeMeter._getAverageVolume(freqByteData);
+      let averageVolume = VolumeMeter._getAverageVolume(freqByteData);
 
       if (willAnimate.anim) {
         requestAnimationFrame(animloop);
@@ -137,9 +136,9 @@ class VolumeMeter {
       }
 
       // Callback only on substantial changes.
-      var minDiff = 1;
-      if (parseInt(averageVolume) >= (lastVolume - minDiff) &&
-        parseInt(averageVolume) <= (lastVolume + minDiff)) {
+      const minDiff = 1;
+      if (parseInt(averageVolume) >= lastVolume - minDiff &&
+        parseInt(averageVolume) <= lastVolume + minDiff) {
         // console.log('Skip same average: ' + lastVolume);
         return true;
       }
@@ -147,9 +146,9 @@ class VolumeMeter {
       // ' (old: ' + lastVolume + ')');
       lastVolume = parseInt(averageVolume);
 
-      var args = [averageVolume].concat(volumeIndicationCallbackArgs);
+      const args = [averageVolume].concat(volumeIndicationCallbackArgs);
       // Fire all callbacks.
-      volumeIndicationCallback.forEach(function(cb) {
+      volumeIndicationCallback.forEach(cb => {
         // This kludge prevents firing an averageVolume of zero
         // right away. The buffer probably needs filling before useful
         // values become available. 5 seems to be the magic number.
@@ -174,6 +173,6 @@ class VolumeMeter {
 
 
 module.exports = {
-  generateWaveSample: generateWaveSample,
-  VolumeMeter: VolumeMeter
+  generateWaveSample,
+  VolumeMeter
 };

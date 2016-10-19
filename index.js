@@ -23,37 +23,37 @@ const WebAudioPlayer = require('./web-audio-player');
 const WebAudioRecorder = require('./web-audio-recorder');
 
 module.exports = {
-  BasicAuth: BasicAuth,
-  ChoiceChallenge: ChoiceChallenge,
-  ChoiceRecognition: ChoiceRecognition,
-  Connection: Connection,
-  Organisation: Organisation,
-  Phoneme: Phoneme,
-  PronunciationAnalysis: PronunciationAnalysis,
-  PronunciationChallenge: PronunciationChallenge,
-  SpeechChallenge: SpeechChallenge,
-  SpeechRecording: SpeechRecording,
-  Student: Student,
-  Tenant: Tenant,
-  Word: Word,
-  WordChunk: WordChunk,
+  BasicAuth,
+  ChoiceChallenge,
+  ChoiceRecognition,
+  Connection,
+  Organisation,
+  Phoneme,
+  PronunciationAnalysis,
+  PronunciationChallenge,
+  SpeechChallenge,
+  SpeechRecording,
+  Student,
+  Tenant,
+  Word,
+  WordChunk,
 
   AudioPlayer: audioSdk.AudioPlayer,
   AudioRecorder: audioSdk.AudioRecorder,
 
-  AudioTools: AudioTools,
+  AudioTools,
 
-  CordovaMediaPlayer: CordovaMediaPlayer,
+  CordovaMediaPlayer,
 
-  CordovaMediaRecorder: CordovaMediaRecorder,
+  CordovaMediaRecorder,
 
-  MediaRecorder: MediaRecorder,
+  MediaRecorder,
 
-  Tools: Tools,
+  Tools,
 
-  WavePacker: WavePacker,
+  WavePacker,
 
-  WebAudioPlayer: WebAudioPlayer,
+  WebAudioPlayer,
 
-  WebAudioRecorder: WebAudioRecorder
+  WebAudioRecorder
 };

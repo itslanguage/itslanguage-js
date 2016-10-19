@@ -20,8 +20,8 @@ class Organisation {
    * @throws If the server returned an error.
    */
   createOrganisation(connection) {
-    var url = connection.settings.apiUrl + '/organisations';
-    var fd = JSON.stringify(this);
+    const url = connection.settings.apiUrl + '/organisations';
+    const fd = JSON.stringify(this);
 
     return connection._secureAjaxPost(url, fd)
       .then(data => {
@@ -41,14 +41,14 @@ class Organisation {
    * @rejects If no result could not be found.
    */
   static getOrganisation(connection, organisationId) {
-    var url = connection.settings.apiUrl + '/organisations/' + organisationId;
+    const url = connection.settings.apiUrl + '/organisations/' + organisationId;
 
     return connection._secureAjaxGet(url)
       .then(data => {
-        var organisation = new Organisation(data.id, data.name);
+        const organisation = new Organisation(data.id, data.name);
         organisation.created = new Date(data.created);
         organisation.updated = new Date(data.updated);
-        return (organisation);
+        return organisation;
       });
   }
 
@@ -60,13 +60,13 @@ class Organisation {
    * @rejects If no result could not be found.
    */
   static listOrganisations(connection) {
-    var url = connection.settings.apiUrl + '/organisations';
+    const url = connection.settings.apiUrl + '/organisations';
 
     return connection._secureAjaxGet(url)
       .then(data => {
-        var organisations = [];
-        data.forEach(function(datum) {
-          var organisation = new Organisation(datum.id, datum.name);
+        const organisations = [];
+        data.forEach(datum => {
+          const organisation = new Organisation(datum.id, datum.name);
           organisation.created = new Date(datum.created);
           organisation.updated = new Date(datum.updated);
           organisations.push(organisation);
@@ -77,5 +77,5 @@ class Organisation {
 }
 
 module.exports = {
-  Organisation: Organisation
+  Organisation
 };

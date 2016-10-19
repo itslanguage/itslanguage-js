@@ -22,7 +22,7 @@ module.exports = class MediaRecorder {
    *      stream - The MediaStream to analyze.
    */
   constructor(mediaStream) {
-    var self = this;
+    const self = this;
     this.mediaRecorder = new window.MediaRecorder(mediaStream);
     this.mediaRecorder.ondataavailable = function(e) {
       self.recordedBlob = new Blob([e.data], {

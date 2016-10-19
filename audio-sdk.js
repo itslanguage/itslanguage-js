@@ -32,30 +32,30 @@ class AudioPlayer {
     this.settings = Object.assign({}, options);
 
     this._playbackCompatibility();
-    var self = this;
-    var callbacks = {
-      playingCb: function() {
+    const self = this;
+    const callbacks = {
+      playingCb() {
         self.fireEvent('playing', []);
       },
-      timeupdateCb: function() {
+      timeupdateCb() {
         self.fireEvent('timeupdate', []);
       },
-      durationchangeCb: function() {
+      durationchangeCb() {
         self.fireEvent('durationchange', []);
       },
-      canplayCb: function() {
+      canplayCb() {
         self.fireEvent('canplay', []);
       },
-      endedCb: function() {
+      endedCb() {
         self.fireEvent('ended', []);
       },
-      pauseCb: function() {
+      pauseCb() {
         self.fireEvent('pause', []);
       },
-      progressCb: function() {
+      progressCb() {
         self.fireEvent('progress', []);
       },
-      errorCb: function() {
+      errorCb() {
         self.fireEvent('error', []);
       }
     };
@@ -90,7 +90,7 @@ class AudioPlayer {
         return;
       }
 
-      var index = self.events[name].indexOf(handler);
+      const index = self.events[name].indexOf(handler);
       if (index !== -1) {
         self.events[name].splice(index, 1);
       }
@@ -104,9 +104,9 @@ class AudioPlayer {
         args = [];
       }
 
-      var evs = self.events[name];
-      evs.forEach(function(ev) {
-        ev.apply(null, args);
+      const evs = self.events[name];
+      evs.forEach(ev => {
+        Reflect.apply(ev, null, args);
       });
     };
   }
@@ -137,21 +137,21 @@ class AudioPlayer {
         'Some form of audio playback capability is required');
     }
 
-    var _audio = new Audio();
+    const _audio = new Audio();
     if (_audio.canPlayType === 'function') {
       throw new Error(
         'Unable to detect audio playback capabilities');
     }
 
-    var canPlayOggVorbis = _audio.canPlayType(
+    const canPlayOggVorbis = _audio.canPlayType(
       'audio/ogg; codecs="vorbis"') !== '';
-    var canPlayOggOpus = _audio.canPlayType(
+    const canPlayOggOpus = _audio.canPlayType(
       'audio/ogg; codecs="opus"') !== '';
-    var canPlayWave = _audio.canPlayType('audio/wav') !== '';
-    var canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
-    var canPlayAAC = _audio.canPlayType(
+    const canPlayWave = _audio.canPlayType('audio/wav') !== '';
+    const canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
+    const canPlayAAC = _audio.canPlayType(
       'audio/mp4; codecs="mp4a.40.2"') !== '';
-    var canPlay3GPP = _audio.canPlayType(
+    const canPlay3GPP = _audio.canPlayType(
       'audio/3gpp; codecs="samr"') !== '';
 
     console.log('Native Vorbis audio in Ogg container playback capability: ' +
@@ -183,7 +183,7 @@ class AudioPlayer {
    * @param {GainNode} micInputGain The GainNode to analyze.
    */
   _getBestPlayer(callbacks) {
-    var player = null;
+    let player = null;
     // Start by checking for a Cordova environment.
     // When running under a debugger like Ripple, both Cordova and WebAudio
     // environments get detected. While this is technically valid -Ripple is
@@ -355,7 +355,7 @@ class AudioRecorder {
     // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
     this.events = {};
 
-    var self = this;
+    const self = this;
     this.addEventListener = function(name, handler) {
       if (self.events.hasOwnProperty(name)) {
         self.events[name].push(handler);
@@ -372,12 +372,12 @@ class AudioRecorder {
       }
 
       if (handler) {
-        var index = self.events[name].indexOf(handler);
+        const index = self.events[name].indexOf(handler);
         if (index !== -1) {
           self.events[name].splice(index, 1);
         }
       } else {
-        delete self.events[name];
+        Reflect.deleteProperty(self, self.events[name]);
       }
     };
 
@@ -389,9 +389,9 @@ class AudioRecorder {
         args = [];
       }
 
-      var evs = self.events[name];
-      evs.forEach(function(ev) {
-        ev.apply(null, args);
+      const evs = self.events[name];
+      evs.forEach(ev => {
+        Reflect.apply(ev, null, args);
       });
     };
 
@@ -434,10 +434,10 @@ class AudioRecorder {
     // Detect audio recording capabilities.
     // http://caniuse.com/#feat=stream
     // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
-    navigator.getUserMedia = (navigator.getUserMedia ||
+    navigator.getUserMedia = navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia);
+      navigator.msGetUserMedia;
     this.canGetUserMedia = Boolean(navigator.getUserMedia);
     console.log('Native deprecated navigator.getUserMedia API capability: ' +
       this.canGetUserMedia);
@@ -466,7 +466,7 @@ class AudioRecorder {
     // http://caniuse.com/#feat=audio-api
     window.AudioContext = window.AudioContext ||
       window.webkitAudioContext || window.mozAudioContext;
-    var canCreateAudioContext = Boolean(window.AudioContext);
+    const canCreateAudioContext = Boolean(window.AudioContext);
     console.log('Native Web Audio API (AudioContext) processing capability: ' +
       canCreateAudioContext);
 
@@ -484,8 +484,8 @@ class AudioRecorder {
         'Some form of audio recording capability is required');
     }
 
-    window.URL = (window.URL || window.webkitURL);
-    var hasWindowURL = Boolean(window.URL);
+    window.URL = window.URL || window.webkitURL;
+    const hasWindowURL = Boolean(window.URL);
     console.log('Native window.URL capability: ' +
       hasWindowURL);
     if (!hasWindowURL) {
@@ -503,7 +503,7 @@ class AudioRecorder {
    *
    */
   requestUserMedia() {
-    var self = this;
+    const self = this;
     function success(stream) {
       console.log('Got getUserMedia stream');
 
@@ -517,7 +517,7 @@ class AudioRecorder {
       // Modify state of userMediaApproval now access is granted.
       self.userMediaApproval = true;
 
-      var micInputGain = self._startUserMedia(stream);
+      const micInputGain = self._startUserMedia(stream);
       self.fireEvent('ready', [self.audioContext, micInputGain]);
     }
     function failure(e) {
@@ -548,7 +548,7 @@ class AudioRecorder {
     }
 
     // Creates an audio node from the microphone incoming stream.
-    var micInput = this.audioContext.createMediaStreamSource(stream);
+    const micInput = this.audioContext.createMediaStreamSource(stream);
 
     // This is a workaround for a bug in Firefox that would otherwise lead to
     // the sound input stopping after ~5 seconds.
@@ -557,7 +557,7 @@ class AudioRecorder {
     this.micInput = micInput;
 
     // Create a gain node
-    var micInputGain = this.audioContext.createGain();
+    const micInputGain = this.audioContext.createGain();
     // Connect the microphone source to a gain node.
     micInput.connect(micInputGain);
 
@@ -576,7 +576,7 @@ class AudioRecorder {
    * @param {GainNode} micInputGain The GainNode to analyze.
    */
   _getBestRecorder(micInputGain) {
-    var recorder = null;
+    let recorder = null;
     // Start by checking for a Cordova environment.
     // When running under a debugger like Ripple, both Cordova and WebAudio
     // environments get detected. While this is technically valid -Ripple is
@@ -590,8 +590,8 @@ class AudioRecorder {
       recorder = new MediaRecorder(micInputGain);
     } else if (this.canGetUserMedia) {
       // Fall back to raw (WAVE) audio encoding.
-      var self = this;
-      recorder = new WebAudioRecorder(micInputGain, function(data) {
+      const self = this;
+      recorder = new WebAudioRecorder(micInputGain, data => {
         self.streamCallback(data);
       }, new WavePacker());
     } else {
@@ -633,7 +633,7 @@ class AudioRecorder {
    */
   startRecordingSession(id) {
     // Generate a uuid to remember this recording by (locally).
-    var uuid = (id === undefined ? guid.create() : id);
+    const uuid = id === undefined ? guid.create() : id;
     this.activeRecordingId = uuid;
     return uuid;
   }
@@ -695,9 +695,9 @@ class AudioRecorder {
    */
   recorded(id, blob, forced) {
     return {
-      id: id,
-      blob: blob,
-      forced: forced
+      id,
+      blob,
+      forced
     };
   }
 
@@ -716,8 +716,8 @@ class AudioRecorder {
 
     console.log('Stopped recording for id: ' + this.activeRecordingId);
 
-    var self = this;
-    this.recorder.getEncodedAudio(function(blob) {
+    const self = this;
+    this.recorder.getEncodedAudio(blob => {
       console.log('Received encoded audio of type: ' + blob.type);
       // Allow direct playback from local blob.
       self.fireEvent('recorded', [self.activeRecordingId, blob, Boolean(forced)]);
@@ -760,6 +760,6 @@ class AudioRecorder {
 
 
 module.exports = {
-  AudioPlayer: AudioPlayer,
-  AudioRecorder: AudioRecorder
+  AudioPlayer,
+  AudioRecorder
 };

@@ -56,7 +56,7 @@ class SpeechChallenge {
     if (!this.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    var fd = new FormData();
+    const fd = new FormData();
     if (typeof this.id !== 'undefined' &&
       this.id !== null) {
       fd.append('id', this.id);
@@ -65,7 +65,7 @@ class SpeechChallenge {
     if (this.referenceAudio) {
       fd.append('referenceAudio', this.referenceAudio);
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       this.organisationId + '/challenges/speech';
 
     return connection._secureAjaxPost(url, fd)
@@ -89,12 +89,12 @@ class SpeechChallenge {
    * @rejects If no result could not be found.
    */
   static getSpeechChallenge(connection, organisationId, challengeId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech/' + challengeId;
 
     return connection._secureAjaxGet(url)
       .then(data => {
-        var challenge = new SpeechChallenge(organisationId, data.id, data.topic);
+        const challenge = new SpeechChallenge(organisationId, data.id, data.topic);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         return challenge;
@@ -110,14 +110,14 @@ class SpeechChallenge {
    * @rejects If no result could not be found.
    */
   static listSpeechChallenges(connection, organisationId) {
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech';
 
     return connection._secureAjaxGet(url)
       .then(data => {
-        var challenges = [];
-        data.forEach(function(datum) {
-          var challenge = new SpeechChallenge(organisationId, datum.id,
+        const challenges = [];
+        data.forEach(datum => {
+          const challenge = new SpeechChallenge(organisationId, datum.id,
             datum.topic);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
@@ -129,5 +129,5 @@ class SpeechChallenge {
 }
 
 module.exports = {
-  SpeechChallenge: SpeechChallenge
+  SpeechChallenge
 };

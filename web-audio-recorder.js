@@ -16,7 +16,7 @@ module.exports = class WebAudioRecorder {
   constructor(source, streamingCallback, packer) {
     this.recording = false;
 
-    var context = source.context;
+    const context = source.context;
     // For the best quality, use the samplerate in which audio is recorded.
     this.recordedSampleRate = context.sampleRate;
     // var sampleRate = recordedSampleRate;
@@ -24,8 +24,8 @@ module.exports = class WebAudioRecorder {
     // Sheffield determined the minimum to be 16000hz, so /4 is too low.
     this.sampleRate = this.recordedSampleRate / 2;
     // Streaming doesn't yet downsample: #1302.
-    this.sampleRate = (streamingCallback ? this.recordedSampleRate :
-                        this.sampleRate);
+    this.sampleRate = streamingCallback ? this.recordedSampleRate :
+                        this.sampleRate;
 
     // Always record audio in mono.
     this.channels = 1;
@@ -41,26 +41,26 @@ module.exports = class WebAudioRecorder {
     // (better) latency. Higher values will be necessary to avoid audio
     // breakup and glitches.
     // Legal values are (256, 512, 1024, 2048, 4096, 8192, 16384).
-    var bufferSize = 8192;
-    var recorder = context.createScriptProcessor(bufferSize, 2, 2);
+    const bufferSize = 8192;
+    const recorder = context.createScriptProcessor(bufferSize, 2, 2);
     // Keep a reference to the scriptProcessor.
     // This is a workaround for a bug in Chrome that would otherwise lead to
     // the recorder being garbage collected before it even recorded anything.
     // https://bugs.webkit.org/show_bug.cgi?id=112521
     this.recorder = recorder;
 
-    var self = this;
+    const self = this;
     recorder.onaudioprocess = function(e) {
       if (!self.recording) {
         return;
       }
-      var left = e.inputBuffer.getChannelData(0);
-      var right = e.inputBuffer.getChannelData(1);
+      const left = e.inputBuffer.getChannelData(0);
+      const right = e.inputBuffer.getChannelData(1);
       // These returned channel buffers are pointers to the current samples
       // coming in. Make a snapshot (clone). The webworkers can't serialize
       // the pointers. Well, Chrome and FF could, but Edge can't.
-      var leftClone = new Float32Array(left);
-      var rightClone = new Float32Array(right);
+      const leftClone = new Float32Array(left);
+      const rightClone = new Float32Array(right);
       self.packer.record(leftClone, rightClone);
       if (streamingCallback) {
         self.packer.recordStreaming(leftClone, rightClone, streamingCallback);

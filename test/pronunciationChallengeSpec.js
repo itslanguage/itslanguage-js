@@ -2,34 +2,34 @@ require('jasmine-ajax');
 const PronunciationChallenge = require('../administrative-sdk/pronunciationChallenge').PronunciationChallenge;
 const Connection = require('../administrative-sdk/connection').Connection;
 
-describe('PronunciationChallenge object test', function() {
-  it('should require all required fields in constructor', function() {
-    expect(function() {
+describe('PronunciationChallenge object test', () => {
+  it('should require all required fields in constructor', () => {
+    expect(() => {
       new PronunciationChallenge(4);
     }).toThrowError(
       'organisationId parameter of type "string|null" is required');
 
-    expect(function() {
+    expect(() => {
       new PronunciationChallenge(null, 4);
     }).toThrowError('id parameter of type "string|null" is required');
 
-    expect(function() {
+    expect(() => {
       new PronunciationChallenge('fb', null, 'hi', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
   it('should instantiate a PronunciationChallenge ' +
-    'without referenceAudio', function() {
-    var s = new PronunciationChallenge('fb', 'test', 'hi');
+    'without referenceAudio', () => {
+    const s = new PronunciationChallenge('fb', 'test', 'hi');
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
     expect(s.transcription).toBe('hi');
     expect(s.referenceAudio).toBeUndefined();
   });
-  it('should instantiate a PronunciationChallenge', function() {
-    var blob = new Blob(['1234567890']);
+  it('should instantiate a PronunciationChallenge', () => {
+    const blob = new Blob(['1234567890']);
 
-    var s = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    const s = new PronunciationChallenge('fb', 'test', 'hi', blob);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -38,8 +38,8 @@ describe('PronunciationChallenge object test', function() {
   });
 });
 
-describe('PronunciationChallenge API interaction test', function() {
-  beforeEach(function() {
+describe('PronunciationChallenge API interaction test', () => {
+  beforeEach(() => {
     jasmine.Ajax.install();
 
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
@@ -48,68 +48,68 @@ describe('PronunciationChallenge API interaction test', function() {
     spyOn(FormData.prototype, 'append');
   });
 
-  afterEach(function() {
+  afterEach(() => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should check for required referenceAudio field', function(done) {
+  it('should check for required referenceAudio field', done => {
     // Because referenceAudio is not available when fetching existing
     // PronunciationChallenges from the server, the domain model doesn't
     // require the field, but the createPronunciationChallenge() should.
-    var api = new Connection({
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var challenge = new PronunciationChallenge('fb', '1', 'test');
+    const challenge = new PronunciationChallenge('fb', '1', 'test');
 
     challenge.createPronunciationChallenge(api)
-      .then(function() {
+      .then(() => {
         fail('An error should be thrown');
       })
-      .catch(function(error) {
+      .catch(error => {
         expect(error.message).toEqual('referenceAudio parameter of type "Blob" is required');
       })
       .then(done);
   });
 
-  it('should check for required referenceAudio field', function(done) {
-    var api = new Connection({
+  it('should check for required referenceAudio field', done => {
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var challenge = new PronunciationChallenge('fb', '1', 'test', null);
+    const challenge = new PronunciationChallenge('fb', '1', 'test', null);
 
     challenge.createPronunciationChallenge(api)
-      .then(function() {
+      .then(() => {
         fail('An error should be thrown');
       })
-      .catch(function(error) {
+      .catch(error => {
         expect(error.message).toEqual('referenceAudio parameter of type "Blob" is required');
       })
       .then(done);
   });
 
-  it('should create a new pronunciation challenge through API', function(done) {
-    var blob = new Blob(['1234567890']);
-    var challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+  it('should create a new pronunciation challenge through API', done => {
+    const blob = new Blob(['1234567890']);
+    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
 
-    var api = new Connection({
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation';
-    var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
-    var content = {
+    const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'test',
-      referenceAudioUrl: referenceAudioUrl,
+      referenceAudioUrl,
       status: 'preparing'
     };
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 202,
       header: {
         'Content-type': 'application/json'
@@ -117,8 +117,8 @@ describe('PronunciationChallenge API interaction test', function() {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     challenge.createPronunciationChallenge(api)
-      .then(function(result) {
-        var request = window.fetch.calls.mostRecent().args;
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
@@ -127,8 +127,8 @@ describe('PronunciationChallenge API interaction test', function() {
         expect(FormData.prototype.append).toHaveBeenCalledWith(
           'transcription', 'test');
         expect(FormData.prototype.append.calls.count()).toEqual(3);
-        var stringDate = '2014-12-31T23:59:59Z';
-        var outChallenge = new PronunciationChallenge('fb', '1', 'test', blob);
+        const stringDate = '2014-12-31T23:59:59Z';
+        const outChallenge = new PronunciationChallenge('fb', '1', 'test', blob);
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         outChallenge.referenceAudio = challenge.referenceAudio;
@@ -136,23 +136,23 @@ describe('PronunciationChallenge API interaction test', function() {
         outChallenge.status = 'preparing';
         expect(result).toEqual(outChallenge);
       })
-      .catch(function(error) {
+      .catch(error => {
         fail('No error should be thrown: ' + error);
       })
       .then(done);
   });
 
-  it('should handle errors while creating a new challenge', function(done) {
-    var blob = new Blob(['1234567890']);
-    var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+  it('should handle errors while creating a new challenge', done => {
+    const blob = new Blob(['1234567890']);
+    const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
 
-    var api = new Connection({
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation';
-    var content = {
+    const content = {
       message: 'Validation failed',
       errors: [
         {
@@ -162,7 +162,7 @@ describe('PronunciationChallenge API interaction test', function() {
         }
       ]
     };
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
       header: {
         'Content-type': 'application/json'
@@ -171,11 +171,11 @@ describe('PronunciationChallenge API interaction test', function() {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     challenge.createPronunciationChallenge(api)
-      .then(function() {
+      .then(() => {
         fail('An error should be thrown!');
       })
-      .catch(function(error) {
-        var request = window.fetch.calls.mostRecent().args;
+      .catch(error => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', 'test');
@@ -184,7 +184,7 @@ describe('PronunciationChallenge API interaction test', function() {
         expect(FormData.prototype.append).toHaveBeenCalledWith(
           'referenceAudio', blob);
         expect(FormData.prototype.append.calls.count()).toEqual(3);
-        var errors = [{
+        const errors = [{
           resource: 'PronunciationChallenge',
           field: 'transcription',
           code: 'missing'
@@ -194,24 +194,24 @@ describe('PronunciationChallenge API interaction test', function() {
       .then(done);
   });
 
-  it('should get an existing pronunciation challenge', function(done) {
-    var api = new Connection({
+  it('should get an existing pronunciation challenge', done => {
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation/4';
-    var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
-    var content = {
+    const content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'Hi',
-      referenceAudioUrl: referenceAudioUrl,
+      referenceAudioUrl,
       status: 'prepared'
     };
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
       header: {
         'Content-type': 'application/json'
@@ -220,42 +220,42 @@ describe('PronunciationChallenge API interaction test', function() {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     PronunciationChallenge.getPronunciationChallenge(api, 'fb', '4')
-      .then(function(result) {
-        var request = window.fetch.calls.mostRecent().args;
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
-        var stringDate = '2014-12-31T23:59:59Z';
-        var challenge = new PronunciationChallenge('fb', '4', 'Hi');
+        const stringDate = '2014-12-31T23:59:59Z';
+        const challenge = new PronunciationChallenge('fb', '4', 'Hi');
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         challenge.referenceAudioUrl = referenceAudioUrl;
         challenge.status = 'prepared';
         expect(result).toEqual(challenge);
       })
-      .catch(function(error) {
+      .catch(error => {
         fail('No error should be thrown: ' + error);
       })
       .then(done);
   });
 
-  it('should get a list of existing challenges', function(done) {
-    var api = new Connection({
+  it('should get a list of existing challenges', done => {
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation';
-    var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
-    var content = [{
+    const content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'Hi',
-      referenceAudioUrl: referenceAudioUrl,
+      referenceAudioUrl,
       status: 'prepared'
     }];
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
       header: {
         'Content-type': 'application/json'
@@ -264,12 +264,12 @@ describe('PronunciationChallenge API interaction test', function() {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     PronunciationChallenge.listPronunciationChallenges(api, 'fb')
-      .then(function(result) {
-        var request = window.fetch.calls.mostRecent().args;
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
-        var stringDate = '2014-12-31T23:59:59Z';
-        var challenge = new PronunciationChallenge('fb', '4', 'Hi');
+        const stringDate = '2014-12-31T23:59:59Z';
+        const challenge = new PronunciationChallenge('fb', '4', 'Hi');
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         challenge.referenceAudioUrl = referenceAudioUrl;
@@ -277,28 +277,28 @@ describe('PronunciationChallenge API interaction test', function() {
         expect(result[0]).toEqual(challenge);
         expect(result.length).toBe(1);
       })
-      .catch(function(error) {
+      .catch(error => {
         fail('No error should be thrown: ' + error);
       })
       .then(done);
   });
 
-  it('should delete a an existing challenge', function(done) {
-    var api = new Connection({
+  it('should delete a an existing challenge', done => {
+    const api = new Connection({
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    var blob = new Blob(['1234567890']);
-    var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    var url = 'https://api.itslanguage.nl/organisations/fb' +
+    const blob = new Blob(['1234567890']);
+    const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation/test';
 
-    var content =
+    const content =
       {
         status: 204,
         contentType: 'application/json'
       };
-    var fakeResponse = new Response(JSON.stringify(content), {
+    const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
       header: {
         'Content-type': 'application/json'
@@ -307,28 +307,28 @@ describe('PronunciationChallenge API interaction test', function() {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     challenge.deletePronunciationChallenge(api)
-      .then(function(result) {
-        var request = window.fetch.calls.mostRecent().args;
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('DELETE');
         expect(result).toEqual(challenge);
       })
-      .catch(function(error) {
+      .catch(error => {
         fail('No error should be thrown: ' + error);
       })
       .then(done);
   });
 });
 
-it('should not delete a non existing challenge', function(done) {
-  var api = new Connection({
+it('should not delete a non existing challenge', done => {
+  const api = new Connection({
     authPrincipal: 'principal',
     authPassword: 'secret'
   });
 
-  var blob = new Blob(['1234567890']);
-  var challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
-  var content = {
+  const blob = new Blob(['1234567890']);
+  const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+  const content = {
     message: 'Validation failed',
     errors: [
       {
@@ -338,7 +338,7 @@ it('should not delete a non existing challenge', function(done) {
       }
     ]
   };
-  var fakeResponse = new Response(JSON.stringify(content), {
+  const fakeResponse = new Response(JSON.stringify(content), {
     status: 422,
     header: {
       'Content-type': 'application/json'
@@ -347,11 +347,11 @@ it('should not delete a non existing challenge', function(done) {
   spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
   challenge.deletePronunciationChallenge(api)
-      .then(function() {
+      .then(() => {
         fail('An error should be a thrown');
       })
-      .catch(function(error) {
-        var errors = [{
+      .catch(error => {
+        const errors = [{
           resource: 'PronunciationChallenge',
           field: 'id',
           code: 'missing'

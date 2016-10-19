@@ -46,12 +46,12 @@ class ChoiceRecognition {
       [connection._recognitionId, challenge.organisationId, challenge.id])
       .then(
         // RPC success callback
-        function(recognitionId) {
+        recognitionId => {
           console.log('Challenge initialised for recognitionId: ' + connection._recognitionId);
           return recognitionId;
         },
         // RPC error callback
-        function(res) {
+        res => {
           console.error('RPC error returned:', res.error);
         }
       );
@@ -65,18 +65,18 @@ class ChoiceRecognition {
     // Indicate to the socket server that we're about to start recording a
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
-    var specs = recorder.getAudioSpecs();
+    const specs = recorder.getAudioSpecs();
     connection._session.call('nl.itslanguage.choice.init_audio',
       [connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
-      function(recognitionId) {
+      recognitionId => {
         console.log('Accepted audio parameters for recognitionId after init_audio: ' + connection._recognitionId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recognitionId;
       },
       // RPC error callback
-      function(res) {
+      res => {
         console.error('RPC error returned:', res.error);
       }
     );
@@ -124,15 +124,15 @@ class ChoiceRecognition {
         ' still in progress.'));
     }
 
-    var self = this;
-    var trimAudioStart = 0.15;
-    var trimAudioEnd = 0.0;
+    const self = this;
+    let trimAudioStart = 0.15;
+    const trimAudioEnd = 0.0;
     if (trim === false) {
       trimAudioStart = 0.0;
     }
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       function _cb(data) {
-        var recognition = new ChoiceRecognition(
+        const recognition = new ChoiceRecognition(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           connection.addAccessToken(data.audioUrl), data.recognised);
@@ -141,13 +141,13 @@ class ChoiceRecognition {
 
       function _ecb(data) {
         // There was an unexpected error.
-        var analysis = new PronunciationAnalysis(
+        const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           connection.addAccessToken(data.audioUrl));
         reject(
           {
-            analysis: analysis,
+            analysis,
             message: data.message
           }
         );
@@ -158,18 +158,18 @@ class ChoiceRecognition {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function dataavailableCb(chunk) {
-        var encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
           connection._recognitionId);
         connection._session.call('nl.itslanguage.choice.write',
           [connection._recognitionId, encoded, 'base64']).then(
           // RPC success callback
-          function(res) {
+          res => {
             console.debug('Delivered audio successfully');
             return res;
           },
           // RPC error callback
-          function(res) {
+          res => {
             console.error('RPC error returned:', res.error);
             _ecb(res);
           }
@@ -186,23 +186,22 @@ class ChoiceRecognition {
           trimEnd: trimAudioEnd
         })
         .then(recognitionInitCb)
-        .then(function() {
+        .then(() => {
           self.choiceRecognitionInitChallenge(connection, challenge)
-            .then(function() {
-              var p = new Promise(function(resolve) {
+            .then(() => {
+              const p = new Promise(resolve_ => {
                 if (recorder.hasUserMediaApproval()) {
-                  resolve();
+                  resolve_();
                 } else {
-                  recorder.addEventListener('ready', resolve);
+                  recorder.addEventListener('ready', resolve_);
                 }
               });
-              p.then(function() {
-                recorder.removeEventListener('ready', resolve);
+              p.then(() => {
                 self.choiceRecognitionInitAudio(connection, recorder, dataavailableCb);
               });
             });
         })
-        .catch(function(res) {
+        .catch(res => {
           console.error('RPC error returned:', res.error);
         });
 
@@ -212,12 +211,12 @@ class ChoiceRecognition {
         connection._session.call('nl.itslanguage.choice.recognise',
           [connection._recognitionId]).then(
           // RPC success callback
-          function(res) {
+          res => {
             // Wait for analysis results to come back.
             _cb(res);
           },
           // RPC error callback
-          function(res) {
+          res => {
             console.error('RPC error returned:', res.error);
             if (res.error === 'nl.itslanguage.recognition_failed') {
               res.kwargs.recognition.message = 'Recognition failed';
@@ -253,14 +252,14 @@ class ChoiceRecognition {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions/' + recognitionId;
 
     return connection._secureAjaxGet(url)
       .then(datum => {
-        var student = new Student(challenge.organisationId, datum.studentId);
-        var recognition = new ChoiceRecognition(challenge, student,
+        const student = new Student(challenge.organisationId, datum.studentId);
+        const recognition = new ChoiceRecognition(challenge, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl);
         // Alignment may not be successful, in which case the recognition
@@ -288,15 +287,15 @@ class ChoiceRecognition {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    var url = connection.settings.apiUrl + '/organisations/' +
+    const url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions';
     return connection._secureAjaxGet(url)
       .then(data => {
-        var recognitions = [];
-        data.forEach(function(datum) {
-          var student = new Student(challenge.organisationId, datum.studentId);
-          var recognition = new ChoiceRecognition(challenge, student,
+        const recognitions = [];
+        data.forEach(datum => {
+          const student = new Student(challenge.organisationId, datum.studentId);
+          const recognition = new ChoiceRecognition(challenge, student,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl);
           // Recognition may not be successful, in which case the recognition
@@ -313,5 +312,5 @@ class ChoiceRecognition {
 }
 
 module.exports = {
-  ChoiceRecognition: ChoiceRecognition
+  ChoiceRecognition
 };

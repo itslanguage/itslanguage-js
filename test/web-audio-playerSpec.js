@@ -1,8 +1,8 @@
 const WebAudioPlayer = require('../web-audio-player');
 
 describe('WebAudioPlayer', () => {
-  var audioMock;
-  var webAudioPlayer;
+  let audioMock;
+  let webAudioPlayer;
 
   beforeEach(() => {
     audioMock = {
@@ -25,13 +25,13 @@ describe('WebAudioPlayer', () => {
     });
 
     it('should construct and call the appropiate event listeners', () => {
-      var errorCodes = [0, 1, 2, 3, 4];
+      const errorCodes = [0, 1, 2, 3, 4];
       audioMock.addEventListener = (name, handler) => {
         if (name === 'pause') {
           audioMock.pausedHandler = handler;
         }
         if (name === 'error') {
-          var parameter =
+          const parameter =
             {
               target: {
                 error: {
@@ -51,7 +51,7 @@ describe('WebAudioPlayer', () => {
           handler();
         }
       };
-      var options = jasmine.createSpyObj('options', [
+      const options = jasmine.createSpyObj('options', [
         'playingCb',
         'timeupdateCb',
         'durationchangeCb',
@@ -91,7 +91,7 @@ describe('WebAudioPlayer', () => {
           audioMock.pausedHandler = handler;
         }
         if (name === 'error') {
-          var parameter =
+          const parameter =
             {
               target: {
                 error: {
@@ -141,7 +141,7 @@ describe('WebAudioPlayer', () => {
     });
 
     it('should preload audio from an url', () => {
-      var cb = jasmine.createSpy('callback');
+      const cb = jasmine.createSpy('callback');
       webAudioPlayer.load('url', true, cb);
       expect(audioMock.preload).toEqual('auto');
       expect(audioMock.autobuffer).toEqual(true);
@@ -151,7 +151,7 @@ describe('WebAudioPlayer', () => {
     });
 
     it('should not preload audio from an url', () => {
-      var cb = jasmine.createSpy('callback');
+      const cb = jasmine.createSpy('callback');
       webAudioPlayer.load('url', false, cb);
       expect(audioMock.preload).toEqual('none');
       expect(audioMock.autobuffer).toEqual(false);
@@ -202,7 +202,7 @@ describe('WebAudioPlayer', () => {
 
     it('should play and preload audio from a position', () => {
       audioMock.readyState = 1;
-      var startTime = 2;
+      const startTime = 2;
       webAudioPlayer.play(startTime);
       expect(audioMock.play).toHaveBeenCalledTimes(1);
       expect(audioMock.currentTime).toEqual(startTime);
@@ -277,9 +277,9 @@ describe('WebAudioPlayer', () => {
   });
 
   it('should scrub audio', () => {
-    var duration = 100;
-    var percentage = 10;
-    var expectedNewTime = 10;
+    let duration = 100;
+    let percentage = 10;
+    let expectedNewTime = 10;
 
     audioMock.readyState = 1;
     audioMock.HAVE_METADATA = 1;
@@ -331,7 +331,7 @@ describe('WebAudioPlayer', () => {
 
   it('should getBufferFill of an empty buffer', () => {
     webAudioPlayer = new WebAudioPlayer();
-    var result = webAudioPlayer.getBufferFill();
+    let result = webAudioPlayer.getBufferFill();
     expect(result).toEqual(0);
 
     audioMock.buffered = [];
@@ -341,7 +341,7 @@ describe('WebAudioPlayer', () => {
   });
 
   it('should getBufferFill', () => {
-    var result;
+    let result;
     audioMock.buffered = [1];
     audioMock.buffered.start = jasmine.createSpy().and.returnValue(0);
     audioMock.buffered.end = jasmine.createSpy().and.returnValue(20);
@@ -379,27 +379,27 @@ describe('WebAudioPlayer', () => {
   it('should get currentTime', () => {
     audioMock.currentTime = 10;
     webAudioPlayer = new WebAudioPlayer();
-    var result = webAudioPlayer.getCurrentTime();
+    const result = webAudioPlayer.getCurrentTime();
     expect(result).toEqual(10);
   });
 
   it('should get duration when it does not exist', () => {
     webAudioPlayer = new WebAudioPlayer();
-    var result = webAudioPlayer.getDuration();
+    const result = webAudioPlayer.getDuration();
     expect(result).toEqual(0);
   });
 
   it('should get duration', () => {
     audioMock.duration = 10;
     webAudioPlayer = new WebAudioPlayer();
-    var result = webAudioPlayer.getDuration();
+    const result = webAudioPlayer.getDuration();
     expect(result).toEqual(10);
   });
 
   it('should get playing state', () => {
     audioMock.paused = true;
     webAudioPlayer = new WebAudioPlayer();
-    var result = webAudioPlayer.isPlaying();
+    let result = webAudioPlayer.isPlaying();
     expect(result).toBeFalsy();
 
     audioMock.paused = false;
@@ -414,7 +414,7 @@ describe('WebAudioPlayer', () => {
     audioMock.src = 'source';
     audioMock.error = false;
     webAudioPlayer = new WebAudioPlayer();
-    var result = webAudioPlayer.canPlay();
+    let result = webAudioPlayer.canPlay();
     expect(result).toBeTruthy();
 
     audioMock.readyState = 0;
