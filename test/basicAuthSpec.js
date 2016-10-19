@@ -14,8 +14,9 @@
  FormData
  */
 require('jasmine-ajax');
-const Connection = require('../administrative-sdk/connection').Connection;
-const BasicAuth = require('../administrative-sdk/basicAuth').BasicAuth;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
+const BasicAuth = require('../administrative-sdk/models/basicAuth').BasicAuth;
+const BasicAuthController = require('../administrative-sdk/controllers/basicAuthController').BasicAuthController;
 
 describe('BasicAuth object test', () => {
   it('should require all required fields in constructor', () => {
@@ -73,6 +74,7 @@ describe('BasicAuth API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new BasicAuthController(api);
     const url = 'https://api.itslanguage.nl/basicauths';
     const content = {
       tenantId: '4',
@@ -87,7 +89,7 @@ describe('BasicAuth API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    basicauth.createBasicAuth(api)
+    controller.createBasicAuth(basicauth)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         const expected = {tenantId: '4', principal: 'principal'};
@@ -110,6 +112,7 @@ describe('BasicAuth API interaction test', () => {
       authPassword: 'secret'
     });
     const basicauth = new BasicAuth('4', 'principal');
+    const controller = new BasicAuthController(api);
     const content = {
       message: 'Validation failed',
       errors: [{
@@ -127,7 +130,7 @@ describe('BasicAuth API interaction test', () => {
 
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    basicauth.createBasicAuth(api)
+    controller.createBasicAuth(basicauth)
       .then(() => {
         fail('No result should be returned');
       })

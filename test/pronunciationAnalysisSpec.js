@@ -1,12 +1,14 @@
 require('jasmine-ajax');
 const when = require('when');
-const PronunciationAnalysis = require('../administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;
-const PronunciationChallenge = require('../administrative-sdk/pronunciationChallenge').PronunciationChallenge;
-const Student = require('../administrative-sdk/student').Student;
-const Connection = require('../administrative-sdk/connection').Connection;
-const WordChunk = require('../administrative-sdk/pronunciationAnalysis').WordChunk;
-const Word = require('../administrative-sdk/pronunciationAnalysis').Word;
-const Phoneme = require('../administrative-sdk/pronunciationAnalysis').Phoneme;
+const PronunciationAnalysis = require('../administrative-sdk/models/pronunciationAnalysis').PronunciationAnalysis;
+const PronunciationAnalysisController = require('../administrative-sdk/controllers/pronunciationAnalysisController')
+  .PronunciationAnalysisController;
+const PronunciationChallenge = require('../administrative-sdk/models/pronunciationChallenge').PronunciationChallenge;
+const Student = require('../administrative-sdk/models/student').Student;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
+const WordChunk = require('../administrative-sdk/models/pronunciationAnalysis').WordChunk;
+const Word = require('../administrative-sdk/models/pronunciationAnalysis').Word;
+const Phoneme = require('../administrative-sdk/models/pronunciationAnalysis').Phoneme;
 
 describe('Pronunciation Analyisis Websocket API interaction test', () => {
   beforeEach(() => {
@@ -22,7 +24,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-
+    const controller = new PronunciationAnalysisController(api);
     // Mock the audio recorder
     function RecorderMock() {
       this.getAudioSpecs = function() {
@@ -38,12 +40,11 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     }
 
     const challenge = new PronunciationChallenge('fb', '4', 'foo');
-    const analysis = new PronunciationAnalysis();
     const recorder = new RecorderMock();
     const old = window.WebSocket;
     window.WebSocket = jasmine.createSpy('WebSocket');
 
-    analysis.startStreamingPronunciationAnalysis(api, challenge, recorder)
+    controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(result => {
         fail('An error should be thrown. Got ' + result);
       })
@@ -96,7 +97,6 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     }
 
     const challenge = new PronunciationChallenge('fb', '4', 'foo');
-    const analysis = new PronunciationAnalysis();
     const recorder = new RecorderMock();
     const stringDate = '2014-12-31T23:59:59Z';
     const fakeResponse = {
@@ -122,10 +122,11 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
 
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-    spyOn(PronunciationAnalysis, '_wordsToModels');
+    const controller = new PronunciationAnalysisController(api);
+    spyOn(PronunciationAnalysisController, '_wordsToModels');
 
-    analysis.startStreamingPronunciationAnalysis(
-      api, challenge, recorder)
+    controller.startStreamingPronunciationAnalysis(
+      challenge, recorder)
       .then(() => {
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
@@ -177,7 +178,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    PronunciationAnalysis.getPronunciationAnalysis(api, challenge, '5')
+    PronunciationAnalysisController.getPronunciationAnalysis(api, challenge, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -247,7 +248,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation/4/analyses';
-    PronunciationAnalysis.listPronunciationAnalyses(api, challenge, false)
+    PronunciationAnalysisController.listPronunciationAnalyses(api, challenge, false)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -362,7 +363,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    PronunciationAnalysis.listPronunciationAnalyses(api, challenge, true)
+    PronunciationAnalysisController.listPronunciationAnalyses(api, challenge, true)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

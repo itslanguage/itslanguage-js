@@ -1,6 +1,8 @@
 require('jasmine-ajax');
-const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
-const Connection = require('../administrative-sdk/connection').Connection;
+const SpeechChallenge = require('../administrative-sdk/models/speechChallenge').SpeechChallenge;
+const SpeechChallengeController = require('../administrative-sdk/controllers/speechChallengeController')
+  .SpeechChallengeController;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
 
 describe('SpeechChallenge object test', () => {
   it('should require all required fields in constructor', () => {
@@ -57,6 +59,7 @@ describe('SpeechChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new SpeechChallengeController(api);
     const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
     const content = {
       id: '1',
@@ -72,7 +75,7 @@ describe('SpeechChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    challenge.createSpeechChallenge(api)
+    controller.createSpeechChallenge(challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -99,7 +102,7 @@ describe('SpeechChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-
+    const controller = new SpeechChallengeController(api);
     const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
     const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
@@ -117,7 +120,7 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    challenge.createSpeechChallenge(api)
+    controller.createSpeechChallenge(challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -146,6 +149,7 @@ describe('SpeechChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new SpeechChallengeController(api);
     const challenge = new SpeechChallenge('fb', '1', 'Hi');
     const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
     const content = {
@@ -165,7 +169,7 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    challenge.createSpeechChallenge(api)
+    controller.createSpeechChallenge(challenge)
       .then(() => {
         fail('An error should be thrown!');
       })
@@ -207,7 +211,7 @@ describe('SpeechChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    SpeechChallenge.getSpeechChallenge(api, 'fb', '4')
+    SpeechChallengeController.getSpeechChallenge(api, 'fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -244,7 +248,7 @@ describe('SpeechChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    SpeechChallenge.listSpeechChallenges(api, 'fb')
+    SpeechChallengeController.listSpeechChallenges(api, 'fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

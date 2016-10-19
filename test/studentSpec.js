@@ -1,6 +1,7 @@
 require('jasmine-ajax');
-const Student = require('../administrative-sdk/student').Student;
-const Connection = require('../administrative-sdk/connection').Connection;
+const Student = require('../administrative-sdk/models/student').Student;
+const StudentController = require('../administrative-sdk/controllers/studentController').StudentController;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
 
 describe('Student object test', () => {
   it('should instantiate a Student without id', () => {
@@ -41,6 +42,7 @@ describe('Student API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new StudentController(api);
     const url = 'https://api.itslanguage.nl/organisations/fb/students';
     const content = {
       id: '1',
@@ -55,7 +57,7 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    student.createStudent(api)
+    controller.createStudent(student)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -84,6 +86,7 @@ describe('Student API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new StudentController(api);
     const student = new Student('fb', '1', 'Mark');
     const url = 'https://api.itslanguage.nl/organisations/fb/students';
     const content = {
@@ -103,7 +106,7 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    student.createStudent(api)
+    controller.createStudent(student)
       .then(() => {
         fail('An error should be thrown!');
       })
@@ -146,7 +149,7 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    Student.getStudent(api, 'fb', '4')
+    StudentController.getStudent(api, 'fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -182,7 +185,7 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    Student.listStudents(api, 'fb')
+    StudentController.listStudents(api, 'fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
