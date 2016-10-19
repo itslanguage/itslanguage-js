@@ -54,7 +54,7 @@ class Connection {
 
       const evs = self.events[name];
       evs.forEach(ev => {
-        Reflect.apply(ev, null, args);
+        ev(...args);
       });
     };
   }
@@ -113,9 +113,9 @@ class Connection {
       console.log('WebSocket connection opened');
       self._session = session;
       const _call = self._session.call;
-      self._session.call = function(url) {
+      self._session.call = function(url, ...args) {
         console.debug('Calling RPC: ' + url);
-        return Reflect.apply(_call, this, url);
+        return _call.call(this, url, ...args);
       };
       self.fireEvent('websocketOpened');
     };
