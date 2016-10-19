@@ -1,6 +1,8 @@
 require('jasmine-ajax');
-const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
-const Connection = require('../administrative-sdk/connection').Connection;
+const SpeechChallenge = require('../administrative-sdk/models/speechChallenge').SpeechChallenge;
+const SpeechChallengeController = require('../administrative-sdk/controllers/speechChallengeController')
+  .SpeechChallengeController;
+const Connection = require('../administrative-sdk/controllers/connectionController').Connection;
 
 describe('SpeechChallenge object test', () => {
   it('should require all required fields in constructor', () => {
@@ -57,8 +59,9 @@ describe('SpeechChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
-    const content = {
+    var controller = new SpeechChallengeController(api);
+    var url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
+    var content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
@@ -72,9 +75,9 @@ describe('SpeechChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    challenge.createSpeechChallenge(api)
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    controller.createSpeechChallenge(challenge)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
@@ -99,9 +102,9 @@ describe('SpeechChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
-    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+    var controller = new SpeechChallengeController(api);
+    var url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
+    var referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
     const content = {
       id: '1',
@@ -117,9 +120,9 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    challenge.createSpeechChallenge(api)
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    controller.createSpeechChallenge(challenge)
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
@@ -146,9 +149,10 @@ describe('SpeechChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const challenge = new SpeechChallenge('fb', '1', 'Hi');
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
-    const content = {
+    var controller = new SpeechChallengeController(api);
+    var challenge = new SpeechChallenge('fb', '1', 'Hi');
+    var url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
+    var content = {
       message: 'Validation failed',
       errors: [
         {
@@ -165,8 +169,8 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    challenge.createSpeechChallenge(api)
-      .then(() => {
+    controller.createSpeechChallenge(challenge)
+      .then(function() {
         fail('An error should be thrown!');
       })
       .catch(error => {
@@ -207,9 +211,9 @@ describe('SpeechChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    SpeechChallenge.getSpeechChallenge(api, 'fb', '4')
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    SpeechChallengeController.getSpeechChallenge(api, 'fb', '4')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
@@ -244,9 +248,9 @@ describe('SpeechChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    SpeechChallenge.listSpeechChallenges(api, 'fb')
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
+    SpeechChallengeController.listSpeechChallenges(api, 'fb')
+      .then(function(result) {
+        var request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
