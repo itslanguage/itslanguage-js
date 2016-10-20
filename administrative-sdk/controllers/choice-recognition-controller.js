@@ -1,6 +1,6 @@
-const ChoiceRecognition = require('../models/choiceRecognition');
+const ChoiceRecognition = require('../models/choice-recognition');
 const Student = require('../models/student');
-const PronunciationAnalysis = require('../models/pronunciationAnalysis');
+const PronunciationAnalysis = require('../models/pronunciation-analysis');
 const Base64Utils = require('../base64Utils');
 
 /**

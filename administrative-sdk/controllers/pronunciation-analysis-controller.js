@@ -2,9 +2,9 @@
  camelcase
  */
 const Base64Utils = require('./../base64Utils');
-const Connection = require('./connectionController');
+const Connection = require('./connection-controller');
 const Phoneme = require('../models/phoneme');
-const PronunciationAnalysis = require('../models/pronunciationAnalysis');
+const PronunciationAnalysis = require('../models/pronunciation-analysis');
 const Student = require('../models/student');
 const Word = require('../models/word');
 const WordChunk = require('../models/word-chunk');

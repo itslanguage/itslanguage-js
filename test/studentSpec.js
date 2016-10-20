@@ -1,7 +1,7 @@
 require('jasmine-ajax');
 const Student = require('../administrative-sdk/models/student');
-const StudentController = require('../administrative-sdk/controllers/studentController');
-const Connection = require('../administrative-sdk/controllers/connectionController');
+const StudentController = require('../administrative-sdk/controllers/student-controller');
+const Connection = require('../administrative-sdk/controllers/connection-controller');
 
 describe('Student object test', () => {
   it('should instantiate a Student without id', () => {

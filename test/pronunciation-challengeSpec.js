@@ -1,7 +1,7 @@
 require('jasmine-ajax');
-const PronunciationChallenge = require('../administrative-sdk/models/pronunciationChallenge');
-const PronunciationChallengeController = require('../administrative-sdk/controllers/pronunciationChallengeController');
-const Connection = require('../administrative-sdk/controllers/connectionController');
+const PronunciationChallenge = require('../administrative-sdk/models/pronunciation-challenge');
+const Controller = require('../administrative-sdk/controllers/pronunciation-challenge-controller');
+const Connection = require('../administrative-sdk/controllers/connection-controller');
 
 describe('PronunciationChallenge object test', () => {
   it('should require all required fields in constructor', () => {
@@ -61,7 +61,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const controller = new PronunciationChallengeController(api);
+    const controller = new Controller(api);
     const challenge = new PronunciationChallenge('fb', '1', 'test');
 
     controller.createPronunciationChallenge(challenge)
@@ -79,7 +79,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const controller = new PronunciationChallengeController(api);
+    const controller = new Controller(api);
     const challenge = new PronunciationChallenge('fb', '1', 'test', null);
 
     controller.createPronunciationChallenge(challenge)
@@ -100,7 +100,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const controller = new PronunciationChallengeController(api);
+    const controller = new Controller(api);
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation';
     const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
@@ -154,7 +154,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const controller = new PronunciationChallengeController(api);
+    const controller = new Controller(api);
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation';
     const content = {
@@ -224,7 +224,7 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    PronunciationChallengeController.getPronunciationChallenge(api, 'fb', '4')
+    Controller.getPronunciationChallenge(api, 'fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -268,7 +268,7 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    PronunciationChallengeController.listPronunciationChallenges(api, 'fb')
+    Controller.listPronunciationChallenges(api, 'fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -293,7 +293,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-    const controller = new PronunciationChallengeController(api);
+    const controller = new Controller(api);
     const blob = new Blob(['1234567890']);
     const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
     const url = 'https://api.itslanguage.nl/organisations/fb' +
@@ -331,7 +331,7 @@ it('should not delete a non existing challenge', done => {
     authPrincipal: 'principal',
     authPassword: 'secret'
   });
-  const controller = new PronunciationChallengeController(api);
+  const controller = new Controller(api);
   const blob = new Blob(['1234567890']);
   const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
   const content = {

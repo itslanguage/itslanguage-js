@@ -1,10 +1,10 @@
 require('jasmine-ajax');
 const when = require('when');
-const PronunciationAnalysis = require('../administrative-sdk/models/pronunciationAnalysis');
-const PronunciationAnalysisController = require('../administrative-sdk/controllers/pronunciationAnalysisController');
-const PronunciationChallenge = require('../administrative-sdk/models/pronunciationChallenge');
+const PronunciationAnalysis = require('../administrative-sdk/models/pronunciation-analysis');
+const PronunciationAnalysisController = require('../administrative-sdk/controllers/pronunciation-analysis-controller');
+const PronunciationChallenge = require('../administrative-sdk/models/pronunciation-challenge');
 const Student = require('../administrative-sdk/models/student');
-const Connection = require('../administrative-sdk/controllers/connectionController');
+const Connection = require('../administrative-sdk/controllers/connection-controller');
 const WordChunk = require('../administrative-sdk/models/word-chunk');
 const Word = require('../administrative-sdk/models/word');
 const Phoneme = require('../administrative-sdk/models/phoneme');
