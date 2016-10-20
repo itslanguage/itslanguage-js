@@ -1,4 +1,4 @@
-const PronunciationChallenge = require('../models/pronunciation-challenge');
+const PronunciationChallenge = require('./pronunciation-challenge');
 
 /**
  * Controller class for the PronunciationChallenge model.

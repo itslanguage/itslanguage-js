@@ -1,7 +1,7 @@
 require('jasmine-ajax');
-const Organisation = require('../administrative-sdk/models/organisation');
-const OrganisationController = require('../administrative-sdk/controllers/organisation-controller');
-const Connection = require('../administrative-sdk/controllers/connection-controller');
+const Organisation = require('../administrative-sdk/organisation/organisation');
+const OrganisationController = require('../administrative-sdk/organisation/organisation-controller');
+const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('Organisation object test', () => {
   it('should instantiate an Organisation without id', () => {

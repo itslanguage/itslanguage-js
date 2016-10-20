@@ -1,11 +1,11 @@
 require('jasmine-ajax');
 const autobahn = require('autobahn');
-const ChoiceRecognition = require('../administrative-sdk/models/choice-recognition');
-const ChoiceRecognitionController = require('../administrative-sdk/controllers/choice-recognition-controller');
-const ChoiceChallenge = require('../administrative-sdk/models/choice-challenge');
-const SpeechChallenge = require('../administrative-sdk/models/speech-challenge');
-const Student = require('../administrative-sdk/models/student');
-const Connection = require('../administrative-sdk/controllers/connection-controller');
+const ChoiceRecognition = require('../administrative-sdk/choice-recognition/choice-recognition');
+const ChoiceRecognitionController = require('../administrative-sdk/choice-recognition/choice-recognition-controller');
+const ChoiceChallenge = require('../administrative-sdk/choice-challenge/choice-challenge');
+const SpeechChallenge = require('../administrative-sdk/speech-challenge/speech-challenge');
+const Student = require('../administrative-sdk/student/student');
+const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('ChoiceRecognition Websocket API interaction test', () => {
   beforeEach(() => {

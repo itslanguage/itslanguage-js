@@ -1,7 +1,7 @@
-const ChoiceRecognition = require('../models/choice-recognition');
-const Student = require('../models/student');
-const PronunciationAnalysis = require('../models/pronunciation-analysis');
-const Base64Utils = require('../base64Utils');
+const ChoiceRecognition = require('./choice-recognition');
+const Student = require('../student/student');
+const PronunciationAnalysis = require('../pronunciation-analysis/pronunciation-analysis');
+const Base64Utils = require('../utils/base64-utils');
 
 /**
  * Controller class for the ChoiceRecognition model.

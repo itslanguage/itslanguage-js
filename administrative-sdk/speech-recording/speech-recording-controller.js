@@ -1,7 +1,7 @@
-const Base64Utils = require('../base64Utils');
-const Connection = require('./connection-controller');
-const SpeechRecording = require('../models/speech-recording');
-const Student = require('../models/student');
+const Base64Utils = require('../utils/base64-utils');
+const Connection = require('./../connection/connection-controller');
+const SpeechRecording = require('./speech-recording');
+const Student = require('../student/student');
 
 /**
  * Controller class for the SpeechRecording model.

@@ -1,4 +1,4 @@
-const ChoiceChallenge = require('../models/choice-challenge');
+const ChoiceChallenge = require('./choice-challenge');
 
 /**
  * Controller class for the ChoiceChallenge model.

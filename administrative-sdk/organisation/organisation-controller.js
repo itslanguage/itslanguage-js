@@ -1,4 +1,4 @@
-const Organisation = require('../models/organisation');
+const Organisation = require('./organisation');
 
 /**
  * Controller class for the Organisation model.

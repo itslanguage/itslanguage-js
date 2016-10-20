@@ -1,4 +1,4 @@
-const Student = require('../models/student');
+const Student = require('./student');
 
 /**
  * Controller class for the Student model.

@@ -1,7 +1,7 @@
 require('jasmine-ajax');
-const PronunciationChallenge = require('../administrative-sdk/models/pronunciation-challenge');
-const Controller = require('../administrative-sdk/controllers/pronunciation-challenge-controller');
-const Connection = require('../administrative-sdk/controllers/connection-controller');
+const PronunciationChallenge = require('../administrative-sdk/pronunciation-challenge/pronunciation-challenge');
+const Controller = require('../administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller');
+const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('PronunciationChallenge object test', () => {
   it('should require all required fields in constructor', () => {

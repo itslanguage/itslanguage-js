@@ -1,13 +1,13 @@
 /* eslint-disable
  camelcase
  */
-const Base64Utils = require('./../base64Utils');
-const Connection = require('./connection-controller');
-const Phoneme = require('../models/phoneme');
-const PronunciationAnalysis = require('../models/pronunciation-analysis');
-const Student = require('../models/student');
-const Word = require('../models/word');
-const WordChunk = require('../models/word-chunk');
+const Base64Utils = require('./../utils/base64-utils');
+const Connection = require('./../connection/connection-controller');
+const Phoneme = require('../phoneme/phoneme');
+const PronunciationAnalysis = require('./pronunciation-analysis');
+const Student = require('../student/student');
+const Word = require('../word/word');
+const WordChunk = require('../word-chunk/word-chunk');
 const when = require('autobahn').when;
 
 /**

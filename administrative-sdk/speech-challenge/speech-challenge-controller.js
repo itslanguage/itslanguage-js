@@ -1,4 +1,4 @@
-const SpeechChallenge = require('../models/speech-challenge');
+const SpeechChallenge = require('./speech-challenge');
 
 /**
  * Controller class for the SpeechChallenge model.
