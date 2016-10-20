@@ -1,4 +1,4 @@
-const Base64Utils = require('../utils/base64-utils');
+const MsgPackUtils = require('../utils/msgpack-utils');
 const Connection = require('./../connection/connection-controller');
 const SpeechRecording = require('./speech-recording');
 const Student = require('../student/student');
@@ -134,11 +134,11 @@ module.exports = class SpeechRecordingController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = MsgPackUtils._arrayBufferToMsgPack(chunk);
         console.log('Sending audio chunk to websocket for recordingId: ' +
           self.connection._recordingId);
         self.connection._session.call('nl.itslanguage.recording.write',
-          [self.connection._recordingId, encoded, 'base64']).then(
+          [self.connection._recordingId, encoded, 'msgpack']).then(
           // RPC success callback
           res => {
             // Wrote data.

@@ -1,7 +1,7 @@
 /* eslint-disable
  camelcase
  */
-const Base64Utils = require('./../utils/base64-utils');
+const MsgPackUtils = require('./../utils/msgpack-utils');
 const Connection = require('./../connection/connection-controller');
 const Phoneme = require('../phoneme/phoneme');
 const PronunciationAnalysis = require('./pronunciation-analysis');
@@ -176,11 +176,11 @@ module.exports = class PronunciationAnalysisController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = MsgPackUtils._arrayBufferToMsgPack(chunk);
         console.log('Sending audio chunk to websocket for analysisId: ' +
           self.connection._analysisId);
         self.connection._session.call('nl.itslanguage.pronunciation.write',
-          [self.connection._analysisId, encoded, 'base64'])
+          [self.connection._analysisId, encoded, 'msgpack'])
           .catch(res => {
             Connection.logRPCError(res);
             reportError(res);

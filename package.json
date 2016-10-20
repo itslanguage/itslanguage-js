@@ -20,6 +20,7 @@
     "autobahn": "0.10.1",
     "client-oauth2": "2.2.0",
     "guid": "0.0.12",
+    "msgpack-js-v5": "^0.3.0-v5",
     "pcmjs": "^0.0.2"
   },
   "devDependencies": {
