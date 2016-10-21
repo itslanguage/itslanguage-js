@@ -255,23 +255,22 @@ module.exports = class PronunciationAnalysisController {
   /**
    * Get a pronunciation analysis in a pronunciation challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {PronunciationChallenge} challenge Specify a pronunciation challenge.
    * @param {string} analysisId Specify a pronunciation analysis identifier.
    * @returns Promise containing a PronunciationAnalysis.
    * @rejects If no result could not be found.
    */
-  static getPronunciationAnalysis(connection, challenge, analysisId) {
+  getPronunciationAnalysis(challenge, analysisId) {
     if (!challenge || !challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
     }
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = connection.settings.apiUrl + '/organisations/' +
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses/' + analysisId;
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(datum => {
         const student = new Student(challenge.organisationId, datum.studentId);
         const analysis = new PronunciationAnalysis(challenge, student,
@@ -291,26 +290,25 @@ module.exports = class PronunciationAnalysisController {
   /**
    * List all pronunciation analyses in a specific pronunciation challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {PronunciationChallenge} challenge Specify a pronunciation challenge to list speech recordings for.
    * @param {Boolean} detailed Returns extra analysis metadata when true. false by default.
    * @returns Promise containing a list of PronunciationAnalyses.
    * @rejects If no result could not be found.
    */
-  static listPronunciationAnalyses(connection, challenge, detailed) {
+  listPronunciationAnalyses(challenge, detailed) {
     if (!challenge || !challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
     }
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    let url = connection.settings.apiUrl + '/organisations/' +
+    let url = this.connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/pronunciation/' +
       challenge.id + '/analyses';
     if (detailed) {
       url += '?detailed=true';
     }
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const analyses = [];
         data.forEach(datum => {

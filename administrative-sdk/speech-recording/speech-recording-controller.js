@@ -184,28 +184,27 @@ module.exports = class SpeechRecordingController {
   /**
    * Get a speech recording in a speech challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {SpeechChallenge} challenge Specify a speech challenge.
    * @param {string} recordingId Specify a speech recording identifier.
    * @returns Promise containing a SpeechRecording.
    * @rejects If no result could not be found.
    */
-  static getSpeechRecording(connection, challenge, recordingId) {
+  getSpeechRecording(challenge, recordingId) {
     if (!challenge || !challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
     }
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = connection.settings.apiUrl + '/organisations/' +
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/speech/' +
       challenge.id + '/recordings/' + recordingId;
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(challenge, student, data.id);
         recording.audio = null;
-        recording.audioUrl = connection.addAccessToken(data.audioUrl);
+        recording.audioUrl = this.connection.addAccessToken(data.audioUrl);
         recording.created = new Date(data.created);
         recording.updated = new Date(data.updated);
         return recording;
@@ -215,30 +214,29 @@ module.exports = class SpeechRecordingController {
   /**
    * List all speech recordings in a specific speech challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {SpeechChallenge} challenge Specify a speech challenge to list speech recordings for.
    * @returns Promise containing a list of SpeechRecording.
    * @rejects If no result could not be found.
    */
-  static listSpeechRecordings(connection, challenge) {
+  listSpeechRecordings(challenge) {
     if (!challenge || !challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
     }
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = connection.settings.apiUrl + '/organisations/' +
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/speech/' +
       challenge.id + '/recordings';
 
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const recordings = [];
         data.forEach(datum => {
           const student = new Student(challenge.organisationId, datum.studentId);
           const recording = new SpeechRecording(challenge, student, datum.id);
           recording.audio = null;
-          recording.audioUrl = connection.addAccessToken(datum.audioUrl);
+          recording.audioUrl = this.connection.addAccessToken(datum.audioUrl);
           recording.created = new Date(datum.created);
           recording.updated = new Date(datum.updated);
           recordings.push(recording);

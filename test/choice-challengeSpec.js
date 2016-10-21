@@ -191,7 +191,8 @@ describe('ChoiceChallenge API interaction test', () => {
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'preparing';
-    ChoiceChallengeController.getChoiceChallenge(api, 'fb', '1')
+    const controller = new ChoiceChallengeController(api);
+    controller.getChoiceChallenge('fb', '1')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -239,8 +240,8 @@ describe('ChoiceChallenge API interaction test', () => {
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';
-
-    ChoiceChallengeController.listChoiceChallenges(api, 'fb')
+    const controller = new ChoiceChallengeController(api);
+    controller.listChoiceChallenges('fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

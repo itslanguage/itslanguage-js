@@ -148,8 +148,9 @@ describe('Student API interaction test', () => {
         'Content-type': 'application/json'
       }
     });
+    const controller = new StudentController(api);
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    StudentController.getStudent(api, 'fb', '4')
+    controller.getStudent('fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -185,7 +186,8 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    StudentController.listStudents(api, 'fb')
+    const controller = new StudentController(api);
+    controller.listStudents('fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

@@ -155,7 +155,8 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice/4/recognitions/5';
     const challenge = new SpeechChallenge('fb', '4');
-    ChoiceRecognitionController.getChoiceRecognition(api, challenge, '5')
+    const controller = new ChoiceRecognitionController(api);
+    controller.getChoiceRecognition(challenge, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -202,7 +203,8 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    ChoiceRecognitionController.listChoiceRecognitions(api, challenge)
+    const controller = new ChoiceRecognitionController(api);
+    controller.listChoiceRecognitions(challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
