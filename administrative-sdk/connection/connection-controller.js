@@ -1,5 +1,9 @@
 const autobahn = require('autobahn');
-class Connection {
+
+/**
+ * Controller class for managing connection interaction.
+ */
+module.exports = class Connection {
 
   constructor(options) {
     this.settings = Object.assign({
@@ -317,8 +321,4 @@ class Connection {
   static logRPCError(result) {
     console.error('RPC error returned:', result.error);
   }
-}
-
-module.exports = {
-  Connection
 };

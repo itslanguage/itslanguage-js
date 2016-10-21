@@ -1,53 +1,30 @@
-const Student = require('../administrative-sdk/student').Student;
-const PronunciationAnalysis = require('../administrative-sdk/pronunciationAnalysis').PronunciationAnalysis;
-const Base64Utils = require('./base64Utils').Base64Utils;
+const ChoiceRecognition = require('./choice-recognition');
+const Student = require('../student/student');
+const PronunciationAnalysis = require('../pronunciation-analysis/pronunciation-analysis');
+const Base64Utils = require('../utils/base64-utils');
 
 /**
- * @class ChoiceRecognition
- *
- * @member {ChoiceChallenge} challenge The challenge identifier.
- * @member {Student} student The student identifier on whose behalve this audio is uploaded.
- * @member {string} id The choice recognition identifier.
- * @member {Date} created The creation date of the entity.
- * @member {Date} updated The most recent update date of the entity.
- * @member {blob} audio The recorded audio fragment.
- * @member {string} audioUrl The audio fragment as streaming audio link.
- * @member {string} recognised The recognised sentence.
+ * Controller class for the ChoiceRecognition model.
  */
-class ChoiceRecognition {
+module.exports = class ChoiceRecognitionController {
   /**
-   * Create a choice recognition domain model.
-   *
-   * @constructor
-   * @param {PronunciationChallenge} challenge The choiceChall identifier.
-   * @param {Student} student The student identifier on whose behalve this audio is uploaded.
-   * @param {string} id The choice recognition identifier.
-   * @param {Date} created The creation date of the entity.
-   * @param {Date} updated The most recent update date of the entity.
-   * @param {string} audioUrl The audio fragment as streaming audio link.
-   * @param {string} recognised The recognised sentence.
+   * @param connection Object to connect to.
    */
-  constructor(challenge, student, id, created, updated, audioUrl, recognised) {
-    this.id = id;
-    this.challenge = challenge;
-    this.student = student;
-    this.created = created;
-    this.updated = updated;
-    this.audioUrl = audioUrl;
-    this.recognised = recognised;
+  constructor(connection) {
+    this.connection = connection;
   }
 
   /**
    * Initialise the choice recognition challenge through RPCs.
    *
    */
-  choiceRecognitionInitChallenge(connection, challenge) {
-    return connection._session.call('nl.itslanguage.choice.init_challenge',
-      [connection._recognitionId, challenge.organisationId, challenge.id])
+  choiceRecognitionInitChallenge(challenge) {
+    return this.connection._session.call('nl.itslanguage.choice.init_challenge',
+      [this.connection._recognitionId, challenge.organisationId, challenge.id])
       .then(
         // RPC success callback
         recognitionId => {
-          console.log('Challenge initialised for recognitionId: ' + connection._recognitionId);
+          console.log('Challenge initialised for recognitionId: ' + this.connection._recognitionId);
           return recognitionId;
         },
         // RPC error callback
@@ -61,16 +38,16 @@ class ChoiceRecognition {
    * Initialise the pronunciation analysis audio specs through RPCs.
    *
    */
-  choiceRecognitionInitAudio(connection, recorder, dataavailableCb) {
+  choiceRecognitionInitAudio(recorder, dataavailableCb) {
     // Indicate to the socket server that we're about to start recording a
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    connection._session.call('nl.itslanguage.choice.init_audio',
-      [connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
+    this.connection._session.call('nl.itslanguage.choice.init_audio',
+      [this.connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
       recognitionId => {
-        console.log('Accepted audio parameters for recognitionId after init_audio: ' + connection._recognitionId);
+        console.log('Accepted audio parameters for recognitionId after init_audio: ' + this.connection._recognitionId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recognitionId;
@@ -85,7 +62,6 @@ class ChoiceRecognition {
   /**
    * Start a choice recognition from streaming audio.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {its.ChoiceChallenge} challenge The choice challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
    * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
@@ -98,7 +74,7 @@ class ChoiceRecognition {
    * @rejects If a session is already in progress.
    * @rejects If something went wrong during analysis.
    */
-  startStreamingChoiceRecognition(connection, challenge, recorder, trim) {
+  startStreamingChoiceRecognition(challenge, recorder, trim) {
     if (typeof challenge !== 'object' || !challenge) {
       return Promise.reject(new Error(
         '"challenge" parameter is required or invalid'));
@@ -111,7 +87,7 @@ class ChoiceRecognition {
     }
 
     // Validate environment prerequisites.
-    if (!connection._session) {
+    if (!this.connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
     }
 
@@ -119,8 +95,8 @@ class ChoiceRecognition {
       return Promise.reject(new Error('Recorder should not yet be recording.'));
     }
 
-    if (connection._recognitionId !== null) {
-      return Promise.reject(new Error('Session with recognitionId ' + connection._recognitionId +
+    if (this.connection._recognitionId !== null) {
+      return Promise.reject(new Error('Session with recognitionId ' + this.connection._recognitionId +
         ' still in progress.'));
     }
 
@@ -135,7 +111,7 @@ class ChoiceRecognition {
         const recognition = new ChoiceRecognition(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          connection.addAccessToken(data.audioUrl), data.recognised);
+          self.connection.addAccessToken(data.audioUrl), data.recognised);
         resolve(recognition);
       }
 
@@ -144,7 +120,7 @@ class ChoiceRecognition {
         const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          connection.addAccessToken(data.audioUrl));
+          self.connection.addAccessToken(data.audioUrl));
         reject(
           {
             analysis,
@@ -153,16 +129,16 @@ class ChoiceRecognition {
         );
       }
 
-      connection._recognitionId = null;
+      self.connection._recognitionId = null;
 
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function dataavailableCb(chunk) {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
-          connection._recognitionId);
-        connection._session.call('nl.itslanguage.choice.write',
-          [connection._recognitionId, encoded, 'base64']).then(
+          self.connection._recognitionId);
+        self.connection._session.call('nl.itslanguage.choice.write',
+          [self.connection._recognitionId, encoded, 'base64']).then(
           // RPC success callback
           res => {
             console.debug('Delivered audio successfully');
@@ -177,17 +153,17 @@ class ChoiceRecognition {
       }
 
       function recognitionInitCb(recognitionId) {
-        connection._recognitionId = recognitionId;
-        console.log('Got recognitionId after initialisation: ' + connection._recognitionId);
+        self.connection._recognitionId = recognitionId;
+        console.log('Got recognitionId after initialisation: ' + self.connection._recognitionId);
       }
-      connection._session.call('nl.itslanguage.choice.init_recognition', [],
+      self.connection._session.call('nl.itslanguage.choice.init_recognition', [],
         {
           trimStart: trimAudioStart,
           trimEnd: trimAudioEnd
         })
         .then(recognitionInitCb)
         .then(() => {
-          self.choiceRecognitionInitChallenge(connection, challenge)
+          self.choiceRecognitionInitChallenge(challenge)
             .then(() => {
               const p = new Promise(resolve_ => {
                 if (recorder.hasUserMediaApproval()) {
@@ -197,7 +173,7 @@ class ChoiceRecognition {
                 }
               });
               p.then(() => {
-                self.choiceRecognitionInitAudio(connection, recorder, dataavailableCb);
+                self.choiceRecognitionInitAudio(recorder, dataavailableCb);
               });
             });
         })
@@ -208,8 +184,8 @@ class ChoiceRecognition {
       // Stop listening when the audio recorder stopped.
       function recordedCb() {
         // When done, submit any plain text (non-JSON) to start analysing.
-        connection._session.call('nl.itslanguage.choice.recognise',
-          [connection._recognitionId]).then(
+        self.connection._session.call('nl.itslanguage.choice.recognise',
+          [self.connection._recognitionId]).then(
           // RPC success callback
           res => {
             // Wait for analysis results to come back.
@@ -230,7 +206,7 @@ class ChoiceRecognition {
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', dataavailableCb);
         // This session is over.
-        connection._recognitionId = null;
+        self.connection._recognitionId = null;
       }
       recorder.addEventListener('recorded', recordedCb);
     });
@@ -309,8 +285,4 @@ class ChoiceRecognition {
         return recognitions;
       });
   }
-}
-
-module.exports = {
-  ChoiceRecognition
 };

@@ -1,9 +1,10 @@
 require('jasmine-ajax');
 const autobahn = require('autobahn');
-const SpeechChallenge = require('../administrative-sdk/speechChallenge').SpeechChallenge;
-const SpeechRecording = require('../administrative-sdk/speechRecording').SpeechRecording;
-const Student = require('../administrative-sdk/student').Student;
-const Connection = require('../administrative-sdk/connection').Connection;
+const SpeechChallenge = require('../administrative-sdk/speech-challenge/speech-challenge');
+const SpeechRecording = require('../administrative-sdk/speech-recording/speech-recording');
+const SpeechRecordingController = require('../administrative-sdk/speech-recording/speech-recording-controller');
+const Student = require('../administrative-sdk/student/student');
+const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('SpeechRecording object test', () => {
   it('should require all required fields in constructor', () => {
@@ -104,7 +105,7 @@ describe('SpeechRecording API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     const challenge = new SpeechChallenge('fb', '4');
-    SpeechRecording.getSpeechRecording(api, challenge, '5')
+    SpeechRecordingController.getSpeechRecording(api, challenge, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -147,7 +148,7 @@ describe('SpeechRecording API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const challenge = new SpeechChallenge('fb', '4');
-    SpeechRecording.listSpeechRecordings(api, challenge)
+    SpeechRecordingController.listSpeechRecordings(api, challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -203,12 +204,11 @@ describe('Speech Recording Websocket API interaction test', () => {
     window.WebSocket = jasmine.createSpy('WebSocket');
 
     const challenge = new SpeechChallenge('fb', '4');
-    const recording = new SpeechRecording(challenge, new Student(), '3', new Blob());
     const recorder = new RecorderMock();
-
+    const controller = new SpeechRecordingController(api);
     const expectedMessage = 'WebSocket connection was not open.';
 
-    recording.startStreamingSpeechRecording(api, challenge, recorder)
+    controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('An error should be thrown!');
       })
@@ -265,7 +265,6 @@ describe('Speech Recording Websocket API interaction test', () => {
     }
 
     const challenge = new SpeechChallenge('fb', '4');
-    const recording = new SpeechRecording(challenge, new Student(), '3', new Blob());
     const recorder = new RecorderMock();
     const stringDate = '2014-12-31T23:59:59Z';
     const fakeResponse = {
@@ -290,9 +289,9 @@ describe('Speech Recording Websocket API interaction test', () => {
 
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
-
-    recording.startStreamingSpeechRecording(
-      api, challenge, recorder)
+    const controller = new SpeechRecordingController(api);
+    controller.startStreamingSpeechRecording(
+      challenge, recorder)
       .then(result => {
         expect(result.challenge).toEqual(challenge);
         expect(result.student.organisationId).toBe(challenge.organisationId);

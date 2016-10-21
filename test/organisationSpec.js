@@ -1,6 +1,7 @@
 require('jasmine-ajax');
-const Organisation = require('../administrative-sdk/organisation').Organisation;
-const Connection = require('../administrative-sdk/connection').Connection;
+const Organisation = require('../administrative-sdk/organisation/organisation');
+const OrganisationController = require('../administrative-sdk/organisation/organisation-controller');
+const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('Organisation object test', () => {
   it('should instantiate an Organisation without id', () => {
@@ -33,6 +34,7 @@ describe('Organisation API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new OrganisationController(api);
     const url = 'https://api.itslanguage.nl/organisations';
     const expected = {id: '1', name: 'School of silly walks'};
     const content = {
@@ -49,7 +51,7 @@ describe('Organisation API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    organisation.createOrganisation(api)
+    controller.createOrganisation(organisation)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -72,6 +74,7 @@ describe('Organisation API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new OrganisationController(api);
     const organisation = new Organisation('1');
     const url = 'https://api.itslanguage.nl/organisations';
     const content = {
@@ -92,7 +95,7 @@ describe('Organisation API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    organisation.createOrganisation(api)
+    controller.createOrganisation(organisation)
       .then(result => {
         fail('An error should be thrown! Instead got result ' + result);
       })
@@ -125,7 +128,7 @@ describe('Organisation API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    Organisation.getOrganisation(api, '4')
+    OrganisationController.getOrganisation(api, '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -161,7 +164,7 @@ describe('Organisation API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    Organisation.listOrganisations(api)
+    OrganisationController.listOrganisations(api)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

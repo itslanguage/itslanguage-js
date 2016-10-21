@@ -1,62 +1,29 @@
-const Student = require('../administrative-sdk/student').Student;
-const Base64Utils = require('./base64Utils').Base64Utils;
-const Connection = require('../administrative-sdk/connection').Connection;
+const Base64Utils = require('../utils/base64-utils');
+const Connection = require('./../connection/connection-controller');
+const SpeechRecording = require('./speech-recording');
+const Student = require('../student/student');
 
 /**
- * @class SpeechRecording
- *
- * @member {its.SpeechChallenge} challenge The SpeechChallenge instance this speech is recorded for.
- * @member {its.Student} student The student instance on whose behalve this audio is recorded.
- * @member {string} [id] The speech recording identifier.
- * @member {date} created The creation date of the entity.
- * @member {date} updated The most recent update date of the entity.
- * @member {blob} audio The recorded audio fragment.
- * @member {string} audioUrl The audio fragment as streaming audio link.
+ * Controller class for the SpeechRecording model.
  */
-class SpeechRecording {
+module.exports = class SpeechRecordingController {
   /**
-   * Create a speech recording domain model.
-   *
-   * @constructor
-   * @param {its.SpeechChallenge} challenge The SpeechChallenge instance this speech is recorded for.
-   * @param {its.Student} student The Student instance on whose behalve this audio is recorded.
-   * @param {string} [id] The speech recording identifier. If none is given, one is generated.
-   * @param {blob} audio The recorded audio fragment.
+   * @param connection Object to connect to.
    */
-  constructor(challenge, student, id, audio) {
-    if (id && typeof id !== 'string') {
-      throw new Error(
-        'id parameter of type "string|null" is required');
-    }
-    this.id = id;
-    if (typeof challenge !== 'object' || !challenge) {
-      throw new Error(
-        'challenge parameter of type "SpeechChallenge" is required');
-    }
-    this.challenge = challenge;
-    if (typeof student !== 'object' || !student) {
-      throw new Error(
-        'student parameter of type "Student" is required');
-    }
-    this.student = student;
-
-    if (!(audio instanceof Blob || audio === null || audio === undefined)) {
-      throw new Error(
-        'audio parameter of type "Blob|null" is required');
-    }
-    this.audio = audio;
+  constructor(connection) {
+    this.connection = connection;
   }
 
   /**
    * Initialise the speech recording challenge through RPCs.
    *
    */
-  speechRecordingInitChallenge(connection, challenge) {
-    return connection._session.call('nl.itslanguage.recording.init_challenge',
-      [connection._recordingId, challenge.organisationId, challenge.id]).then(
+  speechRecordingInitChallenge(challenge) {
+    return this.connection._session.call('nl.itslanguage.recording.init_challenge',
+      [this.connection._recordingId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
       recordingId => {
-        console.log('Challenge initialised for recordingId: ' + connection._recordingId);
+        console.log('Challenge initialised for recordingId: ' + this.connection._recordingId);
         return recordingId;
       },
       // RPC error callback
@@ -70,15 +37,15 @@ class SpeechRecording {
    * Initialise the speech recording audio specs through RPCs.
    *
    */
-  speechRecordingInitAudio(connection, recorder, dataavailableCb) {
+  speechRecordingInitAudio(recorder, dataavailableCb) {
     // Indicate to the socket server that we're about to start recording a
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the recording when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    connection._session.call('nl.itslanguage.recording.init_audio',
-      [connection._recordingId, specs.audioFormat], specs.audioParameters)
+    this.connection._session.call('nl.itslanguage.recording.init_audio',
+      [this.connection._recordingId, specs.audioFormat], specs.audioParameters)
       .then(recordingId => {
-        console.log('Accepted audio parameters for recordingId after init_audio: ' + connection._recordingId);
+        console.log('Accepted audio parameters for recordingId after init_audio: ' + this.connection._recordingId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recordingId;
@@ -92,7 +59,6 @@ class SpeechRecording {
   /**
    * Start a speech recording from streaming audio.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {its.SpeechChallenge} challenge The pronunciation challenge to perform.
    * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
    * @returns Promise containing a SpeechRecording.
@@ -104,7 +70,7 @@ class SpeechRecording {
    * @rejects If a session is already in progress.
    * @rejects If something went wrong during recording.
    */
-  startStreamingSpeechRecording(connection, challenge, recorder) {
+  startStreamingSpeechRecording(challenge, recorder) {
     // Validate required domain model.
     // Validate environment prerequisites.
     if (typeof challenge !== 'object' || !challenge) {
@@ -116,18 +82,19 @@ class SpeechRecording {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    if (!connection._session) {
+    if (!this.connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
     }
     if (recorder.isRecording()) {
       return Promise.reject(new Error('Recorder should not yet be recording.'));
     }
-    if (connection._recordingId !== null) {
-      return Promise.reject(new Error('Session with recordingId ' + connection._recordingId + ' still in progress.'));
+    if (this.connection._recordingId !== null) {
+      return Promise.reject(new Error('Session with recordingId ' + this.connection._recordingId +
+        ' still in progress.'));
     }
     const self = this;
     return new Promise((resolve, reject) => {
-      connection._recordingId = null;
+      self.connection._recordingId = null;
 
       // Either there was an unexpected error, or the audio failed to
       // align, in which case no recording is provided, but just the
@@ -137,65 +104,65 @@ class SpeechRecording {
       function _cb(data) {
         const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(
-            challenge, student, data.id);
+          challenge, student, data.id);
         recording.created = new Date(data.created);
         recording.updated = new Date(data.updated);
-        recording.audioUrl = connection.addAccessToken(data.audioUrl);
-        recording.recordingId = connection._recordingId;
+        recording.audioUrl = self.connection.addAccessToken(data.audioUrl);
+        recording.recordingId = self.connection._recordingId;
         resolve(recording);
       }
 
       function recordedCb(activeRecordingId, audioBlob, forcedStop) {
-        connection._session.call('nl.itslanguage.recording.close',
-            [connection._recordingId]).then(
-            // RPC success callback
-            res => {
-              // Pass along details to the success callback
-              _cb(res, forcedStop);
-            },
-            // RPC error callback
-            res => {
-              connection.logRPCError(res);
-              errorEncountered(res);
-            }
-          );
+        self.connection._session.call('nl.itslanguage.recording.close',
+          [self.connection._recordingId]).then(
+          // RPC success callback
+          res => {
+            // Pass along details to the success callback
+            _cb(res, forcedStop);
+          },
+          // RPC error callback
+          res => {
+            Connection.logRPCError(res);
+            errorEncountered(res);
+          }
+        );
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', startStreaming);
-        connection._recordingId = null;
+        self.connection._recordingId = null;
       }
 
-        // Start streaming the binary audio when the user instructs
-        // the audio recorder to start recording.
+      // Start streaming the binary audio when the user instructs
+      // the audio recorder to start recording.
       function startStreaming(chunk) {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recordingId: ' +
-            connection._recordingId);
-        connection._session.call('nl.itslanguage.recording.write',
-            [connection._recordingId, encoded, 'base64']).then(
-            // RPC success callback
-            res => {
-              // Wrote data.
-              console.log('Wrote data');
-              return res;
-            },
-            // RPC error callback
-            res => {
-              Connection.logRPCError(res);
-              errorEncountered(res);
-            }
-          );
+          self.connection._recordingId);
+        self.connection._session.call('nl.itslanguage.recording.write',
+          [self.connection._recordingId, encoded, 'base64']).then(
+          // RPC success callback
+          res => {
+            // Wrote data.
+            console.log('Wrote data');
+            return res;
+          },
+          // RPC error callback
+          res => {
+            Connection.logRPCError(res);
+            errorEncountered(res);
+          }
+        );
       }
 
       function startRecording(recordingId) {
-        connection._recordingId = recordingId;
-        console.log('Got recordingId after initialisation: ' + connection._recordingId);
+        self.connection._recordingId = recordingId;
+        console.log('Got recordingId after initialisation: ' + self.connection._recordingId);
       }
 
       recorder.addEventListener('recorded', recordedCb);
-      connection._session.call('nl.itslanguage.recording.init_recording', [])
+      self.connection._session.call('nl.itslanguage.recording.init_recording', [])
         .then(startRecording)
         .then(() => {
-          self.speechRecordingInitChallenge(connection, challenge)
+          self.speechRecordingInitChallenge(challenge)
               .then(() => {
                 const p = new Promise(resolve_ => {
                   if (recorder.hasUserMediaApproval()) {
@@ -204,7 +171,7 @@ class SpeechRecording {
                     recorder.addEventListener('ready', resolve_);
                   }
                 });
-                p.then(self.speechRecordingInitAudio(connection, recorder, startStreaming));
+                p.then(self.speechRecordingInitAudio(recorder, startStreaming));
               });
         },
           res => {
@@ -233,7 +200,6 @@ class SpeechRecording {
     const url = connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/speech/' +
       challenge.id + '/recordings/' + recordingId;
-
     return connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(challenge.organisationId, data.studentId);
@@ -280,8 +246,4 @@ class SpeechRecording {
         return recordings;
       });
   }
-}
-
-module.exports = {
-  SpeechRecording
 };

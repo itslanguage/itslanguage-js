@@ -1,6 +1,7 @@
 require('jasmine-ajax');
-const PronunciationChallenge = require('../administrative-sdk/pronunciationChallenge').PronunciationChallenge;
-const Connection = require('../administrative-sdk/connection').Connection;
+const PronunciationChallenge = require('../administrative-sdk/pronunciation-challenge/pronunciation-challenge');
+const Controller = require('../administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller');
+const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('PronunciationChallenge object test', () => {
   it('should require all required fields in constructor', () => {
@@ -60,9 +61,10 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new Controller(api);
     const challenge = new PronunciationChallenge('fb', '1', 'test');
 
-    challenge.createPronunciationChallenge(api)
+    controller.createPronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be thrown');
       })
@@ -77,9 +79,10 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new Controller(api);
     const challenge = new PronunciationChallenge('fb', '1', 'test', null);
 
-    challenge.createPronunciationChallenge(api)
+    controller.createPronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be thrown');
       })
@@ -97,6 +100,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new Controller(api);
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation';
     const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
@@ -116,7 +120,7 @@ describe('PronunciationChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    challenge.createPronunciationChallenge(api)
+    controller.createPronunciationChallenge(challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -150,6 +154,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new Controller(api);
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/pronunciation';
     const content = {
@@ -170,7 +175,7 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    challenge.createPronunciationChallenge(api)
+    controller.createPronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be thrown!');
       })
@@ -219,7 +224,7 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    PronunciationChallenge.getPronunciationChallenge(api, 'fb', '4')
+    Controller.getPronunciationChallenge(api, 'fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -263,7 +268,7 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    PronunciationChallenge.listPronunciationChallenges(api, 'fb')
+    Controller.listPronunciationChallenges(api, 'fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -288,6 +293,7 @@ describe('PronunciationChallenge API interaction test', () => {
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
+    const controller = new Controller(api);
     const blob = new Blob(['1234567890']);
     const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
     const url = 'https://api.itslanguage.nl/organisations/fb' +
@@ -306,7 +312,7 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    challenge.deletePronunciationChallenge(api)
+    controller.deletePronunciationChallenge(challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -325,7 +331,7 @@ it('should not delete a non existing challenge', done => {
     authPrincipal: 'principal',
     authPassword: 'secret'
   });
-
+  const controller = new Controller(api);
   const blob = new Blob(['1234567890']);
   const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
   const content = {
@@ -346,7 +352,7 @@ it('should not delete a non existing challenge', done => {
   });
   spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-  challenge.deletePronunciationChallenge(api)
+  controller.deletePronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be a thrown');
       })

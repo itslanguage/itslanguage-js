@@ -1,5 +1,5 @@
 require('jasmine-ajax');
-const Connection = require('../administrative-sdk/connection').Connection;
+const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('Secure GET test', () => {
   beforeEach(() => {
