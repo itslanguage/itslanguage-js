@@ -39,16 +39,15 @@ module.exports = class StudentController {
   /**
    * Get a student.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} studentId Specify a student identifier.
    * @returns Promise containing a Student.
    * @rejects If no result could not be found.
    */
-  static getStudent(connection, organisationId, studentId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  getStudent(organisationId, studentId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(organisationId, data.id, data.firstName,
           data.lastName, data.gender, data.birthYear);
@@ -61,15 +60,14 @@ module.exports = class StudentController {
   /**
    * List all students in the organisation.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @returns Promise containing a list of Students.
    * @rejects If no result could not be found.
    */
-  static listStudents(connection, organisationId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  listStudents(organisationId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students';
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const students = [];
         data.forEach(datum => {

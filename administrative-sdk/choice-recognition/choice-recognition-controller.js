@@ -215,24 +215,23 @@ module.exports = class ChoiceRecognitionController {
   /**
    * Get a choice recognition in a choice challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {ChoiceChallenge} challenge Specify a choice challenge.
    * @param {string} recognitionId Specify a choice recognition identifier.
    * @returns Promise containing a ChoiceRecognition.
    * @rejects If no result could not be found.
    */
-  static getChoiceRecognition(connection, challenge, recognitionId) {
+  getChoiceRecognition(challenge, recognitionId) {
     if (!challenge || !challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
     }
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = connection.settings.apiUrl + '/organisations/' +
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions/' + recognitionId;
 
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(datum => {
         const student = new Student(challenge.organisationId, datum.studentId);
         const recognition = new ChoiceRecognition(challenge, student,
@@ -251,22 +250,21 @@ module.exports = class ChoiceRecognitionController {
   /**
    * List all choice recognitions in a specific choice challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {ChoiceChallenge} challenge Specify a choice challenge to list speech recognitions for.
    * @returns Promise containing a list of ChoiceRecognitions.
    * @rejects If no result could not be found.
    */
-  static listChoiceRecognitions(connection, challenge) {
+  listChoiceRecognitions(challenge) {
     if (!challenge || !challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
     }
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = connection.settings.apiUrl + '/organisations/' +
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions';
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const recognitions = [];
         data.forEach(datum => {

@@ -223,8 +223,8 @@ describe('PronunciationChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    Controller.getPronunciationChallenge(api, 'fb', '4')
+    const controller = new Controller(api);
+    controller.getPronunciationChallenge('fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -267,8 +267,8 @@ describe('PronunciationChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    Controller.listPronunciationChallenges(api, 'fb')
+    const controller = new Controller(api);
+    controller.listPronunciationChallenges('fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

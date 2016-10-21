@@ -209,8 +209,8 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    SpeechChallengeController.getSpeechChallenge(api, 'fb', '4')
+    const controller = new SpeechChallengeController(api);
+    controller.getSpeechChallenge('fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -246,8 +246,8 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    SpeechChallengeController.listSpeechChallenges(api, 'fb')
+    const controller = new SpeechChallengeController(api);
+    controller.listSpeechChallenges('fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

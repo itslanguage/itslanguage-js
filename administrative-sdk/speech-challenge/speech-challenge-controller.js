@@ -48,17 +48,16 @@ module.exports = class SpeechChallengeController {
   /**
    * Get a speech challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a speech challenge identifier.
    * @returns Promise containing a SpeechChallenge.
    * @rejects If no result could not be found.
    */
-  static getSpeechChallenge(connection, organisationId, challengeId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  getSpeechChallenge(organisationId, challengeId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech/' + challengeId;
 
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new SpeechChallenge(organisationId, data.id, data.topic);
         challenge.created = new Date(data.created);
@@ -70,16 +69,15 @@ module.exports = class SpeechChallengeController {
   /**
    * List all speech challenges in the organisation.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @returns Promise containing a list of SpeechChallenges.
    * @rejects If no result could not be found.
    */
-  static listSpeechChallenges(connection, organisationId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  listSpeechChallenges(organisationId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech';
 
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {

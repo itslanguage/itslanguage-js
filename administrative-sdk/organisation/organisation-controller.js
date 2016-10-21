@@ -34,15 +34,14 @@ module.exports = class OrganisationController {
   /**
    * Get an organisation.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @returns Promise containing an Organisation.
    * @rejects If no result could not be found.
    */
-  static getOrganisation(connection, organisationId) {
-    const url = connection.settings.apiUrl + '/organisations/' + organisationId;
+  getOrganisation(organisationId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' + organisationId;
 
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const organisation = new Organisation(data.id, data.name);
         organisation.created = new Date(data.created);
@@ -57,10 +56,10 @@ module.exports = class OrganisationController {
    * @returns Promise containing a list of Organisations.
    * @rejects If no result could not be found.
    */
-  static listOrganisations(connection) {
-    const url = connection.settings.apiUrl + '/organisations';
+  listOrganisations() {
+    const url = this.connection.settings.apiUrl + '/organisations';
 
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const organisations = [];
         data.forEach(datum => {

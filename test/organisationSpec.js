@@ -127,8 +127,8 @@ describe('Organisation API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    OrganisationController.getOrganisation(api, '4')
+    const controller = new OrganisationController(api);
+    controller.getOrganisation('4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -164,7 +164,8 @@ describe('Organisation API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    OrganisationController.listOrganisations(api)
+    const controller = new OrganisationController(api);
+    controller.listOrganisations()
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

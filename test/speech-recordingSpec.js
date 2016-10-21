@@ -105,7 +105,8 @@ describe('SpeechRecording API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     const challenge = new SpeechChallenge('fb', '4');
-    SpeechRecordingController.getSpeechRecording(api, challenge, '5')
+    const controller = new SpeechRecordingController(api);
+    controller.getSpeechRecording(challenge, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -148,7 +149,8 @@ describe('SpeechRecording API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const challenge = new SpeechChallenge('fb', '4');
-    SpeechRecordingController.listSpeechRecordings(api, challenge)
+    const controller = new SpeechRecordingController(api);
+    controller.listSpeechRecordings(challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

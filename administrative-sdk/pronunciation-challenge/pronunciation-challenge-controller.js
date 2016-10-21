@@ -51,16 +51,15 @@ module.exports = class PronunciationChallengeController {
   /**
    * Get a pronunciation challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a pronunciation challenge identifier.
    * @returns Promise containing a PronunciationChallenge.
    * @rejects If no result could not be found.
    */
-  static getPronunciationChallenge(connection, organisationId, challengeId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  getPronunciationChallenge(organisationId, challengeId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation/' + challengeId;
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new PronunciationChallenge(organisationId, data.id,
           data.transcription);
@@ -75,15 +74,14 @@ module.exports = class PronunciationChallengeController {
   /**
    * List all pronunciation challenges in the organisation.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @returns Promise containing a list of PronunciationChallenges.
    * @rejects If no result could not be found.
    */
-  static listPronunciationChallenges(connection, organisationId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  listPronunciationChallenges(organisationId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/pronunciation';
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {

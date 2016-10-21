@@ -52,16 +52,15 @@ module.exports = class ChoiceChallengeController {
   /**
    * Get a choice challenge.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @param {string} challengeId Specify a choice challenge identifier.
    * @returns Promise containing a ChoiceChallenge.
    * @rejects If no result could not be found.
    */
-  static getChoiceChallenge(connection, organisationId, challengeId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  getChoiceChallenge(organisationId, challengeId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice/' + challengeId;
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new ChoiceChallenge(organisationId, data.id,
           data.question, data.choices);
@@ -79,15 +78,14 @@ module.exports = class ChoiceChallengeController {
   /**
    * List all choice challenges in the organisation.
    *
-   * @param {Connection} connection Object to connect to.
    * @param {string} organisationId Specify an organisation identifier.
    * @returns Promise containing a list of ChoiceChallenges.
    * @rejects If no result could not be found.
    */
-  static listChoiceChallenges(connection, organisationId) {
-    const url = connection.settings.apiUrl + '/organisations/' +
+  listChoiceChallenges(organisationId) {
+    const url = this.connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice';
-    return connection._secureAjaxGet(url)
+    return this.connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {
