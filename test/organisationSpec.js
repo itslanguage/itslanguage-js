@@ -58,6 +58,8 @@ describe('Organisation API interaction test', () => {
         expect(request[1].method).toBe('POST');
         expect(request[1].body).toEqual(JSON.stringify(expected));
         const stringDate = '2014-12-31T23:59:59Z';
+        organisation.created = new Date(stringDate);
+        organisation.updated = new Date(stringDate);
         expect(result).toEqual(organisation);
         expect(result.id).toBe('1');
         expect(result.created).toEqual(new Date(stringDate));

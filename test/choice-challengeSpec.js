@@ -77,6 +77,7 @@ describe('ChoiceChallenge API interaction test', () => {
     const controller = new ChoiceChallengeController(api);
     const content = {
       id: '1',
+      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       question: 'q',

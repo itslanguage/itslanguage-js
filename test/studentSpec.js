@@ -46,6 +46,7 @@ describe('Student API interaction test', () => {
     const url = 'https://api.itslanguage.nl/organisations/fb/students';
     const content = {
       id: '1',
+      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       firstName: 'Mark'
@@ -69,6 +70,8 @@ describe('Student API interaction test', () => {
         };
         expect(request[1].body).toEqual(JSON.stringify(expected));
         const stringDate = '2014-12-31T23:59:59Z';
+        student.created = new Date(stringDate);
+        student.updated = new Date(stringDate);
         expect(result).toEqual(student);
         expect(result.id).toBe('1');
         expect(result.created).toEqual(new Date(stringDate));
