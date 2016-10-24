@@ -153,12 +153,10 @@ module.exports = class Connection {
    *
    * @param {string} URL to submit to.
    * @param {FormData} formdata The form to POST.
-   * @param {Boolean} encoded True if the POST should be made with content-type 'application/x-www-form-urlencoded',
-   * false if content-type should be 'application/json'. Default false.
    * @returns Promise containing a result.
    */
-  _secureAjaxPost(url, formdata, encoded) {
-    return this._ajaxPost(url, formdata, this._getAuthHeaders(), encoded);
+  _secureAjaxPost(url, formdata) {
+    return this._ajaxPost(url, formdata, this._getAuthHeaders());
   }
 
   /**
@@ -222,24 +220,17 @@ module.exports = class Connection {
    * @param {string} URL to submit to.
    * @param {FormData|string} formdata FormData or stringified JSON to POST.
    * @param {string} [auth] The authorization header value to pass along with the request.
-   * @param {Boolean} encoded True if the POST should be made with content-type 'application/x-www-form-urlencoded' or
-   * false if content-type should be 'application/json'. Default false.
    * @returns Promise containing a result.
    * @throws If the server returned an error.
    */
-  _ajaxPost(url, formdata, auth, encoded) {
+  _ajaxPost(url, formdata, auth) {
     const headers = new Headers();
     if (typeof auth !== 'undefined') {
       headers.append('Authorization', auth);
     }
     if (typeof formdata === 'string') {
-      if (encoded) {
-        headers.append('Content-Type',
-          'application/x-www-form-urlencoded; charset=utf8');
-      } else {
-        headers.append('Content-Type',
+      headers.append('Content-Type',
         'application/json; charset=utf-8');
-      }
     }
     const options = {
       method: 'POST',
@@ -345,14 +336,29 @@ module.exports = class Connection {
    * @rejects If the server returned an error.
    */
   getOauth2Token(basicAuth) {
-    const url = this.apiUrl + '/tokens';
-    const formData = JSON.stringify(
-      {
-        grant_type: 'password',
-        scope: 'tenant/' + basicAuth.tenantId,
-        username: basicAuth.principal,
-        password: basicAuth.credentials
-      });
-    return this._secureAjaxPost(url, formData, true);
+    const url = this.settings.apiUrl + '/tokens';
+    const scopes = 'tenant/' + basicAuth.tenantId +
+      '/student/' + basicAuth.principal;
+    const headers = new Headers();
+    headers.append('Authorization', this._getAuthHeaders());
+    headers.append('Content-Type',
+      'application/x-www-form-urlencoded; charset=utf8');
+    const formData = 'grant_type=password&scope=' + scopes + '&username=' + basicAuth.principal +
+      '&password=' + basicAuth.credentials;
+    const options = {
+      method: 'POST',
+      headers,
+      body: formData
+    };
+    return fetch(url, options)
+      .then(response =>
+        response.json()
+          .then(data => {
+            if (response.ok) {
+              return data;
+            }
+            throw data;
+          })
+      );
   }
 };
