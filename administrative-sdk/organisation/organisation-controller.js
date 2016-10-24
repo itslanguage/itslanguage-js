@@ -24,10 +24,10 @@ module.exports = class OrganisationController {
 
     return this.connection._secureAjaxPost(url, fd)
       .then(data => {
-        organisation.id = data.id;
-        organisation.created = new Date(data.created);
-        organisation.updated = new Date(data.updated);
-        return organisation;
+        const result = new Organisation(data.id, data.name);
+        result.created = new Date(data.created);
+        result.updated = new Date(data.updated);
+        return result;
       });
   }
 

@@ -1,3 +1,5 @@
+const Tenant = require('./tenant');
+
 /**
  * Controller class for the Tenant model.
  */
@@ -21,11 +23,10 @@ module.exports = class TenantController {
     const fd = JSON.stringify(tenant);
     return this.connection._secureAjaxPost(url, fd)
       .then(data => {
-        // Update the id in case domain model didn't contain one.
-        tenant.id = data.id;
-        tenant.created = new Date(data.created);
-        tenant.updated = new Date(data.updated);
-        return tenant;
+        const result = new Tenant(data.id, data.name);
+        result.created = new Date(data.created);
+        result.updated = new Date(data.updated);
+        return result;
       });
   }
 };

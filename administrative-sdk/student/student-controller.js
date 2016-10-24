@@ -28,11 +28,11 @@ module.exports = class StudentController {
 
     return this.connection._secureAjaxPost(url, fd)
       .then(data => {
-        // Update the id in case domain model didn't contain one.
-        student.id = data.id;
-        student.created = new Date(data.created);
-        student.updated = new Date(data.updated);
-        return student;
+        const result = new Student(data.organisationId, data.id, data.firstName, data.lastName, data.gender,
+          data.birthYear);
+        result.created = new Date(data.created);
+        result.updated = new Date(data.updated);
+        return result;
       });
   }
 

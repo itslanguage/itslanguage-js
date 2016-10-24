@@ -36,16 +36,14 @@ module.exports = class ChoiceChallengeController {
     });
     return this.connection._secureAjaxPost(url, fd)
       .then(data => {
-        // Update the id in case domain model didn't contain one.
-        choiceChallenge.id = data.id;
-        choiceChallenge.created = new Date(data.created);
-        choiceChallenge.updated = new Date(data.updated);
-        choiceChallenge.status = data.status;
-        choiceChallenge.choices = [];
+        const result = new ChoiceChallenge(data.organisationId, data.id, data.question, data.choices);
+        result.created = new Date(data.created);
+        result.updated = new Date(data.updated);
+        result.status = data.status;
         data.choices.forEach(pair => {
-          choiceChallenge.choices.push(pair.choice);
+          result.choices.push(pair.choice);
         });
-        return choiceChallenge;
+        return result;
       });
   }
 
