@@ -107,6 +107,7 @@ describe('PronunciationChallenge API interaction test', () => {
       '/YsjdG37bUGseu8-bsJ';
     const content = {
       id: '1',
+      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'test',

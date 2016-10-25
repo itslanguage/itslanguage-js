@@ -38,13 +38,13 @@ module.exports = class PronunciationChallengeController {
 
     return this.connection._secureAjaxPost(url, fd)
       .then(data => {
-        // Update the id in case domain model didn't contain one.
-        challenge.id = data.id;
-        challenge.created = new Date(data.created);
-        challenge.updated = new Date(data.updated);
-        challenge.referenceAudioUrl = data.referenceAudioUrl;
-        challenge.status = data.status;
-        return challenge;
+        const result = new PronunciationChallenge(data.organisationId, data.id, data.transcription);
+        result.created = new Date(data.created);
+        result.updated = new Date(data.updated);
+        result.referenceAudio = challenge.referenceAudio;
+        result.referenceAudioUrl = data.referenceAudioUrl;
+        result.status = data.status;
+        return result;
       });
   }
 

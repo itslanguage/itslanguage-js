@@ -36,12 +36,12 @@ module.exports = class SpeechChallengeController {
 
     return this.connection._secureAjaxPost(url, fd)
       .then(data => {
-        // Update the id in case domain model didn't contain one.
-        speechChallenge.id = data.id;
-        speechChallenge.created = new Date(data.created);
-        speechChallenge.updated = new Date(data.updated);
-        speechChallenge.referenceAudioUrl = data.referenceAudioUrl || null;
-        return speechChallenge;
+        const result = new SpeechChallenge(data.organisationId, data.id, data.topic);
+        result.created = new Date(data.created);
+        result.updated = new Date(data.updated);
+        result.referenceAudio = speechChallenge.referenceAudio;
+        result.referenceAudioUrl = data.referenceAudioUrl || null;
+        return result;
       });
   }
 
