@@ -17,6 +17,10 @@ describe('SpeechChallenge object test', () => {
     expect(() => {
       new SpeechChallenge('fb', null, 'hi', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
+
+    expect(() => {
+      new SpeechChallenge('fb', '2', 66, '1');
+    }).toThrowError('topic parameter of type "string" is required');
   });
   it('should instantiate a SpeechChallenge with referenceAudio', () => {
     const blob = new Blob(['1234567890']);
@@ -39,6 +43,12 @@ describe('SpeechChallenge object test', () => {
 });
 
 describe('SpeechChallenge API interaction test', () => {
+  let url;
+  const api = new Connection({
+    authPrincipal: 'principal',
+    authPassword: 'secret'
+  });
+  const controller = new SpeechChallengeController(api);
   beforeEach(() => {
     jasmine.Ajax.install();
 
@@ -46,20 +56,63 @@ describe('SpeechChallenge API interaction test', () => {
     // Workaround by attaching a spy while appending to FormData.
     // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
+    url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
   });
 
   afterEach(() => {
     jasmine.Ajax.uninstall();
   });
 
+  it('should reject creation when organisationId is not present', done => {
+    const challenge = new SpeechChallenge(null, '1', 'Hi');
+    controller.createSpeechChallenge(challenge)
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should create a challenge without an id', done => {
+    const challenge = new SpeechChallenge('fb', null, 'Hi');
+    const content = {
+      id: '1',
+      organisationId: 'fb',
+      created: '2014-12-31T23:59:59Z',
+      updated: '2014-12-31T23:59:59Z',
+      topic: 'Hi'
+    };
+    const fakeResponse = new Response(JSON.stringify(content), {
+      status: 201,
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    controller.createSpeechChallenge(challenge)
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
+        expect(FormData.prototype.append.calls.count()).toEqual(1);
+        const stringDate = '2014-12-31T23:59:59Z';
+        const outChallenge = new SpeechChallenge('fb', '1', 'Hi');
+        outChallenge.created = new Date(stringDate);
+        outChallenge.updated = new Date(stringDate);
+        expect(result).toEqual(outChallenge);
+      })
+      .catch(error => {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
+  });
+
   it('should create a new challenge', done => {
     const challenge = new SpeechChallenge('fb', '1', 'Hi');
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    const controller = new SpeechChallengeController(api);
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
     const content = {
       id: '1',
       organisationId: 'fb',
@@ -98,12 +151,6 @@ describe('SpeechChallenge API interaction test', () => {
   it('should create a new challenge with referenceAudio', done => {
     const blob = new Blob(['1234567890']);
     const challenge = new SpeechChallenge('fb', '1', 'Hi', blob);
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    const controller = new SpeechChallengeController(api);
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
     const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
     const content = {
@@ -146,13 +193,7 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should handle errors while creating a new challenge', done => {
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    const controller = new SpeechChallengeController(api);
     const challenge = new SpeechChallenge('fb', '1', 'Hi');
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
     const content = {
       message: 'Validation failed',
       errors: [
@@ -192,11 +233,7 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should get an existing speech challenge', done => {
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
+    url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/speech/4';
     const content = {
       id: '4',
@@ -211,7 +248,6 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const controller = new SpeechChallengeController(api);
     controller.getSpeechChallenge('fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
@@ -230,11 +266,6 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should get a list of existing challenges', done => {
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
     const content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
@@ -248,7 +279,6 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const controller = new SpeechChallengeController(api);
     controller.listSpeechChallenges('fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
