@@ -4,6 +4,18 @@ const StudentController = require('../administrative-sdk/student/student-control
 const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('Student object test', () => {
+  it('should not instantiate a Student with an organisationId as number', () => {
+    expect(() => {
+      new Student(1);
+    }).toThrowError('organisationId parameter of type "string|null" is required');
+  });
+
+  it('should not instantiate a Student with an id as number', () => {
+    expect(() => {
+      new Student('1', 1);
+    }).toThrowError('id parameter of type "string|null" is required');
+  });
+
   it('should instantiate a Student without id', () => {
     const s = new Student();
     expect(s).toBeDefined();
@@ -34,6 +46,23 @@ describe('Student API interaction test', () => {
 
   afterEach(() => {
     jasmine.Ajax.uninstall();
+  });
+
+  it('should reject creation when student.organisationId is not present', done => {
+    const student = new Student(null, '1', 'Mark');
+    const api = new Connection({
+      authPrincipal: 'principal',
+      authPassword: 'secret'
+    });
+    const controller = new StudentController(api);
+    controller.createStudent(student)
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
   });
 
   it('should create a new student through API', done => {
