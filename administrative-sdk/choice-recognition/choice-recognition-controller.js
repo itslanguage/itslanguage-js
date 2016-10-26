@@ -30,7 +30,7 @@ module.exports = class ChoiceRecognitionController {
         // RPC error callback
         res => {
           console.error('RPC error returned:', res.error);
-          throw res;
+          return Promise.reject(res);
         }
       );
   }
@@ -56,7 +56,7 @@ module.exports = class ChoiceRecognitionController {
       // RPC error callback
       res => {
         console.error('RPC error returned:', res.error);
-        throw res;
+        return Promise.reject(res);
       }
     );
   }

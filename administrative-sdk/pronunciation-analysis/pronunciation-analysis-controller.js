@@ -63,7 +63,7 @@ module.exports = class PronunciationAnalysisController {
       [this.connection._analysisId, challenge.organisationId, challenge.id])
       .catch(res => {
         Connection.logRPCError(res);
-        throw res;
+        return Promise.reject(res);
       })
       .then(analysisId => {
         console.log('Challenge initialised for analysisId: ' + this.connection._analysisId);
@@ -73,7 +73,7 @@ module.exports = class PronunciationAnalysisController {
         [this.connection._analysisId]))
       .catch(res => {
         Connection.logRPCError(res);
-        throw res;
+        return Promise.reject(res);
       })
       .then(alignment => {
         self.referenceAlignment = alignment;
@@ -100,7 +100,7 @@ module.exports = class PronunciationAnalysisController {
       })
       .catch(res => {
         Connection.logRPCError(res);
-        throw res;
+        return Promise.reject(res);
       });
   }
 
