@@ -1,4 +1,4 @@
-const msgpack = require('msgpack-js-v5');
+const msgpack = require('msgpack-lite');
 
 module.exports = class MsgPackUtils {
   static _arrayBufferToMsgPack(buffer) {

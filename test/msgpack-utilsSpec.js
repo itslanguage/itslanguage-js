@@ -1,5 +1,5 @@
 const MsgPackUtils = require('../administrative-sdk/utils/msgpack-utils');
-const msgpack = require('msgpack-js-v5');
+const msgpack = require('msgpack-lite');
 
 describe('MsgPackUtils', () => {
   it('should encode binary data and serialize to msgpack', () => {
