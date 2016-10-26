@@ -29,7 +29,7 @@ module.exports = class SpeechRecordingController {
       // RPC error callback
       res => {
         Connection.logRPCError(res);
-        throw res;
+        return Promise.reject(res);
       }
     );
   }
@@ -53,7 +53,7 @@ module.exports = class SpeechRecordingController {
       })
       .catch(res => {
         Connection.logRPCError(res);
-        throw res;
+        return Promise.reject(res);
       });
   }
 
