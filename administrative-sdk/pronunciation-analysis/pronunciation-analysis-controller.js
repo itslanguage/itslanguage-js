@@ -63,6 +63,7 @@ module.exports = class PronunciationAnalysisController {
       [this.connection._analysisId, challenge.organisationId, challenge.id])
       .catch(res => {
         Connection.logRPCError(res);
+        throw res;
       })
       .then(analysisId => {
         console.log('Challenge initialised for analysisId: ' + this.connection._analysisId);
@@ -72,6 +73,7 @@ module.exports = class PronunciationAnalysisController {
         [this.connection._analysisId]))
       .catch(res => {
         Connection.logRPCError(res);
+        throw res;
       })
       .then(alignment => {
         self.referenceAlignment = alignment;
@@ -88,7 +90,7 @@ module.exports = class PronunciationAnalysisController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    this.connection._session.call('nl.itslanguage.pronunciation.init_audio',
+    return this.connection._session.call('nl.itslanguage.pronunciation.init_audio',
       [this.connection._analysisId, specs.audioFormat], specs.audioParameters)
       .then(analysisId => {
         console.log('Accepted audio parameters for analysisId after init_audio: ' + this.connection._analysisId);
@@ -98,7 +100,7 @@ module.exports = class PronunciationAnalysisController {
       })
       .catch(res => {
         Connection.logRPCError(res);
-        return Promise.reject(res);
+        throw res;
       });
   }
 
@@ -244,11 +246,16 @@ module.exports = class PronunciationAnalysisController {
               });
 
               p.then(() => {
-                self.pronunciationAnalysisInitAudio(recorder, startStreaming);
+                self.pronunciationAnalysisInitAudio(recorder, startStreaming)
+                  .catch(reject);
               });
-            });
+            })
+            .catch(reject);
         })
-        .catch(Connection.logRPCError);
+        .catch(res => {
+          Connection.logRPCError(res);
+          reject(res);
+        });
     });
   }
 

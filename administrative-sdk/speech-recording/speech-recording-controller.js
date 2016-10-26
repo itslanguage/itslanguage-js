@@ -29,6 +29,7 @@ module.exports = class SpeechRecordingController {
       // RPC error callback
       res => {
         Connection.logRPCError(res);
+        throw res;
       }
     );
   }
@@ -42,7 +43,7 @@ module.exports = class SpeechRecordingController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the recording when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    this.connection._session.call('nl.itslanguage.recording.init_audio',
+    return this.connection._session.call('nl.itslanguage.recording.init_audio',
       [this.connection._recordingId, specs.audioFormat], specs.audioParameters)
       .then(recordingId => {
         console.log('Accepted audio parameters for recordingId after init_audio: ' + this.connection._recordingId);
@@ -52,7 +53,7 @@ module.exports = class SpeechRecordingController {
       })
       .catch(res => {
         Connection.logRPCError(res);
-        return Promise.reject(res);
+        throw res;
       });
   }
 
@@ -96,11 +97,6 @@ module.exports = class SpeechRecordingController {
     return new Promise((resolve, reject) => {
       self.connection._recordingId = null;
 
-      // Either there was an unexpected error, or the audio failed to
-      // align, in which case no recording is provided, but just the
-      // basic metadata.
-      const errorEncountered = reject;
-
       function _cb(data) {
         const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(
@@ -123,7 +119,7 @@ module.exports = class SpeechRecordingController {
           // RPC error callback
           res => {
             Connection.logRPCError(res);
-            errorEncountered(res);
+            reject(res);
           }
         );
         recorder.removeEventListener('recorded', recordedCb);
@@ -148,7 +144,7 @@ module.exports = class SpeechRecordingController {
           // RPC error callback
           res => {
             Connection.logRPCError(res);
-            errorEncountered(res);
+            reject(res);
           }
         );
       }
@@ -171,12 +167,16 @@ module.exports = class SpeechRecordingController {
                     recorder.addEventListener('ready', resolve_);
                   }
                 });
-                p.then(self.speechRecordingInitAudio(recorder, startStreaming));
-              });
+                p.then(() => {
+                  self.speechRecordingInitAudio(recorder, startStreaming)
+                    .catch(reject);
+                });
+              })
+            .catch(reject);
         },
           res => {
             Connection.logRPCError(res);
-            errorEncountered(res);
+            reject(res);
           });
     });
   }
