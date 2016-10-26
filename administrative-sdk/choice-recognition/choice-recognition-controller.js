@@ -30,7 +30,6 @@ module.exports = class ChoiceRecognitionController {
         // RPC error callback
         res => {
           console.error('RPC error returned:', res.error);
-          throw res;
         }
       );
   }
@@ -44,7 +43,7 @@ module.exports = class ChoiceRecognitionController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    return this.connection._session.call('nl.itslanguage.choice.init_audio',
+    this.connection._session.call('nl.itslanguage.choice.init_audio',
       [this.connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
       recognitionId => {
@@ -56,7 +55,6 @@ module.exports = class ChoiceRecognitionController {
       // RPC error callback
       res => {
         console.error('RPC error returned:', res.error);
-        throw res;
       }
     );
   }
@@ -175,15 +173,12 @@ module.exports = class ChoiceRecognitionController {
                 }
               });
               p.then(() => {
-                self.choiceRecognitionInitAudio(recorder, dataavailableCb)
-                  .catch(reject);
+                self.choiceRecognitionInitAudio(recorder, dataavailableCb);
               });
-            })
-            .catch(reject);
+            });
         })
         .catch(res => {
           console.error('RPC error returned:', res.error);
-          reject(res);
         });
 
       // Stop listening when the audio recorder stopped.
