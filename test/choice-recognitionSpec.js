@@ -8,14 +8,6 @@ const Student = require('../administrative-sdk/student/student');
 const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('ChoiceRecognition Websocket API interaction test', () => {
-  beforeEach(() => {
-    jasmine.Ajax.install();
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
-  });
-
   let api;
   let RecorderMock;
   let SessionMock;
@@ -25,6 +17,84 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   let fakeResponse;
   let stringDate;
   let controller;
+
+  beforeEach(() => {
+    jasmine.Ajax.install();
+    api = new Connection({
+      wsToken: 'foo',
+      wsUrl: 'ws://foo.bar',
+      authPrincipal: 'principal',
+      authPassword: 'secret'
+    });
+    RecorderMock = function() {
+      this.getAudioSpecs = function() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      };
+      this.hasUserMediaApproval = function() {
+        return true;
+      };
+      this.isRecording = function() {
+        return false;
+      };
+      this.addEventListener = function(name, method) {
+        if (name === 'dataavailable') {
+          method(1);
+        } else if (name === 'recorded') {
+          setTimeout(() => {
+            method();
+          }, 500);
+        } else {
+          method();
+        }
+      };
+      this.removeEventListener = function() {
+      };
+
+      this.hasUserMediaApproval = function() {
+        return true;
+      };
+    };
+
+    SessionMock = function() {
+      this.call = function() {
+        const d = autobahn.when.defer();
+        d.resolve(fakeResponse);
+        return d.promise;
+      };
+    };
+
+    challenge = new ChoiceChallenge('fb', '4', null, []);
+    recorder = new RecorderMock();
+    session = new SessionMock();
+    stringDate = '2014-12-31T23:59:59Z';
+    fakeResponse = {
+      created: new Date(stringDate),
+      updated: new Date(stringDate),
+      audioFormat: 'audio/wave',
+      audioParameters: {
+        channels: 1,
+        sampleWidth: 16,
+        sampleRate: 48000
+      },
+      audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+    };
+    api._session = new SessionMock();
+    spyOn(api._session, 'call').and.callThrough();
+    spyOn(api, 'addAccessToken').and.callFake(url => url + 'token');
+    controller = new ChoiceRecognitionController(api);
+  });
+
+  afterEach(() => {
+    jasmine.Ajax.uninstall();
+  });
 
   function setupCalling(urlEndpoint, rejection) {
     session.call = name => {
@@ -38,88 +108,13 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     };
     api._session = session;
   }
-
-  describe('Streaming', () => {
-    beforeEach(() => {
-      api = new Connection({
-        wsToken: 'foo',
-        wsUrl: 'ws://foo.bar',
-        authPrincipal: 'principal',
-        authPassword: 'secret'
-      });
-      RecorderMock = function() {
-        this.getAudioSpecs = function() {
-          return {
-            audioFormat: 'audio/wave',
-            audioParameters: {
-              channels: 1,
-              sampleWidth: 16,
-              sampleRate: 48000
-            },
-            audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
-          };
-        };
-        this.hasUserMediaApproval = function() {
-          return true;
-        };
-        this.isRecording = function() {
-          return false;
-        };
-        this.addEventListener = function(name, method) {
-          if (name === 'dataavailable') {
-            method(1);
-          } else if (name === 'recorded') {
-            setTimeout(() => {
-              method();
-            }, 500);
-          } else {
-            method();
-          }
-        };
-        this.removeEventListener = function() {
-        };
-
-        this.hasUserMediaApproval = function() {
-          return true;
-        };
-      };
-
-      SessionMock = function() {
-        this.call = function() {
-          const d = autobahn.when.defer();
-          d.resolve(fakeResponse);
-          return d.promise;
-        };
-      };
-
-      challenge = new ChoiceChallenge('fb', '4', null, []);
-      recorder = new RecorderMock();
-      session = new SessionMock();
-      stringDate = '2014-12-31T23:59:59Z';
-      fakeResponse = {
-        created: new Date(stringDate),
-        updated: new Date(stringDate),
-        audioFormat: 'audio/wave',
-        audioParameters: {
-          channels: 1,
-          sampleWidth: 16,
-          sampleRate: 48000
-        },
-        audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
-      };
-      api._session = new SessionMock();
-      spyOn(api._session, 'call').and.callThrough();
-      spyOn(api, 'addAccessToken').and.callFake(url => url + 'token');
-      controller = new ChoiceRecognitionController(api);
-    });
-
-    it('should fail streaming when websocket connection is closed', done => {
-      api = new Connection({});
-      controller = new ChoiceRecognitionController(api);
+  it('should fail streaming when websocket connection is closed', done => {
+    api = new Connection({});
+    controller = new ChoiceRecognitionController(api);
       // Save WebSocket
-      const old = window.WebSocket;
-      window.WebSocket = jasmine.createSpy('WebSocket');
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+    const old = window.WebSocket;
+    window.WebSocket = jasmine.createSpy('WebSocket');
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be thrown!');
         })
@@ -129,10 +124,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           window.WebSocket = old;
         })
         .then(done);
-    });
+  });
 
-    it('should fail streaming when challenge is not present', done => {
-      controller.startStreamingChoiceRecognition(null, null)
+  it('should fail streaming when challenge is not present', done => {
+    controller.startStreamingChoiceRecognition(null, null)
         .then(() => {
           fail('No result should be returned');
         })
@@ -140,10 +135,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.message).toEqual('"challenge" parameter is required or invalid');
         })
         .then(done);
-    });
+  });
 
-    it('should fail streaming when challenge is undefined', done => {
-      controller.startStreamingChoiceRecognition(undefined, null)
+  it('should fail streaming when challenge is undefined', done => {
+    controller.startStreamingChoiceRecognition(undefined, null)
         .then(() => {
           fail('No result should be returned');
         })
@@ -151,11 +146,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.message).toEqual('"challenge" parameter is required or invalid');
         })
         .then(done);
-    });
+  });
 
-    it('should fail streaming when challenge.id is not present', done => {
-      challenge = new ChoiceChallenge('1', null, null, null);
-      controller.startStreamingChoiceRecognition(challenge, null)
+  it('should fail streaming when challenge.id is not present', done => {
+    challenge = new ChoiceChallenge('1', null, null, null);
+    controller.startStreamingChoiceRecognition(challenge, null)
         .then(() => {
           fail('No result should be returned');
         })
@@ -163,11 +158,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.message).toEqual('challenge.id field is required');
         })
         .then(done);
-    });
+  });
 
-    it('should fail streaming when challenge.organisationId is not present', done => {
-      challenge = new ChoiceChallenge('', '2', null, null);
-      controller.startStreamingChoiceRecognition(challenge, null)
+  it('should fail streaming when challenge.organisationId is not present', done => {
+    challenge = new ChoiceChallenge('', '2', null, null);
+    controller.startStreamingChoiceRecognition(challenge, null)
         .then(() => {
           fail('No result should be returned');
         })
@@ -175,13 +170,13 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.message).toEqual('challenge.organisationId field is required');
         })
         .then(done);
-    });
+  });
 
-    it('should fail streaming when recording is already recording', done => {
-      recorder.isRecording = () => true;
-      api._session = {};
-      challenge = new ChoiceChallenge('1', '4', null, null);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  it('should fail streaming when recording is already recording', done => {
+    recorder.isRecording = () => true;
+    api._session = {};
+    challenge = new ChoiceChallenge('1', '4', null, null);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('No result should be returned');
         })
@@ -189,15 +184,15 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.message).toEqual('Recorder should not yet be recording.');
         })
         .then(done);
-    });
+  });
 
-    it('should fail streaming when there is a session in progress', done => {
-      recorder.isRecording = () => false;
-      api._recognitionId = '5';
-      api._session = {};
-      controller = new ChoiceRecognitionController(api);
-      challenge = new ChoiceChallenge('1', '4', null, null);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  it('should fail streaming when there is a session in progress', done => {
+    recorder.isRecording = () => false;
+    api._recognitionId = '5';
+    api._session = {};
+    controller = new ChoiceRecognitionController(api);
+    challenge = new ChoiceChallenge('1', '4', null, null);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('No result should be returned');
         })
@@ -205,10 +200,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.message).toEqual('Session with recognitionId 5 still in progress.');
         })
         .then(done);
-    });
+  });
 
-    it('should start streaming a new choice recognition', done => {
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  it('should start streaming a new choice recognition', done => {
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           expect(api._session.call).toHaveBeenCalled();
           expect(api._session.call).toHaveBeenCalledWith(
@@ -219,10 +214,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           fail('No error should be thrown ' + error);
         })
         .then(done);
-    });
+  });
 
-    it('should start streaming a new choice recognition without trimming', done => {
-      controller.startStreamingChoiceRecognition(challenge, recorder, false)
+  it('should start streaming a new choice recognition without trimming', done => {
+    controller.startStreamingChoiceRecognition(challenge, recorder, false)
         .then(() => {
           expect(api._session.call).toHaveBeenCalled();
           expect(api._session.call).toHaveBeenCalledWith(
@@ -233,20 +228,20 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           fail('No error should be thrown ' + error);
         })
         .then(done);
-    });
+  });
 
-    it('should handle errors during streaming', done => {
-      setupCalling('write',
-        {
-          message: 'Encountered an error during writing',
-          error: 'error',
-          studentId: '1',
-          id: '2',
-          created: stringDate,
-          updated: stringDate,
-          audioUrl: fakeResponse.audioUrl
-        });
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  it('should handle errors during streaming', done => {
+    setupCalling('write',
+      {
+        message: 'Encountered an error during writing',
+        error: 'error',
+        studentId: '1',
+        id: '2',
+        created: stringDate,
+        updated: stringDate,
+        audioUrl: fakeResponse.audioUrl
+      });
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(result => fail('An error should be thrown ' + JSON.stringify(result)))
         .catch(error => {
           expect(error.message).toEqual('Encountered an error during writing');
@@ -257,13 +252,13 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
         })
         .then(done);
-    });
+  });
 
-    it('should wait to stream when there is no user approval yet', done => {
-      recorder.hasUserMediaApproval = () => false;
-      spyOn(recorder, 'addEventListener').and.callThrough();
-      controller = new ChoiceRecognitionController(api);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  it('should wait to stream when there is no user approval yet', done => {
+    recorder.hasUserMediaApproval = () => false;
+    spyOn(recorder, 'addEventListener').and.callThrough();
+    controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           expect(recorder.addEventListener).toHaveBeenCalledWith('ready', jasmine.any(Function));
         })
@@ -271,11 +266,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           fail('no error should be thrown ' + error);
         })
         .then(done);
-    });
-    it('should handle errors while initializing challenge', done => {
-      setupCalling('init_challenge', {error: 'error123'});
-      controller = new ChoiceRecognitionController(api);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  });
+  it('should handle errors while initializing challenge', done => {
+    setupCalling('init_challenge', {error: 'error123'});
+    controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
         })
@@ -283,12 +278,12 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.error).toEqual('error123');
         })
         .then(done);
-    });
+  });
 
-    it('should handle errors while initializing audio', done => {
-      setupCalling('init_audio', {error: 'error123'});
-      controller = new ChoiceRecognitionController(api);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  it('should handle errors while initializing audio', done => {
+    setupCalling('init_audio', {error: 'error123'});
+    controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
         })
@@ -296,12 +291,12 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.error).toEqual('error123');
         })
         .then(done);
-    });
+  });
 
-    it('should handle errors while initializing recognition', done => {
-      setupCalling('init_recognition', {error: 'error123'});
-      controller = new ChoiceRecognitionController(api);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+  it('should handle errors while initializing recognition', done => {
+    setupCalling('init_recognition', {error: 'error123'});
+    controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
         })
@@ -309,28 +304,28 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.error).toEqual('error123');
         })
         .then(done);
-    });
+  });
 
-    it('should handle errors while initializing recognition with a failed recognition', done => {
-      setupCalling('recognise',
-        {
-          error: 'nl.itslanguage.recognition_failed',
-          kwargs: {
-            recognition: {
-              message: null
-            },
-            analysis: {
-              message: 'Encountered an error',
-              studentId: '1',
-              id: '2',
-              created: stringDate,
-              updated: stringDate,
-              audioUrl: fakeResponse.audioUrl
-            }
+  it('should handle errors while initializing recognition with a failed recognition', done => {
+    setupCalling('recognise',
+      {
+        error: 'nl.itslanguage.recognition_failed',
+        kwargs: {
+          recognition: {
+            message: null
+          },
+          analysis: {
+            message: 'Encountered an error',
+            studentId: '1',
+            id: '2',
+            created: stringDate,
+            updated: stringDate,
+            audioUrl: fakeResponse.audioUrl
           }
-        });
-      controller = new ChoiceRecognitionController(api);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+        }
+      });
+    controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
         })
@@ -343,28 +338,28 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
         })
         .then(done);
-    });
+  });
 
-    it('should handle errors while initializing recognition with a unhandled error', done => {
-      setupCalling('recognise',
-        {
-          error: 'UNKNOWN ERROR',
-          kwargs: {
-            recognition: {
-              message: null
-            },
-            analysis: {
-              message: 'Encountered an error',
-              studentId: '1',
-              id: '2',
-              created: stringDate,
-              updated: stringDate,
-              audioUrl: fakeResponse.audioUrl
-            }
+  it('should handle errors while initializing recognition with a unhandled error', done => {
+    setupCalling('recognise',
+      {
+        error: 'UNKNOWN ERROR',
+        kwargs: {
+          recognition: {
+            message: null
+          },
+          analysis: {
+            message: 'Encountered an error',
+            studentId: '1',
+            id: '2',
+            created: stringDate,
+            updated: stringDate,
+            audioUrl: fakeResponse.audioUrl
           }
-        });
-      controller = new ChoiceRecognitionController(api);
-      controller.startStreamingChoiceRecognition(challenge, recorder)
+        }
+      });
+    controller = new ChoiceRecognitionController(api);
+    controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
         })
@@ -377,7 +372,6 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
         })
         .then(done);
-    });
   });
 });
 
