@@ -113,6 +113,71 @@ describe('ChoiceChallenge API interaction test', () => {
       .then(done);
   });
 
+  it('should create a challenge without id', done => {
+    const challenge = new ChoiceChallenge('fb', null, 'q', ['a', 'b']);
+    const stringDate = '2014-12-31T23:59:59Z';
+    challenge.created = new Date(stringDate);
+    challenge.updated = new Date(stringDate);
+    challenge.status = 'preparing';
+
+    const url = 'https://api.itslanguage.nl/organisations/fb' +
+      '/challenges/choice';
+
+    const api = new Connection({
+      authPrincipal: 'principal',
+      authPassword: 'secret'
+    });
+    const controller = new ChoiceChallengeController(api);
+    const content = {
+      id: '1',
+      organisationId: 'fb',
+      created: '2014-12-31T23:59:59Z',
+      updated: '2014-12-31T23:59:59Z',
+      question: 'q',
+      status: 'preparing',
+      choices: [{
+        choice: 'a',
+        audioUrl: ''
+      }]
+    };
+
+    const fakeResponse = new Response(JSON.stringify(content), {
+      status: 201,
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    controller.createChoiceChallenge(challenge)
+      .then(() => {
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
+        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'b');
+        expect(FormData.prototype.append.calls.count()).toEqual(3);
+      })
+      .catch(error => {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
+  });
+
+  it('should reject on missing organisationId', done => {
+    const challenge = new ChoiceChallenge('', '1', 'q', ['a']);
+    const api = new Connection({
+      authPrincipal: 'principal',
+      authPassword: 'secret'
+    });
+    const controller = new ChoiceChallengeController(api);
+    controller.createChoiceChallenge(challenge)
+      .then(() => fail('No result should be returned'))
+      .catch(error => expect(error.message).toEqual('organisationId field is required'))
+      .then(done);
+  });
+
   it('should handle errors while creating a new challenge', done => {
     const challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
 
