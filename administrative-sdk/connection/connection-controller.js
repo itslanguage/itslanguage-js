@@ -84,6 +84,14 @@ module.exports = class Connection {
    *
    */
   webSocketConnect(accessToken) {
+    this._webSocketConnect(accessToken, autobahn);
+  }
+
+  /**
+   * Create a connection to the websocket server.
+   *
+   */
+  _webSocketConnect(accessToken, autobahnSource) {
     /**
      * This callback is fired during Ticket-based authentication
      *
@@ -100,7 +108,7 @@ module.exports = class Connection {
     // Open a websocket connection for streaming audio
     try {
       // Set up WAMP connection to router
-      connection = new autobahn.Connection({
+      connection = new autobahnSource.Connection({
         url: authUrl,
         realm: 'default',
         // the following attributes must be set for Ticket-based authentication

@@ -68,6 +68,13 @@ describe('SpeechRecording object test', () => {
 });
 
 describe('SpeechRecording API interaction test', () => {
+  const api = new Connection({
+    authPrincipal: 'principal',
+    authPassword: 'secret'
+  });
+  const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+  const controller = new SpeechRecordingController(api);
+
   beforeEach(() => {
     jasmine.Ajax.install();
 
@@ -81,14 +88,44 @@ describe('SpeechRecording API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
+  it('should reject to get a recording if challenge is not present', done => {
+    controller.getSpeechRecording(null, '5')
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.id field is required');
+      })
+      .then(done);
+  });
+
+  it('should reject to get a recording if challenge.id is not present', done => {
+    const challenge = new SpeechChallenge('fb', '');
+    controller.getSpeechRecording(challenge, '5')
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.id field is required');
+      })
+      .then(done);
+  });
+
+  it('should reject to get a recording if challenge.organisationId is not present', done => {
+    const challenge = new SpeechChallenge('', '4');
+    controller.getSpeechRecording(challenge, '5')
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.organisationId field is required');
+      })
+      .then(done);
+  });
+
   it('should get an existing speech recording', done => {
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
     const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech' +
       '/4/recordings/5';
-    const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = {
       id: '5',
       created: '2014-12-31T23:59:59Z',
@@ -105,7 +142,6 @@ describe('SpeechRecording API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     const challenge = new SpeechChallenge('fb', '4');
-    const controller = new SpeechRecordingController(api);
     controller.getSpeechRecording(challenge, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
@@ -126,14 +162,44 @@ describe('SpeechRecording API interaction test', () => {
       .then(done);
   });
 
+  it('should reject to get a list of recordings if challenge is not present', done => {
+    controller.listSpeechRecordings(null)
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.id field is required');
+      })
+      .then(done);
+  });
+
+  it('should reject to get a list of recordings if challenge.id is not present', done => {
+    const challenge = new SpeechChallenge('fb', '');
+    controller.listSpeechRecordings(challenge)
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.id field is required');
+      })
+      .then(done);
+  });
+
+  it('should reject to get a list of recordings if challenge.organisationId is not present', done => {
+    const challenge = new SpeechChallenge('', '4');
+    controller.listSpeechRecordings(challenge)
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.organisationId field is required');
+      })
+      .then(done);
+  });
+
   it('should get a list of existing speech recordings', done => {
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
     const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech' +
       '/4/recordings';
-    const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = [{
       id: '5',
       created: '2014-12-31T23:59:59Z',
@@ -149,7 +215,6 @@ describe('SpeechRecording API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const challenge = new SpeechChallenge('fb', '4');
-    const controller = new SpeechRecordingController(api);
     controller.listSpeechRecordings(challenge)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
@@ -172,66 +237,49 @@ describe('SpeechRecording API interaction test', () => {
 });
 
 describe('Speech Recording Websocket API interaction test', () => {
+  let api;
+  let fakeResponse;
+  let RecorderMock;
+  let SessionMock;
+  let challenge;
+  let recorder;
+  let session;
+  let stringDate;
+  let controller;
+  function setupCalling(urlEndpoint, rejection) {
+    session.call = name => {
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.recording.' + urlEndpoint) {
+        d.reject(rejection);
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+    api._session = session;
+  }
+
   beforeEach(() => {
     jasmine.Ajax.install();
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
-  });
-
-  it('should fail streaming when websocket connection is closed', done => {
-    const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
-    });
-
-    // Mock the audio recorder
-    function RecorderMock() {
-      this.getAudioSpecs = function() {
-        return {
-          audioFormat: 'audio/wave',
-          audioParameters: {
-            channels: 1,
-            sampleWidth: 16,
-            sampleRate: 48000
-          },
-          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
-        };
-      };
-    }
-
-    // Save WebSocket
-    const old = window.WebSocket;
-    window.WebSocket = jasmine.createSpy('WebSocket');
-
-    const challenge = new SpeechChallenge('fb', '4');
-    const recorder = new RecorderMock();
-    const controller = new SpeechRecordingController(api);
-    const expectedMessage = 'WebSocket connection was not open.';
-
-    controller.startStreamingSpeechRecording(challenge, recorder)
-      .then(() => {
-        fail('An error should be thrown!');
-      })
-      .catch(error => {
-        expect(error.message).toEqual(expectedMessage);
-        // Restore WebSocket
-        window.WebSocket = old;
-      })
-      .then(done);
-  });
-
-  it('should start streaming a new speech recording', done => {
-    const api = new Connection({
+    api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar',
       authPrincipal: 'principal',
       authPassword: 'secret'
     });
-
-    // Mock the audio recorder
-    function RecorderMock() {
+    fakeResponse = {
+      created: new Date(stringDate),
+      updated: new Date(stringDate),
+      audioFormat: 'audio/wave',
+      audioParameters: {
+        channels: 1,
+        sampleWidth: 16,
+        sampleRate: 48000
+      },
+      audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+    };
+    RecorderMock = function() {
       this.getAudioSpecs = function() {
         return {
           audioFormat: 'audio/wave',
@@ -256,6 +304,8 @@ describe('Speech Recording Websocket API interaction test', () => {
         } else if (name === 'dataavailable') {
           func('EventFired');
           this.recorded('recordDone');
+        } else {
+          func();
         }
       };
       this.removeEventListener = function() {
@@ -264,34 +314,203 @@ describe('Speech Recording Websocket API interaction test', () => {
       this.hasUserMediaApproval = function() {
         return true;
       };
-    }
-
-    const challenge = new SpeechChallenge('fb', '4');
-    const recorder = new RecorderMock();
-    const stringDate = '2014-12-31T23:59:59Z';
-    const fakeResponse = {
-      created: new Date(stringDate),
-      updated: new Date(stringDate),
-      audioFormat: 'audio/wave',
-      audioParameters: {
-        channels: 1,
-        sampleWidth: 16,
-        sampleRate: 48000
-      },
-      audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
     };
-
-    function SessionMock() {
+    SessionMock = function() {
       this.call = function() {
         const d = autobahn.when.defer();
         d.resolve(fakeResponse);
         return d.promise;
       };
-    }
-
+    };
+    challenge = new SpeechChallenge('fb', '4');
+    recorder = new RecorderMock();
+    session = new SessionMock();
+    stringDate = '2014-12-31T23:59:59Z';
+    controller = new SpeechRecordingController(api);
     api._session = new SessionMock();
+  });
+
+  afterEach(() => {
+    jasmine.Ajax.uninstall();
+  });
+
+  it('should fail streaming when challenge is not present', done => {
+    controller.startStreamingSpeechRecording(null, null)
+      .then(() => {
+        fail('No result should be returned');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('"challenge" parameter is required or invalid');
+      })
+      .then(done);
+  });
+
+  it('should fail streaming when challenge is undefined', done => {
+    controller.startStreamingSpeechRecording(undefined, null)
+      .then(() => {
+        fail('No result should be returned');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('"challenge" parameter is required or invalid');
+      })
+      .then(done);
+  });
+
+  it('should fail streaming when challenge.id is not present', done => {
+    challenge = new SpeechChallenge('1', '', '', null);
+    controller.startStreamingSpeechRecording(challenge, null)
+      .then(() => {
+        fail('No result should be returned');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.id field is required');
+      })
+      .then(done);
+  });
+
+  it('should fail streaming when challenge.organisationId is not present', done => {
+    challenge = new SpeechChallenge('', '2', '', null);
+    controller.startStreamingSpeechRecording(challenge, null)
+      .then(() => {
+        fail('No result should be returned');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challenge.organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should fail streaming when recording is already recording', done => {
+    recorder.isRecording = () => true;
+    api._session = {};
+    challenge = new SpeechChallenge('1', '4', '', null);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('No result should be returned');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('Recorder should not yet be recording.');
+      })
+      .then(done);
+  });
+
+  it('should fail streaming when there is a session in progress', done => {
+    recorder.isRecording = () => false;
+    api._recordingId = '5';
+    api._session = {};
+    controller = new SpeechRecordingController(api);
+    challenge = new SpeechChallenge('1', '4', '', null);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('No result should be returned');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('Session with recordingId 5 still in progress.');
+      })
+      .then(done);
+  });
+
+  it('should handle errors while initializing challenge', done => {
+    setupCalling('init_challenge', {error: 'error123'});
+    controller = new SpeechRecordingController(api);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('An error should be returned');
+      })
+      .catch(error => {
+        expect(error.error).toEqual('error123');
+      })
+      .then(done);
+  });
+
+  it('should handle errors while initializing recording', done => {
+    setupCalling('init_recording', {error: 'error123'});
+    controller = new SpeechRecordingController(api);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('An error should be returned');
+      })
+      .catch(error => {
+        expect(error.error).toEqual('error123');
+      })
+      .then(done);
+  });
+
+  it('should handle errors while initializing audio', done => {
+    setupCalling('init_audio', {error: 'error123'});
+    controller = new SpeechRecordingController(api);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('An error should be returned');
+      })
+      .catch(error => {
+        expect(error.error).toEqual('error123');
+      })
+      .then(done);
+  });
+
+  it('should handle errors when closing streaming', done => {
+    setupCalling('close', {error: 'error123'});
+    controller = new SpeechRecordingController(api);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('An error should be returned');
+      })
+      .catch(error => {
+        expect(error.error).toEqual('error123');
+      })
+      .then(done);
+  });
+
+  it('should handle errors when writing a chunk', done => {
+    setupCalling('write', {error: 'error123'});
+    controller = new SpeechRecordingController(api);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('An error should be returned');
+      })
+      .catch(error => {
+        expect(error.error).toEqual('error123');
+      })
+      .then(done);
+  });
+
+  it('should wait to stream when there is no user approval yet', done => {
+    recorder.hasUserMediaApproval = () => false;
+    spyOn(recorder, 'addEventListener').and.callThrough();
+    controller = new SpeechRecordingController(api);
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        expect(recorder.addEventListener).toHaveBeenCalledWith('ready', jasmine.any(Function));
+      })
+      .catch(error => {
+        fail('no error should be thrown ' + error);
+      })
+      .then(done);
+  });
+
+  it('should fail streaming when websocket connection is closed', done => {
+    api = new Connection({});
+    controller = new SpeechRecordingController(api);
+    // Save WebSocket
+    const old = window.WebSocket;
+    window.WebSocket = jasmine.createSpy('WebSocket');
+    const expectedMessage = 'WebSocket connection was not open.';
+    controller.startStreamingSpeechRecording(challenge, recorder)
+      .then(() => {
+        fail('An error should be thrown!');
+      })
+      .catch(error => {
+        expect(error.message).toEqual(expectedMessage);
+        // Restore WebSocket
+        window.WebSocket = old;
+      })
+      .then(done);
+  });
+
+  it('should start streaming a new speech recording', done => {
+    api._session = session;
     spyOn(api._session, 'call').and.callThrough();
-    const controller = new SpeechRecordingController(api);
     controller.startStreamingSpeechRecording(
       challenge, recorder)
       .then(result => {

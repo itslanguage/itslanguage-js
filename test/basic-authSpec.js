@@ -91,6 +91,43 @@ describe('BasicAuth API interaction test', () => {
       .then(done);
   });
 
+  it('should create a new BasicAuth without generating credentials through API', done => {
+    const basicauth = new BasicAuth('4', 'principal', 'credentials');
+    const api = new Connection({
+      authPrincipal: 'principal',
+      authPassword: 'secret'
+    });
+    const controller = new BasicAuthController(api);
+    const url = 'https://api.itslanguage.nl/basicauths';
+    const content = {
+      tenantId: '4',
+      principal: 'principal'
+    };
+    const fakeResponse = new Response(JSON.stringify(content), {
+      status: 201,
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    controller.createBasicAuth(basicauth)
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
+        const expected = {tenantId: '4', principal: 'principal', credentials: 'credentials'};
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        expect(result.tenantId).toBe('4');
+        expect(result.principal).toBe('principal');
+        expect(result.credentials).toBe('credentials');
+      })
+      .catch(error => {
+        fail('No error should be thrown ' + error);
+      })
+      .then(done);
+  });
+
   it('should handle errors while creating a new basicauth', done => {
     const api = new Connection({
       authPrincipal: 'principal',
