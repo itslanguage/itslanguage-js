@@ -17,38 +17,35 @@ describe('Events', () => {
     handler = jasmine.createSpyObj('handler', ['handler1', 'handler2', 'handler3']);
   });
 
-  it('should add events', () => {
-    api.addEventListener('evt1', handler.handler1);
-    api.addEventListener('evt1', handler.handler2);
-    api.addEventListener('evt2', handler.handler1);
-
-    expect(Object.keys(api.events).length).toBe(2);
-    expect(api.events.evt1.length).toBe(2);
-    expect(api.events.evt2.length).toBe(1);
-  });
-
   it('should try to remove a listener that is not registered', () => {
     api.addEventListener('evt1', handler.handler1);
     api.addEventListener('evt1', handler.handler2);
     api.removeEventListener('evt1', handler.handler3);
-
-    expect(Object.keys(api.events).length).toBe(1);
-    expect(api.events.evt1.length).toBe(2);
+    api.fireEvent('evt1', ['argument']);
+    expect(handler.handler1).toHaveBeenCalledTimes(1);
+    expect(handler.handler1).toHaveBeenCalledWith('argument');
+    expect(handler.handler2).toHaveBeenCalledTimes(1);
+    expect(handler.handler2).toHaveBeenCalledWith('argument');
+    expect(handler.handler3).toHaveBeenCalledTimes(0);
   });
 
   it('should remove a listener that is registered', () => {
     api.addEventListener('evt1', handler.handler1);
     api.addEventListener('evt1', handler.handler2);
     api.removeEventListener('evt1', handler.handler1);
-
-    expect(Object.keys(api.events).length).toBe(1);
-    expect(api.events.evt1.length).toBe(1);
+    api.fireEvent('evt1', ['argument']);
+    expect(handler.handler1).toHaveBeenCalledTimes(0);
+    expect(handler.handler2).toHaveBeenCalledTimes(1);
+    expect(handler.handler2).toHaveBeenCalledWith('argument');
+    expect(handler.handler3).toHaveBeenCalledTimes(0);
   });
 
   it('should try to remove a listener when the event has no listeners', () => {
     api.removeEventListener('evt1', handler.handler1);
-    expect(Object.keys(api.events).length).toBe(0);
-    expect(api.events.evt1).toBeUndefined();
+    api.fireEvent('evt1', ['argument']);
+    expect(handler.handler1).toHaveBeenCalledTimes(0);
+    expect(handler.handler2).toHaveBeenCalledTimes(0);
+    expect(handler.handler3).toHaveBeenCalledTimes(0);
   });
 
   it('should fire an event with two different handlers', () => {
