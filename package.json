@@ -18,7 +18,9 @@
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
   "dependencies": {
     "autobahn": "0.10.1",
+    "bluebird": "^3.4.6",
     "client-oauth2": "2.2.0",
+    "cordova-promise-fs": "^1.1.1",
     "guid": "0.0.12",
     "pcmjs": "^0.0.2"
   },

@@ -3,6 +3,8 @@ global
 device
  */
 
+const cordovaPromiseFS = require('cordova-promise-fs');
+
 /**
  * @title ITSLanguage Javascript Audio
  * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.
@@ -28,7 +30,10 @@ module.exports = class CordovaMediaPlayer {
 
     this._isPlaying = false;
     this._canPlay = false;
-
+    this.fs = cordovaPromiseFS({
+      persistent: true,
+      Promise: require('bluebird')
+    });
     const platform = device.platform;
     if (platform === 'Android') {
       // See the 'cordova-plugin-media' documentation for more Android quirks:
@@ -49,96 +54,54 @@ module.exports = class CordovaMediaPlayer {
     }
   }
 
-  _writeFile(
-    filename, callback) {
-    // org.apache.cordova.file provides the HTML5 Filesystem API.
-
-    // var fs = window.TEMPORARY;
-    const fs = window.PERSISTENT;
-
-    window.requestFileSystem(
-      fs, 0, fileSystemCallback, fileSystemErrorCallback);
-
-    function fileSystemCallback(fileSystem) {
-      // www.w3.org/TR/2012/WD-file-system-api-20120417/#idl-def-FileSystem
-      console.debug('Got filesystem name: ' + fileSystem.name);
-
-      // getFile Creates or looks up a file.
-      // By setting options to create:false, only a lookup will be performed.
-      console.debug('Calling getFile in read mode: ' + filename);
-      fileSystem.root.getFile(filename, {
-        create: true
-      },
-        entryCallback, entryErrorCallback);
-    }
-
-    function fileSystemErrorCallback(domError) {
-      console.debug('Error calling requestFileSystem: ' + domError.name);
-    }
-
-    function entryCallback(entry) {
-      // http://www.w3.org/TR/2012/WD-file-system-api-20120417/#idl-def-Entry
-      console.debug('Got file entry: ' + entry.name);
-      callback(entry);
-    }
-
-    function entryErrorCallback(fileError) {
-      console.debug('Error calling getFile: ' + fileError.code);
-    }
-  }
-
-  /**
-   * Callback used by load.
-   *
-   * @callback CordovaMediaPlayer~loadedCallback
-   * @param {Audio} audio The Audio element that has the duration property set.
-   */
-  loadedCallback(audio) {
-    return audio;
+  getFile(
+    filename) {
+    return this.fs.file(filename)
+        .catch(fileError => {
+          console.debug('Error getting file: ' + fileError);
+          return Promise.reject(fileError);
+        });
   }
 
   _loadMedia(
-        filepath, closure, loadedCb) {
-    console.debug('Loading media: ' + filepath);
-    const self = this;
-    // Cordova Media can only be loaded during instantiation.
-    this.sound = new window.Media(filepath, () => {
-      console.debug('Playback ended successfully.');
-    },
-      e => {
-        console.debug('Playback failed: ' + e.code);
+        filepath, closure) {
+    return new Promise(resolve => {
+      console.debug('Loading media: ' + filepath);
+      // Cordova Media can only be loaded during instantiation.
+      this.sound = new window.Media(filepath, () => {
+        console.debug('Playback ended successfully.');
       },
-      mediaStatus => {
-        console.debug('Playback status update: ' + mediaStatus);
-        if (mediaStatus === window.Media.MEDIA_STARTING) {
-          console.debug('Metadata is being loaded.');
-        }
-        // We could have the duration known by now,
-        // but Cordova should do better. Improvement reported:
-        // https://issues.apache.org/jira/browse/CB-6880
-        const duration = self.sound.getDuration();
-        console.debug('Duration: ' + duration);
+        e => {
+          console.debug('Playback failed: ' + e.code);
+        },
+        mediaStatus => {
+          console.debug('Playback status update: ' + mediaStatus);
+          if (mediaStatus === window.Media.MEDIA_STARTING) {
+            console.debug('Metadata is being loaded.');
+          }
+          // We could have the duration known by now,
+          // but Cordova should do better. Improvement reported:
+          // https://issues.apache.org/jira/browse/CB-6880
+          const duration = this.sound.getDuration();
+          console.debug('Duration: ' + duration);
 
-        if (duration > 0 && closure.settings.durationchangeCb) {
-          closure.settings.durationchangeCb();
-        }
-      });
+          if (duration > 0 && closure.settings.durationchangeCb) {
+            closure.settings.durationchangeCb();
+          }
+        });
 
-    // Trigger 'canplay' event on sound (which is what HTML5 would do).
-    this._canPlay = true;
-    if (closure.settings.canplayCb) {
-      closure.settings.canplayCb();
-    }
+      // Trigger 'canplay' event on sound (which is what HTML5 would do).
+      this._canPlay = true;
+      if (closure.settings.canplayCb) {
+        closure.settings.canplayCb();
+      }
 
-    // When Media is initialised, nothing is preloaded. Trigger loading of
-    // the audio (without actually starting playback) by seeking.
-    this.sound.seekTo(0);
-
-    if (loadedCb) {
-      loadedCb(this.sound);
-    }
+      // When Media is initialised, nothing is preloaded. Trigger loading of
+      // the audio (without actually starting playback) by seeking.
+      this.sound.seekTo(0);
+      resolve(this.sound);
+    });
   }
-
 
   /**
    * Preload audio from an URL.
@@ -149,32 +112,29 @@ module.exports = class CordovaMediaPlayer {
    * @param {CordovaMediaPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of
    * the audio file is first known.
    */
-  load(url, preload, loadedCb) {
+  load(url) {
     const self = this;
-
-    // The incoming url is actually a blob URL. (blob:file://xyz)
-    // This blob URL needs to be 'downloaded' first.
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'blob';
-    xhr.onload = function() {
-      if (this.status === 200) {
-        const blob = this.response;
-        console.debug('Downloaded blob');
-
-        console.debug('Writing blob to file');
-        self._writeFile(self.filename, file => {
-          file.createWriter(writer => {
-            writer.onwriteend = function() {
-              // File has been written, now load it.
-              self._loadMedia(self.filepath, self, loadedCb);
-            };
-            writer.write(blob, 'application/octet-stream');
-          });
-        });
-      }
+    const options = {
+      method: 'GET'
     };
-    xhr.send();
+    return fetch(url, options)
+      .then(response => {
+        if (response.ok) {
+          return response.blob();
+        }
+        return Promise.reject(response.status);
+      })
+      .then(data => {
+        console.debug('Downloaded blob');
+        console.debug('Writing blob to file');
+        return new Promise(resolve => {
+          self.getFile(this.filename)
+            .then(() => this.fs.write(this.filename, data))
+            .then(() => {
+              resolve(self._loadMedia(self.filepath, self));
+            });
+        });
+      });
   }
 
 
