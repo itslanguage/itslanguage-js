@@ -1,4 +1,6 @@
 const CordovaMediaPlayer = require('./cordova-media-player');
+const ee = require('event-emitter');
+const allOff = require('event-emitter/all-off');
 const WebAudioPlayer = require('./web-audio-player');
 /**
  *@module its.AudioPlayer
@@ -42,54 +44,18 @@ module.exports = class AudioPlayer {
       }
     };
     this.player = this._getBestPlayer(callbacks);
-
-    // The addEventListener interface exists on object.Element DOM elements.
-    // However, this is just a simple class without any relation to the DOM.
-    // Therefore we have to implement a pub/sub mechanism ourselves.
-    // See:
-
-    // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener
-    // http://stackoverflow.com/questions/10978311/implementing-events-in-my-own-object
-
-    this.events = {};
+    this.emitter = ee({});
 
     this.resetEventListeners = function() {
-      self.events = {};
+      allOff(self.emitter);
     };
 
     this.addEventListener = function(name, handler) {
-      if (self.events.hasOwnProperty(name)) {
-        self.events[name].push(handler);
-      } else {
-        self.events[name] = [handler];
-      }
+      self.emitter.on(name, handler);
     };
 
     this.removeEventListener = function(name, handler) {
-      /* This is a bit tricky, because how would you identify functions?
-       This simple solution should work if you pass THE SAME handler. */
-      if (!self.events.hasOwnProperty(name)) {
-        return;
-      }
-
-      const index = self.events[name].indexOf(handler);
-      if (index !== -1) {
-        self.events[name].splice(index, 1);
-      }
-    };
-
-    this.fireEvent = function(name, args) {
-      if (!self.events.hasOwnProperty(name)) {
-        return;
-      }
-      if (!args || !args.length) {
-        args = [];
-      }
-
-      const evs = self.events[name];
-      evs.forEach(ev => {
-        ev(...args);
-      });
+      self.emitter.off(name, handler);
     };
   }
 
