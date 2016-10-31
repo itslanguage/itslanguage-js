@@ -156,9 +156,7 @@ class VolumeMeter {
           skippedCallbacks += 1;
           return true;
         }
-        if (cb) {
-          return cb(args);
-        }
+        return cb(args);
       });
     }
   }
