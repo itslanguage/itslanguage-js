@@ -1,7 +1,14 @@
 const CordovaMediaRecorder = require('../cordova-media-recorder');
 
 describe('Cordova media recorder', () => {
-  window.Media = jasmine.createSpy();
+  beforeEach(() => {
+    window.Media = jasmine.createSpy();
+  });
+
+  afterEach(() => {
+    delete window.Media;
+  });
+
   it('should construct on android', () => {
     window.device = {platform: 'Android'};
     const player = new CordovaMediaRecorder();
