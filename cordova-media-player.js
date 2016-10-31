@@ -254,7 +254,10 @@ module.exports = class CordovaMediaPlayer {
     }
     const duration = this.sound.getDuration();
     // duration may be -1 when undefined.
-    return Math.min(duration, 0);
+    if (duration === -1) {
+      return 0;
+    }
+    return duration;
   }
 
   /**
