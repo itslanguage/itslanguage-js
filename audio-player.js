@@ -69,7 +69,7 @@ module.exports = class AudioPlayer {
 
     // Detect HTML5 Audio playback.
     // http://caniuse.com/#feat=audio
-    this.canUseAudio = Boolean(new Audio());
+    this.canUseAudio = Boolean(Audio);
     console.log('Native HTML5 Audio playback capability: ' +
       this.canUseAudio);
 
@@ -84,40 +84,40 @@ module.exports = class AudioPlayer {
       throw new Error(
         'Some form of audio playback capability is required');
     }
+    if (this.canUseAudio) {
+      const _audio = new Audio();
+      if (!(_audio.canPlayType && _audio.canPlayType instanceof Function)) {
+        throw new Error(
+          'Unable to detect audio playback capabilities');
+      }
+      const canPlayOggVorbis = _audio.canPlayType(
+          'audio/ogg; codecs="vorbis"') !== '';
+      const canPlayOggOpus = _audio.canPlayType(
+          'audio/ogg; codecs="opus"') !== '';
+      const canPlayWave = _audio.canPlayType('audio/wav') !== '';
+      const canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
+      const canPlayAAC = _audio.canPlayType(
+          'audio/mp4; codecs="mp4a.40.2"') !== '';
+      const canPlay3GPP = _audio.canPlayType(
+          'audio/3gpp; codecs="samr"') !== '';
 
-    const _audio = new Audio();
-    if (_audio.canPlayType === 'function') {
-      throw new Error(
-        'Unable to detect audio playback capabilities');
-    }
+      console.log('Native Vorbis audio in Ogg container playback capability: ' +
+        canPlayOggVorbis);
+      console.log('Native Opus audio in Ogg container playback capability: ' +
+        canPlayOggOpus);
+      console.log('Native PCM audio in Waveform Audio File Format (WAVE) ' +
+        'playback capability: ' + canPlayWave);
+      console.log('Native MPEG Audio Layer 3 (MP3) playback capability: ' +
+        canPlayMP3);
+      console.log('Native Low-Complexity AAC audio in MP4 container playback ' +
+        'capability: ' + canPlayAAC);
+      console.log('Native AMR audio in 3GPP container playback capability: ' +
+        canPlay3GPP);
 
-    const canPlayOggVorbis = _audio.canPlayType(
-        'audio/ogg; codecs="vorbis"') !== '';
-    const canPlayOggOpus = _audio.canPlayType(
-        'audio/ogg; codecs="opus"') !== '';
-    const canPlayWave = _audio.canPlayType('audio/wav') !== '';
-    const canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
-    const canPlayAAC = _audio.canPlayType(
-        'audio/mp4; codecs="mp4a.40.2"') !== '';
-    const canPlay3GPP = _audio.canPlayType(
-        'audio/3gpp; codecs="samr"') !== '';
-
-    console.log('Native Vorbis audio in Ogg container playback capability: ' +
-      canPlayOggVorbis);
-    console.log('Native Opus audio in Ogg container playback capability: ' +
-      canPlayOggOpus);
-    console.log('Native PCM audio in Waveform Audio File Format (WAVE) ' +
-      'playback capability: ' + canPlayWave);
-    console.log('Native MPEG Audio Layer 3 (MP3) playback capability: ' +
-      canPlayMP3);
-    console.log('Native Low-Complexity AAC audio in MP4 container playback ' +
-      'capability: ' + canPlayAAC);
-    console.log('Native AMR audio in 3GPP container playback capability: ' +
-      canPlay3GPP);
-
-    if (!(canPlayWave || canPlayMP3)) {
-      throw new Error(
-        'Native Wave or MP3 playback is required');
+      if (!(canPlayWave || canPlayMP3)) {
+        throw new Error(
+          'Native Wave or MP3 playback is required');
+      }
     }
   }
 
@@ -146,7 +146,6 @@ module.exports = class AudioPlayer {
     } else {
       throw new Error('Unable to find a proper player.');
     }
-
     console.log('Player initialised.');
     return player;
   }
