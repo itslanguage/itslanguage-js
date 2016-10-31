@@ -57,6 +57,10 @@ module.exports = class AudioPlayer {
     this.removeEventListener = function(name, handler) {
       self.emitter.off(name, handler);
     };
+
+    this.fireEvent = function(name, args = []) {
+      self.emitter.emit(name, args);
+    };
   }
 
   /**
