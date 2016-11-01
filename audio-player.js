@@ -19,28 +19,28 @@ module.exports = class AudioPlayer {
     const self = this;
     const callbacks = {
       playingCb() {
-        self.fireEvent('playing', []);
+        self.emitter.emit('playing', []);
       },
       timeupdateCb() {
-        self.fireEvent('timeupdate', []);
+        self.emitter.emit('timeupdate', []);
       },
       durationchangeCb() {
-        self.fireEvent('durationchange', []);
+        self.emitter.emit('durationchange', []);
       },
       canplayCb() {
-        self.fireEvent('canplay', []);
+        self.emitter.emit('canplay', []);
       },
       endedCb() {
-        self.fireEvent('ended', []);
+        self.emitter.emit('ended', []);
       },
       pauseCb() {
-        self.fireEvent('pause', []);
+        self.emitter.emit('pause', []);
       },
       progressCb() {
-        self.fireEvent('progress', []);
+        self.emitter.emit('progress', []);
       },
       errorCb() {
-        self.fireEvent('error', []);
+        self.emitter.emit('error', []);
       }
     };
     this.player = this._getBestPlayer(callbacks);
@@ -166,7 +166,7 @@ module.exports = class AudioPlayer {
     // If preloading is disabled, the 'canplay' event won't be triggered.
     // In that case, fire it manually.
     if (!preload) {
-      this.fireEvent('canplay', []);
+      this.emitter.emit('canplay', []);
     }
   }
 
@@ -176,7 +176,7 @@ module.exports = class AudioPlayer {
   reset() {
     this.stop();
     this.player.reset();
-    this.fireEvent('unloaded', []);
+    this.emitter.emit('unloaded', []);
   }
 
   /**
