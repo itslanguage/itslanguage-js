@@ -80,7 +80,7 @@ module.exports = class AudioPlayer {
     console.log('Cordova Media playback capability: ' +
       this.canUseCordovaMedia);
 
-    if (!(this.canUseAudio || this.canUseCordovaMedia)) {
+    if (!this.canUseAudio && !this.canUseCordovaMedia) {
       throw new Error(
         'Some form of audio playback capability is required');
     }

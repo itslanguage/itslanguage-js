@@ -3,27 +3,24 @@ const CordovaMediaPlayer = require('../cordova-media-player');
 const WebAudioPlayer = require('../web-audio-player');
 
 describe('Audio player', () => {
-  const oldMedia = window.Media;
-  const oldAudio = window.Audio;
-
-  afterAll(() => {
-    window.Media = oldMedia;
-    window.Audio = oldAudio;
-  });
+  let oldMedia;
+  let oldAudio;
 
   beforeEach(() => {
+    oldMedia = window.Media;
+    oldAudio = window.Audio;
     spyOn(AudioPlayer.prototype, '_playbackCompatibility');
     spyOn(AudioPlayer.prototype, '_getBestPlayer');
   });
 
+  afterEach(() => {
+    window.Media = oldMedia;
+    window.Audio = oldAudio;
+  });
+
   it('should construct with event functionality', () => {
     const player = new AudioPlayer();
-    player.emitter = {
-      on: jasmine.createSpy(),
-      off: jasmine.createSpy(),
-      emit: jasmine.createSpy()
-    };
-    window.allOff = jasmine.createSpy();
+    player.emitter = jasmine.createSpyObj('emitter', ['on', 'off', 'emit']);
     player.resetEventListeners();
     player.addEventListener('evt1', () => {});
     player.removeEventListener('evt1', () => {});
