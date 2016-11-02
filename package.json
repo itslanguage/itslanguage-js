@@ -21,7 +21,8 @@
     "client-oauth2": "2.2.0",
     "event-emitter": "^0.3.4",
     "guid": "0.0.12",
-    "pcmjs": "^0.0.2"
+    "pcmjs": "^0.0.2",
+    "rewire": "^2.5.2"
   },
   "devDependencies": {
     "babel-plugin-transform-object-assign": "^6.8.0",
@@ -41,6 +42,7 @@
     "karma-cli": "^1.0.1",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.0.2",
+    "rewireify": "^0.2.5",
     "watchify": "^3.7.0",
     "when": "^3.7.7"
   }
