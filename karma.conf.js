@@ -29,7 +29,7 @@ module.exports = config => {
           statements: 5,
           branches: 5,
           functions: 5,
-          lines: 5
+          lines: 3
         },
         global: {
           statements: 40,
