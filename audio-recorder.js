@@ -86,16 +86,12 @@ module.exports = class AudioRecorder {
     // http://caniuse.com/#feat=stream
     // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
     return getUserMedia({audio: true})
-      .then(() => {
-        this.canGetUserMedia = true;
-        return Promise.resolve();
-      }).catch(() => {
-        this.canGetUserMedia = false;
-        return Promise.resolve();
-      })
-      .then(() => {
+      .then(() => true)
+      .catch(() => false)
+      .then(canGetUserMedia => {
+        this.canGetUserMedia = canGetUserMedia;
         console.log('Native getUserMedia API capability: ' +
-          this.canGetUserMedia);
+          canGetUserMedia);
 
         // Detect MediaStream Recording
         // It allows recording audio using the MediaStream from the above
@@ -123,7 +119,7 @@ module.exports = class AudioRecorder {
         console.log('Cordova Media recording capability: ' +
           this.canUseCordovaMedia);
 
-        if (!(this.canGetUserMedia || this.canUseCordovaMedia)) {
+        if (!(canGetUserMedia || this.canUseCordovaMedia)) {
           return Promise.reject(
             'Some form of audio recording capability is required');
         }
