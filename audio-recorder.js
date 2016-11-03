@@ -87,54 +87,58 @@ module.exports = class AudioRecorder {
     // Detect audio recording capabilities.
     // http://caniuse.com/#feat=stream
     // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
-    getUserMedia({audio: true, video: true})
+    return getUserMedia({audio: true})
       .then(() => {
         this.canGetUserMedia = true;
+        return Promise.resolve();
       }).catch(() => {
         this.canGetUserMedia = false;
+        return Promise.resolve();
+      })
+      .then(() => {
+        console.log('Native getUserMedia API capability: ' +
+          this.canGetUserMedia);
+
+        // Detect MediaStream Recording
+        // It allows recording audio using the MediaStream from the above
+        // getUserMedia directly with a native codec better than Wave.
+        // http://www.w3.org/TR/mediastream-recording/
+        this.canUseMediaRecorder = Boolean(window.MediaRecorder);
+        console.log('Native MediaRecorder recording capability: ' +
+          this.canUseMediaRecorder);
+
+        // Web Audio API
+        // High-level JavaScript API for processing and synthesizing audio
+        // http://caniuse.com/#feat=audio-api
+        window.AudioContext = window.AudioContext ||
+          window.webkitAudioContext || window.mozAudioContext;
+        const canCreateAudioContext = Boolean(window.AudioContext);
+        console.log('Native Web Audio API (AudioContext) processing capability: ' +
+          canCreateAudioContext);
+
+        // Detect Cordova Media Recording
+        // It allows recording audio using the native bridge inside WebView Apps.
+        // Note that it may also require native playback when codecs were used for
+        // recording that are not yet supported in the WebView.
+        // https://github.com/apache/cordova-plugin-media/blob/master/doc/index.md
+        this.canUseCordovaMedia = Boolean(window.Media);
+        console.log('Cordova Media recording capability: ' +
+          this.canUseCordovaMedia);
+
+        if (!(this.canGetUserMedia || this.canUseCordovaMedia)) {
+          return Promise.reject(
+            'Some form of audio recording capability is required');
+        }
+
+        window.URL = window.URL || window.webkitURL;
+        const hasWindowURL = Boolean(window.URL);
+        console.log('Native window.URL capability: ' +
+          hasWindowURL);
+        if (!hasWindowURL) {
+          return Promise.reject(
+            'No window.URL blob conversion capabilities');
+        }
       });
-    console.log('Native getUserMedia API capability: ' +
-      this.canGetUserMedia);
-
-    // Detect MediaStream Recording
-    // It allows recording audio using the MediaStream from the above
-    // getUserMedia directly with a native codec better than Wave.
-    // http://www.w3.org/TR/mediastream-recording/
-    this.canUseMediaRecorder = Boolean(window.MediaRecorder);
-    console.log('Native MediaRecorder recording capability: ' +
-      this.canUseMediaRecorder);
-
-    // Web Audio API
-    // High-level JavaScript API for processing and synthesizing audio
-    // http://caniuse.com/#feat=audio-api
-    window.AudioContext = window.AudioContext ||
-      window.webkitAudioContext || window.mozAudioContext;
-    const canCreateAudioContext = Boolean(window.AudioContext);
-    console.log('Native Web Audio API (AudioContext) processing capability: ' +
-      canCreateAudioContext);
-
-    // Detect Cordova Media Recording
-    // It allows recording audio using the native bridge inside WebView Apps.
-    // Note that it may also require native playback when codecs were used for
-    // recording that are not yet supported in the WebView.
-    // https://github.com/apache/cordova-plugin-media/blob/master/doc/index.md
-    this.canUseCordovaMedia = Boolean(window.Media);
-    console.log('Cordova Media recording capability: ' +
-      this.canUseCordovaMedia);
-
-    if (!(this.canGetUserMedia || this.canUseCordovaMedia)) {
-      throw new Error(
-        'Some form of audio recording capability is required');
-    }
-
-    window.URL = window.URL || window.webkitURL;
-    const hasWindowURL = Boolean(window.URL);
-    console.log('Native window.URL capability: ' +
-      hasWindowURL);
-    if (!hasWindowURL) {
-      throw new Error(
-        'No window.URL blob conversion capabilities');
-    }
   }
 
 
@@ -146,28 +150,24 @@ module.exports = class AudioRecorder {
    *
    */
   requestUserMedia() {
-    const self = this;
-    function success(stream) {
-      console.log('Got getUserMedia stream');
+    return getUserMedia({audio: true})
+      .then(stream => {
+        console.log('Got getUserMedia stream');
 
-      if (stream.getAudioTracks().length) {
-        console.log('Got audio tracks:', stream.getAudioTracks().length);
-      }
+        if (stream.getAudioTracks().length) {
+          console.log('Got audio tracks:', stream.getAudioTracks().length);
+        }
 
-      // Modify state of userMediaApproval now access is granted.
-      self.userMediaApproval = true;
+        // Modify state of userMediaApproval now access is granted.
+        this.userMediaApproval = true;
 
-      const micInputGain = self._startUserMedia(stream);
-      self.fireEvent('ready', [self.audioContext, micInputGain]);
-    }
-    function failure(e) {
-      console.log(e);
-      throw new Error('No live audio input available or permitted');
-    }
-
-    getUserMedia({audio: true})
-      .then(success)
-      .catch(failure);
+        const micInputGain = this._startUserMedia(stream);
+        this.fireEvent('ready', [this.audioContext, micInputGain]);
+      })
+      .catch(e => {
+        console.log(e);
+        return Promise.reject('No live audio input available or permitted');
+      });
   }
 
   /**
