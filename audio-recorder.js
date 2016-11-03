@@ -27,8 +27,6 @@ module.exports = class AudioRecorder {
   constructor(options) {
     this.settings = Object.assign({}, options);
 
-    this._recordingCompatibility();
-
     this.userMediaApproval = false;
     this.recorder = null;
 
