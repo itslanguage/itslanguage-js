@@ -1,5 +1,6 @@
 const CordovaMediaRecorder = require('./cordova-media-recorder');
 const ee = require('event-emitter');
+const getUserMedia = require('get-user-media-promise');
 const MediaRecorder = require('./media-recorder');
 const WavePacker = require('./wave-packer');
 const WebAudioRecorder = require('./web-audio-recorder');
@@ -86,24 +87,14 @@ module.exports = class AudioRecorder {
     // Detect audio recording capabilities.
     // http://caniuse.com/#feat=stream
     // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
-    navigator.getUserMedia = navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia;
-    this.canGetUserMedia = Boolean(navigator.getUserMedia);
-    console.log('Native deprecated navigator.getUserMedia API capability: ' +
+    getUserMedia({audio: true, video: true})
+      .then(() => {
+        this.canGetUserMedia = true;
+      }).catch(() => {
+        this.canGetUserMedia = false;
+      });
+    console.log('Native getUserMedia API capability: ' +
       this.canGetUserMedia);
-
-    // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/mediaDevices.getUserMedia
-    this.canMediaDevicesGetUserMedia = false;
-    if (navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
-        navigator.mediaDevices.webkitGetUserMedia ||
-        navigator.mediaDevices.mozGetUserMedia;
-      this.canMediaDevicesGetUserMedia = Boolean(navigator.mediaDevices.getUserMedia);
-    }
-    console.log('Native navigator.mediaDevices.getUserMedia API capability:',
-      this.canMediaDevicesGetUserMedia);
 
     // Detect MediaStream Recording
     // It allows recording audio using the MediaStream from the above
@@ -159,11 +150,8 @@ module.exports = class AudioRecorder {
     function success(stream) {
       console.log('Got getUserMedia stream');
 
-      // checking audio presence
-      if (self.canMediaDevicesGetUserMedia) {
-        if (stream.getAudioTracks().length) {
-          console.log('Got audio tracks:', stream.getAudioTracks().length);
-        }
+      if (stream.getAudioTracks().length) {
+        console.log('Got audio tracks:', stream.getAudioTracks().length);
       }
 
       // Modify state of userMediaApproval now access is granted.
@@ -177,12 +165,9 @@ module.exports = class AudioRecorder {
       throw new Error('No live audio input available or permitted');
     }
 
-    if (this.canMediaDevicesGetUserMedia) {
-      // Use of promises is required.
-      navigator.mediaDevices.getUserMedia({audio: true}).then(success).catch(failure);
-    } else if (this.canGetUserMedia) {
-      navigator.getUserMedia({audio: true}, success, failure);
-    }
+    getUserMedia({audio: true})
+      .then(success)
+      .catch(failure);
   }
 
   /**
