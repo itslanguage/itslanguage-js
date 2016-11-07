@@ -23,19 +23,19 @@ module.exports = class Connection {
     this._recordingId = null;
     this._recognitionId = null;
     this.emitter = ee({});
+  }
 
-    const self = this;
-    this.addEventListener = function(name, handler) {
-      self.emitter.on(name, handler);
-    };
-    this.removeEventListener = function(name, handler) {
-      self.emitter.off(name, handler);
-    };
+  addEventListener(name, handler) {
+    this.emitter.on(name, handler);
+  }
 
-    this.fireEvent = function(name, args) {
-      args = args || [];
-      self.emitter.emit(name, ...args);
-    };
+  removeEventListener(name, handler) {
+    this.emitter.off(name, handler);
+  }
+
+  fireEvent(name, args) {
+    args = args || [];
+    this.emitter.emit(name, ...args);
   }
 
   /**

@@ -45,18 +45,18 @@ module.exports = class AudioPlayer {
     };
     this.player = this._getBestPlayer(callbacks);
     this.emitter = ee({});
+  }
 
-    this.resetEventListeners = function() {
-      allOff(self.emitter);
-    };
+  resetEventListeners() {
+    allOff(this.emitter);
+  }
 
-    this.addEventListener = function(name, handler) {
-      self.emitter.on(name, handler);
-    };
+  addEventListener(name, handler) {
+    this.emitter.on(name, handler);
+  }
 
-    this.removeEventListener = function(name, handler) {
-      self.emitter.off(name, handler);
-    };
+  removeEventListener(name, handler) {
+    this.emitter.off(name, handler);
   }
 
   /**

@@ -33,19 +33,7 @@ module.exports = class AudioRecorder {
 
     this.events = {};
     this.emitter = ee({});
-    const self = this;
-    this.addEventListener = function(name, handler) {
-      self.emitter.on(name, handler);
-    };
 
-    this.removeEventListener = function(name, handler) {
-      self.emitter.off(name, handler);
-    };
-
-    this.fireEvent = function(name, args) {
-      args = args || [];
-      self.emitter.emit(name, ...args);
-    };
 
     if (this.canUseCordovaMedia) {
       // Through the App permissions, access to the microphone was
@@ -53,6 +41,19 @@ module.exports = class AudioRecorder {
       this.userMediaApproval = true;
       this.recorder = this._getBestRecorder();
     }
+  }
+
+  addEventListener(name, handler) {
+    this.emitter.on(name, handler);
+  }
+
+  removeEventListener(name, handler) {
+    this.emitter.off(name, handler);
+  }
+
+  fireEvent(name, args) {
+    args = args || [];
+    this.emitter.emit(name, ...args);
   }
 
   /**
