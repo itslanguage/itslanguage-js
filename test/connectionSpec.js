@@ -319,7 +319,8 @@ describe('Connection', () => {
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
-        expect(request[1].body).toEqual('grant_type=password&scope=tenant/' + basicAuth.tenantId +
+        expect(request[1].body).toEqual('grant_type=password&' +
+          'scope=tenant/' + basicAuth.tenantId +
           '/organisation/fb/student/dummy&username=' + basicAuth.principal +
           '&password=' + basicAuth.credentials);
         expect(result.token_type).toEqual('Bearer');

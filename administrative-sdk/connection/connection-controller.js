@@ -320,11 +320,12 @@ module.exports = class Connection {
     const url = this.settings.apiUrl + '/tokens';
     const scopes = 'tenant/' + basicAuth.tenantId +
         '/organisation/' + organisationId +
-      '/student/' + studentId;
+        '/student/' + studentId;
     const headers = new Headers();
     headers.append('Content-Type',
       'application/x-www-form-urlencoded; charset=utf8');
-    const formData = 'grant_type=password&scope=' + scopes + '&username=' + basicAuth.principal +
+    const formData = 'grant_type=password&scope=' + scopes +
+      '&username=' + basicAuth.principal +
       '&password=' + basicAuth.credentials;
     const options = {
       method: 'POST',
