@@ -311,18 +311,21 @@ module.exports = class Connection {
   /**
    * Ask the server for an OAuth2 token.
    * @param {BasicAuth} basicAuth Basic Auth to obtain credentials from.
+   * @param organisationId Id of the organisation to request a token for.
+   * @param studentId Id of the student to request a token for.
    * @returns {Promise} Promise containing a access_token, token_type and scope.
    * @rejects If the server returned an error.
    */
-  getOauth2Token(basicAuth) {
+  getOauth2Token(basicAuth, organisationId, studentId) {
     const url = this.settings.apiUrl + '/tokens';
     const scopes = 'tenant/' + basicAuth.tenantId +
-      '/student/' + basicAuth.principal;
+        '/organisation/' + organisationId +
+        '/student/' + studentId;
     const headers = new Headers();
-    headers.append('Authorization', this._getAuthHeaders());
     headers.append('Content-Type',
       'application/x-www-form-urlencoded; charset=utf8');
-    const formData = 'grant_type=password&scope=' + scopes + '&username=' + basicAuth.principal +
+    const formData = 'grant_type=password&scope=' + scopes +
+      '&username=' + basicAuth.principal +
       '&password=' + basicAuth.credentials;
     const options = {
       method: 'POST',
