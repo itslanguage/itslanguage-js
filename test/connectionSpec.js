@@ -272,7 +272,7 @@ describe('Connection', () => {
       });
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       const basicAuth = new BasicAuth('', 'principal', 'credentials');
-      api.getOauth2Token(basicAuth)
+      api.getOauth2Token(basicAuth, 'fb', 'dummy')
       .then(fail)
       .catch(error => {
         expect(error).toEqual(content);
@@ -292,7 +292,7 @@ describe('Connection', () => {
       });
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       const basicAuth = new BasicAuth('', 'invalid', 'invalid');
-      api.getOauth2Token(basicAuth)
+      api.getOauth2Token(basicAuth, 'fb', 'dummy')
       .then(fail)
       .catch(error => {
         expect(error).toEqual(content);
@@ -314,8 +314,14 @@ describe('Connection', () => {
       });
       const basicAuth = new BasicAuth('4', 'principal', 'credentials');
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-      api.getOauth2Token(basicAuth)
+      url += '/tokens';
+      api.getOauth2Token(basicAuth, 'fb', 'dummy')
       .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].body).toEqual('grant_type=password&scope=tenant/' + basicAuth.tenantId +
+          '/organisation/fb/student/dummy&username=' + basicAuth.principal +
+          '&password=' + basicAuth.credentials);
         expect(result.token_type).toEqual('Bearer');
         expect(result.access_token).toEqual('2b198b6bc87db1bdb');
         expect(result.scope).toEqual('tenant/4');
