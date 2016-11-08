@@ -33,8 +33,7 @@ module.exports = class Connection {
     this.emitter.off(name, handler);
   }
 
-  fireEvent(name, args) {
-    args = args || [];
+  fireEvent(name, args = []) {
     this.emitter.emit(name, ...args);
   }
 
