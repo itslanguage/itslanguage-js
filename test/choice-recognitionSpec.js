@@ -97,7 +97,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   });
 
   function setupCalling(urlEndpoint, rejection) {
-    session.call = name => {
+    session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.choice.init_recognition') {
+        expect(args[0]).not.toBeNull();
+      }
       const d = autobahn.when.defer();
       if (name === 'nl.itslanguage.choice.' + urlEndpoint) {
         d.reject(rejection);
