@@ -291,6 +291,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   it('should handle errors while initializing recognition', done => {
     setupCalling('init_analysis', {error: 'error123'});
     controller = new Controller(api);
+    recorder.addEventListener = jasmine.createSpy();
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');

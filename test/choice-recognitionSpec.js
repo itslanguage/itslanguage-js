@@ -299,6 +299,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   it('should handle errors while initializing recognition', done => {
     setupCalling('init_recognition', {error: 'error123'});
     controller = new ChoiceRecognitionController(api);
+    recorder.addEventListener = jasmine.createSpy();
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
