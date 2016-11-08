@@ -22,7 +22,10 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   let controller;
 
   function setupCalling(urlEndpoint, rejection) {
-    session.call = name => {
+    session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+        expect(args[0]).not.toBeNull();
+      }
       const d = autobahn.when.defer();
       if (name === 'nl.itslanguage.pronunciation.' + urlEndpoint) {
         d.reject(rejection);

@@ -202,9 +202,6 @@ module.exports = class PronunciationAnalysisController {
         recorder.removeEventListener('recorded', stopListening);
         recorder.removeEventListener('dataavailable', startStreaming);
 
-        // This session is over.
-        self.connection._analysisId = null;
-
         // When done, submit any plain text (non-JSON) to start analysing.
         self.connection._session.call('nl.itslanguage.pronunciation.analyse',
           [self.connection._analysisId], {}, {receive_progress: true})
@@ -225,6 +222,8 @@ module.exports = class PronunciationAnalysisController {
           .tap(progress => {
             reportProgress(progress);
           });
+        // This session is over.
+        self.connection._analysisId = null;
       }
 
       recorder.addEventListener('recorded', stopListening);
