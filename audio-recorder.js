@@ -1,3 +1,4 @@
+const allOff = require('event-emitter/all-off');
 const CordovaMediaRecorder = require('./cordova-media-recorder');
 const ee = require('event-emitter');
 const MediaRecorder = require('./media-recorder');
@@ -41,6 +42,10 @@ module.exports = class AudioRecorder {
       this.userMediaApproval = true;
       this.recorder = this._getBestRecorder();
     }
+  }
+
+  removeAllEventListeners() {
+    allOff(this.emitter);
   }
 
   addEventListener(name, handler) {

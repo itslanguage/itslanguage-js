@@ -285,9 +285,7 @@ module.exports = class Connection {
       return;
     }
 
-    recorder.removeEventListener('ready');
-    recorder.removeEventListener('recorded');
-    recorder.removeEventListener('dataavailable');
+    recorder.removeAllEventListeners();
     if (recorder.isRecording()) {
       recorder.stop();
     }
