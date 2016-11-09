@@ -69,15 +69,15 @@ module.exports = class PronunciationAnalysisController {
         console.log('Challenge initialised for analysisId: ' + this.connection._analysisId);
         return analysisId;
       })
-      .then(this.connection._session.call('nl.itslanguage.pronunciation.alignment',
+      .then(() => this.connection._session.call('nl.itslanguage.pronunciation.alignment',
         [this.connection._analysisId]))
       .catch(res => {
         Connection.logRPCError(res);
         return Promise.reject(res);
       })
       .then(alignment => {
-        self.referenceAlignment = alignment;
-        console.log('Reference alignment retrieved');
+        this.referenceAlignment = alignment;
+        console.log('Reference alignment retrieved', alignment);
       });
   }
 
