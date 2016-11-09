@@ -249,6 +249,7 @@ module.exports = class PronunciationAnalysisController {
                   .catch(reject);
               });
             })
+            .then(() => notify('ReadyToReceive'))
             .catch(reject);
         })
         .catch(res => {
