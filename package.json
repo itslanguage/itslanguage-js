@@ -21,6 +21,7 @@
     "client-oauth2": "2.2.0",
     "event-emitter": "^0.3.4",
     "guid": "0.0.12",
+    "msgpack-js-v5": "^0.3.0-v5",
     "pcmjs": "^0.0.2"
   },
   "devDependencies": {

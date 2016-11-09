@@ -1,7 +1,7 @@
 const ChoiceRecognition = require('./choice-recognition');
 const Student = require('../student/student');
 const PronunciationAnalysis = require('../pronunciation-analysis/pronunciation-analysis');
-const Base64Utils = require('../utils/base64-utils');
+const MsgPackUtils = require('../utils/msgpack-utils');
 
 /**
  * Controller class for the ChoiceRecognition model.
@@ -136,11 +136,11 @@ module.exports = class ChoiceRecognitionController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function dataavailableCb(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = MsgPackUtils._arrayBufferToMsgPack(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
           self.connection._recognitionId);
         self.connection._session.call('nl.itslanguage.choice.write',
-          [self.connection._recognitionId, encoded, 'base64']).then(
+          [self.connection._recognitionId, encoded, 'msgpack']).then(
           // RPC success callback
           res => {
             console.debug('Delivered audio successfully');
