@@ -388,6 +388,30 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     });
   });
   it('should start streaming a new pronunciation analysis', done => {
+    recorder.addEventListener = function(name, method) {
+      if (name === 'dataavailable') {
+        method(1);
+      } else if (name === 'recorded') {
+        setTimeout(() => {
+          method();
+        }, 1000);
+      } else {
+        method();
+      }
+    };
+
+    controller.connection._session.call.and.callFake(name => when.promise((resolve, reject, notify) => {
+      notify();
+      if (name !== 'nl.itslanguage.pronunciation.alignment') {
+        resolve(fakeResponse);
+      } else {
+        setTimeout(() => {
+          resolve('AlignmentResult');
+        }, 500);
+      }
+    })
+    );
+
     controller.startStreamingPronunciationAnalysis(
       challenge, recorder)
       .then(() => {
@@ -395,6 +419,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.pronunciation.init_analysis', [],
           {trimStart: 0.15, trimEnd: 0.0});
+        expect(controller.referenceAlignment).toEqual('AlignmentResult');
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
