@@ -247,7 +247,10 @@ describe('Speech Recording Websocket API interaction test', () => {
   let stringDate;
   let controller;
   function setupCalling(urlEndpoint, rejection) {
-    session.call = name => {
+    session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.recording.init_recording') {
+        expect(args[0]).not.toBeNull();
+      }
       const d = autobahn.when.defer();
       if (name === 'nl.itslanguage.recording.' + urlEndpoint) {
         d.reject(rejection);

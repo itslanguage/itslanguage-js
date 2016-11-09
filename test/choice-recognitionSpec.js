@@ -97,7 +97,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   });
 
   function setupCalling(urlEndpoint, rejection) {
-    session.call = name => {
+    session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.choice.init_recognition') {
+        expect(args[0]).not.toBeNull();
+      }
       const d = autobahn.when.defer();
       if (name === 'nl.itslanguage.choice.' + urlEndpoint) {
         d.reject(rejection);
@@ -296,6 +299,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   it('should handle errors while initializing recognition', done => {
     setupCalling('init_recognition', {error: 'error123'});
     controller = new ChoiceRecognitionController(api);
+    recorder.addEventListener = jasmine.createSpy();
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');

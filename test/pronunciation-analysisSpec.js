@@ -22,7 +22,10 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   let controller;
 
   function setupCalling(urlEndpoint, rejection) {
-    session.call = name => {
+    session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+        expect(args[0]).not.toBeNull();
+      }
       const d = autobahn.when.defer();
       if (name === 'nl.itslanguage.pronunciation.' + urlEndpoint) {
         d.reject(rejection);
@@ -288,6 +291,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   it('should handle errors while initializing recognition', done => {
     setupCalling('init_analysis', {error: 'error123'});
     controller = new Controller(api);
+    recorder.addEventListener = jasmine.createSpy();
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
