@@ -161,7 +161,7 @@ module.exports = class PronunciationAnalysisController {
       }
 
       function reportProgress(progress) {
-        notify(progress, self.referenceAlignment);
+        notify({progress, referenceAlignment: self.referenceAlignment});
       }
 
       function reportError(data) {
