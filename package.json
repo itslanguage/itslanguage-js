@@ -20,6 +20,7 @@
     "autobahn": "0.10.1",
     "client-oauth2": "2.2.0",
     "event-emitter": "^0.3.4",
+    "get-user-media-promise": "^1.0.0",
     "guid": "0.0.12",
     "pcmjs": "^0.0.2"
   },
