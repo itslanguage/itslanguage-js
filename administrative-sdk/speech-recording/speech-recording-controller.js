@@ -2,6 +2,7 @@ const Base64Utils = require('../utils/base64-utils');
 const Connection = require('./../connection/connection-controller');
 const SpeechRecording = require('./speech-recording');
 const Student = require('../student/student');
+const when = require('autobahn').when;
 
 /**
  * Controller class for the SpeechRecording model.
@@ -94,7 +95,7 @@ module.exports = class SpeechRecordingController {
         ' still in progress.'));
     }
     const self = this;
-    return new Promise((resolve, reject) => {
+    return new when.Promise((resolve, reject, notify) => {
       self.connection._recordingId = null;
 
       function _cb(data) {
@@ -172,6 +173,7 @@ module.exports = class SpeechRecordingController {
                     .catch(reject);
                 });
               })
+            .then(() => notify('ReadyToReceive'))
             .catch(reject);
         },
           res => {

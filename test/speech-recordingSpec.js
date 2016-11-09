@@ -512,16 +512,21 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should start streaming a new speech recording', done => {
+    let progressCalled = false;
     api._session = session;
     spyOn(api._session, 'call').and.callThrough();
     controller.startStreamingSpeechRecording(
       challenge, recorder)
+      .progress(() => {
+        progressCalled = true;
+      })
       .then(result => {
         expect(result.challenge).toEqual(challenge);
         expect(result.student.organisationId).toBe(challenge.organisationId);
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.recording.init_recording', []);
+        expect(progressCalled).toBeTruthy();
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);

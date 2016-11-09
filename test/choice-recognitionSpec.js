@@ -206,17 +206,22 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   });
 
   it('should start streaming a new choice recognition', done => {
+    let progressCalled = false;
     controller.startStreamingChoiceRecognition(challenge, recorder)
-        .then(() => {
-          expect(api._session.call).toHaveBeenCalled();
-          expect(api._session.call).toHaveBeenCalledWith(
-            'nl.itslanguage.choice.init_recognition', [],
-            {trimStart: 0.15, trimEnd: 0});
-        })
-        .catch(error => {
-          fail('No error should be thrown ' + error);
-        })
-        .then(done);
+      .progress(() => {
+        progressCalled = true;
+      })
+      .then(() => {
+        expect(api._session.call).toHaveBeenCalled();
+        expect(api._session.call).toHaveBeenCalledWith(
+          'nl.itslanguage.choice.init_recognition', [],
+          {trimStart: 0.15, trimEnd: 0});
+        expect(progressCalled).toBeTruthy();
+      })
+      .catch(error => {
+        fail('No error should be thrown ' + error);
+      })
+      .then(done);
   });
 
   it('should start streaming a new choice recognition without trimming', done => {

@@ -2,7 +2,7 @@ const ChoiceRecognition = require('./choice-recognition');
 const Student = require('../student/student');
 const PronunciationAnalysis = require('../pronunciation-analysis/pronunciation-analysis');
 const Base64Utils = require('../utils/base64-utils');
-
+const when = require('autobahn').when;
 /**
  * Controller class for the ChoiceRecognition model.
  */
@@ -108,7 +108,7 @@ module.exports = class ChoiceRecognitionController {
     if (trim === false) {
       trimAudioStart = 0.0;
     }
-    return new Promise((resolve, reject) => {
+    return new when.Promise((resolve, reject, notify) => {
       function _cb(data) {
         const recognition = new ChoiceRecognition(
           challenge.id, data.studentId, data.id,
@@ -179,6 +179,7 @@ module.exports = class ChoiceRecognitionController {
                   .catch(reject);
               });
             })
+            .then(() => notify('ReadyToReceive'))
             .catch(reject);
         })
         .catch(res => {
