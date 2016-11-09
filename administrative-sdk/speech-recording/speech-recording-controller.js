@@ -121,11 +121,12 @@ module.exports = class SpeechRecordingController {
           res => {
             Connection.logRPCError(res);
             reject(res);
-          }
-        );
+          })
+          .then(() => {
+            self.connection._recordingId = null;
+          });
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', startStreaming);
-        self.connection._recordingId = null;
       }
 
       // Start streaming the binary audio when the user instructs

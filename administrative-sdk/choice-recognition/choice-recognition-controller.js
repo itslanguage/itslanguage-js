@@ -114,6 +114,7 @@ module.exports = class ChoiceRecognitionController {
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           self.connection.addAccessToken(data.audioUrl), data.recognised);
+        recognition.recognitionId = self.connection._recognitionId;
         resolve(recognition);
       }
 
@@ -206,13 +207,14 @@ module.exports = class ChoiceRecognitionController {
               res.kwargs.recognition.message = 'Unhandled error';
             }
             _ecb(res.kwargs.analysis);
-          }
-        );
+          })
+          .then(() => {
+            // This session is over.
+            self.connection._recognitionId = null;
+          });
 
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', dataavailableCb);
-        // This session is over.
-        self.connection._recognitionId = null;
       }
       recorder.addEventListener('recorded', recordedCb);
     });

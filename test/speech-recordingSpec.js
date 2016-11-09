@@ -527,6 +527,7 @@ describe('Speech Recording Websocket API interaction test', () => {
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.recording.init_recording', []);
         expect(progressCalled).toBeTruthy();
+        expect(result.recordingId).toEqual(fakeResponse);
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
