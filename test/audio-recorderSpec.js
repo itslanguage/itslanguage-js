@@ -50,7 +50,7 @@ describe('Audio recorder', () => {
   it('should request microphone access', done => {
     const fakeStream = jasmine.createSpyObj('stream', ['getAudioTracks']);
     fakeStream.getAudioTracks.and.returnValue(['1']);
-    spyOn(window.navigator.mediaDevices, 'getUserMedia').and.callFake(() => Promise.resolve(fakeStream));
+    window.navigator.mediaDevices.getUserMedia = jasmine.createSpy().and.callFake(() => Promise.resolve(fakeStream));
     const recorder = new AudioRecorder();
     recorder.audioContext = 'context';
     spyOn(console, 'log');
@@ -69,7 +69,7 @@ describe('Audio recorder', () => {
 
   it('should request microphone access without audiotracks', done => {
     const fakeStream = jasmine.createSpyObj('stream', ['getAudioTracks']);
-    spyOn(window.navigator.mediaDevices, 'getUserMedia').and.callFake(() => Promise.resolve(fakeStream));
+    window.navigator.mediaDevices.getUserMedia = jasmine.createSpy().and.callFake(() => Promise.resolve(fakeStream));
     fakeStream.getAudioTracks.and.returnValue({});
     const recorder = new AudioRecorder();
     recorder.audioContext = 'context';
@@ -92,7 +92,7 @@ describe('Audio recorder', () => {
     recorder.audioContext = 'context';
     const fakeStream = jasmine.createSpyObj('stream', ['getAudioTracks']);
     fakeStream.getAudioTracks.and.returnValue({});
-    spyOn(window.navigator, 'getUserMedia').and.callFake((options, successCb) => successCb(fakeStream));
+    window.navigator.getUserMedia = jasmine.createSpy().and.callFake((options, successCb) => successCb(fakeStream));
     spyOn(console, 'log');
     spyOn(recorder, '_startUserMedia').and.returnValue('started media');
     spyOn(recorder, 'fireEvent');
@@ -108,7 +108,8 @@ describe('Audio recorder', () => {
   it('should request microphone access and handle errors', () => {
     const fakeStream = jasmine.createSpyObj('stream', ['getAudioTracks']);
     fakeStream.getAudioTracks.and.returnValue({});
-    spyOn(window.navigator, 'getUserMedia').and.callFake((options, successCb, failCb) => failCb('error123'));
+    window.navigator.getUserMedia = jasmine.createSpy().and.callFake((options, successCb, failCb) =>
+      failCb('error123'));
     const recorder = new AudioRecorder();
     recorder.audioContext = 'context';
     spyOn(console, 'log');
