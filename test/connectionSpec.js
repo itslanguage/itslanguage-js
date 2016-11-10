@@ -393,7 +393,7 @@ describe('Connection', () => {
     let recorderMock;
     beforeEach(() => {
       recorderMock = {
-        removeEventListener: jasmine.createSpy(),
+        removeAllEventListeners: jasmine.createSpy(),
         isRecording: jasmine.createSpy().and.returnValue(true),
         stop: jasmine.createSpy()
       };
@@ -407,10 +407,7 @@ describe('Connection', () => {
 
       api.cancelStreaming(recorderMock);
 
-      expect(recorderMock.removeEventListener).toHaveBeenCalledTimes(3);
-      expect(recorderMock.removeEventListener).toHaveBeenCalledWith('ready');
-      expect(recorderMock.removeEventListener).toHaveBeenCalledWith('recorded');
-      expect(recorderMock.removeEventListener).toHaveBeenCalledWith('dataavailable');
+      expect(recorderMock.removeAllEventListeners).toHaveBeenCalledTimes(1);
       expect(recorderMock.isRecording).toHaveBeenCalledTimes(1);
       expect(recorderMock.stop).toHaveBeenCalledTimes(1);
       expect(api._recognitionId).toBeNull();
@@ -420,7 +417,7 @@ describe('Connection', () => {
 
     it('should not cancel streaming when there is no session in progress', () => {
       api.cancelStreaming(recorderMock);
-      expect(recorderMock.removeEventListener).toHaveBeenCalledTimes(0);
+      expect(recorderMock.removeAllEventListeners).toHaveBeenCalledTimes(0);
       expect(recorderMock.isRecording).toHaveBeenCalledTimes(0);
       expect(recorderMock.stop).toHaveBeenCalledTimes(0);
       expect(api._recognitionId).toBeNull();
@@ -434,10 +431,7 @@ describe('Connection', () => {
       api._analysisId = '2';
       api._recognitionId = '3';
       api.cancelStreaming(recorderMock);
-      expect(recorderMock.removeEventListener).toHaveBeenCalledTimes(3);
-      expect(recorderMock.removeEventListener).toHaveBeenCalledWith('ready');
-      expect(recorderMock.removeEventListener).toHaveBeenCalledWith('recorded');
-      expect(recorderMock.removeEventListener).toHaveBeenCalledWith('dataavailable');
+      expect(recorderMock.removeAllEventListeners).toHaveBeenCalledTimes(1);
       expect(recorderMock.isRecording).toHaveBeenCalledTimes(1);
       expect(recorderMock.stop).toHaveBeenCalledTimes(0);
       expect(api._recognitionId).toBeNull();
