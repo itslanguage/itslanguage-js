@@ -219,7 +219,7 @@ module.exports = class PronunciationAnalysisController {
             }
             reportError(res.kwargs.analysis);
           })
-          .tap(progress => {
+          .progress(progress => {
             reportProgress(progress);
           })
           .then(() => {
