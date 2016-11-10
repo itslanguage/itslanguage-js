@@ -45,8 +45,7 @@ describe('SpeechChallenge object test', () => {
 describe('SpeechChallenge API interaction test', () => {
   let url;
   const api = new Connection({
-    authPrincipal: 'principal',
-    authPassword: 'secret'
+    oAuth2Token: 'token'
   });
   const controller = new SpeechChallengeController(api);
   beforeEach(() => {

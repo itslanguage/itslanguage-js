@@ -19,8 +19,7 @@ describe('Tenant', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
 
     const tenant = new Tenant('1', 'tenant');

@@ -31,8 +31,7 @@ describe('Organisation API interaction test', () => {
   it('should create a new organisation through API', done => {
     const organisation = new Organisation('1', 'School of silly walks');
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new OrganisationController(api);
     const url = 'https://api.itslanguage.nl/organisations';
@@ -73,8 +72,7 @@ describe('Organisation API interaction test', () => {
 
   it('should handle errors while creating a new organisation', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new OrganisationController(api);
     const organisation = new Organisation('1');
@@ -112,8 +110,7 @@ describe('Organisation API interaction test', () => {
 
   it('should get an existing organisation through API', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const url = 'https://api.itslanguage.nl/organisations/4';
     const content = {
@@ -149,8 +146,7 @@ describe('Organisation API interaction test', () => {
 
   it('should get a list of existing organisations through API', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const url = 'https://api.itslanguage.nl/organisations';
     const content = [{

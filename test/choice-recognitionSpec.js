@@ -23,8 +23,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar',
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     RecorderMock = function() {
       this.getAudioSpecs = function() {
@@ -387,8 +386,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
 
 describe('API interaction', () => {
   const api = new Connection({
-    authPrincipal: 'principal',
-    authPassword: 'secret'
+    oAuth2Token: 'token'
   });
   const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
 

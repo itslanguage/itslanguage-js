@@ -43,8 +43,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar',
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     RecorderMock = function() {
       this.getAudioSpecs = function() {
@@ -453,8 +452,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should reject when challenge does not exist', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new Controller(api);
     controller.getPronunciationAnalysis(null, '5')
@@ -469,8 +467,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should reject to get when challenge has no id', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('fb', '', 'test', new Blob());
     const controller = new Controller(api);
@@ -486,8 +483,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should reject to get when challenge has no organisationId', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('', '4', 'test', new Blob());
     const controller = new Controller(api);
@@ -503,8 +499,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should get an existing pronunciation analysis', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
@@ -543,8 +538,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should get an existing detailed pronunciation analysis', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
@@ -613,8 +607,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should get a list of existing pronunciation analyses', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
 
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
@@ -698,8 +691,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should reject to get a list when challenge is not present', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new Controller(api);
     controller.listPronunciationAnalyses(null, '5')
@@ -714,8 +706,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should reject to get a list when challenge.id is not present', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('fb', '', 'test', new Blob());
     const controller = new Controller(api);
@@ -731,8 +722,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should reject to get a list when challenge.organisationId is not present', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('', '7', 'test', new Blob());
     const controller = new Controller(api);
@@ -748,8 +738,7 @@ describe('PronunciationAnalyses API interaction test', () => {
 
   it('should get a detailed list of pronunciation analyses', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
 
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());

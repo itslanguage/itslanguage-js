@@ -11,8 +11,7 @@ describe('Events', () => {
   let handler;
   beforeEach(() => {
     api = new Connection({
-      authPrincipal: 'principal',
-      authCredentials: 'secret'
+      oAuth2Token: 'token'
     });
     handler = jasmine.createSpyObj('handler', ['handler1', 'handler2', 'handler3']);
   });
@@ -104,22 +103,21 @@ describe('Connection', () => {
       api = new Connection();
       expect(() => {
         api._secureAjaxGet();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
 
       expect(() => {
         api._secureAjaxPost();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
 
       expect(() => {
         api._secureAjaxDelete();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
     });
 
     describe('Authorization header', () => {
       beforeEach(() => {
         api = new Connection({
-          authPrincipal: 'principal',
-          authCredentials: 'secret'
+          oAuth2Token: 'token'
         });
         url = api.settings.apiUrl;
         fakeResponse = new Response(JSON.stringify({}), {
@@ -136,7 +134,7 @@ describe('Connection', () => {
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
               // That's the correct base64 representation of 'principal:secret'
-              expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
+              expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
               fail('No error should be thrown: ' + error);
@@ -149,7 +147,7 @@ describe('Connection', () => {
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
               // That's the correct base64 representation of 'principal:secret'
-              expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
+              expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
               fail('No error should be thrown: ' + error);
@@ -161,7 +159,7 @@ describe('Connection', () => {
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
               // That's the correct base64 representation of 'principal:secret'
-              expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
+              expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
               fail('No error should be thrown: ' + error);
@@ -337,32 +335,29 @@ describe('Connection', () => {
   describe('Add access token', () => {
     it('should throw when credentials are invalid', () => {
       api = new Connection({
-        authPrincipal: null,
-        authCredentials: null
+        oAuth2Token: null
       });
       expect(() => {
         api.addAccessToken();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
     });
 
     it('should add an access token to an url', () => {
       api = new Connection({
-        authPrincipal: 'principal',
-        authCredentials: 'credentials'
+        oAuth2Token: 'token'
       });
       url = 'https://api.itslanguage.nl';
       const output = api.addAccessToken(url);
-      expect(output).toEqual(url + '?access_token=cHJpbmNpcGFsOmNyZWRlbnRpYWxz');
+      expect(output).toEqual(url + '?access_token=token');
     });
 
     it('should add an access token to an url with an existing query parameter', () => {
       api = new Connection({
-        authPrincipal: 'principal',
-        authCredentials: 'credentials'
+        oAuth2Token: 'token'
       });
       url = 'https://api.itslanguage.nl?foo=bar';
       const output = api.addAccessToken(url);
-      expect(output).toEqual(url + '&access_token=cHJpbmNpcGFsOmNyZWRlbnRpYWxz');
+      expect(output).toEqual(url + '&access_token=token');
     });
   });
   it('should log RPC errors', () => {

@@ -45,8 +45,7 @@ describe('PronunciationChallenge object test', () => {
 
 describe('PronunciationChallenge API interaction test', () => {
   const api = new Connection({
-    authPrincipal: 'principal',
-    authPassword: 'secret'
+    oAuth2Token: 'token'
   });
   const controller = new Controller(api);
   const blob = new Blob(['1234567890']);
