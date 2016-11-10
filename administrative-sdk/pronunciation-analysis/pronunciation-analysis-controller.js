@@ -221,9 +221,11 @@ module.exports = class PronunciationAnalysisController {
           })
           .tap(progress => {
             reportProgress(progress);
+          })
+          .then(() => {
+            // This session is over.
+            self.connection._analysisId = null;
           });
-        // This session is over.
-        self.connection._analysisId = null;
       }
 
       recorder.addEventListener('recorded', stopListening);

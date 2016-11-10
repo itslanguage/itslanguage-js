@@ -422,13 +422,14 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .progress(() => {
         progressCalled = true;
       })
-      .then(() => {
+      .then(result => {
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.pronunciation.init_analysis', [],
           {trimStart: 0.15, trimEnd: 0.0});
         expect(controller.referenceAlignment).toEqual('AlignmentResult');
         expect(progressCalled).toBeTruthy();
+        expect(result.analysisId).toEqual(fakeResponse);
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
