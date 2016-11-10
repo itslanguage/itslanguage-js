@@ -507,8 +507,7 @@ describe('PronunciationAnalyses API interaction test', () => {
       authPassword: 'secret'
     });
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses/5';
+    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = {
       id: '5',
@@ -548,8 +547,7 @@ describe('PronunciationAnalyses API interaction test', () => {
       authPassword: 'secret'
     });
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses/5';
+    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = {
       id: '5',
@@ -664,8 +662,7 @@ describe('PronunciationAnalyses API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses';
+    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses';
     const controller = new Controller(api);
     controller.listPronunciationAnalyses(challenge, false)
       .then(result => {
@@ -756,8 +753,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
 
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4/analyses?detailed=true';
+    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses?detailed=true';
 
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = [{
