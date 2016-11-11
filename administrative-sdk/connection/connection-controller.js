@@ -41,10 +41,10 @@ module.exports = class Connection {
    */
   _getAuthHeaders() {
     if (!this.settings.oAuth2Token) {
-      throw new Error('Please set oAuth2Token');
+      return Promise.reject('Please set oAuth2Token');
     }
     const authHeader = 'Bearer ' + this.settings.oAuth2Token;
-    return authHeader;
+    return Promise.resolve(authHeader);
   }
 
   /**
@@ -121,7 +121,27 @@ module.exports = class Connection {
    * @returns Promise containing a result.
    */
   _secureAjaxGet(url) {
-    return this._ajaxGet(url, this._getAuthHeaders());
+    return this._getAuthHeaders()
+      .then(auth => {
+        const headers = new Headers();
+        if (typeof auth !== 'undefined') {
+          headers.append('Authorization', auth);
+        }
+        const options = {
+          method: 'GET',
+          headers
+        };
+        return fetch(url, options)
+          .then(response =>
+            response.json()
+              .then(data => {
+                if (response.ok) {
+                  return data;
+                }
+                throw data;
+              })
+          );
+      });
   }
 
   /**
@@ -132,7 +152,32 @@ module.exports = class Connection {
    * @returns Promise containing a result.
    */
   _secureAjaxPost(url, formdata) {
-    return this._ajaxPost(url, formdata, this._getAuthHeaders());
+    return this._getAuthHeaders()
+      .then(auth => {
+        const headers = new Headers();
+        if (typeof auth !== 'undefined') {
+          headers.append('Authorization', auth);
+        }
+        if (typeof formdata === 'string') {
+          headers.append('Content-Type',
+            'application/json; charset=utf-8');
+        }
+        const options = {
+          method: 'POST',
+          headers,
+          body: formdata
+        };
+        return fetch(url, options)
+          .then(response =>
+            response.json()
+              .then(data => {
+                if (response.ok) {
+                  return data;
+                }
+                throw data;
+              })
+          );
+      });
   }
 
   /**
@@ -142,7 +187,27 @@ module.exports = class Connection {
    * @returns Promise containing a result.
    */
   _secureAjaxDelete(url) {
-    return this._ajaxDelete(url, this._getAuthHeaders());
+    return this._getAuthHeaders()
+      .then(auth => {
+        const headers = new Headers();
+        if (typeof auth !== 'undefined') {
+          headers.append('Authorization', auth);
+        }
+        const options = {
+          method: 'DELETE',
+          headers
+        };
+        return fetch(url, options)
+          .then(response =>
+            response.json()
+              .then(data => {
+                if (response.ok) {
+                  return data;
+                }
+                throw data;
+              })
+          );
+      });
   }
 
   /**
@@ -157,99 +222,6 @@ module.exports = class Connection {
     const secureUrl = url + (url.match(/\?/) ? '&' : '?') + 'access_token=' +
       encodeURIComponent(this.settings.oAuth2Token);
     return secureUrl;
-  }
-
-  /**
-   * Perform a HTTP GET to the API.
-   *
-   * @param {string} url URL to retrieve.
-   * @param {string} [auth] The authorization header value to pass along with the request.
-   * @returns Promise containing a result.
-   * @throws If the server returned an error.
-   */
-  _ajaxGet(url, auth) {
-    const headers = new Headers();
-    if (typeof auth !== 'undefined') {
-      headers.append('Authorization', auth);
-    }
-    const options = {
-      method: 'GET',
-      headers
-    };
-    return fetch(url, options)
-      .then(response =>
-        response.json()
-            .then(data => {
-              if (response.ok) {
-                return data;
-              }
-              throw data;
-            })
-        );
-  }
-
-  /**
-   * Perform a HTTP POST to the API.
-   *
-   * @param {string} URL to submit to.
-   * @param {FormData|string} formdata FormData or stringified JSON to POST.
-   * @param {string} [auth] The authorization header value to pass along with the request.
-   * @returns Promise containing a result.
-   * @throws If the server returned an error.
-   */
-  _ajaxPost(url, formdata, auth) {
-    const headers = new Headers();
-    if (typeof auth !== 'undefined') {
-      headers.append('Authorization', auth);
-    }
-    if (typeof formdata === 'string') {
-      headers.append('Content-Type',
-        'application/json; charset=utf-8');
-    }
-    const options = {
-      method: 'POST',
-      headers,
-      body: formdata
-    };
-    return fetch(url, options)
-      .then(response =>
-        response.json()
-            .then(data => {
-              if (response.ok) {
-                return data;
-              }
-              throw data;
-            })
-        );
-  }
-
-  /**
-   * Perform a HTTP DELETE to the API.
-   *
-   * @param {string} URL to submit to.
-   * @param {string} [auth] The authorization header value to pass along with the request.
-   * @returns Promise containing a result.
-   * @throws If the server returned an error.
-   */
-  _ajaxDelete(url, auth) {
-    const headers = new Headers();
-    if (typeof auth !== 'undefined') {
-      headers.append('Authorization', auth);
-    }
-    const options = {
-      method: 'DELETE',
-      headers
-    };
-    return fetch(url, options)
-      .then(response =>
-        response.json()
-            .then(data => {
-              if (response.ok) {
-                return data;
-              }
-              throw data;
-            })
-        );
   }
 
   /**
