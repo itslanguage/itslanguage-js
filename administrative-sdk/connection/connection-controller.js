@@ -14,8 +14,6 @@ module.exports = class Connection {
       // ITSL connection parameters.
       apiUrl: 'https://api.itslanguage.nl',
       oAuth2Token: null,
-      authPrincipal: null,
-      authCredentials: null,
       wsUrl: null,
       wsToken: null
     }, options);
