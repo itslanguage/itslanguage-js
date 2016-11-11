@@ -133,7 +133,6 @@ describe('Connection', () => {
           api._secureAjaxGet(url)
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
-              // That's the correct base64 representation of 'principal:secret'
               expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
@@ -146,7 +145,6 @@ describe('Connection', () => {
           api._secureAjaxPost(url)
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
-              // That's the correct base64 representation of 'principal:secret'
               expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
@@ -158,7 +156,6 @@ describe('Connection', () => {
           api._secureAjaxDelete(url)
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
-              // That's the correct base64 representation of 'principal:secret'
               expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
@@ -175,7 +172,6 @@ describe('Connection', () => {
           api._secureAjaxGet(url)
           .then(() => {
             const request = window.fetch.calls.mostRecent().args;
-            // That's the correct base64 representation of 'principal:secret'
             expect(request[1].headers.get('Authorization')).toBeNull();
           })
           .catch(error => {
@@ -187,7 +183,6 @@ describe('Connection', () => {
           api._secureAjaxPost(url)
           .then(() => {
             const request = window.fetch.calls.mostRecent().args;
-            // That's the correct base64 representation of 'principal:secret'
             expect(request[1].headers.get('Authorization')).toBeNull();
           })
           .catch(error => {
@@ -199,7 +194,6 @@ describe('Connection', () => {
           api._secureAjaxDelete(url)
           .then(() => {
             const request = window.fetch.calls.mostRecent().args;
-            // That's the correct base64 representation of 'principal:secret'
             expect(request[1].headers.get('Authorization')).toBeNull();
           })
           .catch(error => {
