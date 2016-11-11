@@ -313,9 +313,13 @@ module.exports = class Connection {
    */
   getOauth2Token(basicAuth, organisationId, studentId) {
     const url = this.settings.apiUrl + '/tokens';
-    const scopes = 'tenant/' + basicAuth.tenantId +
-        '/organisation/' + organisationId +
-        '/student/' + studentId;
+    let scopes = 'tenant/' + basicAuth.tenantId;
+    if (organisationId) {
+      scopes += '/organisation/' + organisationId;
+    }
+    if (organisationId && studentId) {
+      scopes += '/student/' + studentId;
+    }
     const headers = new Headers();
     headers.append('Content-Type',
       'application/x-www-form-urlencoded; charset=utf8');

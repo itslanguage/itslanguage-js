@@ -324,6 +324,96 @@ describe('Connection', () => {
       })
       .then(done);
     });
+
+    it('should get a token without student id', done => {
+      const content = {
+        access_token: '2b198b6bc87db1bdb',
+        token_type: 'Bearer',
+        scope: 'tenant/4'
+      };
+      fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        header: {
+          'Content-type': 'application/json'
+        }
+      });
+      const basicAuth = new BasicAuth('4', 'principal', 'credentials');
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api.getOauth2Token(basicAuth, 'fb')
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].body).toEqual('grant_type=password&' +
+            'scope=tenant/' + basicAuth.tenantId +
+            '/organisation/fb&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials);
+          expect(result.token_type).toEqual('Bearer');
+          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
+          expect(result.scope).toEqual('tenant/4');
+        })
+        .catch(error => {
+          fail('No error should be thrown ' + error);
+        })
+        .then(done);
+    });
+
+    it('should get a token without organisation and student', done => {
+      const content = {
+        access_token: '2b198b6bc87db1bdb',
+        token_type: 'Bearer',
+        scope: 'tenant/4'
+      };
+      fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        header: {
+          'Content-type': 'application/json'
+        }
+      });
+      const basicAuth = new BasicAuth('4', 'principal', 'credentials');
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api.getOauth2Token(basicAuth)
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].body).toEqual('grant_type=password&' +
+            'scope=tenant/' + basicAuth.tenantId +
+            '&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials);
+          expect(result.token_type).toEqual('Bearer');
+          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
+          expect(result.scope).toEqual('tenant/4');
+        })
+        .catch(error => {
+          fail('No error should be thrown ' + error);
+        })
+        .then(done);
+    });
+
+    it('should get a token without organisation and with student', done => {
+      const content = {
+        error: 'invalid_scope'
+      };
+      fakeResponse = new Response(JSON.stringify(content), {
+        status: 400,
+        header: {
+          'Content-type': 'application/json'
+        }
+      });
+      const basicAuth = new BasicAuth('4', null, 'credentials');
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api.getOauth2Token(basicAuth)
+        .then(fail)
+        .catch(error => {
+          expect(error.error).toEqual('invalid_scope');
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].body).toEqual('grant_type=password&' +
+            'scope=tenant/' + basicAuth.tenantId +
+            '&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials);
+        })
+        .then(done);
+    });
   });
 
   describe('Add access token', () => {
