@@ -56,8 +56,7 @@ describe('BasicAuth API interaction test', () => {
   it('should create a new BasicAuth through API', done => {
     const basicauth = new BasicAuth('4', 'principal');
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new BasicAuthController(api);
     const url = 'https://api.itslanguage.nl/basicauths';
@@ -94,8 +93,7 @@ describe('BasicAuth API interaction test', () => {
   it('should create a new BasicAuth without generating credentials through API', done => {
     const basicauth = new BasicAuth('4', 'principal', 'credentials');
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new BasicAuthController(api);
     const url = 'https://api.itslanguage.nl/basicauths';
@@ -130,8 +128,7 @@ describe('BasicAuth API interaction test', () => {
 
   it('should handle errors while creating a new basicauth', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const basicauth = new BasicAuth('4', 'principal');
     const controller = new BasicAuthController(api);

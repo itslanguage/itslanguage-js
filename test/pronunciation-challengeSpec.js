@@ -45,8 +45,7 @@ describe('PronunciationChallenge object test', () => {
 
 describe('PronunciationChallenge API interaction test', () => {
   const api = new Connection({
-    authPrincipal: 'principal',
-    authPassword: 'secret'
+    oAuth2Token: 'token'
   });
   const controller = new Controller(api);
   const blob = new Blob(['1234567890']);
@@ -63,8 +62,7 @@ describe('PronunciationChallenge API interaction test', () => {
     // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
 
-    url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation';
+    url = 'https://api.itslanguage.nl/challenges/pronunciation';
   });
 
   afterEach(() => {
@@ -243,8 +241,7 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should get an existing pronunciation challenge', done => {
-    url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/4';
+    url = 'https://api.itslanguage.nl/challenges/pronunciation/4';
     const content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',
@@ -282,6 +279,7 @@ describe('PronunciationChallenge API interaction test', () => {
   it('should get a list of existing challenges', done => {
     const content = [{
       id: '4',
+      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'Hi',
@@ -295,7 +293,7 @@ describe('PronunciationChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.listPronunciationChallenges('fb')
+    controller.listPronunciationChallenges()
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -341,8 +339,7 @@ describe('PronunciationChallenge API interaction test', () => {
 
   it('should delete a an existing challenge', done => {
     const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
-    url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/pronunciation/test';
+    url = 'https://api.itslanguage.nl/challenges/pronunciation/test';
 
     const content =
       {

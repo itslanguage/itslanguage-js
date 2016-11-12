@@ -69,8 +69,7 @@ describe('SpeechRecording object test', () => {
 
 describe('SpeechRecording API interaction test', () => {
   const api = new Connection({
-    authPrincipal: 'principal',
-    authPassword: 'secret'
+    oAuth2Token: 'token'
   });
   const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
   const controller = new SpeechRecordingController(api);
@@ -153,7 +152,7 @@ describe('SpeechRecording API interaction test', () => {
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);
         recording.audio = null;
-        recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
+        recording.audioUrl = audioUrl + '?access_token=token';
         expect(result).toEqual(recording);
       })
       .catch(error => {
@@ -226,7 +225,7 @@ describe('SpeechRecording API interaction test', () => {
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);
         recording.audio = null;
-        recording.audioUrl = audioUrl + '?access_token=cHJpbmNpcGFsOm51bGw%3D';
+        recording.audioUrl = audioUrl + '?access_token=token';
         expect(result[0]).toEqual(recording);
       })
       .catch(error => {
@@ -268,8 +267,7 @@ describe('Speech Recording Websocket API interaction test', () => {
     api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar',
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     fakeResponse = {
       created: new Date(stringDate),

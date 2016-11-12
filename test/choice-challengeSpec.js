@@ -71,8 +71,7 @@ describe('ChoiceChallenge API interaction test', () => {
       '/challenges/choice';
 
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new ChoiceChallengeController(api);
     const content = {
@@ -124,8 +123,7 @@ describe('ChoiceChallenge API interaction test', () => {
       '/challenges/choice';
 
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new ChoiceChallengeController(api);
     const content = {
@@ -168,8 +166,7 @@ describe('ChoiceChallenge API interaction test', () => {
   it('should reject on missing organisationId', done => {
     const challenge = new ChoiceChallenge('', '1', 'q', ['a']);
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new ChoiceChallengeController(api);
     controller.createChoiceChallenge(challenge)
@@ -182,8 +179,7 @@ describe('ChoiceChallenge API interaction test', () => {
     const challenge = new ChoiceChallenge('fb', '1', 'q', ['a']);
 
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new ChoiceChallengeController(api);
     const content = {
@@ -224,8 +220,7 @@ describe('ChoiceChallenge API interaction test', () => {
 
   it('should get an existing choice challenge', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const url = 'https://api.itslanguage.nl/organisations/fb' +
       '/challenges/choice/1';
@@ -271,8 +266,7 @@ describe('ChoiceChallenge API interaction test', () => {
 
   it('should get a list of existing challenges', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
 
     const content = [{

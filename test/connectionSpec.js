@@ -11,8 +11,7 @@ describe('Events', () => {
   let handler;
   beforeEach(() => {
     api = new Connection({
-      authPrincipal: 'principal',
-      authCredentials: 'secret'
+      oAuth2Token: 'token'
     });
     handler = jasmine.createSpyObj('handler', ['handler1', 'handler2', 'handler3']);
   });
@@ -104,22 +103,21 @@ describe('Connection', () => {
       api = new Connection();
       expect(() => {
         api._secureAjaxGet();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
 
       expect(() => {
         api._secureAjaxPost();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
 
       expect(() => {
         api._secureAjaxDelete();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
     });
 
     describe('Authorization header', () => {
       beforeEach(() => {
         api = new Connection({
-          authPrincipal: 'principal',
-          authCredentials: 'secret'
+          oAuth2Token: 'token'
         });
         url = api.settings.apiUrl;
         fakeResponse = new Response(JSON.stringify({}), {
@@ -135,8 +133,7 @@ describe('Connection', () => {
           api._secureAjaxGet(url)
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
-              // That's the correct base64 representation of 'principal:secret'
-              expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
+              expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
               fail('No error should be thrown: ' + error);
@@ -148,8 +145,7 @@ describe('Connection', () => {
           api._secureAjaxPost(url)
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
-              // That's the correct base64 representation of 'principal:secret'
-              expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
+              expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
               fail('No error should be thrown: ' + error);
@@ -160,8 +156,7 @@ describe('Connection', () => {
           api._secureAjaxDelete(url)
             .then(() => {
               const request = window.fetch.calls.mostRecent().args;
-              // That's the correct base64 representation of 'principal:secret'
-              expect(request[1].headers.get('Authorization')).toEqual('Basic cHJpbmNpcGFsOnNlY3JldA==');
+              expect(request[1].headers.get('Authorization')).toEqual('Bearer token');
             })
             .catch(error => {
               fail('No error should be thrown: ' + error);
@@ -177,7 +172,6 @@ describe('Connection', () => {
           api._secureAjaxGet(url)
           .then(() => {
             const request = window.fetch.calls.mostRecent().args;
-            // That's the correct base64 representation of 'principal:secret'
             expect(request[1].headers.get('Authorization')).toBeNull();
           })
           .catch(error => {
@@ -189,7 +183,6 @@ describe('Connection', () => {
           api._secureAjaxPost(url)
           .then(() => {
             const request = window.fetch.calls.mostRecent().args;
-            // That's the correct base64 representation of 'principal:secret'
             expect(request[1].headers.get('Authorization')).toBeNull();
           })
           .catch(error => {
@@ -201,7 +194,6 @@ describe('Connection', () => {
           api._secureAjaxDelete(url)
           .then(() => {
             const request = window.fetch.calls.mostRecent().args;
-            // That's the correct base64 representation of 'principal:secret'
             expect(request[1].headers.get('Authorization')).toBeNull();
           })
           .catch(error => {
@@ -332,37 +324,124 @@ describe('Connection', () => {
       })
       .then(done);
     });
+
+    it('should get a token without student id', done => {
+      const content = {
+        access_token: '2b198b6bc87db1bdb',
+        token_type: 'Bearer',
+        scope: 'tenant/4'
+      };
+      fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        header: {
+          'Content-type': 'application/json'
+        }
+      });
+      const basicAuth = new BasicAuth('4', 'principal', 'credentials');
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api.getOauth2Token(basicAuth, 'fb')
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].body).toEqual('grant_type=password&' +
+            'scope=tenant/' + basicAuth.tenantId +
+            '/organisation/fb&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials);
+          expect(result.token_type).toEqual('Bearer');
+          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
+          expect(result.scope).toEqual('tenant/4');
+        })
+        .catch(error => {
+          fail('No error should be thrown ' + error);
+        })
+        .then(done);
+    });
+
+    it('should get a token without organisation and student', done => {
+      const content = {
+        access_token: '2b198b6bc87db1bdb',
+        token_type: 'Bearer',
+        scope: 'tenant/4'
+      };
+      fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        header: {
+          'Content-type': 'application/json'
+        }
+      });
+      const basicAuth = new BasicAuth('4', 'principal', 'credentials');
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api.getOauth2Token(basicAuth)
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].body).toEqual('grant_type=password&' +
+            'scope=tenant/' + basicAuth.tenantId +
+            '&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials);
+          expect(result.token_type).toEqual('Bearer');
+          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
+          expect(result.scope).toEqual('tenant/4');
+        })
+        .catch(error => {
+          fail('No error should be thrown ' + error);
+        })
+        .then(done);
+    });
+
+    it('should get a token without organisation and with student', done => {
+      const content = {
+        error: 'invalid_scope'
+      };
+      fakeResponse = new Response(JSON.stringify(content), {
+        status: 400,
+        header: {
+          'Content-type': 'application/json'
+        }
+      });
+      const basicAuth = new BasicAuth('4', null, 'credentials');
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api.getOauth2Token(basicAuth)
+        .then(fail)
+        .catch(error => {
+          expect(error.error).toEqual('invalid_scope');
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].body).toEqual('grant_type=password&' +
+            'scope=tenant/' + basicAuth.tenantId +
+            '&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials);
+        })
+        .then(done);
+    });
   });
 
   describe('Add access token', () => {
     it('should throw when credentials are invalid', () => {
       api = new Connection({
-        authPrincipal: null,
-        authCredentials: null
+        oAuth2Token: null
       });
       expect(() => {
         api.addAccessToken();
-      }).toThrowError('Please set authPrincipal and authCredentials');
+      }).toThrowError('Please set oAuth2Token');
     });
 
     it('should add an access token to an url', () => {
       api = new Connection({
-        authPrincipal: 'principal',
-        authCredentials: 'credentials'
+        oAuth2Token: 'token'
       });
       url = 'https://api.itslanguage.nl';
       const output = api.addAccessToken(url);
-      expect(output).toEqual(url + '?access_token=cHJpbmNpcGFsOmNyZWRlbnRpYWxz');
+      expect(output).toEqual(url + '?access_token=token');
     });
 
     it('should add an access token to an url with an existing query parameter', () => {
       api = new Connection({
-        authPrincipal: 'principal',
-        authCredentials: 'credentials'
+        oAuth2Token: 'token'
       });
       url = 'https://api.itslanguage.nl?foo=bar';
       const output = api.addAccessToken(url);
-      expect(output).toEqual(url + '&access_token=cHJpbmNpcGFsOmNyZWRlbnRpYWxz');
+      expect(output).toEqual(url + '&access_token=token');
     });
   });
   it('should log RPC errors', () => {

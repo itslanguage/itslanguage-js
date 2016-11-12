@@ -276,8 +276,7 @@ module.exports = class PronunciationAnalysisController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/pronunciation/' +
+    const url = this.connection.settings.apiUrl + '/challenges/pronunciation/' +
       challenge.id + '/analyses/' + analysisId;
     return this.connection._secureAjaxGet(url)
       .then(datum => {
@@ -311,8 +310,7 @@ module.exports = class PronunciationAnalysisController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    let url = this.connection.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/pronunciation/' +
+    let url = this.connection.settings.apiUrl + '/challenges/pronunciation/' +
       challenge.id + '/analyses';
     if (detailed) {
       url += '?detailed=true';

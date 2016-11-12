@@ -51,8 +51,7 @@ describe('Student API interaction test', () => {
   it('should reject creation when student.organisationId is not present', done => {
     const student = new Student(null, '1', 'Mark');
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new StudentController(api);
     controller.createStudent(student)
@@ -68,8 +67,7 @@ describe('Student API interaction test', () => {
   it('should create a new student through API', done => {
     const student = new Student('fb', '1', 'Mark');
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new StudentController(api);
     const url = 'https://api.itslanguage.nl/organisations/fb/students';
@@ -115,8 +113,7 @@ describe('Student API interaction test', () => {
 
   it('should handle errors while creating a new student', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const controller = new StudentController(api);
     const student = new Student('fb', '1', 'Mark');
@@ -164,8 +161,7 @@ describe('Student API interaction test', () => {
 
   it('should get an existing student through API', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const url = 'https://api.itslanguage.nl/organisations/fb/students/4';
     const content = {
@@ -201,8 +197,7 @@ describe('Student API interaction test', () => {
 
   it('should get a list of existing students through API', done => {
     const api = new Connection({
-      authPrincipal: 'principal',
-      authPassword: 'secret'
+      oAuth2Token: 'token'
     });
     const url = 'https://api.itslanguage.nl/organisations/fb/students';
     const content = [{

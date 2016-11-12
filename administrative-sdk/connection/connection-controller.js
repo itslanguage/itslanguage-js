@@ -13,8 +13,7 @@ module.exports = class Connection {
     this.settings = Object.assign({
       // ITSL connection parameters.
       apiUrl: 'https://api.itslanguage.nl',
-      authPrincipal: null,
-      authCredentials: null,
+      oAuth2Token: null,
       wsUrl: null,
       wsToken: null
     }, options);
@@ -41,11 +40,10 @@ module.exports = class Connection {
    * Assemble a HTTP Authentication header.
    */
   _getAuthHeaders() {
-    if (!this.settings.authPrincipal && !this.settings.authCredentials) {
-      throw new Error('Please set authPrincipal and authCredentials');
+    if (!this.settings.oAuth2Token) {
+      throw new Error('Please set oAuth2Token');
     }
-    const combo = this.settings.authPrincipal + ':' + this.settings.authCredentials;
-    const authHeader = 'Basic ' + btoa(unescape(encodeURIComponent(combo)));
+    const authHeader = 'Bearer ' + this.settings.oAuth2Token;
     return authHeader;
   }
 
@@ -153,13 +151,11 @@ module.exports = class Connection {
    * @param {string} url The URL to add an access token to.
    */
   addAccessToken(url) {
-    if (!this.settings.authPrincipal && !this.settings.authCredentials) {
-      throw new Error('Please set authPrincipal and authCredentials');
+    if (!this.settings.oAuth2Token) {
+      throw new Error('Please set oAuth2Token');
     }
-    const combo = this.settings.authPrincipal + ':' + this.settings.authCredentials;
-    const accessToken = btoa(unescape(encodeURIComponent(combo)));
     const secureUrl = url + (url.match(/\?/) ? '&' : '?') + 'access_token=' +
-      encodeURIComponent(accessToken);
+      encodeURIComponent(this.settings.oAuth2Token);
     return secureUrl;
   }
 
@@ -315,9 +311,13 @@ module.exports = class Connection {
    */
   getOauth2Token(basicAuth, organisationId, studentId) {
     const url = this.settings.apiUrl + '/tokens';
-    const scopes = 'tenant/' + basicAuth.tenantId +
-        '/organisation/' + organisationId +
-        '/student/' + studentId;
+    let scopes = 'tenant/' + basicAuth.tenantId;
+    if (organisationId) {
+      scopes += '/organisation/' + organisationId;
+    }
+    if (organisationId && studentId) {
+      scopes += '/student/' + studentId;
+    }
     const headers = new Headers();
     headers.append('Content-Type',
       'application/x-www-form-urlencoded; charset=utf8');
