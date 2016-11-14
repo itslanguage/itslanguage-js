@@ -58,6 +58,8 @@ describe('WebAudioPlayer', () => {
         'canplayCb',
         'endedCb',
         'pauseCb',
+        'stoppedCb',
+        'playbackStoppedCb',
         'progressCb',
         'errorCb'
       ]);
@@ -73,6 +75,8 @@ describe('WebAudioPlayer', () => {
       expect(options.canplayCb).toHaveBeenCalledTimes(1);
       expect(options.endedCb).toHaveBeenCalledTimes(1);
       expect(options.pauseCb).toHaveBeenCalledTimes(1);
+      expect(options.stoppedCb).toHaveBeenCalledTimes(1);
+      expect(options.playbackStoppedCb).toHaveBeenCalledTimes(2);
       expect(options.progressCb).toHaveBeenCalledTimes(1);
       expect(options.errorCb).toHaveBeenCalledTimes(5);
       expect(console.error).toHaveBeenCalledTimes(5);
@@ -222,11 +226,26 @@ describe('WebAudioPlayer', () => {
   it('should stop playing audio', () => {
     audioMock.pause = () => {
     };
+    audioMock.currentTime = 10;
     spyOn(audioMock, 'pause');
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.stop();
 
+    expect(webAudioPlayer._pauseIsStop).toEqual(false);
+    expect(audioMock.currentTime).toEqual(0);
+    expect(audioMock.pause).toHaveBeenCalledTimes(1);
+  });
+
+  it('should pause playing audio', () => {
+    audioMock.pause = () => {
+    };
+    audioMock.currentTime = 10;
+    spyOn(audioMock, 'pause');
+    webAudioPlayer = new WebAudioPlayer();
+    webAudioPlayer.pause();
+
     expect(webAudioPlayer._pauseIsStop).toEqual(true);
+    expect(audioMock.currentTime).toEqual(10);
     expect(audioMock.pause).toHaveBeenCalledTimes(1);
   });
 

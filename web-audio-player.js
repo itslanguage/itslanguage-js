@@ -69,6 +69,11 @@ module.exports = class WebAudioPlayer {
         if (self.settings.pauseCb) {
           self.settings.pauseCb();
         }
+      } else if (self.settings.stoppedCb) {
+        self.settings.stoppedCb();
+      }
+      if (self.settings.playbackStoppedCb) {
+        self.settings.playbackStoppedCb();
       }
     });
 
@@ -182,6 +187,11 @@ module.exports = class WebAudioPlayer {
   stop() {
     // The HTML5 audio player only has a pause(), no stop().
     // To differentiate between the two, set a flag.
+    this.sound.pause();
+    this.sound.currentTime = 0;
+  }
+
+  pause() {
     this._pauseIsStop = true;
     this.sound.pause();
   }

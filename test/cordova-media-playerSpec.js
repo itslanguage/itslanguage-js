@@ -221,10 +221,20 @@ describe('Cordova Media Player', () => {
 
   it('should stop', () => {
     player.sound = {
-      pause: jasmine.createSpy()
+      stop: jasmine.createSpy()
     };
     player._isPlaying = true;
     player.stop();
+    expect(player._canPlay).toBeFalsy();
+    expect(player.sound.stop).toHaveBeenCalledTimes(1);
+  });
+
+  it('should pause', () => {
+    player.sound = {
+      pause: jasmine.createSpy()
+    };
+    player._isPlaying = true;
+    player.pause();
     expect(player._canPlay).toBeFalsy();
     expect(player.sound.pause).toHaveBeenCalledTimes(1);
   });

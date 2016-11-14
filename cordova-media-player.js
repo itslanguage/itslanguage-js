@@ -202,6 +202,11 @@ module.exports = class CordovaMediaPlayer {
    */
   stop() {
     this._isPlaying = false;
+    this.sound.stop();
+  }
+
+  pause() {
+    this._isPlaying = false;
     this.sound.pause();
   }
 
