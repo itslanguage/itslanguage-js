@@ -16,6 +16,12 @@ describe('Student object test', () => {
     }).toThrowError('id parameter of type "string|null" is required');
   });
 
+  it('should not instantiate a Student with a birthYear as string', () => {
+    expect(() => {
+      new Student('fb', 'test', 'Mark', 'Zuckerberg', 'male', '1984');
+    }).toThrowError('birthYear parameter of type "number|null" is required');
+  });
+
   it('should instantiate a Student without id', () => {
     const s = new Student();
     expect(s).toBeDefined();
