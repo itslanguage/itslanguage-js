@@ -99,19 +99,32 @@ describe('Connection', () => {
       jasmine.Ajax.uninstall();
     });
 
-    it('should throw error on required auth credentials', () => {
+    it('should throw error on required auth credentials on GET', done => {
       api = new Connection();
-      expect(() => {
-        api._secureAjaxGet();
-      }).toThrowError('Please set oAuth2Token');
+      api._secureAjaxGet()
+        .then(fail)
+        .catch(error => {
+          expect(error).toEqual('Please set oAuth2Token');
+        })
+        .then(done);
+    });
 
-      expect(() => {
-        api._secureAjaxPost();
-      }).toThrowError('Please set oAuth2Token');
+    it('should throw error on required auth credentials on POST', done => {
+      api._secureAjaxPost()
+        .then(fail)
+        .catch(error => {
+          expect(error).toEqual('Please set oAuth2Token');
+        })
+        .then(done);
+    });
 
-      expect(() => {
-        api._secureAjaxDelete();
-      }).toThrowError('Please set oAuth2Token');
+    it('should throw error on required auth credentials on DELETE', done => {
+      api._secureAjaxDelete()
+        .then(fail)
+        .catch(error => {
+          expect(error).toEqual('Please set oAuth2Token');
+        })
+        .then(done);
     });
 
     describe('Authorization header', () => {
@@ -161,44 +174,6 @@ describe('Connection', () => {
             .catch(error => {
               fail('No error should be thrown: ' + error);
             }).then(done);
-        });
-      });
-
-      describe('Undefined Authorization header', () => {
-        beforeEach(() => {
-          spyOn(api, '_getAuthHeaders').and.returnValue(undefined);
-        });
-        it('should send a GET without authorization header', done => {
-          api._secureAjaxGet(url)
-          .then(() => {
-            const request = window.fetch.calls.mostRecent().args;
-            expect(request[1].headers.get('Authorization')).toBeNull();
-          })
-          .catch(error => {
-            fail('No error should be thrown: ' + error);
-          }).then(done);
-        });
-
-        it('should send a POST without authorization header', done => {
-          api._secureAjaxPost(url)
-          .then(() => {
-            const request = window.fetch.calls.mostRecent().args;
-            expect(request[1].headers.get('Authorization')).toBeNull();
-          })
-          .catch(error => {
-            fail('No error should be thrown: ' + error);
-          }).then(done);
-        });
-
-        it('should send a DELETE without authorization header', done => {
-          api._secureAjaxDelete(url)
-          .then(() => {
-            const request = window.fetch.calls.mostRecent().args;
-            expect(request[1].headers.get('Authorization')).toBeNull();
-          })
-          .catch(error => {
-            fail('No error should be thrown: ' + error);
-          }).then(done);
         });
       });
     });
