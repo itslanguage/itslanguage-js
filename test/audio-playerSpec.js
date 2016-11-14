@@ -194,23 +194,30 @@ describe('Audio player', () => {
     expect(player.player.stop).toHaveBeenCalledTimes(1);
   });
 
+  it('should pause', () => {
+    const player = new AudioPlayer();
+    player.player = jasmine.createSpyObj('player', ['pause']);
+    player.pause();
+    expect(player.player.pause).toHaveBeenCalledTimes(1);
+  });
+
   it('should toggle playback when playing', () => {
     const player = new AudioPlayer();
-    player.player = jasmine.createSpyObj('player', ['play', 'stop', 'isPlaying']);
+    player.player = jasmine.createSpyObj('player', ['play', 'pause', 'isPlaying']);
     player.player.isPlaying.and.returnValue(true);
     player.togglePlayback();
     expect(player.player.isPlaying).toHaveBeenCalledTimes(1);
-    expect(player.player.stop).toHaveBeenCalledTimes(1);
+    expect(player.player.pause).toHaveBeenCalledTimes(1);
     expect(player.player.play).not.toHaveBeenCalled();
   });
 
   it('should toggle playback when not playing', () => {
     const player = new AudioPlayer();
-    player.player = jasmine.createSpyObj('player', ['play', 'stop', 'isPlaying']);
+    player.player = jasmine.createSpyObj('player', ['play', 'pause', 'isPlaying']);
     player.player.isPlaying.and.returnValue(false);
     player.togglePlayback();
     expect(player.player.isPlaying).toHaveBeenCalledTimes(1);
-    expect(player.player.stop).not.toHaveBeenCalledTimes(1);
+    expect(player.player.pause).not.toHaveBeenCalledTimes(1);
     expect(player.player.play).toHaveBeenCalledTimes(1);
   });
 

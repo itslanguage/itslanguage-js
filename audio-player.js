@@ -36,6 +36,9 @@ module.exports = class AudioPlayer {
       pauseCb() {
         self.emitter.emit('pause', []);
       },
+      stoppedCb() {
+        self.emitter.emit('stopped', []);
+      },
       progressCb() {
         self.emitter.emit('progress', []);
       },
@@ -194,12 +197,16 @@ module.exports = class AudioPlayer {
     this.player.stop();
   }
 
+  pause() {
+    this.player.pause();
+  }
+
   /**
    * Toggle audio playback. Switch from playing to paused state and back.
    */
   togglePlayback() {
     if (this.player.isPlaying()) {
-      this.player.stop();
+      this.player.pause();
     } else {
       this.player.play();
     }
