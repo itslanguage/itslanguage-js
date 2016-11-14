@@ -69,9 +69,11 @@ module.exports = class WebAudioPlayer {
         if (self.settings.pauseCb) {
           self.settings.pauseCb();
         }
-      }
-      if (self.settings.stoppedCb) {
+      } else if (self.settings.stoppedCb) {
         self.settings.stoppedCb();
+      }
+      if (self.settings.playbackStoppedCb) {
+        self.settings.playbackStoppedCb();
       }
     });
 

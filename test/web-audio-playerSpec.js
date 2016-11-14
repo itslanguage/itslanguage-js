@@ -59,6 +59,7 @@ describe('WebAudioPlayer', () => {
         'endedCb',
         'pauseCb',
         'stoppedCb',
+        'playbackStoppedCb',
         'progressCb',
         'errorCb'
       ]);
@@ -74,7 +75,8 @@ describe('WebAudioPlayer', () => {
       expect(options.canplayCb).toHaveBeenCalledTimes(1);
       expect(options.endedCb).toHaveBeenCalledTimes(1);
       expect(options.pauseCb).toHaveBeenCalledTimes(1);
-      expect(options.stoppedCb).toHaveBeenCalledTimes(2);
+      expect(options.stoppedCb).toHaveBeenCalledTimes(1);
+      expect(options.playbackStoppedCb).toHaveBeenCalledTimes(2);
       expect(options.progressCb).toHaveBeenCalledTimes(1);
       expect(options.errorCb).toHaveBeenCalledTimes(5);
       expect(console.error).toHaveBeenCalledTimes(5);

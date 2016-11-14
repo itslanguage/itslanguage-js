@@ -39,6 +39,9 @@ module.exports = class AudioPlayer {
       stoppedCb() {
         self.emitter.emit('stopped', []);
       },
+      playbackStoppedCb() {
+        self.emitter.emit('playbackstopped', []);
+      },
       progressCb() {
         self.emitter.emit('progress', []);
       },
