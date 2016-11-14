@@ -36,6 +36,10 @@ module.exports = class Student {
     this.firstName = firstName;
     this.lastName = lastName;
     this.gender = gender;
+    if (birthYear && typeof birthYear !== 'number') {
+      throw new Error(
+        'birthYear parameter of type "number|null" is required');
+    }
     this.birthYear = birthYear;
   }
 };
