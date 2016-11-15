@@ -291,4 +291,8 @@ describe('Cordova Media Player', () => {
     result = player.isPlaying();
     expect(result).toBeTruthy();
   });
+
+  it('should call the preload method', () => {
+    player.preload();
+  });
 });
