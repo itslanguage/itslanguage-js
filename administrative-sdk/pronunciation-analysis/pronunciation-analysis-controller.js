@@ -205,6 +205,9 @@ module.exports = class PronunciationAnalysisController {
         // When done, submit any plain text (non-JSON) to start analysing.
         self.connection._session.call('nl.itslanguage.pronunciation.analyse',
           [self.connection._analysisId], {}, {receive_progress: true})
+          .progress(progress => {
+            reportProgress(progress);
+          })
           .then(reportDone)
           .catch(res => {
             if (res.error === 'nl.itslanguage.ref_alignment_failed') {
@@ -218,9 +221,6 @@ module.exports = class PronunciationAnalysisController {
               Connection.logRPCError(res);
             }
             reportError(res.kwargs.analysis);
-          })
-          .progress(progress => {
-            reportProgress(progress);
           })
           .then(() => {
             // This session is over.
