@@ -52,10 +52,15 @@ class Stopwatch {
   reset() {
     console.debug('Reset count');
     this.value = 0;
+    this.tick();
   }
 
   update() {
+    this.tick();
     this.value++;
+  }
+
+  tick() {
     if (this.tickCb) {
       this.tickCb(this.value);
     }
