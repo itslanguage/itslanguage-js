@@ -27,6 +27,7 @@ describe('Stopwatch', () => {
       expect(stopwatch.interval).not.toBeNull();
       stopwatch.stop();
       expect(stopwatch.interval).toBeNull();
+      expect(stopwatch.update).toHaveBeenCalledTimes(3);
       done();
     }, 300);
   });
