@@ -196,11 +196,6 @@ describe('Cordova Media Player', () => {
     expect(cb).toHaveBeenCalledWith(entry);
   });
 
-  it('should load audio from callback', () => {
-    const result = player.loadedCallback(1);
-    expect(result).toEqual(1);
-  });
-
   it('should play', () => {
     player.sound = {
       play: jasmine.createSpy()
