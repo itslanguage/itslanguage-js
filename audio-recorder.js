@@ -61,20 +61,6 @@ module.exports = class AudioRecorder {
   }
 
   /**
-   * Event fired by requestUserMedia.
-   *
-   * @event AudioRecorder~ready
-   * @param {AudioContext} audioContext The active AudioContext object.
-   * @param {AudioStream} audioStream The microphone AudioStream.
-   */
-  ready(audioContext, audioStream) {
-    return {
-      context: audioContext,
-      stream: audioStream
-    };
-  }
-
-  /**
    * Check if the user has already given permission to access the microphone.
    *
    * @returns true if user has granted access to the microphone, false otherwise.
@@ -296,26 +282,6 @@ module.exports = class AudioRecorder {
   }
 
   /**
-   * Callback used by record.
-   *
-   * @callback Sdk~recordDataAvailableCallback
-   * @param {arraybuffer} buffer A chunk of recorded audio.
-   */
-  recordDataAvailableCallback(buffer) {
-    return buffer;
-  }
-
-  /**
-   * Event fired by record.
-   *
-   * @event AudioRecorder~recording
-   * @param {number} id Recording session (if any was defined).
-   */
-  recording(id) {
-    return id;
-  }
-
-  /**
    * Start recording microphone input until stopped.
    *
    * @param {AudioRecorder~recordDataAvailableCallback} [cb] The callback that provides a piece of raw audio when
@@ -340,22 +306,6 @@ module.exports = class AudioRecorder {
 
     this.fireEvent('recording', [this.activeRecordingId]);
     return cb;
-  }
-
-  /**
-   * Event fired by stop.
-   *
-   * @event AudioRecorder~recorded
-   * @param {number} id Recording session (if any was defined).
-   * @param {Blob} blob The recorded audio as Blob (including the mime type).
-   * @param {bool} forced true when the reason for the stopped recording was reaching the maximum recording duration.
-   */
-  recorded(id, blob, forced) {
-    return {
-      id,
-      blob,
-      forced
-    };
   }
 
   /**

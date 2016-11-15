@@ -87,16 +87,6 @@ module.exports = class CordovaMediaPlayer {
     }
   }
 
-  /**
-   * Callback used by load.
-   *
-   * @callback CordovaMediaPlayer~loadedCallback
-   * @param {Audio} audio The Audio element that has the duration property set.
-   */
-  loadedCallback(audio) {
-    return audio;
-  }
-
   _loadMedia(
         filepath, closure, loadedCb) {
     console.debug('Loading media: ' + filepath);
