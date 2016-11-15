@@ -1,6 +1,7 @@
 const CordovaMediaPlayer = require('./cordova-media-player');
 const ee = require('event-emitter');
 const allOff = require('event-emitter/all-off');
+const Stopwatch = require('./tools').Stopwatch;
 const WebAudioPlayer = require('./web-audio-player');
 /**
  *@module its.AudioPlayer
@@ -41,6 +42,9 @@ module.exports = class AudioPlayer {
       },
       playbackStoppedCb() {
         self.emitter.emit('playbackstopped', []);
+        if (self.stopwatch) {
+          self.stopwatch.stop();
+        }
       },
       progressCb() {
         self.emitter.emit('progress', []);
@@ -51,6 +55,7 @@ module.exports = class AudioPlayer {
     };
     this.player = this._getBestPlayer(callbacks);
     this.emitter = ee({});
+    this.stopwatch = null;
   }
 
   resetEventListeners() {
@@ -190,17 +195,32 @@ module.exports = class AudioPlayer {
    * @param {number} [position] When position is given, start playing from this position (seconds).
    */
   play(position) {
+    if (this.player.isPlaying()) {
+      return;
+    }
     this.player.play(position);
+    if (this.stopwatch) {
+      const time = Math.round(this.player.getCurrentTime() * 10);
+      this.stopwatch.value = time;
+      this.stopwatch.start();
+    }
   }
 
   /**
    * Stop playback of audio.
    */
   stop() {
+    if (this.stopwatch) {
+      this.stopwatch.reset();
+      this.stopwatch.stop();
+    }
     this.player.stop();
   }
 
   pause() {
+    if (this.stopwatch) {
+      this.stopwatch.stop();
+    }
     this.player.pause();
   }
 
@@ -209,9 +229,9 @@ module.exports = class AudioPlayer {
    */
   togglePlayback() {
     if (this.player.isPlaying()) {
-      this.player.pause();
+      this.pause();
     } else {
-      this.player.play();
+      this.play();
     }
   }
 
@@ -229,6 +249,9 @@ module.exports = class AudioPlayer {
    */
   scrub(percentage) {
     this.player.scrub(percentage);
+    if (this.stopwatch) {
+      this.stopwatch.value = Math.round(this.player.getCurrentTime() * 10);
+    }
   }
 
   /*
@@ -275,5 +298,10 @@ module.exports = class AudioPlayer {
    */
   canPlay() {
     return this.player.canPlay();
+  }
+
+  bindStopwatch(tickCb) {
+    this.stopwatch = new Stopwatch(tickCb);
+    return this.stopwatch;
   }
 };
