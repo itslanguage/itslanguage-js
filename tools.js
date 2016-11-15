@@ -43,6 +43,7 @@ class Stopwatch {
   stop() {
     console.debug('Stop counting');
     clearInterval(this.interval);
+    this.tick();
     this.interval = null;
   }
 
