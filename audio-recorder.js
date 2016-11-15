@@ -87,7 +87,7 @@ module.exports = class AudioRecorder {
    * Logs browser compatibility for audio recording.
    * In case of compatibility issues, an error is thrown.
    */
-  _recordingCompatibility() {
+  _recordingCompatibility/* istanbul ignore next */() {
     // Detect audio recording capabilities.
     // http://caniuse.com/#feat=stream
     // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
