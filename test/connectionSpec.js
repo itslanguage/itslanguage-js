@@ -437,12 +437,6 @@ describe('Connection', () => {
     window.WebSocket = backupSocket;
   });
 
-  it('should call the connect method', () => {
-    spyOn(api, '_webSocketConnect');
-    api.webSocketConnect('token');
-    expect(api._webSocketConnect).toHaveBeenCalledWith('token', jasmine.any(Object));
-  });
-
   describe('Cancel streaming', () => {
     let recorderMock;
     beforeEach(() => {
@@ -503,7 +497,8 @@ describe('Autobahn', () => {
       }
     };
     spyOn(console, 'log');
-    api._webSocketConnect('token', mockBahn);
+    Connection.__set__('autobahn', mockBahn);
+    api.webSocketConnect('token');
     expect(console.log).toHaveBeenCalledTimes(1);
     expect(console.log).toHaveBeenCalledWith('WebSocket creation error: Error: Cannot construct');
   });
@@ -531,7 +526,8 @@ describe('Autobahn', () => {
     spyOn(api, 'fireEvent');
     spyOn(console, 'log');
     spyOn(console, 'debug');
-    api._webSocketConnect('token', mockBahn);
+    Connection.__set__('autobahn', mockBahn);
+    api.webSocketConnect('token');
     mockSession.call('apiUrl', 'extra argument');
     expect(api.fireEvent).toHaveBeenCalledWith('websocketError', ['error']);
     expect(console.log).toHaveBeenCalledWith('WebSocket error: error');
@@ -558,8 +554,9 @@ describe('Autobahn', () => {
         };
       }
     };
+    Connection.__set__('autobahn', mockBahn);
     expect(() => {
-      api._webSocketConnect('token', mockBahn);
+      api.webSocketConnect('token');
     }).toThrowError('don\'t know how to authenticate using \'cra\'');
   });
 });
