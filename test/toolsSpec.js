@@ -50,10 +50,10 @@ describe('Stopwatch', () => {
     const stopwatch = new Stopwatch(cb);
     stopwatch.update();
     expect(stopwatch.value).toEqual(1);
-    expect(cb).toHaveBeenCalledWith(1);
+    expect(cb).toHaveBeenCalledWith(0);
     stopwatch.update();
     expect(stopwatch.value).toEqual(2);
-    expect(cb).toHaveBeenCalledWith(2);
+    expect(cb).toHaveBeenCalledWith(1);
   });
 
   it('should update without cb', () => {
