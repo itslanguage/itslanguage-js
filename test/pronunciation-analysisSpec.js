@@ -391,7 +391,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     });
   });
   it('should start streaming a new pronunciation analysis', done => {
-    let progressCalled = false;
+    const progressCalled = [];
     recorder.addEventListener = function(name, method) {
       if (name === 'dataavailable') {
         method(1);
@@ -405,9 +405,11 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     };
 
     controller.connection._session.call.and.callFake(name => when.promise((resolve, reject, notify) => {
-      notify();
+      notify('NOTIFY');
       if (name !== 'nl.itslanguage.pronunciation.alignment') {
-        resolve(fakeResponse);
+        setTimeout(() => {
+          resolve(fakeResponse);
+        }, 200);
       } else {
         setTimeout(() => {
           resolve('AlignmentResult');
@@ -415,19 +417,19 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       }
     })
     );
-
+    const expectedNotifyCall = {progress: 'NOTIFY', referenceAlignment: 'AlignmentResult'};
     controller.startStreamingPronunciationAnalysis(
       challenge, recorder)
-      .progress(() => {
-        progressCalled = true;
+      .progress(args => {
+        progressCalled.push(args);
       })
       .then(result => {
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.pronunciation.init_analysis', [],
           {trimStart: 0.15, trimEnd: 0.0});
-        expect(controller.referenceAlignment).toEqual('AlignmentResult');
-        expect(progressCalled).toBeTruthy();
+        expect(progressCalled[0]).toEqual('ReadyToReceive');
+        expect(progressCalled[1]).toEqual(expectedNotifyCall);
         expect(result.analysisId).toEqual(fakeResponse);
       })
       .catch(error => {

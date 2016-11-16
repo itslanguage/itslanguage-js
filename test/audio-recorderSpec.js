@@ -34,6 +34,8 @@ describe('Audio recorder', () => {
   });
 
   it('should construct with event functionality', () => {
+    const allOffSpy = jasmine.createSpy();
+    AudioRecorder.__set__('allOff', allOffSpy);
     AudioRecorder.prototype.canUseCordovaMedia = false;
     const recorder = new AudioRecorder();
     recorder.emitter = jasmine.createSpyObj('emitter', ['on', 'off', 'emit']);
@@ -41,10 +43,12 @@ describe('Audio recorder', () => {
     recorder.removeEventListener('evt1', () => {});
     recorder.fireEvent('evt1', ['args']);
     recorder.fireEvent('evt2');
+    recorder.removeAllEventListeners();
     expect(recorder.emitter.on).toHaveBeenCalledWith('evt1', jasmine.any(Function));
     expect(recorder.emitter.off).toHaveBeenCalledWith('evt1', jasmine.any(Function));
     expect(recorder.emitter.emit).toHaveBeenCalledWith('evt1', 'args');
     expect(recorder.emitter.emit).toHaveBeenCalledWith('evt2');
+    expect(allOffSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should request microphone access', done => {

@@ -21,6 +21,7 @@ describe('Audio player', () => {
 
   it('should construct with event functionality', () => {
     const player = new AudioPlayer();
+    let playbackStoppedCb = null;
     player.emitter = jasmine.createSpyObj('emitter', ['on', 'off', 'emit']);
     player.resetEventListeners();
     player.addEventListener('evt1', () => {});
@@ -35,12 +36,18 @@ describe('Audio player', () => {
     expect(player.removeEventListener).toEqual(jasmine.any(Function));
     expect(player.emitter.emit).toEqual(jasmine.any(Function));
     for (const callback in callbacks) {
+      if (callback === 'playbackStoppedCb') {
+        playbackStoppedCb = callbacks[callback];
+      }
       callbacks[callback]();
     }
     expect(player.emitter.on).toHaveBeenCalledWith('evt1', jasmine.any(Function));
     expect(player.emitter.off).toHaveBeenCalledWith('evt1', jasmine.any(Function));
     expect(player.emitter.emit).toHaveBeenCalledWith('evt1', ['args']);
     expect(player.emitter.emit).toHaveBeenCalledWith('evt2');
+    player.stopwatch = jasmine.createSpyObj('stopwatch', ['stop']);
+    playbackStoppedCb();
+    expect(player.stopwatch.stop).toHaveBeenCalledTimes(1);
   });
 
   describe('Compatibility', () => {
