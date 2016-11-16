@@ -252,6 +252,16 @@ describe('Audio player', () => {
     expect(player.player.scrub).toHaveBeenCalledWith(50);
   });
 
+  it('should scrub and correct errors', () => {
+    const player = new AudioPlayer();
+    player.player = jasmine.createSpyObj('player', ['scrub']);
+    player.scrub(120);
+    expect(player.player.scrub).toHaveBeenCalledWith(100);
+
+    player.scrub(-9);
+    expect(player.player.scrub).toHaveBeenCalledWith(0);
+  });
+
   it('should get buffer fill', () => {
     const player = new AudioPlayer();
     player.player = jasmine.createSpyObj('player', ['getBufferFill']);

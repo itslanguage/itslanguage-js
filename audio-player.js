@@ -248,7 +248,13 @@ module.exports = class AudioPlayer {
    * @param {number} percentage Start at this percentage (0..100) of the audio stream.
    */
   scrub(percentage) {
-    this.player.scrub(percentage);
+    if (percentage < 0) {
+      this.player.scrub(0);
+    } else if (percentage > 100) {
+      this.player.scrub(100);
+    } else {
+      this.player.scrub(percentage);
+    }
     if (this.stopwatch) {
       this.stopwatch.value = Math.round(this.player.getCurrentTime() * 10);
     }
