@@ -2,6 +2,7 @@ const allOff = require('event-emitter/all-off');
 const CordovaMediaRecorder = require('./cordova-media-recorder');
 const ee = require('event-emitter');
 const MediaRecorder = require('./media-recorder');
+const Stopwatch = require('./tools').Stopwatch;
 const WavePacker = require('./wave-packer');
 const WebAudioRecorder = require('./web-audio-recorder');
 const guid = require('guid');
@@ -42,6 +43,7 @@ module.exports = class AudioRecorder {
       this.userMediaApproval = true;
       this.recorder = this._getBestRecorder();
     }
+    this.stopwatch = null;
   }
 
   removeAllEventListeners() {
@@ -298,6 +300,10 @@ module.exports = class AudioRecorder {
     }
 
     this.recorder.record();
+    if (this.stopwatch) {
+      this.stopwatch.value = 0;
+      this.stopwatch.start();
+    }
 
     if (!this.activeRecordingId) {
       this.startRecordingSession();
@@ -318,7 +324,9 @@ module.exports = class AudioRecorder {
       console.error('Recorder was already stopped.');
       return;
     }
-
+    if (this.stopwatch) {
+      this.stopwatch.stop();
+    }
     this.recorder.stop();
 
     console.log('Stopped recording for id: ' + this.activeRecordingId);
@@ -362,5 +370,10 @@ module.exports = class AudioRecorder {
    */
   getAudioSpecs() {
     return this.recorder.getAudioSpecs();
+  }
+
+  bindStopwatch(tickCb) {
+    this.stopwatch = new Stopwatch(tickCb);
+    return this.stopwatch;
   }
 };
