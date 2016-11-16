@@ -307,7 +307,14 @@ module.exports = class AudioPlayer {
   }
 
   bindStopwatch(tickCb) {
-    this.stopwatch = new Stopwatch(tickCb);
+    this.stopwatch = new Stopwatch(time => {
+      const duration = this.getDuration() * 10;
+      if (time > duration) {
+        tickCb(duration);
+      } else {
+        tickCb(time);
+      }
+    });
     return this.stopwatch;
   }
 };
