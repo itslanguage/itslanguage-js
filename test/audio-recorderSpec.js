@@ -448,7 +448,9 @@ describe('Audio recorder', () => {
     recorder.recorder = jasmine.createSpyObj('recorder', ['isRecording', 'stop', 'getEncodedAudio']);
     recorder.recorder.isRecording.and.returnValue(true);
     recorder.stopwatch = fakeWatch;
+    spyOn(recorder, 'stop').and.callThrough();
     recorder.stop();
     expect(fakeWatch.stop).toHaveBeenCalledTimes(1);
+    expect(recorder.stop).toHaveBeenCalledTimes(1);
   });
 });

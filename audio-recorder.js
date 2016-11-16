@@ -324,11 +324,10 @@ module.exports = class AudioRecorder {
       console.error('Recorder was already stopped.');
       return;
     }
+    this.recorder.stop();
     if (this.stopwatch) {
       this.stopwatch.stop();
     }
-    this.recorder.stop();
-
     console.log('Stopped recording for id: ' + this.activeRecordingId);
 
     const self = this;
