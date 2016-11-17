@@ -6,6 +6,7 @@
  * @author d-centralize
  */
 
+const ee = require('event-emitter');
 
 /**
 @module its.Tools
@@ -26,6 +27,7 @@ class Stopwatch {
     this.interval = null;
     this.value = 0;
     this.tickCb = tickCb;
+    this.emitter = ee({});
   }
 
   /**
@@ -66,7 +68,17 @@ class Stopwatch {
 
   tick() {
     this.tickCb(this.value);
+    this.emitter.emit('tick', this.value);
   }
+
+  registerListener(tickCb) {
+    this.emitter.on('tick', tickCb);
+  }
+
+  stopListening(tickCb) {
+    this.emitter.off('tick', tickCb);
+  }
+
 }
 
 module.exports = {
