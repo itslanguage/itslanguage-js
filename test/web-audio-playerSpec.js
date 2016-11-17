@@ -249,38 +249,6 @@ describe('WebAudioPlayer', () => {
     expect(audioMock.pause).toHaveBeenCalledTimes(1);
   });
 
-  it('should scrub audio and throw errors when needed', () => {
-    webAudioPlayer = new WebAudioPlayer();
-
-    expect(() => {
-      webAudioPlayer.scrub(100.1);
-    }).toThrowError('Percentage is supposed to be between 0..100');
-
-    expect(() => {
-      webAudioPlayer.scrub(120);
-    }).toThrowError('Percentage is supposed to be between 0..100');
-
-    expect(() => {
-      webAudioPlayer.scrub(-0.01);
-    }).toThrowError('Percentage is supposed to be between 0..100');
-
-    expect(() => {
-      webAudioPlayer.scrub(-50);
-    }).toThrowError('Percentage is supposed to be between 0..100');
-
-    expect(() => {
-      webAudioPlayer.scrub(100);
-    }).not.toThrow();
-
-    expect(() => {
-      webAudioPlayer.scrub(0);
-    }).not.toThrow();
-
-    expect(() => {
-      webAudioPlayer.scrub(50);
-    }).not.toThrow();
-  });
-
   it('should scrub audio and preload', () => {
     audioMock.readyState = 0;
     audioMock.HAVE_METADATA = 1;

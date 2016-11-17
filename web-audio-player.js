@@ -214,11 +214,6 @@ module.exports = class WebAudioPlayer {
    * @param {number} percentage Start at this percentage (0..100) of the audio stream.
    */
   scrub(percentage) {
-    if (percentage < 0 || percentage > 100) {
-      throw new Error(
-        'Percentage is supposed to be between 0..100');
-    }
-
     // In case the audio wasn't already preloaded, do it now.
     if (this.sound.readyState < this.sound.HAVE_METADATA) {
       this.preload();
