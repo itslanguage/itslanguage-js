@@ -13,6 +13,8 @@ module.exports = class Connection {
     this.settings = Object.assign({
       // ITSL connection parameters.
       apiUrl: 'https://api.itslanguage.nl',
+      adminPrincipal: null,
+      adminCredentials: null,
       oAuth2Token: null,
       wsUrl: null,
       wsToken: null
@@ -38,8 +40,18 @@ module.exports = class Connection {
 
   /**
    * Assemble a HTTP Authentication header.
+   * @param {boolean} [adminHeader=false] Boolean to decide whether to assemble an authorization header for
+   * administrator credentials or to use the OAuth 2 scope.
    */
-  _getAuthHeaders() {
+  _getAuthHeaders(adminHeader = false) {
+    if (adminHeader) {
+      if (!this.settings.adminPrincipal && !this.settings.adminCredentials) {
+        return Promise.reject('Please set admin credentials');
+      }
+      const authHeader = 'Basic ' + window.btoa(this.settings.adminPrincipal + ':' +
+          this.settings.adminCredentials);
+      return Promise.resolve(authHeader);
+    }
     if (!this.settings.oAuth2Token) {
       return Promise.reject('Please set oAuth2Token');
     }
@@ -143,10 +155,13 @@ module.exports = class Connection {
    *
    * @param {string} URL to submit to.
    * @param {FormData} formdata The form to POST.
+   * @param {boolean} [adminHeader=false] Boolean to decide whether to assemble an authorization header for
+   * administrator
+   * credentials or to use the OAuth 2 scope.
    * @returns Promise containing a result.
    */
-  _secureAjaxPost(url, formdata) {
-    return this._getAuthHeaders()
+  _secureAjaxPost(url, formdata, adminHeader = false) {
+    return this._getAuthHeaders(adminHeader)
       .then(auth => {
         const headers = new Headers();
         headers.append('Authorization', auth);
