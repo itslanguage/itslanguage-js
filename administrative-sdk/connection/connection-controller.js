@@ -304,6 +304,7 @@ module.exports = class Connection {
         response.json()
           .then(data => {
             if (response.ok) {
+              this.settings.oAuth2Token = data.access_token;
               return data;
             }
             throw data;

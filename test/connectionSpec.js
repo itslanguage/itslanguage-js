@@ -350,6 +350,7 @@ describe('Connection', () => {
         expect(result.token_type).toEqual('Bearer');
         expect(result.access_token).toEqual('2b198b6bc87db1bdb');
         expect(result.scope).toEqual('tenant/4');
+        expect(api.settings.oAuth2Token).toEqual('2b198b6bc87db1bdb');
       })
       .catch(error => {
         fail('No error should be thrown ' + error);
