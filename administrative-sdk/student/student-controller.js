@@ -28,7 +28,7 @@ module.exports = class StudentController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new Student(data.organisationId, data.id, data.firstName, data.lastName, data.gender,
+        const result = new Student(student.organisationId, data.id, data.firstName, data.lastName, data.gender,
           data.birthYear);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
