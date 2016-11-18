@@ -116,9 +116,7 @@ module.exports = class Connection {
     return this._getAuthHeaders()
       .then(auth => {
         const headers = new Headers();
-        if (typeof auth !== 'undefined') {
-          headers.append('Authorization', auth);
-        }
+        headers.append('Authorization', auth);
         const options = {
           method: 'GET',
           headers
@@ -151,9 +149,7 @@ module.exports = class Connection {
     return this._getAuthHeaders()
       .then(auth => {
         const headers = new Headers();
-        if (typeof auth !== 'undefined') {
-          headers.append('Authorization', auth);
-        }
+        headers.append('Authorization', auth);
         if (typeof formdata === 'string') {
           headers.append('Content-Type',
             'application/json; charset=utf-8');
@@ -190,9 +186,7 @@ module.exports = class Connection {
     return this._getAuthHeaders()
       .then(auth => {
         const headers = new Headers();
-        if (typeof auth !== 'undefined') {
-          headers.append('Authorization', auth);
-        }
+        headers.append('Authorization', auth);
         const options = {
           method: 'DELETE',
           headers
