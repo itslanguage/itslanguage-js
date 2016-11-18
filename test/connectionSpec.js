@@ -223,6 +223,63 @@ describe('Connection', () => {
           })
           .then(done);
       });
+
+      it('should handle errors with an empty response on GET', done => {
+        fakeResponse = new Response(JSON.stringify(), {
+          status: 400,
+          statusText: 'Bad Request',
+          header: {
+            'Content-type': 'application/json'
+          }
+        });
+        window.fetch.and.returnValue(Promise.resolve(fakeResponse));
+        api._secureAjaxGet(url)
+          .then(() => {
+            fail('No result should be returned');
+          })
+          .catch(error => {
+            expect(error).toEqual('400: Bad Request');
+          })
+          .then(done);
+      });
+
+      it('should handle errors with an empty response on POST', done => {
+        fakeResponse = new Response(JSON.stringify(), {
+          status: 400,
+          statusText: 'Bad Request',
+          header: {
+            'Content-type': 'application/json'
+          }
+        });
+        window.fetch.and.returnValue(Promise.resolve(fakeResponse));
+        api._secureAjaxPost(url)
+          .then(() => {
+            fail('No result should be returned');
+          })
+          .catch(error => {
+            expect(error).toEqual('400: Bad Request');
+          })
+          .then(done);
+      });
+
+      it('should handle errors with an empty response on DELETE', done => {
+        fakeResponse = new Response(JSON.stringify(), {
+          status: 400,
+          statusText: 'Bad Request',
+          header: {
+            'Content-type': 'application/json'
+          }
+        });
+        window.fetch.and.returnValue(Promise.resolve(fakeResponse));
+        api._secureAjaxDelete(url)
+          .then(() => {
+            fail('No result should be returned');
+          })
+          .catch(error => {
+            expect(error).toEqual('400: Bad Request');
+          })
+          .then(done);
+      });
     });
   });
 

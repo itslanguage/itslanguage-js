@@ -125,12 +125,16 @@ module.exports = class Connection {
         };
         return fetch(url, options)
           .then(response =>
-            response.json()
-              .then(data => {
-                if (response.ok) {
-                  return data;
+            response.text()
+              .then(textResponse => {
+                if (!textResponse) {
+                  return Promise.reject(response.status + ': ' + response.statusText);
                 }
-                throw data;
+                const result = JSON.parse(textResponse);
+                if (response.ok) {
+                  return result;
+                }
+                return Promise.reject(result);
               })
           );
       });
@@ -161,12 +165,16 @@ module.exports = class Connection {
         };
         return fetch(url, options)
           .then(response =>
-            response.json()
-              .then(data => {
-                if (response.ok) {
-                  return data;
+            response.text()
+              .then(textResponse => {
+                if (!textResponse) {
+                  return Promise.reject(response.status + ': ' + response.statusText);
                 }
-                throw data;
+                const result = JSON.parse(textResponse);
+                if (response.ok) {
+                  return result;
+                }
+                return Promise.reject(result);
               })
           );
       });
@@ -191,12 +199,16 @@ module.exports = class Connection {
         };
         return fetch(url, options)
           .then(response =>
-            response.json()
-              .then(data => {
-                if (response.ok) {
-                  return data;
+            response.text()
+              .then(textResponse => {
+                if (!textResponse) {
+                  return Promise.reject(response.status + ': ' + response.statusText);
                 }
-                throw data;
+                const result = JSON.parse(textResponse);
+                if (response.ok) {
+                  return result;
+                }
+                return Promise.reject(result);
               })
           );
       });

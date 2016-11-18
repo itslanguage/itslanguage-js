@@ -21,7 +21,30 @@ module.exports = class BasicAuthController {
   createBasicAuth(basicAuth) {
     const url = this.connection.settings.apiUrl + '/basicauths';
     const formData = JSON.stringify(basicAuth);
-    return this.connection._secureAjaxPost(url, formData)
+    const headers = new Headers();
+    if (typeof formData === 'string') {
+      headers.append('Content-Type',
+        'application/json; charset=utf-8');
+    }
+    const options = {
+      method: 'POST',
+      headers,
+      body: formData
+    };
+    return fetch(url, options)
+      .then(response =>
+        response.text()
+          .then(textResponse => {
+            if (!textResponse) {
+              return Promise.reject(response.status + ': ' + response.statusText);
+            }
+            const result = JSON.parse(textResponse);
+            if (response.ok) {
+              return result;
+            }
+            return Promise.reject(result);
+          })
+      )
       .then(data => {
         const result = new BasicAuth(data.tenantId, data.principal, basicAuth.credentials);
         result.created = new Date(data.created);

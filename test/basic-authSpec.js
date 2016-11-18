@@ -164,4 +164,36 @@ describe('BasicAuth API interaction test', () => {
       })
       .then(done);
   });
+
+  it('should handle an empty response while creating a new basicauth', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const basicauth = new BasicAuth('4', 'principal');
+    const controller = new BasicAuthController(api);
+    const fakeResponse = new Response(JSON.stringify(), {
+      status: 400,
+      statusText: 'Bad Request',
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    controller.createBasicAuth(basicauth)
+      .then(() => {
+        fail('No result should be returned');
+      })
+      .catch(error => {
+        const expected = {tenantId: '4', principal: 'principal'};
+        const url = 'https://api.itslanguage.nl/basicauths';
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        expect(error).toEqual('400: Bad Request');
+      })
+      .then(done);
+  });
 });
