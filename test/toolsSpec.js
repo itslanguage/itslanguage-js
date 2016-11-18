@@ -43,7 +43,6 @@ describe('Stopwatch', () => {
   });
 
   it('should reset count', done => {
-    console.log('reset');
     const cb = jasmine.createSpy();
     const stopwatch = new Stopwatch(cb);
     stopwatch.start();
@@ -52,7 +51,6 @@ describe('Stopwatch', () => {
       expect(stopwatch.value).toEqual(3);
       stopwatch.reset();
       expect(stopwatch.value).toEqual(0);
-      console.log('reset done');
       expect(cb).toHaveBeenCalledTimes(5);
       done();
     }, 300);
