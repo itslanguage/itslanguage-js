@@ -451,4 +451,21 @@ describe('Audio recorder', () => {
     expect(fakeWatch.stop).toHaveBeenCalledTimes(1);
     expect(recorder.stop).toHaveBeenCalledTimes(1);
   });
+
+  it('should check if the user has given permission after constructing', () =>{
+    const recorder = new AudioRecorder();
+    expect(recorder.hasUserMediaApproval()).toBeFalsy();
+  });
+
+  it('should check if the user has given permission after denying permission', () =>{
+    const recorder = new AudioRecorder();
+    recorder.userMediaApproval = false;
+    expect(recorder.hasUserMediaApproval()).toBeFalsy();
+  });
+
+  it('should check if the user has given permission after giving permission', () =>{
+    const recorder = new AudioRecorder();
+    recorder.userMediaApproval = true;
+    expect(recorder.hasUserMediaApproval()).toBeTruthy();
+  });
 });
