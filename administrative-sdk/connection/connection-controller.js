@@ -128,7 +128,13 @@ module.exports = class Connection {
                 if (!textResponse) {
                   return Promise.reject(response.status + ': ' + response.statusText);
                 }
-                const result = JSON.parse(textResponse);
+
+                let result;
+                try {
+                  result = JSON.parse(textResponse);
+                } catch (e) {
+                  result = textResponse;
+                }
                 if (response.ok) {
                   return result;
                 }
@@ -166,7 +172,13 @@ module.exports = class Connection {
                 if (!textResponse) {
                   return Promise.reject(response.status + ': ' + response.statusText);
                 }
-                const result = JSON.parse(textResponse);
+
+                let result;
+                try {
+                  result = JSON.parse(textResponse);
+                } catch (e) {
+                  result = textResponse;
+                }
                 if (response.ok) {
                   return result;
                 }
@@ -198,7 +210,14 @@ module.exports = class Connection {
                 if (!textResponse) {
                   return Promise.reject(response.status + ': ' + response.statusText);
                 }
-                const result = JSON.parse(textResponse);
+
+                let result;
+                try {
+                  result = JSON.parse(textResponse);
+                } catch (e) {
+                  result = textResponse;
+                }
+
                 if (response.ok) {
                   return result;
                 }
