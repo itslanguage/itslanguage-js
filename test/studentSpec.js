@@ -4,10 +4,16 @@ const StudentController = require('../administrative-sdk/student/student-control
 const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('Student object test', () => {
+  it('should not instantiate a Student without an organisationId', () => {
+    expect(() => {
+      new Student();
+    }).toThrowError('organisationId parameter of type "string" is required');
+  });
+
   it('should not instantiate a Student with an organisationId as number', () => {
     expect(() => {
       new Student(1);
-    }).toThrowError('organisationId parameter of type "string|null" is required');
+    }).toThrowError('organisationId parameter of type "string" is required');
   });
 
   it('should not instantiate a Student with an id as number', () => {
@@ -20,17 +26,6 @@ describe('Student object test', () => {
     expect(() => {
       new Student('fb', 'test', 'Mark', 'Zuckerberg', 'male', '1984');
     }).toThrowError('birthYear parameter of type "number|null" is required');
-  });
-
-  it('should instantiate a Student without id', () => {
-    const s = new Student();
-    expect(s).toBeDefined();
-    expect(s.id).toBeUndefined();
-    expect(s.organisationId).toBeUndefined();
-    expect(s.firstName).toBeUndefined();
-    expect(s.lastName).toBeUndefined();
-    expect(s.gender).toBeUndefined();
-    expect(s.birthYear).toBeUndefined();
   });
 
   it('should instantiate a Student with id and metadata', () => {
@@ -52,22 +47,6 @@ describe('Student API interaction test', () => {
 
   afterEach(() => {
     jasmine.Ajax.uninstall();
-  });
-
-  it('should reject creation when student.organisationId is not present', done => {
-    const student = new Student(null, '1', 'Mark');
-    const api = new Connection({
-      oAuth2Token: 'token'
-    });
-    const controller = new StudentController(api);
-    controller.createStudent(student)
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
   });
 
   it('should create a new student through API', done => {
