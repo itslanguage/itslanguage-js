@@ -217,7 +217,8 @@ describe('Audio recorder', () => {
       return fakeWebAudioRecorder;
     });
     const recorder = new AudioRecorder();
-    spyOn(recorder, 'streamCallback');
+    spyOn(recorder, 'streamCallback').and.callThrough();
+    spyOn(recorder, 'fireEvent');
     recorder._getBestRecorder.and.callThrough();
     recorder.canUseCordovaMedia = false;
     recorder.canUserMediaRecorder = false;
@@ -225,6 +226,7 @@ describe('Audio recorder', () => {
     const result = recorder._getBestRecorder();
     expect(result).toEqual(fakeWebAudioRecorder);
     expect(recorder.streamCallback).toHaveBeenCalledWith('data');
+    expect(recorder.fireEvent).toHaveBeenCalledWith('dataavailable', ['data']);
   });
 
   it('should get the best recorder when no proper recorder can be found', () => {
@@ -468,4 +470,8 @@ describe('Audio recorder', () => {
     recorder.userMediaApproval = true;
     expect(recorder.hasUserMediaApproval()).toBeTruthy();
   });
+
+  it('should check if the streamcallback was called', () =>{
+
+  })
 });
