@@ -20,6 +20,9 @@ class Stopwatch {
    * @param {Function} [tickCb] The callback that is invoked on every tick (every 100ms).
    */
   constructor(tickCb) {
+    if (!tickCb) {
+      throw new Error('tickCb parameter required');
+    }
     this.interval = null;
     this.value = 0;
     this.tickCb = tickCb;
@@ -62,9 +65,7 @@ class Stopwatch {
   }
 
   tick() {
-    if (this.tickCb) {
-      this.tickCb(this.value);
-    }
+    this.tickCb(this.value);
   }
 }
 
