@@ -280,6 +280,63 @@ describe('Connection', () => {
           })
           .then(done);
       });
+
+      it('should handle errors with a string response on GET', done => {
+        fakeResponse = new Response('string response', {
+          status: 400,
+          statusText: 'Bad Request',
+          header: {
+            'Content-type': 'application/json'
+          }
+        });
+        window.fetch.and.returnValue(Promise.resolve(fakeResponse));
+        api._secureAjaxGet(url)
+          .then(() => {
+            fail('No result should be returned');
+          })
+          .catch(error => {
+            expect(error).toEqual('string response');
+          })
+          .then(done);
+      });
+
+      it('should handle errors with a string response on POST', done => {
+        fakeResponse = new Response('string response', {
+          status: 400,
+          statusText: 'Bad Request',
+          header: {
+            'Content-type': 'application/json'
+          }
+        });
+        window.fetch.and.returnValue(Promise.resolve(fakeResponse));
+        api._secureAjaxPost(url)
+          .then(() => {
+            fail('No result should be returned');
+          })
+          .catch(error => {
+            expect(error).toEqual('string response');
+          })
+          .then(done);
+      });
+
+      it('should handle errors with a string response on DELETE', done => {
+        fakeResponse = new Response('string response', {
+          status: 400,
+          statusText: 'Bad Request',
+          header: {
+            'Content-type': 'application/json'
+          }
+        });
+        window.fetch.and.returnValue(Promise.resolve(fakeResponse));
+        api._secureAjaxDelete(url)
+          .then(() => {
+            fail('No result should be returned');
+          })
+          .catch(error => {
+            expect(error).toEqual('string response');
+          })
+          .then(done);
+      });
     });
   });
 
