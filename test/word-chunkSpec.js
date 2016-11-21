@@ -1,4 +1,4 @@
-const WordChunk = require('../administrative-sdk/word-chunk/word-chunk');
+import WordChunk from '../administrative-sdk/word-chunk/word-chunk';
 describe('Word chunk', () => {
   it('should construct with phonemes', () => {
     const chunk = new WordChunk('graphemes', 42, 'verdict', [{phoneme: 0}]);

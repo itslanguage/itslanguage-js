@@ -1,6 +1,6 @@
-const Connection = require('../administrative-sdk/connection/connection-controller');
-const Tenant = require('../administrative-sdk/tenant/tenant');
-const TenantController = require('../administrative-sdk/tenant/tenant-controller');
+import Connection from '../administrative-sdk/connection/connection-controller';
+import Tenant from '../administrative-sdk/tenant/tenant';
+import TenantController from '../administrative-sdk/tenant/tenant-controller';
 
 describe('Tenant', () => {
   it('should create a tenant', done => {

@@ -10,7 +10,7 @@
  * @member {string} [gender] Gender of the student (either `male` or `female`).
  * @member {number} [birthYear] Birth year of the student.
  */
-module.exports = class Student {
+export default class Student {
   /**
    * Create a speech challenge domain model.
    *
@@ -42,4 +42,4 @@ module.exports = class Student {
     }
     this.birthYear = birthYear;
   }
-};
+}

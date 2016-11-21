@@ -1,9 +1,9 @@
-const Organisation = require('./organisation');
+import Organisation from './organisation';
 
 /**
  * Controller class for the Organisation model.
  */
-module.exports = class OrganisationController {
+export default class OrganisationController {
   /**
    * @param connection Object to connect to.
    */
@@ -71,4 +71,4 @@ module.exports = class OrganisationController {
         return organisations;
       });
   }
-};
+}

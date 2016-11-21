@@ -1,4 +1,4 @@
-const Stopwatch = require('../tools').Stopwatch;
+import Stopwatch from '../tools';
 
 describe('Stopwatch', () => {
   it('should construct', () => {

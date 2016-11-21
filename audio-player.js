@@ -1,13 +1,13 @@
-const CordovaMediaPlayer = require('./cordova-media-player');
-const ee = require('event-emitter');
-const allOff = require('event-emitter/all-off');
-const Stopwatch = require('./tools').Stopwatch;
-const WebAudioPlayer = require('./web-audio-player');
+import CordovaMediaPlayer from './cordova-media-player';
+import ee from 'event-emitter';
+import allOff from 'event-emitter/all-off';
+import Stopwatch from './tools';
+import WebAudioPlayer from './web-audio-player';
 /**
  *@module its.AudioPlayer
  * ITSLanguage AudioPlayer non-graphical component.
  */
-module.exports = class AudioPlayer {
+export default class AudioPlayer {
   /**
    * @constructor
    * @param {object} [options] Override any of the default settings.
@@ -317,4 +317,4 @@ module.exports = class AudioPlayer {
     });
     return this._stopwatch;
   }
-};
+}

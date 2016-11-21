@@ -12,7 +12,7 @@ Media
  * More information on:
  * https://github.com/apache/cordova-plugin-media/blob/master/doc/index.md
  */
-module.exports = class CordovaMediaRecorder {
+export default class CordovaMediaRecorder {
   /**
    * MediaRecorder
    *
@@ -155,4 +155,4 @@ module.exports = class CordovaMediaRecorder {
       reader.readAsArrayBuffer(file);
     }
   }
-};
+}

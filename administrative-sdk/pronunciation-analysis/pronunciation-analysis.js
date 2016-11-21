@@ -13,7 +13,7 @@
  * actually the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
  * @member {its.Word[][]} words The spoken sentence, split in graphemes per word.
  */
-module.exports = class PronunciationAnalysis {
+export default class PronunciationAnalysis {
   /**
    * Create a pronunciation analysis domain model.
    *
@@ -33,4 +33,4 @@ module.exports = class PronunciationAnalysis {
     this.updated = updated;
     this.audioUrl = audioUrl;
   }
-};
+}

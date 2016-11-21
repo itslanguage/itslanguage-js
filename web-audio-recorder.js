@@ -1,4 +1,4 @@
-module.exports = class WebAudioRecorder {
+export default class WebAudioRecorder {
   /**
    * WebAudioRecorder
    *
@@ -125,4 +125,4 @@ module.exports = class WebAudioRecorder {
   stop() {
     this.recording = false;
   }
-};
+}

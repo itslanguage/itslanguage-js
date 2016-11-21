@@ -1,4 +1,4 @@
-const MediaRecorder = require('../media-recorder');
+import MediaRecorder from '../media-recorder';
 
 describe('Mediarecorder', () => {
   beforeEach(() => {

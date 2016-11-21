@@ -3,7 +3,7 @@
  *
  * @member {its.WordChunk[]} chunks The spoken sentence, split in graphemes per word.
  */
-  module.exports = class Word {
+  export default class Word {
   /**
    * Create a word domain model.
    *
@@ -14,4 +14,4 @@
     constructor(chunks) {
       this.chunks = chunks;
     }
-};
+}

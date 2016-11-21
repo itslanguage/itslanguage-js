@@ -1,4 +1,4 @@
-module.exports = class BasicAuth {
+export default class BasicAuth {
   /**
    * BasicAuth domain model.
    *
@@ -28,4 +28,4 @@ module.exports = class BasicAuth {
     }
     this.credentials = credentials;
   }
-};
+}

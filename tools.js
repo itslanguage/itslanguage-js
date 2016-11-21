@@ -14,7 +14,7 @@ ITSLanguage helper tools.
 */
 
 
-class Stopwatch {
+export default class Stopwatch {
   /**
    * A simple stopwatch
    *
@@ -80,7 +80,3 @@ class Stopwatch {
   }
 
 }
-
-module.exports = {
-  Stopwatch
-};

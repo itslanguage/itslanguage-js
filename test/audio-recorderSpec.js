@@ -1,6 +1,6 @@
-const AudioRecorder = require('../audio-recorder');
-const Stopwatch = require('../tools').Stopwatch;
-const guid = require('guid');
+import AudioRecorder from '../audio-recorder';
+import Stopwatch from '../tools';
+import guid from 'guid';
 
 describe('Audio recorder', () => {
   beforeEach(() => {

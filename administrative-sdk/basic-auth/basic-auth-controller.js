@@ -1,9 +1,9 @@
-const BasicAuth = require('./basic-auth');
+import BasicAuth from './basic-auth';
 
 /**
  * Controller class for the BasicAuth model.
  */
-module.exports = class BasicAuthController {
+export default class BasicAuthController {
   /**
    * @param connection Object to connect to.
    */
@@ -56,4 +56,4 @@ module.exports = class BasicAuthController {
         return result;
       });
   }
-};
+}

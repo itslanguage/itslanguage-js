@@ -1,7 +1,7 @@
-const AudioPlayer = require('../audio-player');
-const CordovaMediaPlayer = require('../cordova-media-player');
-const Stopwatch = require('../tools').Stopwatch;
-const WebAudioPlayer = require('../web-audio-player');
+import AudioPlayer from '../audio-player';
+import CordovaMediaPlayer from '../cordova-media-player';
+import * as Stopwatch from '../tools';
+import WebAudioPlayer from '../web-audio-player';
 
 describe('Audio player', () => {
   let oldMedia;

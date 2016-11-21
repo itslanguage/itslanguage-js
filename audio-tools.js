@@ -16,7 +16,7 @@ ITSLanguage Audio tools.
 */
 
 
-const pcm = require('pcmjs');
+import pcm from 'pcmjs';
 
 
 /**
@@ -25,7 +25,7 @@ const pcm = require('pcmjs');
  * @param {number} duration Lenght of audio in seconds.
  * @returns A new URL containing the Wave file.
  */
-function generateWaveSample(duration) {
+export function generateWaveSample(duration) {
   const effect = [];
   const sampleRate = 22000;
   const loops = duration * sampleRate;
@@ -38,7 +38,7 @@ function generateWaveSample(duration) {
 }
 
 
-class VolumeMeter {
+export default class VolumeMeter {
   /**
    * Represents a volume meter.
    *
@@ -168,9 +168,3 @@ class VolumeMeter {
     this.willAnimate.anim = false;
   }
 }
-
-
-module.exports = {
-  generateWaveSample,
-  VolumeMeter
-};

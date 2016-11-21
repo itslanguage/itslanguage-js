@@ -1,4 +1,4 @@
-module.exports = class Tenant {
+export default class Tenant {
   /**
    * Tenant domain model.
    *
@@ -10,4 +10,4 @@ module.exports = class Tenant {
     this.id = id;
     this.name = name;
   }
-};
+}

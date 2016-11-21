@@ -1,11 +1,11 @@
-const allOff = require('event-emitter/all-off');
-const CordovaMediaRecorder = require('./cordova-media-recorder');
-const ee = require('event-emitter');
-const MediaRecorder = require('./media-recorder');
-const Stopwatch = require('./tools').Stopwatch;
-const WavePacker = require('./wave-packer');
-const WebAudioRecorder = require('./web-audio-recorder');
-const guid = require('guid');
+import allOff from 'event-emitter/all-off';
+import CordovaMediaRecorder from './cordova-media-recorder';
+import ee from 'event-emitter';
+import MediaRecorder from './media-recorder';
+import Stopwatch from './tools';
+import WavePacker from './wave-packer';
+import WebAudioRecorder from './web-audio-recorder';
+import guid from 'guid';
 
 /**
 @module its.AudioRecorder
@@ -14,7 +14,7 @@ Audio recording component.
 Note the several events to subscribe to.
 */
 
-module.exports = class AudioRecorder {
+export default class AudioRecorder {
   /**
    * ITSLanguage AudioRecorder.
    *
@@ -375,4 +375,4 @@ module.exports = class AudioRecorder {
     this._stopwatch = new Stopwatch(tickCb);
     return this._stopwatch;
   }
-};
+}

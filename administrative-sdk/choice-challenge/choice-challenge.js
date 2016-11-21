@@ -9,7 +9,7 @@
  * @member {string} [status] The status of the challenge's preparation. Either 'unprepared', 'preparing' or 'prepared'.
  * @member {string[]} choices The sentences of which at most one may be recognised.
  */
-module.exports = class ChoiceChallenge {
+export default class ChoiceChallenge {
   /**
    * Create a choice challenge domain model.
    *
@@ -48,4 +48,4 @@ module.exports = class ChoiceChallenge {
     }
     this.choices = choices;
   }
-};
+}

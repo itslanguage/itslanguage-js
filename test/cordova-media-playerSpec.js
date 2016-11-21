@@ -1,5 +1,5 @@
-require('jasmine-ajax');
-const CordovaMediaPlayer = require('../cordova-media-player');
+import 'jasmine-ajax';
+import CordovaMediaPlayer from '../cordova-media-player';
 
 describe('Cordova Media Player', () => {
   let player;

@@ -2,9 +2,9 @@
 camelcase
  */
 
-require('jasmine-ajax');
-const Connection = require('../administrative-sdk/connection/connection-controller');
-const BasicAuth = require('../administrative-sdk/basic-auth/basic-auth');
+import 'jasmine-ajax';
+import Connection from '../administrative-sdk/connection/connection-controller';
+import BasicAuth from '../administrative-sdk/basic-auth/basic-auth';
 let api;
 
 describe('Events', () => {
