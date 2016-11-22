@@ -169,7 +169,8 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.organisationId is not present', done => {
-    challenge = new PronunciationChallenge('', '2', '', null);
+    challenge = new PronunciationChallenge('fb', '2', '', null);
+    challenge.organisationId = null;
     controller.startStreamingPronunciationAnalysis(challenge, null)
       .then(() => {
         fail('No result should be returned');
@@ -487,7 +488,8 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('', '4', 'test', new Blob());
+    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
+    challenge.organisationId = null;
     const controller = new Controller(api);
     controller.getPronunciationAnalysis(challenge, '5')
       .then(() => {
@@ -726,7 +728,8 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('', '7', 'test', new Blob());
+    const challenge = new PronunciationChallenge('fb', '7', 'test', new Blob());
+    challenge.organisationId = null;
     const controller = new Controller(api);
     controller.listPronunciationAnalyses(challenge, '5')
       .then(() => {

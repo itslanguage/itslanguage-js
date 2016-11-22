@@ -8,7 +8,7 @@ describe('PronunciationChallenge object test', () => {
     expect(() => {
       new PronunciationChallenge(4);
     }).toThrowError(
-      'organisationId parameter of type "string|null" is required');
+      'organisationId parameter of type "string" is required');
 
     expect(() => {
       new PronunciationChallenge(null, 4);
@@ -98,7 +98,8 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should not create a new challenge if organisationId is missing', done => {
-    const challenge = new PronunciationChallenge(null, '1', 'test', blob);
+    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+    challenge.organisationId = null;
     controller.createPronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be thrown');
@@ -314,7 +315,8 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should reject when deleting a challenge without organisationId', done => {
-    const challenge = new PronunciationChallenge(null, '1', 'test', blob);
+    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+    challenge.organisationId = null;
     controller.deletePronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be thrown');

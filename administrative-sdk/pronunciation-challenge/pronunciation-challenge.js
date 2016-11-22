@@ -27,9 +27,9 @@ module.exports = class PronunciationChallenge {
         'id parameter of type "string|null" is required');
     }
     this.id = id;
-    if (organisationId && typeof organisationId !== 'string') {
+    if (!organisationId || typeof organisationId !== 'string') {
       throw new Error(
-        'organisationId parameter of type "string|null" is required');
+        'organisationId parameter of type "string" is required');
     }
     this.organisationId = organisationId;
     if (typeof transcription !== 'string') {
