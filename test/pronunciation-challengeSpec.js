@@ -114,7 +114,6 @@ describe('PronunciationChallenge API interaction test', () => {
     const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
     const content = {
       id: '1',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'test',
@@ -158,7 +157,6 @@ describe('PronunciationChallenge API interaction test', () => {
     const challenge = new PronunciationChallenge('fb', null, 'test', blob);
     const content = {
       id: '1',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'test',
