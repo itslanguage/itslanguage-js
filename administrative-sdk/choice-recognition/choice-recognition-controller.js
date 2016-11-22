@@ -1,7 +1,7 @@
-import ChoiceRecognition from './choice-recognition';
-import Student from '../student/student';
-import PronunciationAnalysis from '../pronunciation-analysis/pronunciation-analysis';
 import Base64Utils from '../utils/base64-utils';
+import ChoiceRecognition from './choice-recognition';
+import PronunciationAnalysis from '../pronunciation-analysis/pronunciation-analysis';
+import Student from '../student/student';
 import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.

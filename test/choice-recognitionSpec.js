@@ -1,11 +1,11 @@
 import 'jasmine-ajax';
-import autobahn from 'autobahn';
+import ChoiceChallenge from '../administrative-sdk/choice-challenge/choice-challenge';
 import ChoiceRecognition from '../administrative-sdk/choice-recognition/choice-recognition';
 import ChoiceRecognitionController from '../administrative-sdk/choice-recognition/choice-recognition-controller';
-import ChoiceChallenge from '../administrative-sdk/choice-challenge/choice-challenge';
+import Connection from '../administrative-sdk/connection/connection-controller';
 import SpeechChallenge from '../administrative-sdk/speech-challenge/speech-challenge';
 import Student from '../administrative-sdk/student/student';
-import Connection from '../administrative-sdk/connection/connection-controller';
+import autobahn from 'autobahn';
 
 describe('ChoiceRecognition Websocket API interaction test', () => {
   let api;

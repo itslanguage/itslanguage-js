@@ -1,8 +1,8 @@
 import CordovaMediaPlayer from './cordova-media-player';
-import ee from 'event-emitter';
-import allOff from 'event-emitter/all-off';
 import Stopwatch from './tools';
 import WebAudioPlayer from './web-audio-player';
+import allOff from 'event-emitter/all-off';
+import ee from 'event-emitter';
 /**
  *@module its.AudioPlayer
  * ITSLanguage AudioPlayer non-graphical component.

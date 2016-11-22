@@ -1,7 +1,7 @@
 import 'jasmine-ajax';
+import Connection from '../administrative-sdk/connection/connection-controller';
 import SpeechChallenge from '../administrative-sdk/speech-challenge/speech-challenge';
 import SpeechChallengeController from '../administrative-sdk/speech-challenge/speech-challenge-controller';
-import Connection from '../administrative-sdk/connection/connection-controller';
 
 describe('SpeechChallenge object test', () => {
   it('should require all required fields in constructor', () => {

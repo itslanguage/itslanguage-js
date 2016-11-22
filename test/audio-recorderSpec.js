@@ -1,8 +1,8 @@
-import AudioRecorder from '../audio-recorder';
 import * as CordovaMediaRecorder from '../cordova-media-recorder';
 import * as MediaRecorder from '../media-recorder';
-import Stopwatch from '../tools';
 import * as WebAudioRecorder from '../web-audio-recorder';
+import AudioRecorder from '../audio-recorder';
+import Stopwatch from '../tools';
 import guid from 'guid';
 
 describe('Audio recorder', () => {

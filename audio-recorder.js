@@ -1,10 +1,10 @@
-import allOff from 'event-emitter/all-off';
 import CordovaMediaRecorder from './cordova-media-recorder';
-import ee from 'event-emitter';
 import MediaRecorder from './media-recorder';
 import Stopwatch from './tools';
 import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
+import allOff from 'event-emitter/all-off';
+import ee from 'event-emitter';
 import guid from 'guid';
 
 /**

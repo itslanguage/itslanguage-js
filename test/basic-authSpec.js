@@ -1,7 +1,7 @@
 import 'jasmine-ajax';
-import Connection from '../administrative-sdk/connection/connection-controller';
 import BasicAuth from '../administrative-sdk/basic-auth/basic-auth';
 import BasicAuthController from '../administrative-sdk/basic-auth/basic-auth-controller';
+import Connection from '../administrative-sdk/connection/connection-controller';
 
 describe('BasicAuth object test', () => {
   it('should require all required fields in constructor', () => {
