@@ -20,54 +20,54 @@ module.exports = class AudioPlayer {
     const self = this;
     const callbacks = {
       playingCb() {
-        self.emitter.emit('playing', []);
+        self._emitter.emit('playing', []);
       },
       timeupdateCb() {
-        self.emitter.emit('timeupdate', []);
+        self._emitter.emit('timeupdate', []);
       },
       durationchangeCb() {
-        self.emitter.emit('durationchange', []);
+        self._emitter.emit('durationchange', []);
       },
       canplayCb() {
-        self.emitter.emit('canplay', []);
+        self._emitter.emit('canplay', []);
       },
       endedCb() {
-        self.emitter.emit('ended', []);
+        self._emitter.emit('ended', []);
       },
       pauseCb() {
-        self.emitter.emit('pause', []);
+        self._emitter.emit('pause', []);
       },
       stoppedCb() {
-        self.emitter.emit('stopped', []);
+        self._emitter.emit('stopped', []);
       },
       playbackStoppedCb() {
-        self.emitter.emit('playbackstopped', []);
-        if (self.stopwatch) {
-          self.stopwatch.stop();
+        self._emitter.emit('playbackstopped', []);
+        if (self._stopwatch) {
+          self._stopwatch.stop();
         }
       },
       progressCb() {
-        self.emitter.emit('progress', []);
+        self._emitter.emit('progress', []);
       },
       errorCb() {
-        self.emitter.emit('error', []);
+        self._emitter.emit('error', []);
       }
     };
     this.player = this._getBestPlayer(callbacks);
-    this.emitter = ee({});
-    this.stopwatch = null;
+    this._emitter = ee({});
+    this._stopwatch = null;
   }
 
   resetEventListeners() {
-    allOff(this.emitter);
+    allOff(this._emitter);
   }
 
   addEventListener(name, handler) {
-    this.emitter.on(name, handler);
+    this._emitter.on(name, handler);
   }
 
   removeEventListener(name, handler) {
-    this.emitter.off(name, handler);
+    this._emitter.off(name, handler);
   }
 
   /**
@@ -176,7 +176,7 @@ module.exports = class AudioPlayer {
     // If preloading is disabled, the 'canplay' event won't be triggered.
     // In that case, fire it manually.
     if (!preload) {
-      this.emitter.emit('canplay', []);
+      this._emitter.emit('canplay', []);
     }
   }
 
@@ -186,7 +186,7 @@ module.exports = class AudioPlayer {
   reset() {
     this.stop();
     this.player.reset();
-    this.emitter.emit('unloaded', []);
+    this._emitter.emit('unloaded', []);
   }
 
   /**
@@ -199,10 +199,10 @@ module.exports = class AudioPlayer {
       return;
     }
     this.player.play(position);
-    if (this.stopwatch) {
+    if (this._stopwatch) {
       const time = Math.round(this.player.getCurrentTime() * 10);
-      this.stopwatch.value = time;
-      this.stopwatch.start();
+      this._stopwatch.value = time;
+      this._stopwatch.start();
     }
   }
 
@@ -210,16 +210,16 @@ module.exports = class AudioPlayer {
    * Stop playback of audio.
    */
   stop() {
-    if (this.stopwatch) {
-      this.stopwatch.reset();
-      this.stopwatch.stop();
+    if (this._stopwatch) {
+      this._stopwatch.reset();
+      this._stopwatch.stop();
     }
     this.player.stop();
   }
 
   pause() {
-    if (this.stopwatch) {
-      this.stopwatch.stop();
+    if (this._stopwatch) {
+      this._stopwatch.stop();
     }
     this.player.pause();
   }
@@ -255,8 +255,8 @@ module.exports = class AudioPlayer {
     } else {
       this.player.scrub(percentage);
     }
-    if (this.stopwatch) {
-      this.stopwatch.value = Math.round(this.player.getCurrentTime() * 10);
+    if (this._stopwatch) {
+      this._stopwatch.value = Math.round(this.player.getCurrentTime() * 10);
     }
   }
 
@@ -307,7 +307,7 @@ module.exports = class AudioPlayer {
   }
 
   bindStopwatch(tickCb) {
-    this.stopwatch = new Stopwatch(time => {
+    this._stopwatch = new Stopwatch(time => {
       const duration = this.getDuration() * 10;
       if (time > duration) {
         tickCb(duration);
@@ -315,6 +315,6 @@ module.exports = class AudioPlayer {
         tickCb(time);
       }
     });
-    return this.stopwatch;
+    return this._stopwatch;
   }
 };
