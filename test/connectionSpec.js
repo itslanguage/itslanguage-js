@@ -4,6 +4,7 @@ camelcase
 
 import 'jasmine-ajax';
 import Connection from '../administrative-sdk/connection/connection-controller';
+import Autobahn from 'autobahn';
 import BasicAuth from '../administrative-sdk/basic-auth/basic-auth';
 let api;
 
@@ -549,13 +550,10 @@ describe('Connection', () => {
 
 describe('Autobahn', () => {
   it('should try to create an autobahn connection and handle an error', () => {
-    const mockBahn = {
-      Connection() {
-        throw new Error('Cannot construct');
-      }
-    };
     spyOn(console, 'log');
-    Connection.__set__('autobahn', mockBahn);
+    spyOn(Autobahn, 'Connection').and.callFake(() => {
+      throw new Error('Cannot construct');
+    });
     api.webSocketConnect('token');
     expect(console.log).toHaveBeenCalledTimes(1);
     expect(console.log).toHaveBeenCalledWith('WebSocket creation error: Error: Cannot construct');
@@ -568,25 +566,24 @@ describe('Autobahn', () => {
       }
     };
     let constructedToken;
-    const mockBahn = {
-      Connection(options) {
-        constructedToken = options.details.ticket;
-        this.onchallenge = options.onchallenge;
-        this.onerror = null;
-        this.onopen = null;
-        this.onclose = null;
-        this.open = () => {
-          this.onerror('error');
-          this.onopen(mockSession);
-          this.onclose();
-          this.onchallenge(mockSession, 'ticket');
-        };
-      }
-    };
+    function mockBahn(options) {
+      constructedToken = options.details.ticket;
+      mockBahn.onchallenge = options.onchallenge;
+      mockBahn.onerror = null;
+      mockBahn.onopen = null;
+      mockBahn.onclose = null;
+      mockBahn.open = () => {
+        mockBahn.onerror('error');
+        mockBahn.onopen(mockSession);
+        mockBahn.onclose();
+        mockBahn.onchallenge(mockSession, 'ticket');
+      };
+      return mockBahn;
+    }
     spyOn(api, 'fireEvent');
     spyOn(console, 'log');
     spyOn(console, 'debug');
-    Connection.__set__('autobahn', mockBahn);
+    spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
     api.settings.oAuth2Token = 'token';
     api.webSocketConnect();
     mockSession.call('apiUrl', 'extra argument');
@@ -609,15 +606,14 @@ describe('Autobahn', () => {
   });
 
   it('should create an autobahn connection and throw on invalid challenge method', () => {
-    const mockBahn = {
-      Connection(options) {
-        this.onchallenge = options.onchallenge;
-        this.open = () => {
-          this.onchallenge(null, 'cra');
-        };
-      }
-    };
-    Connection.__set__('autobahn', mockBahn);
+    function mockBahn(options) {
+      mockBahn.onchallenge = options.onchallenge;
+      mockBahn.open = () => {
+        mockBahn.onchallenge(null, 'cra');
+      };
+      return mockBahn;
+    }
+    spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
     expect(() => {
       api.webSocketConnect('token');
     }).toThrowError('don\'t know how to authenticate using \'cra\'');

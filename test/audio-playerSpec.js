@@ -310,21 +310,21 @@ describe('Audio player', () => {
   it('should bind and return _stopwatch', () => {
     const player = new AudioPlayer();
     const cb = jasmine.createSpy();
-    const fakeWatch = jasmine.createSpy().and.callFake(callback => {
+    const fakeWatch = jasmine.createSpy();
+    spyOn(Stopwatch, 'default').and.callFake(callback => {
+      fakeWatch.tickCb = callback;
       callback(10);
-      return new Stopwatch(callback);
+      return fakeWatch;
     });
-    AudioPlayer.__set__('Stopwatch', fakeWatch);
     spyOn(player, 'getDuration').and.returnValue(1);
     const result = player.bindStopwatch(cb);
-    expect(result).toEqual(jasmine.any(Stopwatch));
+    expect(result).toEqual(fakeWatch);
   });
 
   it('should bind and correct timer errors', () => {
     const player = new AudioPlayer();
     const cb = jasmine.createSpy();
-    const fakeWatch = jasmine.createSpy().and.callFake(callback => callback(15));
-    AudioPlayer.__set__('Stopwatch', fakeWatch);
+    spyOn(Stopwatch, 'default').and.callFake(callback => callback(15));
     spyOn(player, 'getDuration').and.returnValue(1);
     player.player = jasmine.createSpyObj('player', ['bindStopwatch']);
     player.bindStopwatch(cb);

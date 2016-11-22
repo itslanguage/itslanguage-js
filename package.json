@@ -42,8 +42,6 @@
     "karma-cli": "^1.0.1",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.0.2",
-    "rewire": "^2.5.2",
-    "rewireify": "^0.2.5",
     "watchify": "^3.7.0",
     "when": "^3.7.7"
   }
