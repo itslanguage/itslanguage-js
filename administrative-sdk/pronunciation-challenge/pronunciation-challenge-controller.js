@@ -5,18 +5,24 @@ import PronunciationChallenge from './pronunciation-challenge';
  */
 export default class PronunciationChallengeController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
    * Create a pronunciation challenge.
    *
-   * @param {PronunciationChallenge} challenge Object to create..
-   * @returns Promise containing the newly created object.
-   * @rejects If the server returned an error.
+   * @param {PronunciationChallenge} challenge - Object to create..
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} {@link PronunciationChallenge#referenceAudio} of type "Blob" is required.
+   * @throws {Promise} If the server returned an error.
    */
   createPronunciationChallenge(challenge) {
     if (!challenge.organisationId) {
@@ -50,10 +56,10 @@ export default class PronunciationChallengeController {
   /**
    * Get a pronunciation challenge.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @param {string} challengeId Specify a pronunciation challenge identifier.
-   * @returns Promise containing a PronunciationChallenge.
-   * @rejects If no result could not be found.
+   * @param {string} organisationId - Specify an organisation identifier.
+   * @param {string} challengeId - Specify a pronunciation challenge identifier.
+   * @returns {Promise} Promise containing a PronunciationChallenge.
+   * @throws {Promise} If no result could not be found.
    */
   getPronunciationChallenge(organisationId, challengeId) {
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' + challengeId;
@@ -70,11 +76,11 @@ export default class PronunciationChallengeController {
   }
 
   /**
-   * List all pronunciation challenges in the organisation.
+   * List all pronunciation challenges in the organisation. The organisation is derived from the OAuth2 Token scope
+   * used to authorize the request.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @returns Promise containing a list of PronunciationChallenges.
-   * @rejects If no result could not be found.
+   * @returns {Promise} Promise containing a list of PronunciationChallenges.
+   * @throws {Promise} If no result could not be found.
    */
   listPronunciationChallenges() {
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
@@ -97,9 +103,11 @@ export default class PronunciationChallengeController {
   /**
    * Delete a pronunciation challenge.
    *
-   * @param {PronunciationChallenge} challenge A pronunciation challenge object.
-   * @returns Promise containing this.
-   * @rejects If the server returned an error.
+   * @param {PronunciationChallenge} challenge - A pronunciation challenge object.
+   * @returns {Promise} Promise containing this.
+   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} If the server returned an error.
    */
   deletePronunciationChallenge(challenge) {
     if (!challenge.organisationId) {

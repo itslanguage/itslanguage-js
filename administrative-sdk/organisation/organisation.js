@@ -2,9 +2,8 @@ export default class Organisation {
   /**
    * Organisation domain model.
    *
-   * @constructor
-   * @param {string} [id] The organisation identifier. If none is given, one is generated.
-   * @param {string} name name of the organisation.
+   * @param {string} [id] - The organisation identifier. If none is given, one is generated.
+   * @param {string} name - Name of the organisation.
    */
   constructor(id, name) {
     if (id && typeof id !== 'string') {
@@ -14,7 +13,14 @@ export default class Organisation {
       throw new Error('name parameter of type "string" is required');
     }
 
+    /**
+     * @type {string}
+     */
     this.id = id;
+
+    /**
+     * @type {string}
+     */
     this.name = name;
   }
 }

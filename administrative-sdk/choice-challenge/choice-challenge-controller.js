@@ -1,22 +1,28 @@
 import ChoiceChallenge from './choice-challenge';
 
 /**
- * Controller class for the ChoiceChallenge model.
+ * Controller class for the {@link ChoiceChallenge} model.
  */
 export default class ChoiceChallengeController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
    * Create a choice challenge.
+   * It is necessary for a choice challenge to exist for a recording to be valid.
    *
-   * @param {ChoiceChallenge} choiceChallenge Object to create.
-   * @returns Promise containing the newly created object.
-   * @rejects If the server returned an error.
+   * @param {ChoiceChallenge} choiceChallenge - Object to create.
+   * @returns {Promise} Containing the newly created object.
+   * @throws {Promise} {@link ChoiceChallenge#organisationId} field is required.
+   * @throws {Promise} If the server returned an error.
    */
   createChoiceChallenge(choiceChallenge) {
     // Validate required domain model fields.
@@ -48,12 +54,13 @@ export default class ChoiceChallengeController {
   }
 
   /**
-   * Get a choice challenge.
+   * Get a choice challenge. A choice challenge is identified by its identifier and its {@link Organisation}'s
+   * identifier.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @param {string} challengeId Specify a choice challenge identifier.
-   * @returns Promise containing a ChoiceChallenge.
-   * @rejects If no result could not be found.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
+   * @returns {Promise} Containing a ChoiceChallenge.
+   * @throws {Promise} If no result could not be found.
    */
   getChoiceChallenge(organisationId, challengeId) {
     const url = this._connection.settings.apiUrl + '/organisations/' +
@@ -74,11 +81,11 @@ export default class ChoiceChallengeController {
   }
 
   /**
-   * List all choice challenges in the organisation.
+   * List all choice challenges in the {@link Organisation}.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @returns Promise containing a list of ChoiceChallenges.
-   * @rejects If no result could not be found.
+   * @param {Organisation#id} organisationId - Specify an {@link Organisation} identifier.
+   * @returns {Promise} Containing an array of ChoiceChallenges.
+   * @throws {Promise} If no result could not be found.
    */
   listChoiceChallenges(organisationId) {
     const url = this._connection.settings.apiUrl + '/organisations/' +

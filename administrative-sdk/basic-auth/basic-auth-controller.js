@@ -1,22 +1,28 @@
 import BasicAuth from './basic-auth';
 
 /**
- * Controller class for the BasicAuth model.
+ * Controller class for the {@link BasicAuth} model.
  */
 export default class BasicAuthController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
-   * Create a basic authorization.
+   * Create a basic authorization for a {@link Tenant}.
+   * By creating a {@link BasicAuth} you can register credentials to a {@link Tenant},
+   * allowing yourself to retrieve the {@link Tenant} at a later date.
    *
-   * @param {BasicAuth} basicAuth Object to create.
-   * @returns Promise containing the newly created object.
-   * @rejects If the server returned an error.
+   * @param {BasicAuth} basicAuth - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} If the server returned an error.
    */
   createBasicAuth(basicAuth) {
     const url = this._connection.settings.apiUrl + '/basicauths';

@@ -78,7 +78,9 @@ describe('Student API interaction test', () => {
         const expected = {
           id: '1',
           organisationId: 'fb',
-          firstName: 'Mark'
+          firstName: 'Mark',
+          created: null,
+          updated: null
         };
         expect(request[1].body).toEqual(JSON.stringify(expected));
         const stringDate = '2014-12-31T23:59:59Z';
@@ -131,7 +133,9 @@ describe('Student API interaction test', () => {
         const expected = {
           id: '1',
           organisationId: 'fb',
-          firstName: 'Mark'
+          firstName: 'Mark',
+          created: null,
+          updated: null
         };
         expect(request[1].body).toEqual(JSON.stringify(expected));
         const errors = [{

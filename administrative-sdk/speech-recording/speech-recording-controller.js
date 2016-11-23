@@ -9,7 +9,7 @@ import when from 'when';
  */
 export default class SpeechRecordingController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
     this._connection = connection;
@@ -18,6 +18,8 @@ export default class SpeechRecordingController {
   /**
    * Initialise the speech recording challenge through RPCs.
    *
+   * @param {SpeechChallenge} challenge - SpeechChallenge.
+   * @private
    */
   speechRecordingInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.recording.init_challenge',
@@ -38,6 +40,9 @@ export default class SpeechRecordingController {
   /**
    * Initialise the speech recording audio specs through RPCs.
    *
+   * @param {AudioRecorder} recorder - AudioRecorder.
+   * @param {Function} dataavailableCb - Callback.
+   * @private
    */
   speechRecordingInitAudio(recorder, dataavailableCb) {
     // Indicate to the socket server that we're about to start recording a
@@ -61,16 +66,17 @@ export default class SpeechRecordingController {
   /**
    * Start a speech recording from streaming audio.
    *
-   * @param {its.SpeechChallenge} challenge The pronunciation challenge to perform.
-   * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @returns Promise containing a SpeechRecording.
-   * @rejects If challenge is not an object or not defined.
-   * @rejects If challenge has no id.
-   * @rejects If challenge has no organisationId.
-   * @rejects If the connection is not open.
-   * @rejects If the recorder is already recording.
-   * @rejects If a session is already in progress.
-   * @rejects If something went wrong during recording.
+   * @param {SpeechChallenge} challenge - The speech challenge to perform.
+   * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
+   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
+   * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
+   * @throws {Promise} If challenge is not an object or not defined.
+   * @throws {Promise} If challenge has no id.
+   * @throws {Promise} If challenge has no organisationId.
+   * @throws {Promise} If the connection is not open.
+   * @throws {Promise} If the recorder is already recording.
+   * @throws {Promise} If a session is already in progress.
+   * @throws {Promise} If something went wrong during recording.
    */
   startStreamingSpeechRecording(challenge, recorder) {
     // Validate required domain model.
@@ -187,10 +193,10 @@ export default class SpeechRecordingController {
   /**
    * Get a speech recording in a speech challenge.
    *
-   * @param {SpeechChallenge} challenge Specify a speech challenge.
-   * @param {string} recordingId Specify a speech recording identifier.
-   * @returns Promise containing a SpeechRecording.
-   * @rejects If no result could not be found.
+   * @param {SpeechChallenge} challenge - Specify a speech challenge.
+   * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
+   * @returns {Promise} Promise containing a SpeechRecording.
+   * @throws {Promise} If no result could not be found.
    */
   getSpeechRecording(challenge, recordingId) {
     if (!challenge || !challenge.id) {
@@ -217,9 +223,9 @@ export default class SpeechRecordingController {
   /**
    * List all speech recordings in a specific speech challenge.
    *
-   * @param {SpeechChallenge} challenge Specify a speech challenge to list speech recordings for.
-   * @returns Promise containing a list of SpeechRecording.
-   * @rejects If no result could not be found.
+   * @param {SpeechChallenge} challenge - Specify a speech challenge to list speech recordings for.
+   * @returns {Promise} Promise containing a list of SpeechRecording.
+   * @throws {Promise} If no result could not be found.
    */
   listSpeechRecordings(challenge) {
     if (!challenge || !challenge.id) {

@@ -1,5 +1,11 @@
 export default class Base64Utils {
 
+  /**
+   * Convert an array buffer to a base64 encoded binary string.
+   *
+   * @param {buffer} buffer - Buffer of data.
+   * @returns {string} Base64 encoded binary string.
+   */
   static _arrayBufferToBase64(buffer) {
     let binary = '';
     const bytes = new Uint8Array(buffer);
