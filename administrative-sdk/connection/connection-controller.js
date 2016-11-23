@@ -122,19 +122,7 @@ export default class Connection {
           headers
         };
         return fetch(url, options)
-          .then(response =>
-            response.text()
-              .then(textResponse => {
-                if (!textResponse) {
-                  return Promise.reject(response.status + ': ' + response.statusText);
-                }
-                const result = JSON.parse(textResponse);
-                if (response.ok) {
-                  return result;
-                }
-                return Promise.reject(result);
-              })
-          );
+          .then(this.handleResponse);
       });
   }
 
@@ -160,19 +148,7 @@ export default class Connection {
           body: formdata
         };
         return fetch(url, options)
-          .then(response =>
-            response.text()
-              .then(textResponse => {
-                if (!textResponse) {
-                  return Promise.reject(response.status + ': ' + response.statusText);
-                }
-                const result = JSON.parse(textResponse);
-                if (response.ok) {
-                  return result;
-                }
-                return Promise.reject(result);
-              })
-          );
+          .then(this.handleResponse);
       });
   }
 
@@ -192,20 +168,22 @@ export default class Connection {
           headers
         };
         return fetch(url, options)
-          .then(response =>
-            response.text()
-              .then(textResponse => {
-                if (!textResponse) {
-                  return Promise.reject(response.status + ': ' + response.statusText);
-                }
-                const result = JSON.parse(textResponse);
-                if (response.ok) {
-                  return result;
-                }
-                return Promise.reject(result);
-              })
-          );
+          .then(this.handleResponse);
       });
+  }
+
+  handleResponse(response) {
+    return response.text()
+          .then(textResponse => {
+            if (!textResponse) {
+              return Promise.reject(response.status + ': ' + response.statusText);
+            }
+            const result = JSON.parse(textResponse);
+            if (response.ok) {
+              return result;
+            }
+            return Promise.reject(result);
+          });
   }
 
   /**
