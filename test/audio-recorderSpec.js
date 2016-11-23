@@ -39,16 +39,16 @@ describe('Audio recorder', () => {
     AudioRecorder.__set__('allOff', allOffSpy);
     AudioRecorder.prototype.canUseCordovaMedia = false;
     const recorder = new AudioRecorder();
-    recorder.emitter = jasmine.createSpyObj('emitter', ['on', 'off', 'emit']);
+    recorder._emitter = jasmine.createSpyObj('_emitter', ['on', 'off', 'emit']);
     recorder.addEventListener('evt1', () => {});
     recorder.removeEventListener('evt1', () => {});
     recorder.fireEvent('evt1', ['args']);
     recorder.fireEvent('evt2');
     recorder.removeAllEventListeners();
-    expect(recorder.emitter.on).toHaveBeenCalledWith('evt1', jasmine.any(Function));
-    expect(recorder.emitter.off).toHaveBeenCalledWith('evt1', jasmine.any(Function));
-    expect(recorder.emitter.emit).toHaveBeenCalledWith('evt1', 'args');
-    expect(recorder.emitter.emit).toHaveBeenCalledWith('evt2');
+    expect(recorder._emitter.on).toHaveBeenCalledWith('evt1', jasmine.any(Function));
+    expect(recorder._emitter.off).toHaveBeenCalledWith('evt1', jasmine.any(Function));
+    expect(recorder._emitter.emit).toHaveBeenCalledWith('evt1', 'args');
+    expect(recorder._emitter.emit).toHaveBeenCalledWith('evt2');
     expect(allOffSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -416,7 +416,7 @@ describe('Audio recorder', () => {
     expect(recorder.record).toHaveBeenCalledTimes(1);
   });
 
-  it('should bind and return stopwatch', () => {
+  it('should bind and return _stopwatch', () => {
     const recorder = new AudioRecorder();
     const cb = jasmine.createSpy();
     const result = recorder.bindStopwatch(cb);
@@ -424,30 +424,30 @@ describe('Audio recorder', () => {
     expect(result.tickCb).toEqual(cb);
   });
 
-  it('should bind the stop function to a stopwatch', () => {
-    const fakeWatch = jasmine.createSpyObj('stopwatch', ['start']);
+  it('should bind the stop function to a _stopwatch', () => {
+    const fakeWatch = jasmine.createSpyObj('_stopwatch', ['start']);
     fakeWatch.value = 10;
     const recorder = new AudioRecorder();
     spyOn(recorder, '_requireGetUserMedia').and.returnValue(true);
     spyOn(recorder, 'isRecording').and.returnValue(false);
     spyOn(recorder, 'fireEvent');
     recorder.recorder = jasmine.createSpyObj('recorder', ['record']);
-    recorder.stopwatch = fakeWatch;
+    recorder._stopwatch = fakeWatch;
     recorder.activeRecordingId = 1;
     recorder.record();
     expect(fakeWatch.value).toEqual(0);
     expect(fakeWatch.start).toHaveBeenCalledTimes(1);
   });
 
-  it('should bind the stop function to a stopwatch', () => {
-    const fakeWatch = jasmine.createSpyObj('stopwatch', ['stop']);
+  it('should bind the stop function to a _stopwatch', () => {
+    const fakeWatch = jasmine.createSpyObj('_stopwatch', ['stop']);
     const recorder = new AudioRecorder();
     spyOn(recorder, '_requireGetUserMedia').and.returnValue(true);
     spyOn(recorder, 'isRecording').and.returnValue(false);
     spyOn(recorder, 'fireEvent');
     recorder.recorder = jasmine.createSpyObj('recorder', ['isRecording', 'stop', 'getEncodedAudio']);
     recorder.recorder.isRecording.and.returnValue(true);
-    recorder.stopwatch = fakeWatch;
+    recorder._stopwatch = fakeWatch;
     spyOn(recorder, 'stop').and.callThrough();
     recorder.stop();
     expect(fakeWatch.stop).toHaveBeenCalledTimes(1);

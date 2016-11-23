@@ -404,7 +404,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       }
     };
 
-    controller.connection._session.call.and.callFake(name => when.promise((resolve, reject, notify) => {
+    controller._connection._session.call.and.callFake(name => when.promise((resolve, reject, notify) => {
       notify('NOTIFY');
       if (name !== 'nl.itslanguage.pronunciation.alignment') {
         setTimeout(() => {

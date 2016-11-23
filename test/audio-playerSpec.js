@@ -22,32 +22,32 @@ describe('Audio player', () => {
   it('should construct with event functionality', () => {
     const player = new AudioPlayer();
     let playbackStoppedCb = null;
-    player.emitter = jasmine.createSpyObj('emitter', ['on', 'off', 'emit']);
+    player._emitter = jasmine.createSpyObj('_emitter', ['on', 'off', 'emit']);
     player.resetEventListeners();
     player.addEventListener('evt1', () => {});
     player.removeEventListener('evt1', () => {});
-    player.emitter.emit('evt1', ['args']);
-    player.emitter.emit('evt2');
+    player._emitter.emit('evt1', ['args']);
+    player._emitter.emit('evt2');
     expect(player._playbackCompatibility).toHaveBeenCalledTimes(1);
     expect(player._getBestPlayer).toHaveBeenCalledTimes(1);
     const callbacks = player._getBestPlayer.calls.mostRecent().args[0];
     expect(player.resetEventListeners).toEqual(jasmine.any(Function));
     expect(player.addEventListener).toEqual(jasmine.any(Function));
     expect(player.removeEventListener).toEqual(jasmine.any(Function));
-    expect(player.emitter.emit).toEqual(jasmine.any(Function));
+    expect(player._emitter.emit).toEqual(jasmine.any(Function));
     for (const callback in callbacks) {
       if (callback === 'playbackStoppedCb') {
         playbackStoppedCb = callbacks[callback];
       }
       callbacks[callback]();
     }
-    expect(player.emitter.on).toHaveBeenCalledWith('evt1', jasmine.any(Function));
-    expect(player.emitter.off).toHaveBeenCalledWith('evt1', jasmine.any(Function));
-    expect(player.emitter.emit).toHaveBeenCalledWith('evt1', ['args']);
-    expect(player.emitter.emit).toHaveBeenCalledWith('evt2');
-    player.stopwatch = jasmine.createSpyObj('stopwatch', ['stop']);
+    expect(player._emitter.on).toHaveBeenCalledWith('evt1', jasmine.any(Function));
+    expect(player._emitter.off).toHaveBeenCalledWith('evt1', jasmine.any(Function));
+    expect(player._emitter.emit).toHaveBeenCalledWith('evt1', ['args']);
+    expect(player._emitter.emit).toHaveBeenCalledWith('evt2');
+    player._stopwatch = jasmine.createSpyObj('_stopwatch', ['stop']);
     playbackStoppedCb();
-    expect(player.stopwatch.stop).toHaveBeenCalledTimes(1);
+    expect(player._stopwatch.stop).toHaveBeenCalledTimes(1);
   });
 
   describe('Compatibility', () => {
@@ -161,31 +161,31 @@ describe('Audio player', () => {
     const player = new AudioPlayer();
     player.player = jasmine.createSpyObj('player', ['load']);
     const loadCb = jasmine.createSpy();
-    spyOn(player.emitter, 'emit');
+    spyOn(player._emitter, 'emit');
     player.load('url', true, loadCb);
     expect(player.player.load).toHaveBeenCalled();
-    expect(player.emitter.emit).not.toHaveBeenCalled();
+    expect(player._emitter.emit).not.toHaveBeenCalled();
   });
 
   it('should load from an url without preload', () => {
     const player = new AudioPlayer();
     player.player = jasmine.createSpyObj('player', ['load']);
     const loadCb = jasmine.createSpy();
-    spyOn(player.emitter, 'emit');
+    spyOn(player._emitter, 'emit');
     player.load('url', false, loadCb);
     expect(player.player.load).toHaveBeenCalledWith('url', false, loadCb);
-    expect(player.emitter.emit).toHaveBeenCalledWith('canplay', []);
+    expect(player._emitter.emit).toHaveBeenCalledWith('canplay', []);
   });
 
   it('should reset', () => {
     const player = new AudioPlayer();
     spyOn(player, 'stop');
-    spyOn(player.emitter, 'emit');
+    spyOn(player._emitter, 'emit');
     player.player = jasmine.createSpyObj('player', ['reset']);
     player.reset();
     expect(player.player.reset).toHaveBeenCalledTimes(1);
     expect(player.stop).toHaveBeenCalledTimes(1);
-    expect(player.emitter.emit).toHaveBeenCalledTimes(1);
+    expect(player._emitter.emit).toHaveBeenCalledTimes(1);
   });
 
   it('should play', () => {
@@ -307,7 +307,7 @@ describe('Audio player', () => {
     expect(result).toBeTruthy();
   });
 
-  it('should bind and return stopwatch', () => {
+  it('should bind and return _stopwatch', () => {
     const player = new AudioPlayer();
     const cb = jasmine.createSpy();
     const fakeWatch = jasmine.createSpy().and.callFake(callback => {
@@ -331,54 +331,54 @@ describe('Audio player', () => {
     expect(cb).toHaveBeenCalledWith(10);
   });
 
-  it('should bind the play function to the stopwatch', () => {
-    const fakePlayer = jasmine.createSpyObj('stopwatch', ['play', 'getCurrentTime', 'isPlaying']);
+  it('should bind the play function to the _stopwatch', () => {
+    const fakePlayer = jasmine.createSpyObj('_stopwatch', ['play', 'getCurrentTime', 'isPlaying']);
     fakePlayer.getCurrentTime.and.returnValue(1);
     fakePlayer.isPlaying.and.returnValue(false);
-    const fakeWatch = jasmine.createSpyObj('stopwatch', ['start']);
+    const fakeWatch = jasmine.createSpyObj('_stopwatch', ['start']);
     fakeWatch.value = 10;
     const player = new AudioPlayer();
     player.player = fakePlayer;
-    player.stopwatch = fakeWatch;
+    player._stopwatch = fakeWatch;
     player.play();
     expect(fakeWatch.value).toEqual(10);
     expect(fakeWatch.start).toHaveBeenCalledTimes(1);
   });
 
-  it('should bind the pause function to the stopwatch', () => {
-    const fakePlayer = jasmine.createSpyObj('stopwatch', ['pause']);
-    const fakeWatch = jasmine.createSpyObj('stopwatch', ['stop']);
+  it('should bind the pause function to the _stopwatch', () => {
+    const fakePlayer = jasmine.createSpyObj('_stopwatch', ['pause']);
+    const fakeWatch = jasmine.createSpyObj('_stopwatch', ['stop']);
     const player = new AudioPlayer();
     player.player = fakePlayer;
-    player.stopwatch = fakeWatch;
+    player._stopwatch = fakeWatch;
     player.pause();
     expect(fakeWatch.stop).toHaveBeenCalledTimes(1);
   });
 
-  it('should bind the stop function to the stopwatch', () => {
-    const fakePlayer = jasmine.createSpyObj('stopwatch', ['stop']);
-    const fakeWatch = jasmine.createSpyObj('stopwatch', ['reset', 'stop']);
+  it('should bind the stop function to the _stopwatch', () => {
+    const fakePlayer = jasmine.createSpyObj('_stopwatch', ['stop']);
+    const fakeWatch = jasmine.createSpyObj('_stopwatch', ['reset', 'stop']);
     const player = new AudioPlayer();
     player.player = fakePlayer;
-    player.stopwatch = fakeWatch;
+    player._stopwatch = fakeWatch;
     player.stop();
     expect(fakeWatch.reset).toHaveBeenCalledTimes(1);
     expect(fakeWatch.stop).toHaveBeenCalledTimes(1);
   });
 
-  it('should bind a stopwatch and scrub audio', () => {
-    const fakeWatch = jasmine.createSpyObj('stopwatch', ['reset']);
+  it('should bind a _stopwatch and scrub audio', () => {
+    const fakeWatch = jasmine.createSpyObj('_stopwatch', ['reset']);
     fakeWatch.value = 0;
     const player = new AudioPlayer();
     player.player = jasmine.createSpyObj('player', ['scrub', 'getCurrentTime']);
     player.player.getCurrentTime.and.returnValue(1);
-    player.stopwatch = fakeWatch;
+    player._stopwatch = fakeWatch;
     player.scrub(50);
     expect(player.player.getCurrentTime).toHaveBeenCalledTimes(1);
     expect(fakeWatch.value).toEqual(10);
   });
 
-  it('should bind the reset function with a stopwatch', () => {
+  it('should bind the reset function with a _stopwatch', () => {
     const player = new AudioPlayer();
     player.stop = jasmine.createSpy();
     player.player = jasmine.createSpyObj('player', ['reset']);

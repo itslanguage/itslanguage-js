@@ -34,7 +34,7 @@ module.exports = class AudioRecorder {
     this.recorder = null;
 
     this.events = {};
-    this.emitter = ee({});
+    this._emitter = ee({});
 
 
     if (this.canUseCordovaMedia) {
@@ -43,23 +43,23 @@ module.exports = class AudioRecorder {
       this.userMediaApproval = true;
       this.recorder = this._getBestRecorder();
     }
-    this.stopwatch = null;
+    this._stopwatch = null;
   }
 
   removeAllEventListeners() {
-    allOff(this.emitter);
+    allOff(this._emitter);
   }
 
   addEventListener(name, handler) {
-    this.emitter.on(name, handler);
+    this._emitter.on(name, handler);
   }
 
   removeEventListener(name, handler) {
-    this.emitter.off(name, handler);
+    this._emitter.off(name, handler);
   }
 
   fireEvent(name, args = []) {
-    this.emitter.emit(name, ...args);
+    this._emitter.emit(name, ...args);
   }
 
   /**
@@ -300,9 +300,9 @@ module.exports = class AudioRecorder {
     }
 
     this.recorder.record();
-    if (this.stopwatch) {
-      this.stopwatch.value = 0;
-      this.stopwatch.start();
+    if (this._stopwatch) {
+      this._stopwatch.value = 0;
+      this._stopwatch.start();
     }
 
     if (!this.activeRecordingId) {
@@ -325,8 +325,8 @@ module.exports = class AudioRecorder {
       return;
     }
     this.recorder.stop();
-    if (this.stopwatch) {
-      this.stopwatch.stop();
+    if (this._stopwatch) {
+      this._stopwatch.stop();
     }
     console.log('Stopped recording for id: ' + this.activeRecordingId);
 
@@ -372,7 +372,7 @@ module.exports = class AudioRecorder {
   }
 
   bindStopwatch(tickCb) {
-    this.stopwatch = new Stopwatch(tickCb);
-    return this.stopwatch;
+    this._stopwatch = new Stopwatch(tickCb);
+    return this._stopwatch;
   }
 };

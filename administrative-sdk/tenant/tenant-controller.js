@@ -8,7 +8,7 @@ module.exports = class TenantController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -19,9 +19,9 @@ module.exports = class TenantController {
    * @rejects If the server returned an error..
    */
   createTenant(tenant) {
-    const url = this.connection.settings.apiUrl + '/tenants';
+    const url = this._connection.settings.apiUrl + '/tenants';
     const fd = JSON.stringify(tenant);
-    return this.connection._secureAjaxPost(url, fd)
+    return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new Tenant(data.id, data.name);
         result.created = new Date(data.created);

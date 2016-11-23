@@ -8,7 +8,7 @@ module.exports = class StudentController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -22,11 +22,11 @@ module.exports = class StudentController {
     if (!student.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       student.organisationId + '/students';
     const fd = JSON.stringify(student);
 
-    return this.connection._secureAjaxPost(url, fd)
+    return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new Student(data.organisationId, data.id, data.firstName, data.lastName, data.gender,
           data.birthYear);
@@ -45,9 +45,9 @@ module.exports = class StudentController {
    * @rejects If no result could not be found.
    */
   getStudent(organisationId, studentId) {
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(organisationId, data.id, data.firstName,
           data.lastName, data.gender, data.birthYear);
@@ -65,9 +65,9 @@ module.exports = class StudentController {
    * @rejects If no result could not be found.
    */
   listStudents(organisationId) {
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students';
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const students = [];
         data.forEach(datum => {

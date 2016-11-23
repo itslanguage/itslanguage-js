@@ -21,19 +21,19 @@ module.exports = class Connection {
     this._analysisId = null;
     this._recordingId = null;
     this._recognitionId = null;
-    this.emitter = ee({});
+    this._emitter = ee({});
   }
 
   addEventListener(name, handler) {
-    this.emitter.on(name, handler);
+    this._emitter.on(name, handler);
   }
 
   removeEventListener(name, handler) {
-    this.emitter.off(name, handler);
+    this._emitter.off(name, handler);
   }
 
   fireEvent(name, args = []) {
-    this.emitter.emit(name, ...args);
+    this._emitter.emit(name, ...args);
   }
 
   /**

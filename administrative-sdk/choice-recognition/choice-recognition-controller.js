@@ -11,7 +11,7 @@ module.exports = class ChoiceRecognitionController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -19,12 +19,12 @@ module.exports = class ChoiceRecognitionController {
    *
    */
   choiceRecognitionInitChallenge(challenge) {
-    return this.connection._session.call('nl.itslanguage.choice.init_challenge',
-      [this.connection._recognitionId, challenge.organisationId, challenge.id])
+    return this._connection._session.call('nl.itslanguage.choice.init_challenge',
+      [this._connection._recognitionId, challenge.organisationId, challenge.id])
       .then(
         // RPC success callback
         recognitionId => {
-          console.log('Challenge initialised for recognitionId: ' + this.connection._recognitionId);
+          console.log('Challenge initialised for recognitionId: ' + this._connection._recognitionId);
           return recognitionId;
         },
         // RPC error callback
@@ -44,11 +44,11 @@ module.exports = class ChoiceRecognitionController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    return this.connection._session.call('nl.itslanguage.choice.init_audio',
-      [this.connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
+    return this._connection._session.call('nl.itslanguage.choice.init_audio',
+      [this._connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
       recognitionId => {
-        console.log('Accepted audio parameters for recognitionId after init_audio: ' + this.connection._recognitionId);
+        console.log('Accepted audio parameters for recognitionId after init_audio: ' + this._connection._recognitionId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recognitionId;
@@ -89,7 +89,7 @@ module.exports = class ChoiceRecognitionController {
     }
 
     // Validate environment prerequisites.
-    if (!this.connection._session) {
+    if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
     }
 
@@ -97,8 +97,8 @@ module.exports = class ChoiceRecognitionController {
       return Promise.reject(new Error('Recorder should not yet be recording.'));
     }
 
-    if (this.connection._recognitionId !== null) {
-      return Promise.reject(new Error('Session with recognitionId ' + this.connection._recognitionId +
+    if (this._connection._recognitionId !== null) {
+      return Promise.reject(new Error('Session with recognitionId ' + this._connection._recognitionId +
         ' still in progress.'));
     }
 
@@ -113,8 +113,8 @@ module.exports = class ChoiceRecognitionController {
         const recognition = new ChoiceRecognition(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          self.connection.addAccessToken(data.audioUrl), data.recognised);
-        recognition.recognitionId = self.connection._recognitionId;
+          self._connection.addAccessToken(data.audioUrl), data.recognised);
+        recognition.recognitionId = self._connection._recognitionId;
         resolve(recognition);
       }
 
@@ -123,7 +123,7 @@ module.exports = class ChoiceRecognitionController {
         const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          self.connection.addAccessToken(data.audioUrl));
+          self._connection.addAccessToken(data.audioUrl));
         reject(
           {
             analysis,
@@ -132,16 +132,16 @@ module.exports = class ChoiceRecognitionController {
         );
       }
 
-      self.connection._recognitionId = null;
+      self._connection._recognitionId = null;
 
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function dataavailableCb(chunk) {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
-          self.connection._recognitionId);
-        self.connection._session.call('nl.itslanguage.choice.write',
-          [self.connection._recognitionId, encoded, 'base64']).then(
+          self._connection._recognitionId);
+        self._connection._session.call('nl.itslanguage.choice.write',
+          [self._connection._recognitionId, encoded, 'base64']).then(
           // RPC success callback
           res => {
             console.debug('Delivered audio successfully');
@@ -156,10 +156,10 @@ module.exports = class ChoiceRecognitionController {
       }
 
       function recognitionInitCb(recognitionId) {
-        self.connection._recognitionId = recognitionId;
-        console.log('Got recognitionId after initialisation: ' + self.connection._recognitionId);
+        self._connection._recognitionId = recognitionId;
+        console.log('Got recognitionId after initialisation: ' + self._connection._recognitionId);
       }
-      self.connection._session.call('nl.itslanguage.choice.init_recognition', [],
+      self._connection._session.call('nl.itslanguage.choice.init_recognition', [],
         {
           trimStart: trimAudioStart,
           trimEnd: trimAudioEnd
@@ -191,8 +191,8 @@ module.exports = class ChoiceRecognitionController {
       // Stop listening when the audio recorder stopped.
       function recordedCb() {
         // When done, submit any plain text (non-JSON) to start analysing.
-        self.connection._session.call('nl.itslanguage.choice.recognise',
-          [self.connection._recognitionId]).then(
+        self._connection._session.call('nl.itslanguage.choice.recognise',
+          [self._connection._recognitionId]).then(
           // RPC success callback
           res => {
             // Wait for analysis results to come back.
@@ -210,7 +210,7 @@ module.exports = class ChoiceRecognitionController {
           })
           .then(() => {
             // This session is over.
-            self.connection._recognitionId = null;
+            self._connection._recognitionId = null;
           });
 
         recorder.removeEventListener('recorded', recordedCb);
@@ -235,11 +235,11 @@ module.exports = class ChoiceRecognitionController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions/' + recognitionId;
 
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(datum => {
         const student = new Student(challenge.organisationId, datum.studentId);
         const recognition = new ChoiceRecognition(challenge, student,
@@ -269,10 +269,10 @@ module.exports = class ChoiceRecognitionController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/choice/' +
       challenge.id + '/recognitions';
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const recognitions = [];
         data.forEach(datum => {

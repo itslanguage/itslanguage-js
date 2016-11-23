@@ -8,7 +8,7 @@ module.exports = class OrganisationController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -19,10 +19,10 @@ module.exports = class OrganisationController {
    * @throws If the server returned an error.
    */
   createOrganisation(organisation) {
-    const url = this.connection.settings.apiUrl + '/organisations';
+    const url = this._connection.settings.apiUrl + '/organisations';
     const fd = JSON.stringify(organisation);
 
-    return this.connection._secureAjaxPost(url, fd)
+    return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new Organisation(data.id, data.name);
         result.created = new Date(data.created);
@@ -39,9 +39,9 @@ module.exports = class OrganisationController {
    * @rejects If no result could not be found.
    */
   getOrganisation(organisationId) {
-    const url = this.connection.settings.apiUrl + '/organisations/' + organisationId;
+    const url = this._connection.settings.apiUrl + '/organisations/' + organisationId;
 
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const organisation = new Organisation(data.id, data.name);
         organisation.created = new Date(data.created);
@@ -57,9 +57,9 @@ module.exports = class OrganisationController {
    * @rejects If no result could not be found.
    */
   listOrganisations() {
-    const url = this.connection.settings.apiUrl + '/organisations';
+    const url = this._connection.settings.apiUrl + '/organisations';
 
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const organisations = [];
         data.forEach(datum => {

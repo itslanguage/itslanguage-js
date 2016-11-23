@@ -8,7 +8,7 @@ module.exports = class PronunciationChallengeController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -26,7 +26,7 @@ module.exports = class PronunciationChallengeController {
       return Promise.reject(new Error(
         'referenceAudio parameter of type "Blob" is required'));
     }
-    const url = this.connection.settings.apiUrl + '/challenges/pronunciation';
+    const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
     const fd = new FormData();
     if (typeof challenge.id !== 'undefined' &&
       challenge.id !== null) {
@@ -35,7 +35,7 @@ module.exports = class PronunciationChallengeController {
     fd.append('transcription', challenge.transcription);
     fd.append('referenceAudio', challenge.referenceAudio);
 
-    return this.connection._secureAjaxPost(url, fd)
+    return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new PronunciationChallenge(data.organisationId, data.id, data.transcription);
         result.created = new Date(data.created);
@@ -56,8 +56,8 @@ module.exports = class PronunciationChallengeController {
    * @rejects If no result could not be found.
    */
   getPronunciationChallenge(organisationId, challengeId) {
-    const url = this.connection.settings.apiUrl + '/challenges/pronunciation/' + challengeId;
-    return this.connection._secureAjaxGet(url)
+    const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' + challengeId;
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new PronunciationChallenge(organisationId, data.id,
           data.transcription);
@@ -77,8 +77,8 @@ module.exports = class PronunciationChallengeController {
    * @rejects If no result could not be found.
    */
   listPronunciationChallenges() {
-    const url = this.connection.settings.apiUrl + '/challenges/pronunciation';
-    return this.connection._secureAjaxGet(url)
+    const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {
@@ -108,9 +108,9 @@ module.exports = class PronunciationChallengeController {
     if (!challenge.id) {
       return Promise.reject(new Error('id field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/challenges/pronunciation/' +
+    const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' +
       challenge.id;
-    return this.connection._secureAjaxDelete(url)
+    return this._connection._secureAjaxDelete(url)
       .then(() => challenge);
   }
 };
