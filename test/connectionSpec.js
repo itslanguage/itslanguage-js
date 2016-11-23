@@ -567,8 +567,10 @@ describe('Autobahn', () => {
         console.log('Called mock session at ' + url + ' with ' + args);
       }
     };
+    let constructedToken;
     const mockBahn = {
       Connection(options) {
+        constructedToken = options.details.ticket;
         this.onchallenge = options.onchallenge;
         this.onerror = null;
         this.onopen = null;
@@ -585,7 +587,8 @@ describe('Autobahn', () => {
     spyOn(console, 'log');
     spyOn(console, 'debug');
     Connection.__set__('autobahn', mockBahn);
-    api.webSocketConnect('token');
+    api.settings.oAuth2Token = 'token';
+    api.webSocketConnect();
     mockSession.call('apiUrl', 'extra argument');
     expect(api.fireEvent).toHaveBeenCalledWith('websocketError', ['error']);
     expect(console.log).toHaveBeenCalledWith('WebSocket error: error');
@@ -601,6 +604,8 @@ describe('Autobahn', () => {
     expect(console.log).toHaveBeenCalledWith('Called mock session at apiUrl with extra argument');
 
     expect(console.log).toHaveBeenCalledTimes(4);
+
+    expect(constructedToken).toEqual('token');
   });
 
   it('should create an autobahn connection and throw on invalid challenge method', () => {
