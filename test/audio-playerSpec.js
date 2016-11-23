@@ -318,6 +318,24 @@ describe('Audio player', () => {
     spyOn(player, 'getDuration').and.returnValue(1);
     const result = player.bindStopwatch(cb);
     expect(result).toEqual(jasmine.any(Stopwatch));
+    expect(cb).toHaveBeenCalledTimes(1);
+    expect(cb).toHaveBeenCalledWith(10);
+  });
+
+  it('should bind and return stopwatch without tickcb', () => {
+    const player = new AudioPlayer();
+    const cb = jasmine.createSpy();
+    const fakeWatch = jasmine.createSpy().and.callFake(callback => {
+      if (callback) {
+        return callback(10);
+      }
+      return new Stopwatch(callback);
+    });
+    AudioPlayer.__set__('Stopwatch', fakeWatch);
+    spyOn(player, 'getDuration').and.returnValue(1);
+    const result = player.bindStopwatch();
+    expect(result).toEqual(jasmine.any(Stopwatch));
+    expect(cb).not.toHaveBeenCalled();
   });
 
   it('should bind and correct timer errors', () => {
