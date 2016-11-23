@@ -1,5 +1,4 @@
-const VolumeMeter = require('../audio-tools').VolumeMeter;
-const generateWaveSample = require('../audio-tools').generateWaveSample;
+import VolumeMeter, {generateWaveSample} from '../audio-tools';
 
 describe('Audio tools', () => {
   it('should construct', () => {

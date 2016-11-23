@@ -1,4 +1,4 @@
-module.exports = class WavePacker {
+export default class WavePacker {
   /**
    * Stop recording audio.
    */
@@ -191,4 +191,4 @@ module.exports = class WavePacker {
       view.setUint8(offset + i, string.charCodeAt(i));
     }
   }
-};
+}

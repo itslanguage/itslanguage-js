@@ -1,7 +1,7 @@
-const AudioPlayer = require('../audio-player');
-const CordovaMediaPlayer = require('../cordova-media-player');
-const Stopwatch = require('../tools').Stopwatch;
-const WebAudioPlayer = require('../web-audio-player');
+import * as Stopwatch from '../tools';
+import AudioPlayer from '../audio-player';
+import CordovaMediaPlayer from '../cordova-media-player';
+import WebAudioPlayer from '../web-audio-player';
 
 describe('Audio player', () => {
   let oldMedia;
@@ -310,21 +310,21 @@ describe('Audio player', () => {
   it('should bind and return _stopwatch', () => {
     const player = new AudioPlayer();
     const cb = jasmine.createSpy();
-    const fakeWatch = jasmine.createSpy().and.callFake(callback => {
+    const fakeWatch = jasmine.createSpy();
+    spyOn(Stopwatch, 'default').and.callFake(callback => {
+      fakeWatch.tickCb = callback;
       callback(10);
-      return new Stopwatch(callback);
+      return fakeWatch;
     });
-    AudioPlayer.__set__('Stopwatch', fakeWatch);
     spyOn(player, 'getDuration').and.returnValue(1);
     const result = player.bindStopwatch(cb);
-    expect(result).toEqual(jasmine.any(Stopwatch));
+    expect(result).toEqual(fakeWatch);
   });
 
   it('should bind and correct timer errors', () => {
     const player = new AudioPlayer();
     const cb = jasmine.createSpy();
-    const fakeWatch = jasmine.createSpy().and.callFake(callback => callback(15));
-    AudioPlayer.__set__('Stopwatch', fakeWatch);
+    spyOn(Stopwatch, 'default').and.callFake(callback => callback(15));
     spyOn(player, 'getDuration').and.returnValue(1);
     player.player = jasmine.createSpyObj('player', ['bindStopwatch']);
     player.bindStopwatch(cb);

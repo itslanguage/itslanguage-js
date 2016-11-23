@@ -1,9 +1,9 @@
-const Tenant = require('./tenant');
+import Tenant from './tenant';
 
 /**
  * Controller class for the Tenant model.
  */
-module.exports = class TenantController {
+export default class TenantController {
   /**
    * @param connection Object to connect to.
    */
@@ -29,4 +29,4 @@ module.exports = class TenantController {
         return result;
       });
   }
-};
+}

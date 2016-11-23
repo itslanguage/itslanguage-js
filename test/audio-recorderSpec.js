@@ -1,6 +1,9 @@
-const AudioRecorder = require('../audio-recorder');
-const Stopwatch = require('../tools').Stopwatch;
-const guid = require('guid');
+import * as CordovaMediaRecorder from '../cordova-media-recorder';
+import * as MediaRecorder from '../media-recorder';
+import * as WebAudioRecorder from '../web-audio-recorder';
+import AudioRecorder from '../audio-recorder';
+import Stopwatch from '../tools';
+import guid from 'guid';
 
 describe('Audio recorder', () => {
   beforeEach(() => {
@@ -35,8 +38,6 @@ describe('Audio recorder', () => {
   });
 
   it('should construct with event functionality', () => {
-    const allOffSpy = jasmine.createSpy();
-    AudioRecorder.__set__('allOff', allOffSpy);
     AudioRecorder.prototype.canUseCordovaMedia = false;
     const recorder = new AudioRecorder();
     recorder._emitter = jasmine.createSpyObj('_emitter', ['on', 'off', 'emit']);
@@ -49,7 +50,6 @@ describe('Audio recorder', () => {
     expect(recorder._emitter.off).toHaveBeenCalledWith('evt1', jasmine.any(Function));
     expect(recorder._emitter.emit).toHaveBeenCalledWith('evt1', 'args');
     expect(recorder._emitter.emit).toHaveBeenCalledWith('evt2');
-    expect(allOffSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should request microphone access', done => {
@@ -186,8 +186,8 @@ describe('Audio recorder', () => {
   });
 
   it('should get the best recorder with cordova', () => {
-    const fakeCordova = jasmine.createSpy().and.callFake(() => fakeCordova);
-    AudioRecorder.__set__('CordovaMediaRecorder', fakeCordova);
+    const fakeCordova = jasmine.createSpy();
+    spyOn(CordovaMediaRecorder, 'default').and.returnValue(fakeCordova);
     const recorder = new AudioRecorder();
     recorder._getBestRecorder.and.callThrough();
     recorder.canUseCordovaMedia = true;
@@ -199,8 +199,8 @@ describe('Audio recorder', () => {
   });
 
   it('should get the best recorder with mediaRecorder implementation', () => {
-    const fakeMediaRecorder = jasmine.createSpy().and.callFake(() => fakeMediaRecorder);
-    AudioRecorder.__set__('MediaRecorder', fakeMediaRecorder);
+    const fakeMediaRecorder = jasmine.createSpy();
+    spyOn(MediaRecorder, 'default').and.returnValue(fakeMediaRecorder);
     const recorder = new AudioRecorder();
     recorder._getBestRecorder.and.callThrough();
     recorder.canUseCordovaMedia = false;
@@ -213,11 +213,11 @@ describe('Audio recorder', () => {
   });
 
   it('should get the best recorder with HTML5', () => {
-    const fakeWebAudioRecorder = jasmine.createSpy().and.callFake((inputgain, callback) => {
+    const fakeWebAudioRecorder = jasmine.createSpy();
+    spyOn(WebAudioRecorder, 'default').and.callFake((inputgain, callback) => {
       callback('data');
       return fakeWebAudioRecorder;
     });
-    AudioRecorder.__set__('WebAudioRecorder', fakeWebAudioRecorder);
     const recorder = new AudioRecorder();
     spyOn(recorder, 'streamCallback');
     recorder._getBestRecorder.and.callThrough();

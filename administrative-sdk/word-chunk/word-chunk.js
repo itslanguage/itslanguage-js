@@ -8,7 +8,7 @@
  * `good` when the score is 0.6 or above.
  * @member {its.Phoneme[]} phonemes The phonemes this chunk consists of.
  */
-module.exports = class WordChunk {
+export default class WordChunk {
   /**
    * Create a word chunk domain model.
    *
@@ -27,4 +27,4 @@ module.exports = class WordChunk {
     this.verdict = verdict;
     this.phonemes = phonemes || [];
   }
-};
+}

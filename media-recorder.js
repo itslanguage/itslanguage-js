@@ -13,7 +13,7 @@
  * https://wiki.mozilla.org/Gecko:MediaRecorder
  *
  */
-module.exports = class MediaRecorder {
+export default class MediaRecorder {
   /**
    * MediaRecorder
    *
@@ -80,4 +80,4 @@ module.exports = class MediaRecorder {
     // Callback will trigger later when audio is ready.
     this.callback = callback;
   }
-};
+}

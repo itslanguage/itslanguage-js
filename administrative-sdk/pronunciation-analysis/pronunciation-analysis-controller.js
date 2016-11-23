@@ -1,19 +1,19 @@
 /* eslint-disable
  camelcase
  */
-const Base64Utils = require('./../utils/base64-utils');
-const Connection = require('./../connection/connection-controller');
-const Phoneme = require('../phoneme/phoneme');
-const PronunciationAnalysis = require('./pronunciation-analysis');
-const Student = require('../student/student');
-const Word = require('../word/word');
-const WordChunk = require('../word-chunk/word-chunk');
-const when = require('autobahn').when;
+import Base64Utils from './../utils/base64-utils';
+import Connection from './../connection/connection-controller';
+import Phoneme from '../phoneme/phoneme';
+import PronunciationAnalysis from './pronunciation-analysis';
+import Student from '../student/student';
+import Word from '../word/word';
+import WordChunk from '../word-chunk/word-chunk';
+import when from 'when';
 
 /**
  * Controller class for the PronunciationAnalysis model.
  */
-module.exports = class PronunciationAnalysisController {
+export default class PronunciationAnalysisController {
   /**
    * @param connection Object to connect to.
    */
@@ -335,4 +335,4 @@ module.exports = class PronunciationAnalysisController {
         return analyses;
       });
   }
-};
+}

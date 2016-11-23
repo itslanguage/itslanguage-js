@@ -1,4 +1,4 @@
-const WavePacker = require('../wave-packer');
+import WavePacker from '../wave-packer';
 
 describe('WavePacker', () => {
   it('should warn when the sample rates are invalid', () => {

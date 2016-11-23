@@ -6,7 +6,7 @@
  * @author d-centralize
  */
 
-module.exports = class WebAudioPlayer {
+export default class WebAudioPlayer {
   /**
    * ITSLanguage WebAudioPlayer non-graphical component.
    *
@@ -313,4 +313,4 @@ module.exports = class WebAudioPlayer {
     return this.sound.readyState >= this.sound.HAVE_METADATA ||
       this.sound.src && !this.sound.error;
   }
-};
+}

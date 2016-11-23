@@ -1,9 +1,9 @@
-const ChoiceChallenge = require('./choice-challenge');
+import ChoiceChallenge from './choice-challenge';
 
 /**
  * Controller class for the ChoiceChallenge model.
  */
-module.exports = class ChoiceChallengeController {
+export default class ChoiceChallengeController {
   /**
    * @param connection Object to connect to.
    */
@@ -101,4 +101,4 @@ module.exports = class ChoiceChallengeController {
         return challenges;
       });
   }
-};
+}

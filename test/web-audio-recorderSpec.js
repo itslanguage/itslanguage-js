@@ -1,4 +1,4 @@
-const WebAudioRecorder = require('../web-audio-recorder');
+import WebAudioRecorder from '../web-audio-recorder';
 
 describe('WebAudioRecorder', () => {
   let webAudioRecorder;

@@ -1,4 +1,4 @@
-const WebAudioPlayer = require('../web-audio-player');
+import WebAudioPlayer from '../web-audio-player';
 
 describe('WebAudioPlayer', () => {
   let audioMock;

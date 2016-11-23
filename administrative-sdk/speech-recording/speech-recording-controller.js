@@ -1,13 +1,13 @@
-const Base64Utils = require('../utils/base64-utils');
-const Connection = require('./../connection/connection-controller');
-const SpeechRecording = require('./speech-recording');
-const Student = require('../student/student');
-const when = require('autobahn').when;
+import Base64Utils from '../utils/base64-utils';
+import Connection from './../connection/connection-controller';
+import SpeechRecording from './speech-recording';
+import Student from '../student/student';
+import when from 'when';
 
 /**
  * Controller class for the SpeechRecording model.
  */
-module.exports = class SpeechRecordingController {
+export default class SpeechRecordingController {
   /**
    * @param connection Object to connect to.
    */
@@ -247,4 +247,4 @@ module.exports = class SpeechRecordingController {
         return recordings;
       });
   }
-};
+}

@@ -1,9 +1,9 @@
-const Student = require('./student');
+import Student from './student';
 
 /**
  * Controller class for the Student model.
  */
-module.exports = class StudentController {
+export default class StudentController {
   /**
    * @param connection Object to connect to.
    */
@@ -80,4 +80,4 @@ module.exports = class StudentController {
         return students;
       });
   }
-};
+}

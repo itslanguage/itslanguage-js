@@ -1,7 +1,7 @@
-require('jasmine-ajax');
-const ChoiceChallenge = require('../administrative-sdk/choice-challenge/choice-challenge');
-const ChoiceChallengeController = require('../administrative-sdk/choice-challenge/choice-challenge-controller');
-const Connection = require('../administrative-sdk/connection/connection-controller');
+import 'jasmine-ajax';
+import ChoiceChallenge from '../administrative-sdk/choice-challenge/choice-challenge';
+import ChoiceChallengeController from '../administrative-sdk/choice-challenge/choice-challenge-controller';
+import Connection from '../administrative-sdk/connection/connection-controller';
 
 describe('ChoiceChallenge object test', () => {
   it('should require all required fields in constructor', () => {

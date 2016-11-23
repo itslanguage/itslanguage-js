@@ -7,7 +7,7 @@
  * @member {string} bad when the score is below 0.4, moderate when equal to 0.4 or between 0.4 and 0.6.
  * good when the score is 0.6 or above.
  */
-module.exports = class Phoneme {
+export default class Phoneme {
   /**
    * Create a phoneme domain model.
    *
@@ -27,4 +27,4 @@ module.exports = class Phoneme {
     this.confidenceScore = confidenceScore;
     this.verdict = verdict;
   }
-};
+}

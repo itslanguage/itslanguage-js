@@ -1,4 +1,4 @@
-module.exports = class Base64Utils {
+export default class Base64Utils {
 
   static _arrayBufferToBase64(buffer) {
     let binary = '';
@@ -9,4 +9,4 @@ module.exports = class Base64Utils {
     }
     return window.btoa(binary);
   }
-};
+}

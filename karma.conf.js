@@ -60,7 +60,6 @@ module.exports = config => {
       debug: true,
       transform: [
         istanbul({instrumenter: require('isparta')}),
-        'rewireify',
         'babelify'
       ]
     }

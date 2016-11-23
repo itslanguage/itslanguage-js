@@ -1,14 +1,14 @@
-require('jasmine-ajax');
-const autobahn = require('autobahn');
-const when = require('when');
-const PronunciationAnalysis = require('../administrative-sdk/pronunciation-analysis/pronunciation-analysis');
-const Controller = require('../administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller');
-const PronunciationChallenge = require('../administrative-sdk/pronunciation-challenge/pronunciation-challenge');
-const Student = require('../administrative-sdk/student/student');
-const Connection = require('../administrative-sdk/connection/connection-controller');
-const WordChunk = require('../administrative-sdk/word-chunk/word-chunk');
-const Word = require('../administrative-sdk/word/word');
-const Phoneme = require('../administrative-sdk/phoneme/phoneme');
+import 'jasmine-ajax';
+import Connection from '../administrative-sdk/connection/connection-controller';
+import Controller from '../administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller';
+import Phoneme from '../administrative-sdk/phoneme/phoneme';
+import PronunciationAnalysis from '../administrative-sdk/pronunciation-analysis/pronunciation-analysis';
+import PronunciationChallenge from '../administrative-sdk/pronunciation-challenge/pronunciation-challenge';
+import Student from '../administrative-sdk/student/student';
+import Word from '../administrative-sdk/word/word';
+import WordChunk from '../administrative-sdk/word-chunk/word-chunk';
+import autobahn from 'autobahn';
+import when from 'when';
 
 describe('Pronunciation Analyisis Websocket API interaction test', () => {
   let api;

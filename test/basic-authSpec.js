@@ -1,7 +1,7 @@
-require('jasmine-ajax');
-const Connection = require('../administrative-sdk/connection/connection-controller');
-const BasicAuth = require('../administrative-sdk/basic-auth/basic-auth');
-const BasicAuthController = require('../administrative-sdk/basic-auth/basic-auth-controller');
+import 'jasmine-ajax';
+import BasicAuth from '../administrative-sdk/basic-auth/basic-auth';
+import BasicAuthController from '../administrative-sdk/basic-auth/basic-auth-controller';
+import Connection from '../administrative-sdk/connection/connection-controller';
 
 describe('BasicAuth object test', () => {
   it('should require all required fields in constructor', () => {

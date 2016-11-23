@@ -2,12 +2,12 @@
 camelcase
  */
 
-const autobahn = require('autobahn');
-const ee = require('event-emitter');
+import autobahn from 'autobahn';
+import ee from 'event-emitter';
 /**
  * Controller class for managing connection interaction.
  */
-module.exports = class Connection {
+export default class Connection {
 
   constructor(options) {
     this.settings = Object.assign({
@@ -311,4 +311,4 @@ module.exports = class Connection {
           })
       );
   }
-};
+}

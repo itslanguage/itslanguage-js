@@ -1,12 +1,12 @@
-const ChoiceRecognition = require('./choice-recognition');
-const Student = require('../student/student');
-const PronunciationAnalysis = require('../pronunciation-analysis/pronunciation-analysis');
-const Base64Utils = require('../utils/base64-utils');
-const when = require('autobahn').when;
+import Base64Utils from '../utils/base64-utils';
+import ChoiceRecognition from './choice-recognition';
+import PronunciationAnalysis from '../pronunciation-analysis/pronunciation-analysis';
+import Student from '../student/student';
+import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.
  */
-module.exports = class ChoiceRecognitionController {
+export default class ChoiceRecognitionController {
   /**
    * @param connection Object to connect to.
    */
@@ -291,4 +291,4 @@ module.exports = class ChoiceRecognitionController {
         return recognitions;
       });
   }
-};
+}

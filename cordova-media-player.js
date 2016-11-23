@@ -12,7 +12,7 @@ device
  */
 
 
-module.exports = class CordovaMediaPlayer {
+export default class CordovaMediaPlayer {
   /**
    * ITSLanguage CordovaMediaPlayer non-graphical component.
    *
@@ -273,4 +273,4 @@ module.exports = class CordovaMediaPlayer {
   isPlaying() {
     return this._isPlaying;
   }
-};
+}

@@ -1,4 +1,4 @@
-const CordovaMediaRecorder = require('../cordova-media-recorder');
+import CordovaMediaRecorder from '../cordova-media-recorder';
 
 describe('Cordova media recorder', () => {
   beforeEach(() => {

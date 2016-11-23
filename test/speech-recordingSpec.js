@@ -1,10 +1,10 @@
-require('jasmine-ajax');
-const autobahn = require('autobahn');
-const SpeechChallenge = require('../administrative-sdk/speech-challenge/speech-challenge');
-const SpeechRecording = require('../administrative-sdk/speech-recording/speech-recording');
-const SpeechRecordingController = require('../administrative-sdk/speech-recording/speech-recording-controller');
-const Student = require('../administrative-sdk/student/student');
-const Connection = require('../administrative-sdk/connection/connection-controller');
+import 'jasmine-ajax';
+import Connection from '../administrative-sdk/connection/connection-controller';
+import SpeechChallenge from '../administrative-sdk/speech-challenge/speech-challenge';
+import SpeechRecording from '../administrative-sdk/speech-recording/speech-recording';
+import SpeechRecordingController from '../administrative-sdk/speech-recording/speech-recording-controller';
+import Student from '../administrative-sdk/student/student';
+import autobahn from 'autobahn';
 
 describe('SpeechRecording object test', () => {
   it('should require all required fields in constructor', () => {
