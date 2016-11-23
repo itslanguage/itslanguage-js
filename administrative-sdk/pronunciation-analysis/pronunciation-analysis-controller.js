@@ -76,7 +76,7 @@ module.exports = class PronunciationAnalysisController {
         return Promise.reject(res);
       })
       .then(alignment => {
-        this.referenceAlignment = alignment;
+        this._referenceAlignment = alignment;
         console.log('Reference alignment retrieved', alignment);
       });
   }
@@ -161,7 +161,7 @@ module.exports = class PronunciationAnalysisController {
       }
 
       function reportProgress(progress) {
-        notify({progress, referenceAlignment: self.referenceAlignment});
+        notify({progress, referenceAlignment: self._referenceAlignment});
       }
 
       function reportError(data) {
