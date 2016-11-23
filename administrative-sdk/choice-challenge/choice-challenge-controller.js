@@ -8,7 +8,7 @@ module.exports = class ChoiceChallengeController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -23,7 +23,7 @@ module.exports = class ChoiceChallengeController {
     if (!choiceChallenge.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       choiceChallenge.organisationId + '/challenges/choice';
     const fd = new FormData();
     if (choiceChallenge.id !== undefined &&
@@ -34,7 +34,7 @@ module.exports = class ChoiceChallengeController {
     choiceChallenge.choices.forEach(choice => {
       fd.append('choices', choice);
     });
-    return this.connection._secureAjaxPost(url, fd)
+    return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new ChoiceChallenge(data.organisationId, data.id, data.question, data.choices);
         result.created = new Date(data.created);
@@ -56,9 +56,9 @@ module.exports = class ChoiceChallengeController {
    * @rejects If no result could not be found.
    */
   getChoiceChallenge(organisationId, challengeId) {
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice/' + challengeId;
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new ChoiceChallenge(organisationId, data.id,
           data.question, data.choices);
@@ -81,9 +81,9 @@ module.exports = class ChoiceChallengeController {
    * @rejects If no result could not be found.
    */
   listChoiceChallenges(organisationId) {
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/choice';
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {

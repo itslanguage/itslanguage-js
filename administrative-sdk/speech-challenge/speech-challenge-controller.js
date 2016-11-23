@@ -8,7 +8,7 @@ module.exports = class SpeechChallengeController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -31,10 +31,10 @@ module.exports = class SpeechChallengeController {
     if (speechChallenge.referenceAudio) {
       fd.append('referenceAudio', speechChallenge.referenceAudio);
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       speechChallenge.organisationId + '/challenges/speech';
 
-    return this.connection._secureAjaxPost(url, fd)
+    return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new SpeechChallenge(data.organisationId, data.id, data.topic);
         result.created = new Date(data.created);
@@ -54,10 +54,10 @@ module.exports = class SpeechChallengeController {
    * @rejects If no result could not be found.
    */
   getSpeechChallenge(organisationId, challengeId) {
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech/' + challengeId;
 
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new SpeechChallenge(organisationId, data.id, data.topic);
         challenge.created = new Date(data.created);
@@ -74,10 +74,10 @@ module.exports = class SpeechChallengeController {
    * @rejects If no result could not be found.
    */
   listSpeechChallenges(organisationId) {
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/challenges/speech';
 
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {

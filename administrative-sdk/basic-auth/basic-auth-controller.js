@@ -8,7 +8,7 @@ module.exports = class BasicAuthController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -19,7 +19,7 @@ module.exports = class BasicAuthController {
    * @rejects If the server returned an error.
    */
   createBasicAuth(basicAuth) {
-    const url = this.connection.settings.apiUrl + '/basicauths';
+    const url = this._connection.settings.apiUrl + '/basicauths';
     const formData = JSON.stringify(basicAuth);
     const headers = new Headers();
     if (typeof formData === 'string') {

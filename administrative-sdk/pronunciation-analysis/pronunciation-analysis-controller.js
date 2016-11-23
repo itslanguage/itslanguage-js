@@ -18,7 +18,7 @@ module.exports = class PronunciationAnalysisController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -59,18 +59,18 @@ module.exports = class PronunciationAnalysisController {
    *
    */
   pronunciationAnalysisInitChallenge(challenge) {
-    return this.connection._session.call('nl.itslanguage.pronunciation.init_challenge',
-      [this.connection._analysisId, challenge.organisationId, challenge.id])
+    return this._connection._session.call('nl.itslanguage.pronunciation.init_challenge',
+      [this._connection._analysisId, challenge.organisationId, challenge.id])
       .catch(res => {
         Connection.logRPCError(res);
         return Promise.reject(res);
       })
       .then(analysisId => {
-        console.log('Challenge initialised for analysisId: ' + this.connection._analysisId);
+        console.log('Challenge initialised for analysisId: ' + this._connection._analysisId);
         return analysisId;
       })
-      .then(() => this.connection._session.call('nl.itslanguage.pronunciation.alignment',
-        [this.connection._analysisId]))
+      .then(() => this._connection._session.call('nl.itslanguage.pronunciation.alignment',
+        [this._connection._analysisId]))
       .catch(res => {
         Connection.logRPCError(res);
         return Promise.reject(res);
@@ -90,10 +90,10 @@ module.exports = class PronunciationAnalysisController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    return this.connection._session.call('nl.itslanguage.pronunciation.init_audio',
-      [this.connection._analysisId, specs.audioFormat], specs.audioParameters)
+    return this._connection._session.call('nl.itslanguage.pronunciation.init_audio',
+      [this._connection._analysisId, specs.audioFormat], specs.audioParameters)
       .then(analysisId => {
-        console.log('Accepted audio parameters for analysisId after init_audio: ' + this.connection._analysisId);
+        console.log('Accepted audio parameters for analysisId after init_audio: ' + this._connection._analysisId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return analysisId;
@@ -130,19 +130,19 @@ module.exports = class PronunciationAnalysisController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    if (!this.connection._session) {
+    if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
     }
     if (recorder.isRecording()) {
       return Promise.reject(new Error('Recorder should not yet be recording.'));
     }
 
-    if (this.connection._analysisId !== null) {
-      return Promise.reject(new Error('Session with analysisId ' + this.connection._analysisId +
+    if (this._connection._analysisId !== null) {
+      return Promise.reject(new Error('Session with analysisId ' + this._connection._analysisId +
         ' still in progress.'));
     }
     const self = this;
-    this.connection._analyisId = null;
+    this._connection._analyisId = null;
     let trimAudioStart = 0.15;
     const trimAudioEnd = 0.0;
     if (trim === false) {
@@ -153,11 +153,11 @@ module.exports = class PronunciationAnalysisController {
         const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           null, null,
-          self.connection.addAccessToken(data.audioUrl));
+          self._connection.addAccessToken(data.audioUrl));
         analysis.score = data.score;
         analysis.confidenceScore = data.confidenceScore;
         analysis.words = PronunciationAnalysisController._wordsToModels(data.words);
-        resolve({analysisId: self.connection._analysisId, analysis});
+        resolve({analysisId: self._connection._analysisId, analysis});
       }
 
       function reportProgress(progress) {
@@ -171,7 +171,7 @@ module.exports = class PronunciationAnalysisController {
         const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          self.connection.addAccessToken(data.audioUrl));
+          self._connection.addAccessToken(data.audioUrl));
         reject({analysis, message: data.message});
       }
 
@@ -180,9 +180,9 @@ module.exports = class PronunciationAnalysisController {
       function startStreaming(chunk) {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for analysisId: ' +
-          self.connection._analysisId);
-        self.connection._session.call('nl.itslanguage.pronunciation.write',
-          [self.connection._analysisId, encoded, 'base64'])
+          self._connection._analysisId);
+        self._connection._session.call('nl.itslanguage.pronunciation.write',
+          [self._connection._analysisId, encoded, 'base64'])
           .catch(res => {
             Connection.logRPCError(res);
             reportError(res);
@@ -193,8 +193,8 @@ module.exports = class PronunciationAnalysisController {
       }
 
       function initAnalysis(analysisId) {
-        self.connection._analysisId = analysisId;
-        console.log('Got analysisId after initialisation: ' + self.connection._analysisId);
+        self._connection._analysisId = analysisId;
+        console.log('Got analysisId after initialisation: ' + self._connection._analysisId);
       }
 
       // Stop listening when the audio recorder stopped.
@@ -203,8 +203,8 @@ module.exports = class PronunciationAnalysisController {
         recorder.removeEventListener('dataavailable', startStreaming);
 
         // When done, submit any plain text (non-JSON) to start analysing.
-        self.connection._session.call('nl.itslanguage.pronunciation.analyse',
-          [self.connection._analysisId], {}, {receive_progress: true})
+        self._connection._session.call('nl.itslanguage.pronunciation.analyse',
+          [self._connection._analysisId], {}, {receive_progress: true})
           .progress(progress => {
             reportProgress(progress);
           })
@@ -224,12 +224,12 @@ module.exports = class PronunciationAnalysisController {
           })
           .then(() => {
             // This session is over.
-            self.connection._analysisId = null;
+            self._connection._analysisId = null;
           });
       }
 
       recorder.addEventListener('recorded', stopListening);
-      self.connection._session.call('nl.itslanguage.pronunciation.init_analysis', [],
+      self._connection._session.call('nl.itslanguage.pronunciation.init_analysis', [],
         {
           trimStart: trimAudioStart,
           trimEnd: trimAudioEnd
@@ -276,9 +276,9 @@ module.exports = class PronunciationAnalysisController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/challenges/pronunciation/' +
+    const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' +
       challenge.id + '/analyses/' + analysisId;
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(datum => {
         const student = new Student(challenge.organisationId, datum.studentId);
         const analysis = new PronunciationAnalysis(challenge, student,
@@ -310,12 +310,12 @@ module.exports = class PronunciationAnalysisController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    let url = this.connection.settings.apiUrl + '/challenges/pronunciation/' +
+    let url = this._connection.settings.apiUrl + '/challenges/pronunciation/' +
       challenge.id + '/analyses';
     if (detailed) {
       url += '?detailed=true';
     }
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const analyses = [];
         data.forEach(datum => {

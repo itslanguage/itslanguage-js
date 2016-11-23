@@ -12,7 +12,7 @@ module.exports = class SpeechRecordingController {
    * @param connection Object to connect to.
    */
   constructor(connection) {
-    this.connection = connection;
+    this._connection = connection;
   }
 
   /**
@@ -20,11 +20,11 @@ module.exports = class SpeechRecordingController {
    *
    */
   speechRecordingInitChallenge(challenge) {
-    return this.connection._session.call('nl.itslanguage.recording.init_challenge',
-      [this.connection._recordingId, challenge.organisationId, challenge.id]).then(
+    return this._connection._session.call('nl.itslanguage.recording.init_challenge',
+      [this._connection._recordingId, challenge.organisationId, challenge.id]).then(
       // RPC success callback
       recordingId => {
-        console.log('Challenge initialised for recordingId: ' + this.connection._recordingId);
+        console.log('Challenge initialised for recordingId: ' + this._connection._recordingId);
         return recordingId;
       },
       // RPC error callback
@@ -44,10 +44,10 @@ module.exports = class SpeechRecordingController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the recording when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    return this.connection._session.call('nl.itslanguage.recording.init_audio',
-      [this.connection._recordingId, specs.audioFormat], specs.audioParameters)
+    return this._connection._session.call('nl.itslanguage.recording.init_audio',
+      [this._connection._recordingId, specs.audioFormat], specs.audioParameters)
       .then(recordingId => {
-        console.log('Accepted audio parameters for recordingId after init_audio: ' + this.connection._recordingId);
+        console.log('Accepted audio parameters for recordingId after init_audio: ' + this._connection._recordingId);
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recordingId;
@@ -84,19 +84,19 @@ module.exports = class SpeechRecordingController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    if (!this.connection._session) {
+    if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
     }
     if (recorder.isRecording()) {
       return Promise.reject(new Error('Recorder should not yet be recording.'));
     }
-    if (this.connection._recordingId !== null) {
-      return Promise.reject(new Error('Session with recordingId ' + this.connection._recordingId +
+    if (this._connection._recordingId !== null) {
+      return Promise.reject(new Error('Session with recordingId ' + this._connection._recordingId +
         ' still in progress.'));
     }
     const self = this;
     return new when.Promise((resolve, reject, notify) => {
-      self.connection._recordingId = null;
+      self._connection._recordingId = null;
 
       function _cb(data) {
         const student = new Student(challenge.organisationId, data.studentId);
@@ -104,14 +104,14 @@ module.exports = class SpeechRecordingController {
           challenge, student, data.id);
         recording.created = new Date(data.created);
         recording.updated = new Date(data.updated);
-        recording.audioUrl = self.connection.addAccessToken(data.audioUrl);
-        recording.recordingId = self.connection._recordingId;
+        recording.audioUrl = self._connection.addAccessToken(data.audioUrl);
+        recording.recordingId = self._connection._recordingId;
         resolve(recording);
       }
 
       function recordedCb(activeRecordingId, audioBlob, forcedStop) {
-        self.connection._session.call('nl.itslanguage.recording.close',
-          [self.connection._recordingId]).then(
+        self._connection._session.call('nl.itslanguage.recording.close',
+          [self._connection._recordingId]).then(
           // RPC success callback
           res => {
             // Pass along details to the success callback
@@ -123,7 +123,7 @@ module.exports = class SpeechRecordingController {
             reject(res);
           })
           .then(() => {
-            self.connection._recordingId = null;
+            self._connection._recordingId = null;
           });
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', startStreaming);
@@ -134,9 +134,9 @@ module.exports = class SpeechRecordingController {
       function startStreaming(chunk) {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recordingId: ' +
-          self.connection._recordingId);
-        self.connection._session.call('nl.itslanguage.recording.write',
-          [self.connection._recordingId, encoded, 'base64']).then(
+          self._connection._recordingId);
+        self._connection._session.call('nl.itslanguage.recording.write',
+          [self._connection._recordingId, encoded, 'base64']).then(
           // RPC success callback
           res => {
             // Wrote data.
@@ -152,12 +152,12 @@ module.exports = class SpeechRecordingController {
       }
 
       function startRecording(recordingId) {
-        self.connection._recordingId = recordingId;
-        console.log('Got recordingId after initialisation: ' + self.connection._recordingId);
+        self._connection._recordingId = recordingId;
+        console.log('Got recordingId after initialisation: ' + self._connection._recordingId);
       }
 
       recorder.addEventListener('recorded', recordedCb);
-      self.connection._session.call('nl.itslanguage.recording.init_recording', [])
+      self._connection._session.call('nl.itslanguage.recording.init_recording', [])
         .then(startRecording)
         .then(() => {
           self.speechRecordingInitChallenge(challenge)
@@ -199,15 +199,15 @@ module.exports = class SpeechRecordingController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/speech/' +
       challenge.id + '/recordings/' + recordingId;
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(challenge, student, data.id);
         recording.audio = null;
-        recording.audioUrl = this.connection.addAccessToken(data.audioUrl);
+        recording.audioUrl = this._connection.addAccessToken(data.audioUrl);
         recording.created = new Date(data.created);
         recording.updated = new Date(data.updated);
         return recording;
@@ -228,18 +228,18 @@ module.exports = class SpeechRecordingController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this.connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection.settings.apiUrl + '/organisations/' +
       challenge.organisationId + '/challenges/speech/' +
       challenge.id + '/recordings';
 
-    return this.connection._secureAjaxGet(url)
+    return this._connection._secureAjaxGet(url)
       .then(data => {
         const recordings = [];
         data.forEach(datum => {
           const student = new Student(challenge.organisationId, datum.studentId);
           const recording = new SpeechRecording(challenge, student, datum.id);
           recording.audio = null;
-          recording.audioUrl = this.connection.addAccessToken(datum.audioUrl);
+          recording.audioUrl = this._connection.addAccessToken(datum.audioUrl);
           recording.created = new Date(datum.created);
           recording.updated = new Date(datum.updated);
           recordings.push(recording);
