@@ -37,7 +37,7 @@ module.exports = class PronunciationChallengeController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new PronunciationChallenge(data.organisationId, data.id, data.transcription);
+        const result = new PronunciationChallenge(challenge.organisationId, data.id, data.transcription);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.referenceAudio = challenge.referenceAudio;

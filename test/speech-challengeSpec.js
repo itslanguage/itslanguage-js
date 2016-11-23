@@ -78,7 +78,6 @@ describe('SpeechChallenge API interaction test', () => {
     const challenge = new SpeechChallenge('fb', null, 'Hi');
     const content = {
       id: '1',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       topic: 'Hi'
@@ -114,7 +113,6 @@ describe('SpeechChallenge API interaction test', () => {
     const challenge = new SpeechChallenge('fb', '1', 'Hi');
     const content = {
       id: '1',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       topic: 'Hi'
@@ -154,7 +152,6 @@ describe('SpeechChallenge API interaction test', () => {
       '/YsjdG37bUGseu8-bsJ';
     const content = {
       id: '1',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       topic: 'Hi',

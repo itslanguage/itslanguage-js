@@ -4,11 +4,22 @@ const OrganisationController = require('../administrative-sdk/organisation/organ
 const Connection = require('../administrative-sdk/connection/connection-controller');
 
 describe('Organisation object test', () => {
-  it('should instantiate an Organisation without id', () => {
-    const o = new Organisation();
-    expect(o).toBeDefined();
-    expect(o.id).toBeUndefined();
-    expect(o.name).toBeUndefined();
+  it('should not instantiate an Organisation with an invalid id', () => {
+    expect(() => {
+      new Organisation(5);
+    }).toThrowError('id parameter of type "string|null" is required');
+  });
+
+  it('should not instantiate an Organisation without name', () => {
+    expect(() => {
+      new Organisation('2');
+    }).toThrowError('name parameter of type "string" is required');
+  });
+
+  it('should not instantiate an Organisation with an invalid name', () => {
+    expect(() => {
+      new Organisation('2', 2);
+    }).toThrowError('name parameter of type "string" is required');
   });
 
   it('should instantiate an Organisation with id and metadata', () => {
@@ -70,12 +81,55 @@ describe('Organisation API interaction test', () => {
        }).then(done);
   });
 
+  it('should create a new organisation without id through API', done => {
+    const organisation = new Organisation(null, 'School of silly walks');
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new OrganisationController(api);
+    const url = 'https://api.itslanguage.nl/organisations';
+    const expected = {id: null, name: 'School of silly walks'};
+    const content = {
+      id: '1',
+      created: '2014-12-31T23:59:59Z',
+      updated: '2014-12-31T23:59:59Z',
+      name: 'School of silly walks'
+    };
+    const fakeResponse = new Response(JSON.stringify(content), {
+      status: 201,
+      header: {
+        'Content-type': 'application/json'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+    controller.createOrganisation(organisation)
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        const stringDate = '2014-12-31T23:59:59Z';
+        organisation.id = '1';
+        organisation.created = new Date(stringDate);
+        organisation.updated = new Date(stringDate);
+        expect(result).toEqual(organisation);
+        expect(result.id).toBe('1');
+        expect(result.created).toEqual(new Date(stringDate));
+        expect(result.updated).toEqual(new Date(stringDate));
+        expect(result.name).toBe('School of silly walks');
+      })
+      .catch(error => {
+        fail('No error should be thrown : ' + error);
+      }).then(done);
+  });
+
   it('should handle errors while creating a new organisation', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
     const controller = new OrganisationController(api);
-    const organisation = new Organisation('1');
+    const organisation = new Organisation('1', 'a');
     const url = 'https://api.itslanguage.nl/organisations';
     const content = {
       message: 'Validation failed',

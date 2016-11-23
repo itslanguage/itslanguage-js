@@ -36,7 +36,7 @@ module.exports = class SpeechChallengeController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new SpeechChallenge(data.organisationId, data.id, data.topic);
+        const result = new SpeechChallenge(speechChallenge.organisationId, data.id, data.topic);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.referenceAudio = speechChallenge.referenceAudio;
