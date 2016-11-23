@@ -66,4 +66,48 @@ describe('Stopwatch', () => {
     expect(stopwatch.value).toEqual(2);
     expect(cb).toHaveBeenCalledWith(1);
   });
+
+  it('should register one listener', () => {
+    const tickCb = jasmine.createSpy();
+    const stopwatch = new Stopwatch(tickCb);
+    const listenerCb = jasmine.createSpy();
+    stopwatch.registerListener(listenerCb);
+    stopwatch.update();
+    stopwatch.update();
+    expect(listenerCb).toHaveBeenCalledTimes(2);
+    expect(listenerCb).toHaveBeenCalledWith(0);
+    expect(listenerCb).toHaveBeenCalledWith(1);
+  });
+
+  it('should register multiple listeners', () => {
+    const tickCb = jasmine.createSpy();
+    const stopwatch = new Stopwatch(tickCb);
+    const interestedListener1 = jasmine.createSpy();
+    const interestedListener2 = jasmine.createSpy();
+    stopwatch.registerListener(interestedListener1);
+    stopwatch.registerListener(interestedListener2);
+    stopwatch.update();
+    stopwatch.update();
+    expect(tickCb).toHaveBeenCalledTimes(2);
+    expect(tickCb).toHaveBeenCalledWith(0);
+    expect(tickCb).toHaveBeenCalledWith(1);
+    expect(interestedListener1).toHaveBeenCalledTimes(2);
+    expect(interestedListener1).toHaveBeenCalledWith(0);
+    expect(interestedListener1).toHaveBeenCalledWith(1);
+    expect(interestedListener2).toHaveBeenCalledTimes(2);
+    expect(interestedListener2).toHaveBeenCalledWith(0);
+    expect(interestedListener2).toHaveBeenCalledWith(1);
+  });
+
+  it('should register one listener and then stop listening', () => {
+    const tickCb = jasmine.createSpy();
+    const stopwatch = new Stopwatch(tickCb);
+    const listenerCb = jasmine.createSpy();
+    stopwatch.registerListener(listenerCb);
+    stopwatch.update();
+    stopwatch.stopListening(listenerCb);
+    stopwatch.update();
+    expect(listenerCb).toHaveBeenCalledTimes(1);
+    expect(listenerCb).toHaveBeenCalledWith(0);
+  });
 });
