@@ -5,18 +5,23 @@ import SpeechChallenge from './speech-challenge';
  */
 export default class SpeechChallengeController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
    * Create a speech challenge.
    *
-   * @param {SpeechChallenge} speechChallenge Object to create.
-   * @returns Promise containing the newly created object.
-   * @rejects If the server returned an error.
+   * @param {SpeechChallenge} speechChallenge - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} {@link SpeechChallenge#organisationId} field is required
+   * @throws {Promise} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge) {
     if (!speechChallenge.organisationId) {
@@ -48,10 +53,10 @@ export default class SpeechChallengeController {
   /**
    * Get a speech challenge.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @param {string} challengeId Specify a speech challenge identifier.
-   * @returns Promise containing a SpeechChallenge.
-   * @rejects If no result could not be found.
+   * @param {string} organisationId - Specify an organisation identifier.
+   * @param {string} challengeId - Specify a speech challenge identifier.
+   * @returns {Promise} Promise containing a SpeechChallenge.
+   * @throws {Promise} If no result could not be found.
    */
   getSpeechChallenge(organisationId, challengeId) {
     const url = this._connection.settings.apiUrl + '/organisations/' +
@@ -69,9 +74,9 @@ export default class SpeechChallengeController {
   /**
    * List all speech challenges in the organisation.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @returns Promise containing a list of SpeechChallenges.
-   * @rejects If no result could not be found.
+   * @param {string} organisationId - Specify an organisation identifier.
+   * @returns {Promise} Promise containing a list of SpeechChallenges.
+   * @throws {Promise} If no result could not be found.
    */
   listSpeechChallenges(organisationId) {
     const url = this._connection.settings.apiUrl + '/organisations/' +

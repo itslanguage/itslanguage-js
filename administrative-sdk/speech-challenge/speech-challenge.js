@@ -1,47 +1,69 @@
 /**
- * @class SpeechChallenge
- *
- * @member {string} organisationId The organisation identifier this challenge is an entry in.
- * @member {string} [id] The speech challenge identifier.
- * @member {date} created The creation date of the entity.
- * @member {date} updated The most recent update date of the entity.
- * @member {string} [topic] A question or topic serving as guidance.
- * @member {blob} [referenceAudio] The reference audio fragment.
- * @member {string} [referenceAudioUrl] The reference audio fragment as streaming audio link.
+ * @class SpeechChallenge domain model.
  */
 export default class SpeechChallenge {
   /**
-   * Create a speech choiceChall domain model.
+   * Create a speech SpeechChallenge domain model.
    *
-   * @constructor
-   * @param {string} organisationId The organisation identifier this choiceChall is an entry in.
-   * @param {string} [id] The speech choiceChall identifier. If none is given, one is generated.
-   * @param {string} [topic] A question or topic serving as guidance.
-   * @param {blob} [referenceAudio] The reference audio fragment.
-   * @return {choiceRecog.SpeechChallenge}
+   * @param {string} organisationId - The organisation identifier this challenge is an entry in.
+   * @param {string} [id] - The speech challenge identifier. If none is given, one is generated.
+   * @param {string} [topic] - A question or topic serving as guidance.
+   * @param {Blob} [referenceAudio] - The reference audio fragment.
    */
   constructor(organisationId, id, topic, referenceAudio) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
     }
+    /**
+     * The speech challenge identifier. If none is given, one is generated.
+     * @type {string}
+     */
     this.id = id;
     if (organisationId && typeof organisationId !== 'string') {
       throw new Error(
         'organisationId parameter of type "string|null" is required');
     }
+    /**
+     * The organisation identifier this challenge is an entry in.
+     * @type {string}
+     */
     this.organisationId = organisationId;
     if (topic && typeof topic !== 'string') {
       throw new Error(
         'topic parameter of type "string" is required');
     }
+    /**
+     * A question or topic serving as guidance.
+     * @type {string}
+     */
     this.topic = topic;
     // Field is optional, but if given, then it's validated.
     if (typeof referenceAudio !== 'object' && referenceAudio) {
       throw new Error(
         'referenceAudio parameter of type "Blob" is required');
     }
+    /**
+     * The reference audio fragment.
+     * @type {Blob}
+     */
     this.referenceAudio = referenceAudio || null;
+    /**
+     * The reference audio fragment as streaming audio link.
+     * @type {string}
+     */
     this.referenceAudioUrl = null;
+
+    /**
+     * The creation date of the entity.
+     * @type {Date}
+     */
+    this.created = null;
+
+    /**
+     * The most recent update date of the entity.
+     * @type {Date}
+     */
+    this.updated = null;
   }
 }

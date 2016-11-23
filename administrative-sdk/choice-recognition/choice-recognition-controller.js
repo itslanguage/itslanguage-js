@@ -8,15 +8,21 @@ import when from 'when';
  */
 export default class ChoiceRecognitionController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
    * Initialise the choice recognition challenge through RPCs.
    *
+   * @param {ChoiceChallenge} challenge - ChoiceChallenge.
+   * @private
    */
   choiceRecognitionInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.choice.init_challenge',
@@ -38,6 +44,9 @@ export default class ChoiceRecognitionController {
   /**
    * Initialise the pronunciation analysis audio specs through RPCs.
    *
+   * @param {AudioRecorder} recorder - AudioRecorder.
+   * @param {Function} dataavailableCb - Callback.
+   * @private
    */
   choiceRecognitionInitAudio(recorder, dataavailableCb) {
     // Indicate to the socket server that we're about to start recording a
@@ -64,17 +73,18 @@ export default class ChoiceRecognitionController {
   /**
    * Start a choice recognition from streaming audio.
    *
-   * @param {its.ChoiceChallenge} challenge The choice challenge to perform.
-   * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
-   * @returns Promise containing a SpeechRecognition.
-   * @rejects If challenge is not an object or not defined.
-   * @rejects If challenge has no id.
-   * @rejects If challenge has no organisationId.
-   * @rejects If the connection is not open.
-   * @rejects If the recorder is already recording.
-   * @rejects If a session is already in progress.
-   * @rejects If something went wrong during analysis.
+   * @param {ChoiceChallenge} challenge - The choice challenge to perform.
+   * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
+   * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
+   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
+   * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
+   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise} {@link ChoiceChallenge#organisationId} field is required.
+   * @throws {Promise} If the connection is not open.
+   * @throws {Promise} If the recorder is already recording.
+   * @throws {Promise} If a recognition session is already in progress.
+   * @throws {Promise} If something went wrong during analysis.
    */
   startStreamingChoiceRecognition(challenge, recorder, trim) {
     if (typeof challenge !== 'object' || !challenge) {
@@ -223,10 +233,12 @@ export default class ChoiceRecognitionController {
   /**
    * Get a choice recognition in a choice challenge.
    *
-   * @param {ChoiceChallenge} challenge Specify a choice challenge.
-   * @param {string} recognitionId Specify a choice recognition identifier.
-   * @returns Promise containing a ChoiceRecognition.
-   * @rejects If no result could not be found.
+   * @param {ChoiceChallenge} challenge - Specify a choice challenge.
+   * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
+   * @returns {Promise} Promise containing a ChoiceRecognition.
+   * @throws {Promise} {@link ChoiceChallenge#id} is required.
+   * @throws {Promise} {@link ChoiceChallenge#organisationId} is required.
+   * @throws {Promise} If no result could not be found.
    */
   getChoiceRecognition(challenge, recognitionId) {
     if (!challenge || !challenge.id) {
@@ -256,11 +268,13 @@ export default class ChoiceRecognitionController {
   }
 
   /**
-   * List all choice recognitions in a specific choice challenge.
+   * List all choice recognitions in a specific {@link ChoiceChallenge}.
    *
-   * @param {ChoiceChallenge} challenge Specify a choice challenge to list speech recognitions for.
-   * @returns Promise containing a list of ChoiceRecognitions.
-   * @rejects If no result could not be found.
+   * @param {ChoiceChallenge} challenge - Specify a choice challenge to list speech recognitions for.
+   * @returns {Promise} Promise containing an array of ChoiceRecognitions.
+   * @throws {Promise} {@link ChoiceChallenge#id} is required.
+   * @throws {Promise} {@link ChoiceChallenge#organisationId} is required.
+   * @throws {Promise} If no result could not be found.
    */
   listChoiceRecognitions(challenge) {
     if (!challenge || !challenge.id) {

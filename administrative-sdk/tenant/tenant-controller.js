@@ -5,7 +5,7 @@ import Tenant from './tenant';
  */
 export default class TenantController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
     this._connection = connection;
@@ -14,9 +14,9 @@ export default class TenantController {
   /**
    * Create a tenant.
    *
-   * @param {its.Tenant} tenant Object to create.
-   * @returns Promise containing the newly created object.
-   * @rejects If the server returned an error..
+   * @param {Tenant} tenant - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} If the server returned an error.
    */
   createTenant(tenant) {
     const url = this._connection.settings.apiUrl + '/tenants';

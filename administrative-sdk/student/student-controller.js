@@ -5,18 +5,23 @@ import Student from './student';
  */
 export default class StudentController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
    * Create a student.
    *
-   * @param {Student} student Object to create.
-   * @returns Promise containing the newly created object.
-   * @rejects If the server returned an error.
+   * @param {Student} student - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} {@link Student#organisationId} field is required.
+   * @throws {Promise} If the server returned an error.
    */
   createStudent(student) {
     if (!student.organisationId) {
@@ -39,10 +44,10 @@ export default class StudentController {
   /**
    * Get a student.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @param {string} studentId Specify a student identifier.
-   * @returns Promise containing a Student.
-   * @rejects If no result could not be found.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {Student#id} studentId - Specify a student identifier.
+   * @returns {Promise} Promise containing a Student.
+   * @throws {Promise} If no result could not be found.
    */
   getStudent(organisationId, studentId) {
     const url = this._connection.settings.apiUrl + '/organisations/' +
@@ -60,9 +65,9 @@ export default class StudentController {
   /**
    * List all students in the organisation.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @returns Promise containing a list of Students.
-   * @rejects If no result could not be found.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @returns {Promise} Promise containing a list of Students.
+   * @throws {Promise} If no result could not be found.
    */
   listStudents(organisationId) {
     const url = this._connection.settings.apiUrl + '/organisations/' +

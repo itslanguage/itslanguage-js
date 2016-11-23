@@ -1,0 +1,4 @@
+{
+  "source": "./administrative-sdk",
+  "destination": "./esdoc"
+}

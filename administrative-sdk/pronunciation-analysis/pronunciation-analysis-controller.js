@@ -15,17 +15,21 @@ import when from 'when';
  */
 export default class PronunciationAnalysisController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
    * Create a `its.Word` domain model from JSON data.
    *
-   * @param {object[]} The words array from the PronunciationAnalysis API.
-   * @returns an array of the `its.Word` domain models.
+   * @param {object[]} inWords - The words array from the PronunciationAnalysis API.
+   * @returns {Word[]} An array of {@link Word} domain models.
    */
   static _wordsToModels(inWords) {
     const words = [];
@@ -57,6 +61,8 @@ export default class PronunciationAnalysisController {
   /**
    * Initialise the pronunciation analysis challenge through RPCs.
    *
+   * @param {PronunciationChallenge} challenge - Challenge.
+   * @private
    */
   pronunciationAnalysisInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.pronunciation.init_challenge',
@@ -84,6 +90,9 @@ export default class PronunciationAnalysisController {
   /**
    * Initialise the pronunciation analysis audio specs through RPCs.
    *
+   * @param {AudioRecorder} recorder - AudioRecorder.
+   * @param {Function} dataavailableCb - Callback.
+   * @private
    */
   pronunciationAnalysisInitAudio(recorder, dataavailableCb) {
     // Indicate to the socket server that we're about to start recording a
@@ -107,17 +116,22 @@ export default class PronunciationAnalysisController {
   /**
    * Start a pronunciation analysis from streaming audio.
    *
-   * @param {its.PronunciationChallenge} challenge The pronunciation challenge to perform.
-   * @param {its.AudioRecorder} recorder The audio recorder to extract audio from.
-   * @param {Boolean} [trim] Whether to trim the start and end of recorded audio (default: true).
-   * @returns Promise containing a PronunciationAnalysis.
-   * @rejects If challenge is not an object or not defined.
-   * @rejects If challenge has no id.
-   * @rejects If challenge has no organisationId.
-   * @rejects If the connection is not open.
-   * @rejects If the recorder is already recording.
-   * @rejects If a session is already in progress.
-   * @rejects If something went wrong during analysis.
+   * @param {PronunciationChallenge} challenge - The pronunciation challenge to perform.
+   * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
+   * @param {boolean} [trim] - Whether to trim the start and end of recorded audio (default: true).
+   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
+   * @emits {Object} When the sent audio has finished alignment. Aligning audio is the process of mapping the audio
+   * to spoken words and determining when what is said. An object is sent containing a property 'progress',
+   * which is the sent audio alignment, and a property 'referenceAlignment' which is the alignment of the
+   * reference audio.
+   * @throws {Promise} If challenge is not an object or not defined.
+   * @throws {Promise} If challenge has no id.
+   * @throws {Promise} If challenge has no organisationId.
+   * @throws {Promise} If the connection is not open.
+   * @throws {Promise} If the recorder is already recording.
+   * @throws {Promise} If a session is already in progress.
+   * @throws {Promise} If something went wrong during analysis.
    */
   startStreamingPronunciationAnalysis(challenge, recorder, trim) {
     if (typeof challenge !== 'object' || !challenge) {
@@ -264,10 +278,12 @@ export default class PronunciationAnalysisController {
   /**
    * Get a pronunciation analysis in a pronunciation challenge.
    *
-   * @param {PronunciationChallenge} challenge Specify a pronunciation challenge.
-   * @param {string} analysisId Specify a pronunciation analysis identifier.
-   * @returns Promise containing a PronunciationAnalysis.
-   * @rejects If no result could not be found.
+   * @param {PronunciationChallenge} challenge - Specify a pronunciation challenge.
+   * @param {PronunciationChallenge#id} analysisId - Specify a pronunciation analysis identifier.
+   * @returns {Promise} Promise containing a PronunciationAnalysis.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} If no result could not be found.
    */
   getPronunciationAnalysis(challenge, analysisId) {
     if (!challenge || !challenge.id) {
@@ -298,10 +314,12 @@ export default class PronunciationAnalysisController {
   /**
    * List all pronunciation analyses in a specific pronunciation challenge.
    *
-   * @param {PronunciationChallenge} challenge Specify a pronunciation challenge to list speech recordings for.
-   * @param {Boolean} detailed Returns extra analysis metadata when true. false by default.
-   * @returns Promise containing a list of PronunciationAnalyses.
-   * @rejects If no result could not be found.
+   * @param {PronunciationChallenge} challenge - Specify a pronunciation challenge to list speech recordings for.
+   * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
+   * @returns {Promise} Promise containing a list of PronunciationAnalyses.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} If no result could not be found.
    */
   listPronunciationAnalyses(challenge, detailed) {
     if (!challenge || !challenge.id) {

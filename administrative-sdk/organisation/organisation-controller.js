@@ -5,18 +5,22 @@ import Organisation from './organisation';
  */
 export default class OrganisationController {
   /**
-   * @param connection Object to connect to.
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
   constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
     this._connection = connection;
   }
 
   /**
    * Create an organisation.
    *
-   * @param {its.Organisation} organisation Object to create.
-   * @returns Promise containing the newly created object.
-   * @throws If the server returned an error.
+   * @param {Organisation} organisation - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} If the server returned an error.
    */
   createOrganisation(organisation) {
     const url = this._connection.settings.apiUrl + '/organisations';
@@ -34,9 +38,9 @@ export default class OrganisationController {
   /**
    * Get an organisation.
    *
-   * @param {string} organisationId Specify an organisation identifier.
-   * @returns Promise containing an Organisation.
-   * @rejects If no result could not be found.
+   * @param {string} organisationId - Specify an organisation identifier.
+   * @returns {Promise} Promise containing an Organisation.
+   * @throws {Promise} If no result could not be found.
    */
   getOrganisation(organisationId) {
     const url = this._connection.settings.apiUrl + '/organisations/' + organisationId;
@@ -53,8 +57,8 @@ export default class OrganisationController {
   /**
    * List all organisations.
    *
-   * @returns Promise containing a list of Organisations.
-   * @rejects If no result could not be found.
+   * @returns {Promise} Promise containing a list of Organisations.
+   * @throws {Promise} If no result could not be found.
    */
   listOrganisations() {
     const url = this._connection.settings.apiUrl + '/organisations';
