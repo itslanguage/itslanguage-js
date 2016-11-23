@@ -118,6 +118,15 @@ describe('Connection', () => {
         .then(done);
     });
 
+    it('should throw error on required admin auth credentials on POST', done => {
+      api._secureAjaxPost(null, null, true)
+        .then(fail)
+        .catch(error => {
+          expect(error).toEqual('Please set admin credentials');
+        })
+        .then(done);
+    });
+
     it('should throw error on required auth credentials on DELETE', done => {
       api._secureAjaxDelete()
         .then(fail)
@@ -163,6 +172,22 @@ describe('Connection', () => {
             .catch(error => {
               fail('No error should be thrown: ' + error);
             }).then(done);
+        });
+
+        it('should correctly assemble the admin Authorization header on POST', done => {
+          api = new Connection({
+            adminPrincipal: 'admin',
+            adminCredentials: 'admin'
+          });
+          api._secureAjaxPost(url, null, true)
+            .then(() => {
+              const request = window.fetch.calls.mostRecent().args;
+              expect(request[1].headers.get('Authorization')).toEqual('Basic YWRtaW46YWRtaW4=');
+            })
+            .catch(error => {
+              fail('No error should be thrown: ' + error);
+            })
+            .then(done);
         });
 
         it('should correctly assemble the Authorization header on DELETE', done => {

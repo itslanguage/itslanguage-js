@@ -21,7 +21,7 @@ module.exports = class TenantController {
   createTenant(tenant) {
     const url = this.connection.settings.apiUrl + '/tenants';
     const fd = JSON.stringify(tenant);
-    return this.connection._secureAjaxPost(url, fd)
+    return this.connection._secureAjaxPost(url, fd, true)
       .then(data => {
         const result = new Tenant(data.id, data.name);
         result.created = new Date(data.created);
