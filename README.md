@@ -28,3 +28,14 @@ console.log(itslanguage.audioSdk === audioSdk);
 
 For more usage examples, see the
 [ITSLanguage JavaScript SDK Examples](https://github.com/itslanguage/itslanguage-js-examples).
+
+
+## Documentation
+
+Generate and read documentation:
+
+```js
+npm install
+npm run docs
+sensible-browser esdoc/index.html
+```
