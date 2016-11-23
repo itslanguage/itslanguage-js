@@ -51,14 +51,15 @@ module.exports = class Connection {
    * Create a connection to the websocket server.
    *
    */
-  webSocketConnect(accessToken) {
+  webSocketConnect() {
+    const self = this;
     /**
      * This callback is fired during Ticket-based authentication
      *
      */
     function onOAuth2Challenge(session, method) {
       if (method === 'ticket') {
-        return accessToken;
+        return self.settings.oAuth2Token;
       }
       throw new Error(`don't know how to authenticate using '${method}'`);
     }
@@ -75,7 +76,7 @@ module.exports = class Connection {
         authmethods: ['ticket'],
         authid: 'oauth2',
         details: {
-          ticket: accessToken
+          ticket: this.settings.oAuth2Token
         },
         onchallenge: onOAuth2Challenge
       });
@@ -83,7 +84,6 @@ module.exports = class Connection {
       console.log('WebSocket creation error: ' + e);
       return;
     }
-    const self = this;
     connection.onerror = function(e) {
       console.log('WebSocket error: ' + e);
       self.fireEvent('websocketError', [e]);
