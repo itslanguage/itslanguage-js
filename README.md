@@ -2,6 +2,8 @@
 
 ## Installing
 
+To add the ITSLanguage SDK to your project:
+
 ```js
 npm install itslanguage --save
 ```
@@ -22,4 +24,18 @@ Every component of the SDK can be accessed either directly as a property of the 
 ```js
 const audioSdk = require('itslanguage/audio-sdk');
 console.log(itslanguage.audioSdk === audioSdk);
+```
+
+For more usage examples, see the
+[ITSLanguage JavaScript SDK Examples](https://github.com/itslanguage/itslanguage-js-examples).
+
+
+## Documentation
+
+Generate and read documentation:
+
+```js
+npm install
+npm run docs
+sensible-browser esdoc/index.html
 ```

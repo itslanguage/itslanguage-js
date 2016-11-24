@@ -85,7 +85,6 @@ export default class Connection {
   /**
    * Create a connection to the websocket server.
    *
-   * @param {string} accessToken - OAuth2 Access Token.
    */
   webSocketConnect() {
     const self = this;
