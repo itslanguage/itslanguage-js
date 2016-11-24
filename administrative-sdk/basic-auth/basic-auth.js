@@ -3,7 +3,7 @@
  */
 export default class BasicAuth {
   /**
-   * @param {string} tenantId - The {@link Tenant} identifier - to create this BasicAuth for.
+   * @param {string} tenantId - The Tenant identifier - to create this BasicAuth for.
    * @param {string} [principal] - The principal. If none is given, one is generated.
    * @param {string} [credentials] - The credentials. If none is given, one is generated.
    * @throws {Error} tenantId parameter of type "string" is required.
