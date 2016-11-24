@@ -2,7 +2,6 @@ import {default as VolumeMeter, generateWaveSample} from './audio-tools';
 import AudioPlayer from './audio-player';
 import AudioRecorder from './audio-recorder';
 import BasicAuth from './administrative-sdk/basic-auth/basic-auth';
-import BasicAuthController from './administrative-sdk/basic-auth/basic-auth-controller';
 import ChoiceChallenge from './administrative-sdk/choice-challenge/choice-challenge';
 import ChoiceChallengeController from './administrative-sdk/choice-challenge/choice-challenge-controller';
 import ChoiceRecognition from './administrative-sdk/choice-recognition/choice-recognition';
@@ -24,8 +23,6 @@ import SpeechRecording from './administrative-sdk/speech-recording/speech-record
 import SpeechRecordingController from './administrative-sdk/speech-recording/speech-recording-controller';
 import Student from './administrative-sdk/student/student';
 import StudentController from './administrative-sdk/student/student-controller';
-import Tenant from './administrative-sdk/tenant/tenant';
-import TenantController from './administrative-sdk/tenant/tenant-controller';
 import Tools from './tools';
 import WavePacker from './wave-packer';
 import WebAudioPlayer from './web-audio-player';
@@ -45,11 +42,9 @@ export {
   SpeechChallenge,
   SpeechRecording,
   Student,
-  Tenant,
   Word,
   WordChunk,
 
-  BasicAuthController,
   ChoiceChallengeController,
   ChoiceRecognitionController,
   OrganisationController,
@@ -58,7 +53,6 @@ export {
   SpeechChallengeController,
   SpeechRecordingController,
   StudentController,
-  TenantController,
 
   AudioPlayer,
   AudioRecorder,
