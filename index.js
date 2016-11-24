@@ -1,6 +1,6 @@
+import {default as VolumeMeter, generateWaveSample} from './audio-tools';
 import AudioPlayer from './audio-player';
 import AudioRecorder from './audio-recorder';
-import AudioTools from './audio-tools';
 import BasicAuth from './administrative-sdk/basic-auth/basic-auth';
 import BasicAuthController from './administrative-sdk/basic-auth/basic-auth-controller';
 import ChoiceChallenge from './administrative-sdk/choice-challenge/choice-challenge';
@@ -63,15 +63,17 @@ export {
   AudioPlayer,
   AudioRecorder,
 
-  AudioTools,
-
   CordovaMediaPlayer,
 
   CordovaMediaRecorder,
 
+  generateWaveSample,
+
   MediaRecorder,
 
   Tools,
+
+  VolumeMeter,
 
   WavePacker,
 
