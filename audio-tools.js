@@ -22,8 +22,8 @@ import pcm from 'pcmjs';
 /**
  * Generate a dummy Wave file for testing purposes.
  *
- * @param {number} duration Lenght of audio in seconds.
- * @returns A new URL containing the Wave file.
+ * @param {number} duration - Length of audio in seconds.
+ * @returns {string} A new URL containing the Wave file.
  */
 export function generateWaveSample(duration) {
   const effect = [];
@@ -42,9 +42,8 @@ export default class VolumeMeter {
   /**
    * Represents a volume meter.
    *
-   * @constructor
-   * @param {AudioContext} audioContext The WebAudio context.
-   * @param {MediaStream} stream The MediaStream to analyze.
+   * @param {AudioContext} audioContext - The WebAudio context.
+   * @param {MediaStream} inputStream - The MediaStream to analyze.
    */
   constructor(audioContext, inputStream) {
     this.audioContext = audioContext;
@@ -55,7 +54,7 @@ export default class VolumeMeter {
   /**
    * Start analysing the audio stream and provide updates to the specified callback function.
    *
-   * @param {function} callback This function is called when there's a new volume reading is available.
+   * @param {function} callback - This function is called when there's a new volume reading is available.
    * First parameter is the volume.
    * @param {Array} [args] Optional array of parameters to pass to the callback after the volume parameter.
    */

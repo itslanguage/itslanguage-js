@@ -8,10 +8,7 @@ import ee from 'event-emitter';
 import guid from 'guid';
 
 /**
-@module its.AudioRecorder
-Audio recording component.
-
-Note the several events to subscribe to.
+ * Audio recording component.
 */
 
 export default class AudioRecorder {
@@ -20,9 +17,6 @@ export default class AudioRecorder {
    *
    * @constructor
    * @param {object} [options] Override any of the default settings.
-   * @fires {AudioRecorder~ready} ready Fired when user gave audio recording permissions.
-   * @fires {AudioRecorder~recording} recording Fired when recording has started.
-   * @fires {AudioRecorder~recorded} recorded Fired when recording has stopped and an audio blob is ready.
    *
    */
   constructor(options) {
@@ -31,6 +25,11 @@ export default class AudioRecorder {
     this._recordingCompatibility();
 
     this.userMediaApproval = false;
+
+    /**
+     *
+     * @type {CordovaMediaRecorder|WebAudioRecorder|MediaRecorder} The specific recorder type.
+     */
     this.recorder = null;
 
     this.events = {};
@@ -46,18 +45,40 @@ export default class AudioRecorder {
     this._stopwatch = null;
   }
 
+  /**
+   * Turn off all event listeners for this recorder.
+   */
   removeAllEventListeners() {
     allOff(this._emitter);
   }
 
+  /**
+   * Add an event listener. Listens to events emitted from the recorder.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to add.
+   */
   addEventListener(name, handler) {
     this._emitter.on(name, handler);
   }
 
+  /**
+   * Remove an event listener of the recorder.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to remove.
+   */
   removeEventListener(name, handler) {
     this._emitter.off(name, handler);
   }
 
+  /**
+   * Fire an event.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Object[]} args - Arguments.
+   * @private
+   */
   fireEvent(name, args = []) {
     this._emitter.emit(name, ...args);
   }
@@ -65,7 +86,7 @@ export default class AudioRecorder {
   /**
    * Check if the user has already given permission to access the microphone.
    *
-   * @returns true if user has granted access to the microphone, false otherwise.
+   * @returns {boolean} True if user has granted access to the microphone. False otherwise.
    */
   hasUserMediaApproval() {
     return this.userMediaApproval || false;
@@ -74,6 +95,8 @@ export default class AudioRecorder {
   /**
    * Logs browser compatibility for audio recording.
    * In case of compatibility issues, an error is thrown.
+   *
+   * @private
    */
   _recordingCompatibility/* istanbul ignore next */() {
     // Detect audio recording capabilities.
@@ -146,6 +169,7 @@ export default class AudioRecorder {
    * Calling this function may result in thrown exceptions when browser
    * doesn't support provide live audio input.
    *
+   * @throws {Error} If no live audio input is available or permitted.
    */
   requestUserMedia() {
     const self = this;
@@ -180,6 +204,8 @@ export default class AudioRecorder {
 
   /**
    * Audio access was granted, start analysing.
+   *
+   * @private
    */
   _startUserMedia(stream) {
     if (!this.audioContext) {
@@ -218,7 +244,8 @@ export default class AudioRecorder {
    * solution. It allows recording compressed audio which makes it quicker to
    * submit. If not available, use a default createScriptProcessor is used.
    *
-   * @param {GainNode} micInputGain The GainNode to analyze.
+   * @param {GainNode} micInputGain - The GainNode to analyze.
+   * @private
    */
   _getBestRecorder(micInputGain) {
     let recorder = null;
@@ -249,7 +276,7 @@ export default class AudioRecorder {
   /**
    * Called when a chunk of audio becomes available.
    *
-   * @param {ArrayBuffer} chunk A chunk of audio (Int16 formatted).
+   * @param {ArrayBuffer} chunk - A chunk of audio (Int16 formatted).
    */
   streamCallback(chunk) {
     this.fireEvent('dataavailable', [chunk]);
@@ -258,7 +285,7 @@ export default class AudioRecorder {
   /**
    * Throw an error if the user is not yet logged in.
    *
-   * @returns true when permission was already granted, false otherwise.
+   * @returns {boolean} True when permission was already granted. False otherwise.
    */
   _requireGetUserMedia() {
     if (this.recorder) {
@@ -272,9 +299,9 @@ export default class AudioRecorder {
   /**
    * Set a new recording session id.
    *
-   * @param {number} id When defined, stick this id to the recorded blob.
+   * @param {number} id - When defined, stick this id to the recorded blob.
    *
-   * @returns The id that was given or a unique generated one.
+   * @returns {Number} The id that was given or a unique generated one.
    */
   startRecordingSession(id) {
     // Generate a uuid to remember this recording by (locally).
@@ -286,9 +313,9 @@ export default class AudioRecorder {
   /**
    * Start recording microphone input until stopped.
    *
-   * @param {AudioRecorder~recordDataAvailableCallback} [cb] The callback that provides a piece of raw audio when
+   * @param {Function} [cb] The callback that provides a piece of raw audio when
    * it becomes available. It may be used for streaming.
-   * @fires {AudioRecorder~recording} The event that is triggered when recording has started.
+   * @emits {Event} 'recording' With arguments: [recording ID].
    */
   record(cb) {
     if (!this._requireGetUserMedia()) {
@@ -317,7 +344,8 @@ export default class AudioRecorder {
   /**
    * Stop recording microphone input.
    *
-   * @fires {AudioRecorder~recorded} The event that is triggered when recording has stopped.
+   * @param {boolean} [forced=false] - Set whether to force the microphone to stop recording or let it end normally.
+   * @emits {Event} 'recorded' With arguments: [recording ID, audio Blob, forced].
    */
   stop(forced) {
     if (!this.recorder.isRecording()) {
@@ -341,7 +369,7 @@ export default class AudioRecorder {
   /**
    * Check if there is a recording in progress.
    *
-   * @returns `true` if user is currently recording audio, `false` otherwise.
+   * @returns {boolean} True if user is currently recording audio. False` otherwise.
    */
   isRecording() {
     if (!this.recorder) {
@@ -352,7 +380,6 @@ export default class AudioRecorder {
 
   /**
    * Toggle audio playback. Switch from playing to paused state and back.
-   *
    */
   toggleRecording() {
     if (this.isRecording()) {
@@ -365,7 +392,7 @@ export default class AudioRecorder {
   /**
    * Get the recorded audio specifications.
    *
-   * @returns object containing audioFormat and audioParameters describing the format.
+   * @returns {Object} Containing audioFormat and audioParameters describing the format.
    */
   getAudioSpecs() {
     return this.recorder.getAudioSpecs();

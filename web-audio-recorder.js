@@ -1,17 +1,16 @@
+/**
+ * WebAudioRecorder.
+ */
 export default class WebAudioRecorder {
   /**
-   * WebAudioRecorder
-   *
    * Use 'low level' processing tooling to record audio and get a Wave
    * (audio/wav) encoded recording.
    *
    * Currently supported in all modern HTML5/WebAudio browsers.
    *
-   * @constructor
    * @param {GainNode} source - The source to record.
-   * @param {function} [streamingCallback] - The callback to deliver
-   *    audio chunks to.
-   * @param {WavePacker} Packer to use.
+   * @param {Function} [streamingCallback] - The callback to deliver audio chunks to.
+   * @param {WavePacker} packer - Packer to use.
    */
   constructor(source, streamingCallback, packer) {
     this.recording = false;
@@ -76,7 +75,7 @@ export default class WebAudioRecorder {
   /**
    * Get the recorded audio specifications.
    *
-   * @returns object containing metadata on the audio format.
+   * @returns {Object} Containing metadata on the audio format.
    */
   getAudioSpecs() {
     return {
@@ -102,9 +101,7 @@ export default class WebAudioRecorder {
   /**
    * Request encoded audio to be returned through callback.
    *
-   * @param {Function}
-   *      callback - The callback to use when returning the audio as a
-   *      blob in Wave format.
+   * @param {Function} callback - The callback to use when returning the audio as a blob in Wave format.
    */
   getEncodedAudio(callback) {
     this.packer.exportWAV(callback);
@@ -113,7 +110,7 @@ export default class WebAudioRecorder {
   /**
    * Is audio recording in progress.
    *
-   * @returns true when recording, else false.
+   * @returns {boolean} True when recording. False otherwise.
    */
   isRecording() {
     return this.recording;

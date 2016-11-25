@@ -1,6 +1,15 @@
+/**
+ * Packer class for audio packing
+ *
+ * @private
+ */
 export default class WavePacker {
   /**
    * Stop recording audio.
+   *
+   * @param {number} recordingSampleRate - Sample rate of recording. Must be either 48000 or 44100.
+   * @param {number} sampleRate - Sample rate. Must be half or a quarter of the recording sample rate.
+   * @param {number} channels - Amount of audio channels. 1 or 2.
    */
   init(recordingSampleRate, sampleRate, channels) {
     this.recordingSampleRate = recordingSampleRate;
@@ -80,7 +89,9 @@ export default class WavePacker {
   /**
    * Wrap the raw audio in a header to make it a WAVE format.
    *
-   * Specs: https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
+   * Specs: {@link https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}.
+   *
+   * @param {[]} interleaved - Array of interleaved audio.
    */
   encodeWAV(interleaved) {
     const buffer = new ArrayBuffer(44 + interleaved.length * 2);

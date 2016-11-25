@@ -15,10 +15,6 @@ Media
 export default class CordovaMediaRecorder {
   /**
    * MediaRecorder
-   *
-   * @constructor
-   * @param {MediaStream}
-   *      stream - The MediaStream to analyze.
    */
   constructor() {
     this._isRecording = false;
@@ -78,7 +74,7 @@ export default class CordovaMediaRecorder {
   /**
    * Is audio recording in progress.
    *
-   * @returns true when recording, else false.
+   * @returns {boolean} True when recording. False otherwise.
    */
   isRecording() {
     return this._isRecording;
@@ -135,9 +131,7 @@ export default class CordovaMediaRecorder {
   /**
    * Request encoded audio to be returned through callback.
    *
-   * @param {Function}
-   *      callback - The callback to use when returning the audio as a
-   *      blob.
+   * @param {Function} callback - The callback to use when returning the audio as a blob.
    */
   getEncodedAudio(callback) {
     this._requestFilepath(this.filename, readDataUrl);
