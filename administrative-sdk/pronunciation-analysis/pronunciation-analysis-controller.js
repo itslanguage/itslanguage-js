@@ -235,10 +235,6 @@ export default class PronunciationAnalysisController {
               Connection.logRPCError(res);
             }
             reportError(res.kwargs.analysis);
-          })
-          .then(() => {
-            // This session is over.
-            self._connection._analysisId = null;
           });
       }
 
@@ -272,7 +268,15 @@ export default class PronunciationAnalysisController {
           Connection.logRPCError(res);
           reject(res);
         });
-    });
+    })
+      .then(res => {
+        self._connection._analysisId = null;
+        return Promise.resolve(res);
+      })
+      .catch(error => {
+        self._connection._analysisId = null;
+        return Promise.reject(error);
+      });
   }
 
   /**

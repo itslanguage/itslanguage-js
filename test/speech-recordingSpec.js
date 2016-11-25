@@ -420,6 +420,7 @@ describe('Speech Recording Websocket API interaction test', () => {
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._recordingId).toBeNull();
       })
       .then(done);
   });
@@ -433,6 +434,7 @@ describe('Speech Recording Websocket API interaction test', () => {
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._recordingId).toBeNull();
       })
       .then(done);
   });
@@ -446,6 +448,7 @@ describe('Speech Recording Websocket API interaction test', () => {
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._recordingId).toBeNull();
       })
       .then(done);
   });
@@ -459,6 +462,7 @@ describe('Speech Recording Websocket API interaction test', () => {
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._recordingId).toBeNull();
       })
       .then(done);
   });
@@ -472,6 +476,7 @@ describe('Speech Recording Websocket API interaction test', () => {
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._recordingId).toBeNull();
       })
       .then(done);
   });

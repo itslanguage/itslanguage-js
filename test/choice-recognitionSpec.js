@@ -258,6 +258,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.created).toEqual(new Date(stringDate));
           expect(error.analysis.updated).toEqual(new Date(stringDate));
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });
@@ -379,6 +380,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.created).toEqual(new Date(stringDate));
           expect(error.analysis.updated).toEqual(new Date(stringDate));
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });
