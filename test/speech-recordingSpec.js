@@ -245,22 +245,6 @@ describe('Speech Recording Websocket API interaction test', () => {
   let session;
   let stringDate;
   let controller;
-  function setupCalling(urlEndpoint, rejection) {
-    session.call = (name, args) => {
-      if (name !== 'nl.itslanguage.recording.init_recording') {
-        expect(args[0]).not.toBeNull();
-      }
-      const d = autobahn.when.defer();
-      if (name === 'nl.itslanguage.recording.' + urlEndpoint) {
-        d.reject(rejection);
-      } else {
-        d.notify();
-        d.resolve(fakeResponse);
-      }
-      return d.promise;
-    };
-    api._session = session;
-  }
 
   beforeEach(() => {
     jasmine.Ajax.install();
@@ -412,8 +396,52 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should handle errors while initializing challenge', done => {
-    setupCalling('init_challenge', {error: 'error123'});
-    controller = new SpeechRecordingController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+
+      isRecording() {
+        return false;
+      },
+
+      addEventListener(name, func) {
+        if (name === 'dataavailable') {
+          func(1);
+        } else if (name === 'ready') {
+          func();
+        }
+      },
+      removeEventListener() {
+      },
+
+      hasUserMediaApproval() {
+        return true;
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.recording.init_recording') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.recording.init_challenge') {
+        d.reject({error: 'error123'});
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
@@ -426,8 +454,44 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should handle errors while initializing recording', done => {
-    setupCalling('init_recording', {error: 'error123'});
-    controller = new SpeechRecordingController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+
+      isRecording() {
+        return false;
+      },
+
+      addEventListener(name, func) {
+        if (name === 'dataavailable') {
+          func(1);
+        } else if (name === 'ready') {
+          func();
+        }
+      },
+      removeEventListener() {
+      },
+
+      hasUserMediaApproval() {
+        return true;
+      }
+    };
+
+    api._session.call = () => {
+      const d = autobahn.when.defer();
+      d.reject({error: 'error123'});
+      return d.promise;
+    };
+
     controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
@@ -440,8 +504,52 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should handle errors while initializing audio', done => {
-    setupCalling('init_audio', {error: 'error123'});
-    controller = new SpeechRecordingController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+
+      isRecording() {
+        return false;
+      },
+
+      addEventListener(name, func) {
+        if (name === 'dataavailable') {
+          func(1);
+        } else if (name === 'ready') {
+          func();
+        }
+      },
+      removeEventListener() {
+      },
+
+      hasUserMediaApproval() {
+        return true;
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.recording.init_recording') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.recording.init_audio') {
+        d.reject({error: 'error123'});
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
@@ -454,8 +562,54 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should handle errors when closing streaming', done => {
-    setupCalling('close', {error: 'error123'});
-    controller = new SpeechRecordingController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+
+      isRecording() {
+        return false;
+      },
+
+      addEventListener(name, func) {
+        if (name === 'dataavailable') {
+          func(1);
+        } else if (name === 'ready') {
+          func();
+        } else {
+          setTimeout(func, 500);
+        }
+      },
+      removeEventListener() {
+      },
+
+      hasUserMediaApproval() {
+        return true;
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.recording.init_recording') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.recording.close') {
+        d.reject({error: 'error123'});
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
@@ -468,8 +622,52 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should handle errors when writing a chunk', done => {
-    setupCalling('write', {error: 'error123'});
-    controller = new SpeechRecordingController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+
+      isRecording() {
+        return false;
+      },
+
+      addEventListener(name, func) {
+        if (name === 'dataavailable') {
+          func(1);
+        } else if (name === 'ready') {
+          func();
+        }
+      },
+      removeEventListener() {
+      },
+
+      hasUserMediaApproval() {
+        return true;
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.recording.init_recording') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.recording.write') {
+        d.reject({error: 'error123'});
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('An error should be returned');

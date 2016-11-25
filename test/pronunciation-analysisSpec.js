@@ -16,27 +16,9 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   let SessionMock;
   let challenge;
   let recorder;
-  let session;
   let fakeResponse;
   let stringDate;
   let controller;
-
-  function setupCalling(urlEndpoint, rejection) {
-    session.call = (name, args) => {
-      if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
-        expect(args[0]).not.toBeNull();
-      }
-      const d = autobahn.when.defer();
-      if (name === 'nl.itslanguage.pronunciation.' + urlEndpoint) {
-        d.reject(rejection);
-      } else {
-        d.notify();
-        d.resolve(fakeResponse);
-      }
-      return d.promise;
-    };
-    api._session = session;
-  }
 
   beforeEach(() => {
     jasmine.Ajax.install();
@@ -45,6 +27,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       wsUrl: 'ws://foo.bar',
       oAuth2Token: 'token'
     });
+    let shouldFireRecord = true;
     RecorderMock = function() {
       this.getAudioSpecs = function() {
         return {
@@ -68,13 +51,21 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
           method(1);
         } else if (name === 'recorded') {
           setTimeout(() => {
-            method();
-          }, 500);
+            console.log('about to fire recorded;', shouldFireRecord);
+            if (shouldFireRecord) {
+              console.log('firing recorded;');
+              method();
+            }
+          }, 1000);
         } else {
           method();
         }
       };
-      this.removeEventListener = function() {
+      this.removeEventListener = function(name) {
+        if (name === 'recorded') {
+          console.log('removing recorded;');
+          shouldFireRecord = false;
+        }
       };
 
       this.hasUserMediaApproval = function() {
@@ -93,7 +84,6 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
 
     challenge = new PronunciationChallenge('fb', '4', 'foo');
     recorder = new RecorderMock();
-    session = new SessionMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
       created: new Date(stringDate),
@@ -226,16 +216,57 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   });
 
   it('should handle errors during streaming', done => {
-    setupCalling('write',
-      {
-        message: 'Encountered an error during writing',
-        error: 'error',
-        studentId: '1',
-        id: '2',
-        created: stringDate,
-        updated: stringDate,
-        audioUrl: fakeResponse.audioUrl
-      });
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.pronunciation.write') {
+        d.reject({
+          message: 'Encountered an error during writing',
+          error: 'error',
+          studentId: '1',
+          id: '2',
+          created: stringDate,
+          updated: stringDate,
+          audioUrl: fakeResponse.audioUrl
+        });
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, method) {
+        if (name === 'dataavailable') {
+          method(1);
+        } else if (name === 'ready') {
+          method();
+        }
+      },
+      removeEventListener() {
+      }
+    };
+
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(result => fail('An error should be thrown ' + JSON.stringify(result)))
       .catch(error => {
@@ -264,34 +295,146 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .then(done);
   });
   it('should handle errors while initializing challenge', done => {
-    setupCalling('init_challenge', {error: 'error123'});
-    controller = new Controller(api);
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.pronunciation.init_challenge') {
+        d.reject({error: 'error123'});
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, method) {
+        if (name === 'dataavailable') {
+          method(1);
+        } else if (name === 'ready') {
+          method();
+        }
+      },
+      removeEventListener() {
+      }
+    };
+
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._analysisId).toBeNull();
       })
       .then(done);
   });
 
   it('should handle errors while initializing audio', done => {
-    setupCalling('init_audio', {error: 'error123'});
-    controller = new Controller(api);
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.pronunciation.init_audio') {
+        d.reject({error: 'error123'});
+      } else {
+        d.notify();
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, method) {
+        if (name === 'dataavailable') {
+          method(1);
+        } else if (name === 'ready') {
+          method();
+        }
+      },
+      removeEventListener() {
+      }
+    };
+
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._analysisId).toBeNull();
       })
       .then(done);
   });
 
   it('should handle errors while initializing recognition', done => {
-    setupCalling('init_analysis', {error: 'error123'});
-    controller = new Controller(api);
+    api._session.call = () => {
+      const d = autobahn.when.defer();
+      d.reject({error: 'error123'});
+      return d.promise;
+    };
+
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener() {
+      },
+      removeEventListener() {
+      }
+    };
+
     recorder.addEventListener = jasmine.createSpy();
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
@@ -299,30 +442,69 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       })
       .catch(error => {
         expect(error.error).toEqual('error123');
+        expect(controller._connection._analysisId).toBeNull();
       })
       .then(done);
   });
   describe('Analysis server errors', () => {
-    function setupAnalyzeError(message) {
-      setupCalling('analyse',
-        {
-          error: 'nl.itslanguage.' + message,
-          kwargs: {
-            analysis: {
-              message: null,
-              studentId: '1',
-              id: '2',
-              created: stringDate,
-              updated: stringDate,
-              audioUrl: fakeResponse.audioUrl
-            }
-          }
-        });
-    }
-
     it('should handle errors while initializing recognition with a failed reference alignment', done => {
-      setupAnalyzeError('ref_alignment_failed');
-      controller = new Controller(api);
+      api._session.call = (name, args) => {
+        if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+          expect(args[0]).not.toBeNull();
+        }
+        const d = autobahn.when.defer();
+        if (name === 'nl.itslanguage.pronunciation.analyse') {
+          d.reject({
+            error: 'nl.itslanguage.ref_alignment_failed',
+            kwargs: {
+              analysis: {
+                message: null,
+                studentId: '1',
+                id: '2',
+                created: stringDate,
+                updated: stringDate,
+                audioUrl: fakeResponse.audioUrl
+              }
+            }
+          });
+        } else {
+          d.notify();
+          d.resolve(fakeResponse);
+        }
+        return d.promise;
+      };
+
+      recorder = {
+        getAudioSpecs() {
+          return {
+            audioFormat: 'audio/wave',
+            audioParameters: {
+              channels: 1,
+              sampleWidth: 16,
+              sampleRate: 48000
+            },
+            audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+          };
+        },
+        hasUserMediaApproval() {
+          return true;
+        },
+        isRecording() {
+          return false;
+        },
+        addEventListener(name, method) {
+          if (name === 'dataavailable') {
+            method(1);
+          } else if (name === 'ready') {
+            method();
+          } else {
+            setTimeout(method, 500);
+          }
+        },
+        removeEventListener() {
+        }
+      };
+
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
@@ -334,13 +516,69 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+        expect(controller._connection._analysisId).toBeNull();
       })
       .then(done);
     });
 
     it('should handle errors while initializing recognition with a failed alignment', done => {
-      setupAnalyzeError('alignment_failed');
-      controller = new Controller(api);
+      api._session.call = (name, args) => {
+        if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+          expect(args[0]).not.toBeNull();
+        }
+        const d = autobahn.when.defer();
+        if (name === 'nl.itslanguage.pronunciation.analyse') {
+          d.reject({
+            error: 'nl.itslanguage.alignment_failed',
+            kwargs: {
+              analysis: {
+                message: null,
+                studentId: '1',
+                id: '2',
+                created: stringDate,
+                updated: stringDate,
+                audioUrl: fakeResponse.audioUrl
+              }
+            }
+          });
+        } else {
+          d.notify();
+          d.resolve(fakeResponse);
+        }
+        return d.promise;
+      };
+
+      recorder = {
+        getAudioSpecs() {
+          return {
+            audioFormat: 'audio/wave',
+            audioParameters: {
+              channels: 1,
+              sampleWidth: 16,
+              sampleRate: 48000
+            },
+            audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+          };
+        },
+        hasUserMediaApproval() {
+          return true;
+        },
+        isRecording() {
+          return false;
+        },
+        addEventListener(name, method) {
+          if (name === 'dataavailable') {
+            method(1);
+          } else if (name === 'ready') {
+            method();
+          } else {
+            setTimeout(method, 500);
+          }
+        },
+        removeEventListener() {
+        }
+      };
+
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
@@ -352,13 +590,69 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+        expect(controller._connection._analysisId).toBeNull();
       })
       .then(done);
     });
 
     it('should handle errors while initializing recognition with a failed analysis', done => {
-      setupAnalyzeError('analysis_failed');
-      controller = new Controller(api);
+      api._session.call = (name, args) => {
+        if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+          expect(args[0]).not.toBeNull();
+        }
+        const d = autobahn.when.defer();
+        if (name === 'nl.itslanguage.pronunciation.analyse') {
+          d.reject({
+            error: 'nl.itslanguage.analysis_failed',
+            kwargs: {
+              analysis: {
+                message: null,
+                studentId: '1',
+                id: '2',
+                created: stringDate,
+                updated: stringDate,
+                audioUrl: fakeResponse.audioUrl
+              }
+            }
+          });
+        } else {
+          d.notify();
+          d.resolve(fakeResponse);
+        }
+        return d.promise;
+      };
+
+      recorder = {
+        getAudioSpecs() {
+          return {
+            audioFormat: 'audio/wave',
+            audioParameters: {
+              channels: 1,
+              sampleWidth: 16,
+              sampleRate: 48000
+            },
+            audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+          };
+        },
+        hasUserMediaApproval() {
+          return true;
+        },
+        isRecording() {
+          return false;
+        },
+        addEventListener(name, method) {
+          if (name === 'dataavailable') {
+            method(1);
+          } else if (name === 'ready') {
+            method();
+          } else {
+            setTimeout(method, 500);
+          }
+        },
+        removeEventListener() {
+        }
+      };
+
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
@@ -370,13 +664,69 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+        expect(controller._connection._analysisId).toBeNull();
       })
       .then(done);
     });
 
     it('should handle errors while initializing recognition with an unhandled error', done => {
-      setupAnalyzeError('unknown');
-      controller = new Controller(api);
+      api._session.call = (name, args) => {
+        if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+          expect(args[0]).not.toBeNull();
+        }
+        const d = autobahn.when.defer();
+        if (name === 'nl.itslanguage.pronunciation.analyse') {
+          d.reject({
+            error: 'nl.itslanguage.unknown',
+            kwargs: {
+              analysis: {
+                message: null,
+                studentId: '1',
+                id: '2',
+                created: stringDate,
+                updated: stringDate,
+                audioUrl: fakeResponse.audioUrl
+              }
+            }
+          });
+        } else {
+          d.notify();
+          d.resolve(fakeResponse);
+        }
+        return d.promise;
+      };
+
+      recorder = {
+        getAudioSpecs() {
+          return {
+            audioFormat: 'audio/wave',
+            audioParameters: {
+              channels: 1,
+              sampleWidth: 16,
+              sampleRate: 48000
+            },
+            audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+          };
+        },
+        hasUserMediaApproval() {
+          return true;
+        },
+        isRecording() {
+          return false;
+        },
+        addEventListener(name, method) {
+          if (name === 'dataavailable') {
+            method(1);
+          } else if (name === 'ready') {
+            method();
+          } else {
+            setTimeout(method, 500);
+          }
+        },
+        removeEventListener() {
+        }
+      };
+
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('An error should be returned');
