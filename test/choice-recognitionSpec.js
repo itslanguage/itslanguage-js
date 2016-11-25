@@ -240,11 +240,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
+          return callback();
         }
       },
       removeEventListener() {
@@ -318,11 +318,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
+          return callback();
         }
       },
       removeEventListener() {
@@ -372,11 +372,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
+          return callback();
         }
       },
       removeEventListener() {
@@ -426,11 +426,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
+          return callback();
         }
       },
       removeEventListener() {
@@ -474,14 +474,13 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
-        } else {
-          setTimeout(method, 500);
+          return callback();
         }
+        setTimeout(callback, 500);
       },
       removeEventListener() {
       }
@@ -550,14 +549,13 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
-        } else {
-          setTimeout(method, 500);
+          return callback();
         }
+        setTimeout(callback, 500);
       },
       removeEventListener() {
       }

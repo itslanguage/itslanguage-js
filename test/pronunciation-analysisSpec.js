@@ -51,9 +51,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
           method(1);
         } else if (name === 'recorded') {
           setTimeout(() => {
-            console.log('about to fire recorded;', shouldFireRecord);
             if (shouldFireRecord) {
-              console.log('firing recorded;');
               method();
             }
           }, 1000);
@@ -63,7 +61,6 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
       this.removeEventListener = function(name) {
         if (name === 'recorded') {
-          console.log('removing recorded;');
           shouldFireRecord = false;
         }
       };
@@ -256,11 +253,11 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
+          return callback();
         }
       },
       removeEventListener() {
@@ -327,11 +324,11 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
+          return callback();
         }
       },
       removeEventListener() {
@@ -382,11 +379,11 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       isRecording() {
         return false;
       },
-      addEventListener(name, method) {
+      addEventListener(name, callback) {
         if (name === 'dataavailable') {
-          method(1);
+          return callback(1);
         } else if (name === 'ready') {
-          method();
+          return callback();
         }
       },
       removeEventListener() {
@@ -492,14 +489,13 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         isRecording() {
           return false;
         },
-        addEventListener(name, method) {
+        addEventListener(name, callback) {
           if (name === 'dataavailable') {
-            method(1);
+            return callback(1);
           } else if (name === 'ready') {
-            method();
-          } else {
-            setTimeout(method, 500);
+            return callback();
           }
+          setTimeout(callback, 500);
         },
         removeEventListener() {
         }
@@ -566,14 +562,13 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         isRecording() {
           return false;
         },
-        addEventListener(name, method) {
+        addEventListener(name, callback) {
           if (name === 'dataavailable') {
-            method(1);
+            return callback(1);
           } else if (name === 'ready') {
-            method();
-          } else {
-            setTimeout(method, 500);
+            return callback();
           }
+          setTimeout(callback, 500);
         },
         removeEventListener() {
         }
@@ -640,14 +635,13 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         isRecording() {
           return false;
         },
-        addEventListener(name, method) {
+        addEventListener(name, callback) {
           if (name === 'dataavailable') {
-            method(1);
+            return callback(1);
           } else if (name === 'ready') {
-            method();
-          } else {
-            setTimeout(method, 500);
+            return callback();
           }
+          setTimeout(callback, 500);
         },
         removeEventListener() {
         }
@@ -714,14 +708,13 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         isRecording() {
           return false;
         },
-        addEventListener(name, method) {
+        addEventListener(name, callback) {
           if (name === 'dataavailable') {
-            method(1);
+            return callback(1);
           } else if (name === 'ready') {
-            method();
-          } else {
-            setTimeout(method, 500);
+            return callback();
           }
+          setTimeout(callback, 500);
         },
         removeEventListener() {
         }
