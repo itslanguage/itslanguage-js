@@ -127,9 +127,6 @@ export default class SpeechRecordingController {
           res => {
             Connection.logRPCError(res);
             reject(res);
-          })
-          .then(() => {
-            self._connection._recordingId = null;
           });
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', startStreaming);
@@ -187,7 +184,15 @@ export default class SpeechRecordingController {
             Connection.logRPCError(res);
             reject(res);
           });
-    });
+    })
+      .then(res => {
+        self._connection._recordingId = null;
+        return Promise.resolve(res);
+      })
+      .catch(error => {
+        self._connection._recordingId = null;
+        return Promise.reject(error);
+      });
   }
 
   /**

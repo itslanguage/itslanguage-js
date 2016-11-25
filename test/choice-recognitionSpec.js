@@ -13,7 +13,6 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   let SessionMock;
   let challenge;
   let recorder;
-  let session;
   let fakeResponse;
   let stringDate;
   let controller;
@@ -72,7 +71,6 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
 
     challenge = new ChoiceChallenge('fb', '4', null, []);
     recorder = new RecorderMock();
-    session = new SessionMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
       created: new Date(stringDate),
@@ -95,21 +93,6 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
-  function setupCalling(urlEndpoint, rejection) {
-    session.call = (name, args) => {
-      if (name !== 'nl.itslanguage.choice.init_recognition') {
-        expect(args[0]).not.toBeNull();
-      }
-      const d = autobahn.when.defer();
-      if (name === 'nl.itslanguage.choice.' + urlEndpoint) {
-        d.reject(rejection);
-      } else {
-        d.resolve(fakeResponse);
-      }
-      return d.promise;
-    };
-    api._session = session;
-  }
   it('should fail streaming when websocket connection is closed', done => {
     api = new Connection({});
     controller = new ChoiceRecognitionController(api);
@@ -239,16 +222,56 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   });
 
   it('should handle errors during streaming', done => {
-    setupCalling('write',
-      {
-        message: 'Encountered an error during writing',
-        error: 'error',
-        studentId: '1',
-        id: '2',
-        created: stringDate,
-        updated: stringDate,
-        audioUrl: fakeResponse.audioUrl
-      });
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, callback) {
+        if (name === 'dataavailable') {
+          return callback(1);
+        } else if (name === 'ready') {
+          return callback();
+        }
+      },
+      removeEventListener() {
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.choice.init_recognition') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.choice.write') {
+        d.reject({
+          message: 'Encountered an error during writing',
+          error: 'error',
+          studentId: '1',
+          id: '2',
+          created: stringDate,
+          updated: stringDate,
+          audioUrl: fakeResponse.audioUrl
+        });
+      } else {
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(result => fail('An error should be thrown ' + JSON.stringify(result)))
         .catch(error => {
@@ -258,6 +281,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.created).toEqual(new Date(stringDate));
           expect(error.analysis.updated).toEqual(new Date(stringDate));
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });
@@ -276,34 +300,149 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         .then(done);
   });
   it('should handle errors while initializing challenge', done => {
-    setupCalling('init_challenge', {error: 'error123'});
-    controller = new ChoiceRecognitionController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, callback) {
+        if (name === 'dataavailable') {
+          return callback(1);
+        } else if (name === 'ready') {
+          return callback();
+        }
+      },
+      removeEventListener() {
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.choice.init_recognition') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.choice.init_challenge') {
+        d.reject({error: 'error123'});
+      } else {
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
         })
         .catch(error => {
           expect(error.error).toEqual('error123');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });
 
   it('should handle errors while initializing audio', done => {
-    setupCalling('init_audio', {error: 'error123'});
-    controller = new ChoiceRecognitionController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, callback) {
+        if (name === 'dataavailable') {
+          return callback(1);
+        } else if (name === 'ready') {
+          return callback();
+        }
+      },
+      removeEventListener() {
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.choice.init_recognition') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.choice.init_audio') {
+        d.reject({error: 'error123'});
+      } else {
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
         })
         .catch(error => {
           expect(error.error).toEqual('error123');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });
 
   it('should handle errors while initializing recognition', done => {
-    setupCalling('init_recognition', {error: 'error123'});
-    controller = new ChoiceRecognitionController(api);
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
+          },
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, callback) {
+        if (name === 'dataavailable') {
+          return callback(1);
+        } else if (name === 'ready') {
+          return callback();
+        }
+      },
+      removeEventListener() {
+      }
+    };
+
+    api._session.call = () => {
+      const d = autobahn.when.defer();
+      d.reject({error: 'error123'});
+      return d.promise;
+    };
+
     recorder.addEventListener = jasmine.createSpy();
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
@@ -311,29 +450,70 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         })
         .catch(error => {
           expect(error.error).toEqual('error123');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });
 
   it('should handle errors while initializing recognition with a failed recognition', done => {
-    setupCalling('recognise',
-      {
-        error: 'nl.itslanguage.recognition_failed',
-        kwargs: {
-          recognition: {
-            message: null
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
           },
-          analysis: {
-            message: 'Encountered an error',
-            studentId: '1',
-            id: '2',
-            created: stringDate,
-            updated: stringDate,
-            audioUrl: fakeResponse.audioUrl
-          }
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, callback) {
+        if (name === 'dataavailable') {
+          return callback(1);
+        } else if (name === 'ready') {
+          return callback();
         }
-      });
-    controller = new ChoiceRecognitionController(api);
+        setTimeout(callback, 500);
+      },
+      removeEventListener() {
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.choice.recognise') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.choice.recognise') {
+        d.reject({
+          error: 'nl.itslanguage.recognition_failed',
+          kwargs: {
+            recognition: {
+              message: null
+            },
+            analysis: {
+              message: 'Encountered an error',
+              studentId: '1',
+              id: '2',
+              created: stringDate,
+              updated: stringDate,
+              audioUrl: fakeResponse.audioUrl
+            }
+          }
+        });
+      } else {
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
@@ -345,29 +525,70 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.created).toEqual(new Date(stringDate));
           expect(error.analysis.updated).toEqual(new Date(stringDate));
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });
 
   it('should handle errors while initializing recognition with a unhandled error', done => {
-    setupCalling('recognise',
-      {
-        error: 'UNKNOWN ERROR',
-        kwargs: {
-          recognition: {
-            message: null
+    recorder = {
+      getAudioSpecs() {
+        return {
+          audioFormat: 'audio/wave',
+          audioParameters: {
+            channels: 1,
+            sampleWidth: 16,
+            sampleRate: 48000
           },
-          analysis: {
-            message: 'Encountered an error',
-            studentId: '1',
-            id: '2',
-            created: stringDate,
-            updated: stringDate,
-            audioUrl: fakeResponse.audioUrl
-          }
+          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+        };
+      },
+      hasUserMediaApproval() {
+        return true;
+      },
+      isRecording() {
+        return false;
+      },
+      addEventListener(name, callback) {
+        if (name === 'dataavailable') {
+          return callback(1);
+        } else if (name === 'ready') {
+          return callback();
         }
-      });
-    controller = new ChoiceRecognitionController(api);
+        setTimeout(callback, 500);
+      },
+      removeEventListener() {
+      }
+    };
+
+    api._session.call = (name, args) => {
+      if (name !== 'nl.itslanguage.choice.recognise') {
+        expect(args[0]).not.toBeNull();
+      }
+      const d = autobahn.when.defer();
+      if (name === 'nl.itslanguage.choice.recognise') {
+        d.reject({
+          error: 'UNKNOWN ERROR',
+          kwargs: {
+            recognition: {
+              message: null
+            },
+            analysis: {
+              message: 'Encountered an error',
+              studentId: '1',
+              id: '2',
+              created: stringDate,
+              updated: stringDate,
+              audioUrl: fakeResponse.audioUrl
+            }
+          }
+        });
+      } else {
+        d.resolve(fakeResponse);
+      }
+      return d.promise;
+    };
+
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('An error should be returned');
@@ -379,6 +600,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(error.analysis.created).toEqual(new Date(stringDate));
           expect(error.analysis.updated).toEqual(new Date(stringDate));
           expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
   });

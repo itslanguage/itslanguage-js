@@ -217,17 +217,21 @@ export default class ChoiceRecognitionController {
               res.kwargs.recognition.message = 'Unhandled error';
             }
             _ecb(res.kwargs.analysis);
-          })
-          .then(() => {
-            // This session is over.
-            self._connection._recognitionId = null;
           });
 
         recorder.removeEventListener('recorded', recordedCb);
         recorder.removeEventListener('dataavailable', dataavailableCb);
       }
       recorder.addEventListener('recorded', recordedCb);
-    });
+    })
+      .then(res => {
+        self._connection._recognitionId = null;
+        return Promise.resolve(res);
+      })
+      .catch(error => {
+        self._connection._recognitionId = null;
+        return Promise.reject(error);
+      });
   }
 
   /**
