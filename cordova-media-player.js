@@ -133,10 +133,10 @@ export default class CordovaMediaPlayer {
   /**
    * Preload audio from an URL.
    *
-   * @param {string} url The URL that contains the audio.
-   * @param {bool} preload Try preloading metadata and possible some audio (default).
+   * @param {string} url - The URL that contains the audio.
+   * @param {boolean} [preload=true] Try preloading metadata and possible some audio (default).
    * Set to false to not download anything until playing.
-   * @param {CordovaMediaPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of
+   * @param {Function} [loadedCb] The callback that is invoked when the duration of
    * the audio file is first known.
    */
   load(url, preload, loadedCb) {
@@ -195,6 +195,9 @@ export default class CordovaMediaPlayer {
     this.sound.stop();
   }
 
+  /**
+   * Pause playback of audio.
+   */
   pause() {
     this._isPlaying = false;
     this.sound.pause();
@@ -211,7 +214,7 @@ export default class CordovaMediaPlayer {
   /**
    * Start playing audio at the given offset.
    *
-   * @param {number} percentage Start at this percentage (0..100) of the audio stream.
+   * @param {number} percentage - Start at this percentage (0..100) of the audio stream.
    */
   scrub(percentage) {
     // XXX: Not implemented yet.
@@ -258,7 +261,7 @@ export default class CordovaMediaPlayer {
   /**
    * Returns ready state of the player.
    *
-   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded
+   * @returns {boolean} true when player is ready to start loading data or play, false when no audio is loaded
    * or preparing.
    */
   canPlay() {
@@ -268,7 +271,7 @@ export default class CordovaMediaPlayer {
   /**
    * Returns state of the player.
    *
-   * @returns {bool} true when player is currently playing, false when paused or stopped.
+   * @returns {boolean} true when player is currently playing, false when paused or stopped.
    */
   isPlaying() {
     return this._isPlaying;

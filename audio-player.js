@@ -4,14 +4,14 @@ import WebAudioPlayer from './web-audio-player';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
 /**
- *@module its.AudioPlayer
  * ITSLanguage AudioPlayer non-graphical component.
  */
 export default class AudioPlayer {
   /**
-   * @constructor
-   * @param {object} [options] Override any of the default settings.
-   *
+   * Construct an AudioPlayer for playing .wav or .mp3 files.
+   * Fires all events the HTML5 Audio also fires. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
+   * @param {Object} [options] Override any of the default settings.
+   * @emits {Event} 'playbackstopped' When playback has ended, been stopped or been paused.
    */
   constructor(options) {
     this.settings = Object.assign({}, options);
@@ -53,19 +53,37 @@ export default class AudioPlayer {
         self._emitter.emit('error', []);
       }
     };
+    /**
+     * @type {CordovaMediaPlayer|WebAudioPlayer} player - Specific audio player.
+     */
     this.player = this._getBestPlayer(callbacks);
     this._emitter = ee({});
     this._stopwatch = null;
   }
 
+  /**
+   * Turn off all event listeners for this player.
+   */
   resetEventListeners() {
     allOff(this._emitter);
   }
 
+  /**
+   * Add an event listener. Listens to events emitted from the player.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to add.
+   */
   addEventListener(name, handler) {
     this._emitter.on(name, handler);
   }
 
+  /**
+   * Remove an event listener of the player.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to remove.
+   */
   removeEventListener(name, handler) {
     this._emitter.off(name, handler);
   }
@@ -73,7 +91,7 @@ export default class AudioPlayer {
   /**
    * Check for mandatory browser compatibility.
    * Logs detailed browser compatibilities related to for audio playback.
-   * In case of compatibility issues, an error is thrown.
+   * @throws {Error} If no native wave or MP3 playback is available.
    */
   _playbackCompatibility() {
     // Detect audio playback capabilities.
@@ -135,11 +153,12 @@ export default class AudioPlayer {
   /**
    * Get a player object that performs audio compression, when available.
    *
-   * Using the Media Stream Recording API for recording is the prefered
+   * Using the Media Stream Recording API for recording is the preferred
    * solution. It allows recording compressed audio which makes it quicker to
    * submit. If not available, use a default createScriptProcessor is used.
    *
-   * @param {GainNode} micInputGain The GainNode to analyze.
+   * @param {Function} callbacks - Callbacks to add to the chosen player.
+   * @private
    */
   _getBestPlayer(callbacks) {
     let player = null;
@@ -164,11 +183,12 @@ export default class AudioPlayer {
   /**
    * Preload audio from an URL.
    *
-   * @param {string} url The URL that contains the audio.
-   * @param {bool} preload Try preloading metadata and possible some audio (default). Set to false to not download
+   * @param {string} url - The URL that contains the audio.
+   * @param {boolean} [preload=true] Try preloading metadata and possible some audio. Set to false to not download
    * anything until playing.
-   * @param {AudioPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of the audio file
+   * @param {Function} [loadedCb] The callback that is invoked when the duration of the audio file
    * is first known.
+   * @emits {Event} 'canplay' When the player is ready to play.
    */
   load(url, preload, loadedCb) {
     this.player.load(url, preload, loadedCb);
@@ -181,7 +201,8 @@ export default class AudioPlayer {
   }
 
   /**
-   * Unload previously loaded audio.
+   * Unload previously loaded audio. Stops the player and any stopwatch.
+   * @emits {Event} 'unloaded'
    */
   reset() {
     this.stop();
@@ -190,7 +211,7 @@ export default class AudioPlayer {
   }
 
   /**
-   * Start or continue playback of audio.
+   * Start or continue playback of audio. Also starts the stopwatch at the given position.
    *
    * @param {number} [position] When position is given, start playing from this position (seconds).
    */
@@ -207,7 +228,7 @@ export default class AudioPlayer {
   }
 
   /**
-   * Stop playback of audio.
+   * Stop playback of audio. Stops and resets the stopwatch.
    */
   stop() {
     if (this._stopwatch) {
@@ -217,6 +238,9 @@ export default class AudioPlayer {
     this.player.stop();
   }
 
+  /**
+   * Pause playback of audio. Stops the stopwatch.
+   */
   pause() {
     if (this._stopwatch) {
       this._stopwatch.stop();
@@ -243,9 +267,9 @@ export default class AudioPlayer {
   }
 
   /**
-   * Start playing audio at the given offset.
+   * Start playing audio at the given offset. Corrects a percentage under 0 or above 100 to the respective values.
    *
-   * @param {number} percentage Start at this percentage (0..100) of the audio stream.
+   * @param {number} percentage - Start at this percentage (0..100) of the audio stream.
    */
   scrub(percentage) {
     if (percentage < 0) {
@@ -260,10 +284,10 @@ export default class AudioPlayer {
     }
   }
 
-  /*
+  /**
    * Returns the percentage of which the buffer is filled.
    *
-   * @returns {number} percentage of buffer fill.
+   * @returns {Number} percentage of buffer fill.
    */
   getBufferFill() {
     return this.player.getBufferFill();
@@ -272,7 +296,7 @@ export default class AudioPlayer {
   /**
    * Returns the current playing time as offset in seconds from the start.
    *
-   * @returns {number} time in seconds as offset from the start.
+   * @returns {Number} time in seconds as offset from the start.
    */
   getCurrentTime() {
     return this.player.getCurrentTime();
@@ -281,7 +305,7 @@ export default class AudioPlayer {
   /**
    * Returns the total duration in seconds.
    *
-   * @returns {number} time in seconds of fragment duration.
+   * @returns {Number} time in seconds of fragment duration.
    */
   getDuration() {
     return this.player.getDuration();
@@ -290,7 +314,7 @@ export default class AudioPlayer {
   /**
    * Check if there is playback in progress.
    *
-   * @returns `true` if user is currently playing audio, `false` otherwise.
+   * @returns {boolean} True if user is currently playing audio. False otherwise.
    */
   isPlaying() {
     return this.player.isPlaying();
@@ -299,13 +323,20 @@ export default class AudioPlayer {
   /**
    * Returns ready state of the player.
    *
-   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded
-   * or preparing.
+   * @returns {boolean} True when player is ready to start loading data or play. False when no audio is loaded
+   * or the player is preparing.
    */
   canPlay() {
     return this.player.canPlay();
   }
 
+  /**
+   * Bind a stopwatch to sync with the playing and stopping functionality of the player.
+   *
+   * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
+   * @throws {Error} If tickCb is null.
+   * @returns {Stopwatch}
+   */
   bindStopwatch(tickCb) {
     this._stopwatch = new Stopwatch(time => {
       const duration = this.getDuration() * 10;

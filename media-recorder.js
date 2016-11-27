@@ -15,11 +15,9 @@
  */
 export default class MediaRecorder {
   /**
-   * MediaRecorder
+   * MediaRecorder.
    *
-   * @constructor
-   * @param {MediaStream}
-   *      stream - The MediaStream to analyze.
+   * @param {MediaStream} mediaStream - The MediaStream to analyze.
    */
   constructor(mediaStream) {
     const self = this;
@@ -48,7 +46,7 @@ export default class MediaRecorder {
   /**
    * Is audio recording in progress.
    *
-   * @returns true when recording, else false.
+   * @returns {boolean} True when recording. False otherwise.
    */
   isRecording() {
     return this.mediaRecorder.state === 'recording';
@@ -67,9 +65,7 @@ export default class MediaRecorder {
   /**
    * Request encoded audio to be returned through callback.
    *
-   * @param {Function}
-   *      callback - The callback to use when returning the audio as a
-   *      blob in Ogg Opus format.
+   * @param {Function} callback - The callback to use when returning the audio as a blob in Ogg Opus format.
    */
   getEncodedAudio(callback) {
     if (this.recordedBlob) {

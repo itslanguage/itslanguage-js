@@ -4,6 +4,8 @@
  * @copyright (c) 2014 ITSLanguage
  * @license MIT
  * @author d-centralize
+ *
+ * This class fires the same events as the HTML5 Audio does. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
  */
 
 export default class WebAudioPlayer {
@@ -12,9 +14,7 @@ export default class WebAudioPlayer {
    *
    * This player uses the HTML5 Audio component for playback.
    *
-   * @constructor
-   * @param {object} [options] Override any of the default settings.
-   *
+   * @param {Object} [options] - Override any of the default settings.
    */
   constructor(options) {
     this.settings = Object.assign({}, options);
@@ -118,10 +118,10 @@ export default class WebAudioPlayer {
   /**
    * Preload audio from an URL.
    *
-   * @param {string} url The URL that contains the audio.
-   * @param {bool} preload Try preloading metadata and possible some audio (default).
+   * @param {string} url - The URL that contains the audio.
+   * @param {boolean} [preload=true] - Try preloading metadata and possible some audio (default).
    * Set to false to not download anything until playing.
-   * @param {WebAudioPlayer~loadedCallback} [loadedCb] The callback that is invoked when the duration of the audio file
+   * @param {Function} [loadedCb] - The callback that is invoked when the duration of the audio file
    * is first known.
    */
   load(url, preload, loadedCb) {
@@ -156,7 +156,7 @@ export default class WebAudioPlayer {
   /**
    * Start or continue playback of audio.
    *
-   * @param {number} [position] When position is given, start playing from this position (seconds).
+   * @param {number} [position] - When position is given, start playing from this position (seconds).
    */
   play(position) {
     if (position !== undefined) {
@@ -191,6 +191,9 @@ export default class WebAudioPlayer {
     this.sound.currentTime = 0;
   }
 
+  /**
+   * Pause playback of audio.
+   */
   pause() {
     this._pauseIsStop = true;
     this.sound.pause();
@@ -211,7 +214,7 @@ export default class WebAudioPlayer {
   /**
    * Start playing audio at the given offset.
    *
-   * @param {number} percentage Start at this percentage (0..100) of the audio stream.
+   * @param {number} percentage - Start at this percentage (0..100) of the audio stream.
    */
   scrub(percentage) {
     // In case the audio wasn't already preloaded, do it now.
@@ -231,7 +234,7 @@ export default class WebAudioPlayer {
   /**
    * Returns the percentage of which the buffer is filled.
    *
-   * @returns {number} percentage of buffer fill.
+   * @returns {number} Percentage of buffer fill.
    */
   getBufferFill() {
     if (this.sound.buffered === undefined ||
@@ -272,7 +275,7 @@ export default class WebAudioPlayer {
   /**
    * Returns the current playing time as offset in seconds from the start.
    *
-   * @returns {number} time in seconds as offset from the start.
+   * @returns {number} Time in seconds as offset from the start.
    */
   getCurrentTime() {
     return this.sound.currentTime;
@@ -281,7 +284,7 @@ export default class WebAudioPlayer {
   /**
    * Returns the total duration in seconds.
    *
-   * @returns {number} time in seconds of fragment duration. 0 if no audio is loaded.
+   * @returns {number} Time in seconds of fragment duration. 0 if no audio is loaded.
    */
   getDuration() {
     let duration = this.sound.duration;
@@ -295,7 +298,7 @@ export default class WebAudioPlayer {
   /**
    * Returns state of the player.
    *
-   * @returns {bool} true when player is currently playing, false when paused or stopped.
+   * @returns {boolean} True when player is currently playing. False when paused or stopped.
    */
   isPlaying() {
     return !this.sound.paused;
@@ -304,7 +307,7 @@ export default class WebAudioPlayer {
   /**
    * Returns ready state of the player.
    *
-   * @returns {bool} true when player is ready to start loading data or play, false when no audio is loaded
+   * @returns {boolean} True when player is ready to start loading data or play. False when no audio is loaded
    * or preparing.
    */
   canPlay() {
