@@ -162,9 +162,12 @@ describe('Audio player', () => {
     player.player = jasmine.createSpyObj('player', ['load']);
     const loadCb = jasmine.createSpy();
     spyOn(player._emitter, 'emit');
+    spyOn(player, 'reset');
     player.load('url', true, loadCb);
     expect(player.player.load).toHaveBeenCalled();
     expect(player._emitter.emit).not.toHaveBeenCalled();
+
+    expect(player.reset).toHaveBeenCalledTimes(1);
   });
 
   it('should load from an url without preload', () => {
@@ -172,9 +175,11 @@ describe('Audio player', () => {
     player.player = jasmine.createSpyObj('player', ['load']);
     const loadCb = jasmine.createSpy();
     spyOn(player._emitter, 'emit');
+    spyOn(player, 'reset');
     player.load('url', false, loadCb);
     expect(player.player.load).toHaveBeenCalledWith('url', false, loadCb);
     expect(player._emitter.emit).toHaveBeenCalledWith('canplay', []);
+    expect(player.reset).toHaveBeenCalledTimes(1);
   });
 
   it('should reset', () => {

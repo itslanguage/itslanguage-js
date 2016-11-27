@@ -191,6 +191,7 @@ export default class AudioPlayer {
    * @emits {Event} 'canplay' When the player is ready to play.
    */
   load(url, preload, loadedCb) {
+    this.reset();
     this.player.load(url, preload, loadedCb);
 
     // If preloading is disabled, the 'canplay' event won't be triggered.
