@@ -19,8 +19,7 @@ export default class CordovaMediaPlayer {
    * It uses the Cordova Media component to provide playback capability
    * through native Android or iOS code.
    *
-   * @constructor
-   * @param {object} [options] Override any of the default settings.
+   * @param {Object} [options] - Override any of the default settings.
    *
    */
   constructor(options) {
@@ -134,9 +133,9 @@ export default class CordovaMediaPlayer {
    * Preload audio from an URL.
    *
    * @param {string} url - The URL that contains the audio.
-   * @param {boolean} [preload=true] Try preloading metadata and possible some audio (default).
+   * @param {boolean} [preload=true] - Try preloading metadata and possible some audio (default).
    * Set to false to not download anything until playing.
-   * @param {Function} [loadedCb] The callback that is invoked when the duration of
+   * @param {Function} [loadedCb] - The callback that is invoked when the duration of
    * the audio file is first known.
    */
   load(url, preload, loadedCb) {
@@ -171,7 +170,7 @@ export default class CordovaMediaPlayer {
   /**
    * Start or continue playback of audio.
    *
-   * @param {number} [position] When position is given, start playing from this position (seconds).
+   * @param {number} [position] - When position is given, start playing from this position (seconds).
    */
   play(position) {
     this._isPlaying = true;
@@ -205,6 +204,8 @@ export default class CordovaMediaPlayer {
 
   /**
    * Start preloading audio.
+   *
+   * @private
    */
   preload() {
     // This is a noop.
@@ -215,6 +216,7 @@ export default class CordovaMediaPlayer {
    * Start playing audio at the given offset.
    *
    * @param {number} percentage - Start at this percentage (0..100) of the audio stream.
+   * @private
    */
   scrub(percentage) {
     // XXX: Not implemented yet.
@@ -224,7 +226,8 @@ export default class CordovaMediaPlayer {
   /**
    * Returns the percentage of which the buffer is filled.
    *
-   * @returns {number} percentage of buffer fill.
+   * @returns {number} Percentage of buffer fill.
+   * @private
    */
   getBufferFill() {
     // XXX: Not implemented yet.
@@ -234,7 +237,8 @@ export default class CordovaMediaPlayer {
   /**
    * Returns the current playing time as offset in seconds from the start.
    *
-   * @returns {number} time in seconds as offset from the start.
+   * @returns {number} Time in seconds as offset from the start.
+   * @private
    */
   getCurrentTime() {
     // XXX: Not implemented yet.
@@ -244,7 +248,7 @@ export default class CordovaMediaPlayer {
   /**
    * Returns the total duration in seconds.
    *
-   * @returns {number} time in seconds of fragment duration.
+   * @returns {number} Time in seconds of fragment duration.
    */
   getDuration() {
     if (!this.sound) {
@@ -261,7 +265,7 @@ export default class CordovaMediaPlayer {
   /**
    * Returns ready state of the player.
    *
-   * @returns {boolean} true when player is ready to start loading data or play, false when no audio is loaded
+   * @returns {boolean} True when player is ready to start loading data or play. False when no audio is loaded
    * or preparing.
    */
   canPlay() {
@@ -271,7 +275,7 @@ export default class CordovaMediaPlayer {
   /**
    * Returns state of the player.
    *
-   * @returns {boolean} true when player is currently playing, false when paused or stopped.
+   * @returns {boolean} True when player is currently playing. False when paused or stopped.
    */
   isPlaying() {
     return this._isPlaying;

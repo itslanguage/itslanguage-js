@@ -13,16 +13,16 @@ const ee = require('event-emitter');
 ITSLanguage helper tools.
 */
 
-
+/**
+ * A simple stopwatch that ticks every 100 ms. It can be bound to an {@link AudioPlayer} or {@link AudioRecorder}
+ * which binds the stop and playing functionality to the stopping and starting of the Watch.
+ * It can also be listened to by other entities.
+ * @experimental When binding to an Audio Recorder, the stopwatch is not always synced properly.
+ * A difference of 0.1s or 0.2s too high may occur when counting. When binding to an Audio Player however, the timer
+ * will sync properly and show the correct duration of the loaded audio file.
+ */
 export default class Stopwatch {
   /**
-   * A simple stopwatch that ticks every 100 ms. It can be bound to an {@link AudioPlayer} or {@link AudioRecorder}
-   * which binds the stop and playing functionality to the stopping and starting of the Watch.
-   * It can also be listened to by other entities.
-   *
-   * @experimental When binding to an Audio Recorder, the stopwatch is not always synced properly.
-   * A difference of 0.1s or 0.2s too high may occur when counting. When binding to an Audio Player however, the timer
-   * will sync properly and show the correct duration of the loaded audio file.
    * @param {Function} tickCb - The callback that is invoked on every tick (every 100ms).
    * @throws {Error} If tickCb is missing.
    */

@@ -57,7 +57,7 @@ export default class PronunciationAnalysis {
 
     /**
      * The average score of all phonemes grading the entire attempt.
-     * @type {Number}
+     * @type {number}
      */
     this.score = null;
 
