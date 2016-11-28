@@ -79,7 +79,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
     };
 
-    challenge = new PronunciationChallenge('fb', '4', 'foo');
+    challenge = new PronunciationChallenge('fb', '4', 'foo', new Blob(['a']));
     recorder = new RecorderMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
@@ -144,7 +144,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new PronunciationChallenge('1', '', '', null);
+    challenge = new PronunciationChallenge('1', '', '', new Blob(['a']));
     controller.startStreamingPronunciationAnalysis(challenge, null)
       .then(() => {
         fail('No result should be returned');
@@ -156,7 +156,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.organisationId is not present', done => {
-    challenge = new PronunciationChallenge('fb', '2', '', null);
+    challenge = new PronunciationChallenge('fb', '2', '', new Blob(['a']));
     challenge.organisationId = null;
     controller.startStreamingPronunciationAnalysis(challenge, null)
       .then(() => {
@@ -171,7 +171,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   it('should fail streaming when recording is already recording', done => {
     recorder.isRecording = () => true;
     api._session = {};
-    challenge = new PronunciationChallenge('1', '4', '', null);
+    challenge = new PronunciationChallenge('1', '4', '', new Blob(['a']));
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('No result should be returned');
@@ -187,7 +187,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     api._analysisId = '5';
     api._session = {};
     controller = new Controller(api);
-    challenge = new PronunciationChallenge('1', '4', '', null);
+    challenge = new PronunciationChallenge('1', '4', '', new Blob(['a']));
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('No result should be returned');

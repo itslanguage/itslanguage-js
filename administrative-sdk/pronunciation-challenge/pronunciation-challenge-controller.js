@@ -43,7 +43,8 @@ export default class PronunciationChallengeController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new PronunciationChallenge(challenge.organisationId, data.id, data.transcription);
+        const result = new PronunciationChallenge(challenge.organisationId, data.id, data.transcription,
+          data.referenceAudio);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.referenceAudio = challenge.referenceAudio;
@@ -66,7 +67,7 @@ export default class PronunciationChallengeController {
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new PronunciationChallenge(organisationId, data.id,
-          data.transcription);
+          data.transcription, data.referenceAudio);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         challenge.referenceAudioUrl = data.referenceAudioUrl;
@@ -89,7 +90,7 @@ export default class PronunciationChallengeController {
         const challenges = [];
         data.forEach(datum => {
           const challenge = new PronunciationChallenge(
-            organisationId, datum.id, datum.transcription);
+            organisationId, datum.id, datum.transcription, datum.referenceAudio);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenge.referenceAudioUrl = datum.referenceAudioUrl;

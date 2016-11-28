@@ -22,15 +22,7 @@ describe('PronunciationChallenge object test', () => {
       new PronunciationChallenge('fb', null, 'hi', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
-  it('should instantiate a PronunciationChallenge ' +
-    'without referenceAudio', () => {
-    const s = new PronunciationChallenge('fb', 'test', 'hi');
-    expect(s).toBeDefined();
-    expect(s.id).toBe('test');
-    expect(s.organisationId).toBe('fb');
-    expect(s.transcription).toBe('hi');
-    expect(s.referenceAudio).toBeUndefined();
-  });
+
   it('should instantiate a PronunciationChallenge', () => {
     const blob = new Blob(['1234567890']);
 
@@ -73,8 +65,8 @@ describe('PronunciationChallenge API interaction test', () => {
     // Because referenceAudio is not available when fetching existing
     // PronunciationChallenges from the server, the domain model doesn't
     // require the field, but the createPronunciationChallenge() should.
-    const challenge = new PronunciationChallenge('fb', '1', 'test');
-
+    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+    challenge.referenceAudio = null;
     controller.createPronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be thrown');
@@ -86,7 +78,8 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should check for required referenceAudio field', done => {
-    const challenge = new PronunciationChallenge('fb', '1', 'test', null);
+    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+    challenge.referenceAudio = null;
     controller.createPronunciationChallenge(challenge)
       .then(() => {
         fail('An error should be thrown');
@@ -117,6 +110,7 @@ describe('PronunciationChallenge API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'test',
+      referenceAudio: blob,
       referenceAudioUrl,
       status: 'preparing'
     };
@@ -160,6 +154,7 @@ describe('PronunciationChallenge API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'test',
+      referenceAudio: blob,
       referenceAudioUrl,
       status: 'preparing'
     };
@@ -246,6 +241,7 @@ describe('PronunciationChallenge API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'Hi',
+      referenceAudio: blob,
       referenceAudioUrl,
       status: 'prepared'
     };
@@ -262,7 +258,7 @@ describe('PronunciationChallenge API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new PronunciationChallenge('fb', '4', 'Hi');
+        const challenge = new PronunciationChallenge('fb', '4', 'Hi', JSON.parse(JSON.stringify(blob)));
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         challenge.referenceAudioUrl = referenceAudioUrl;
@@ -281,6 +277,7 @@ describe('PronunciationChallenge API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'Hi',
+      referenceAudio: blob,
       referenceAudioUrl,
       status: 'prepared'
     }];
@@ -297,7 +294,7 @@ describe('PronunciationChallenge API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new PronunciationChallenge('fb', '4', 'Hi');
+        const challenge = new PronunciationChallenge('fb', '4', 'Hi', JSON.parse(JSON.stringify(blob)));
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         challenge.referenceAudioUrl = referenceAudioUrl;
