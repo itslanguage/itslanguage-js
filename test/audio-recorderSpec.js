@@ -16,7 +16,6 @@ describe('Audio recorder', () => {
     const recorder = new AudioRecorder();
     expect(recorder.settings).toEqual({});
     expect(recorder.userMediaApproval).toBeTruthy();
-    expect(recorder.events).toEqual({});
     expect(recorder.addEventListener).toEqual(jasmine.any(Function));
     expect(recorder.removeEventListener).toEqual(jasmine.any(Function));
     expect(recorder.fireEvent).toEqual(jasmine.any(Function));
@@ -29,7 +28,6 @@ describe('Audio recorder', () => {
     const recorder = new AudioRecorder();
     expect(recorder.settings).toEqual({});
     expect(recorder.userMediaApproval).toBeFalsy();
-    expect(recorder.events).toEqual({});
     expect(recorder.addEventListener).toEqual(jasmine.any(Function));
     expect(recorder.removeEventListener).toEqual(jasmine.any(Function));
     expect(recorder.fireEvent).toEqual(jasmine.any(Function));

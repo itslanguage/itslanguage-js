@@ -31,7 +31,6 @@ export default class AudioRecorder {
      */
     this.recorder = null;
 
-    this.events = {};
     this._emitter = ee({});
 
 
