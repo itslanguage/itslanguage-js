@@ -33,16 +33,36 @@ describe('ChoiceChallenge object test', () => {
     [0, 4, undefined, false].map(v => {
       expect(() => {
         new ChoiceChallenge('org', null, 'question', v);
-      }).toThrowError('choices parameter of type "Array" is required');
+      }).toThrowError('choices parameter of type "string|object Array" is required');
     });
+
+    expect(() => {
+      new ChoiceChallenge('org', null, 'question', [2, 2]);
+    }).toThrowError('choices parameter of type "string|object Array" is required');
+
+    expect(() => {
+      new ChoiceChallenge('org', null, 'question', [2, '2']);
+    }).toThrowError('choices parameter of type "string|object Array" is required');
+
+    expect(() => {
+      new ChoiceChallenge('org', null, 'question', ['bike4']);
+    }).toThrowError('no numbers allowed in choices');
+
+    expect(() => {
+      new ChoiceChallenge('org', null, 'question', ['bike', '4']);
+    }).toThrowError('no numbers allowed in choices');
+
+    expect(() => {
+      new ChoiceChallenge('org', null, 'question', []);
+    }).toThrowError('non-empty choices parameter is required');
   });
   it('should instantiate a ChoiceChallenge', () => {
-    const s = new ChoiceChallenge('fb', 'test', 'q', ['a', 'a2']);
+    const s = new ChoiceChallenge('fb', 'test', 'q', ['a', 'aa']);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
     expect(s.question).toBe('q');
-    expect(s.choices).toEqual(['a', 'a2']);
+    expect(s.choices).toEqual(['a', 'aa']);
   });
 });
 
@@ -274,7 +294,7 @@ describe('ChoiceChallenge API interaction test', () => {
         choice: 'a',
         audioUrl: ''
       }, {
-        choice: 'a2',
+        choice: 'aa',
         audioUrl: ''
       }]
     }];
@@ -290,7 +310,7 @@ describe('ChoiceChallenge API interaction test', () => {
     const url = 'https://api.itslanguage.nl/challenges/choice';
 
     const stringDate = '2014-12-31T23:59:59Z';
-    const challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'a2']);
+    const challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'aa']);
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';

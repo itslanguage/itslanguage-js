@@ -69,7 +69,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       };
     };
 
-    challenge = new ChoiceChallenge('fb', '4', null, []);
+    challenge = new ChoiceChallenge('fb', '4', null, ['a']);
     recorder = new RecorderMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
@@ -134,7 +134,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new ChoiceChallenge('1', null, null, null);
+    challenge = new ChoiceChallenge('1', null, null, ['a']);
     controller.startStreamingChoiceRecognition(challenge, null)
         .then(() => {
           fail('No result should be returned');
@@ -146,7 +146,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.organisationId is not present', done => {
-    challenge = new ChoiceChallenge('', '2', null, null);
+    challenge = new ChoiceChallenge('', '2', null, ['a']);
     controller.startStreamingChoiceRecognition(challenge, null)
         .then(() => {
           fail('No result should be returned');
@@ -160,7 +160,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   it('should fail streaming when recording is already recording', done => {
     recorder.isRecording = () => true;
     api._session = {};
-    challenge = new ChoiceChallenge('1', '4', null, null);
+    challenge = new ChoiceChallenge('1', '4', null, ['a']);
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('No result should be returned');
@@ -176,7 +176,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     api._recognitionId = '5';
     api._session = {};
     controller = new ChoiceRecognitionController(api);
-    challenge = new ChoiceChallenge('1', '4', null, null);
+    challenge = new ChoiceChallenge('1', '4', null, ['a']);
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('No result should be returned');

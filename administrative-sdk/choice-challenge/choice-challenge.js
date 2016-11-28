@@ -13,6 +13,9 @@ export default class ChoiceChallenge {
    * @throws {Error} id parameter of type "string|null|undefined" is required.
    * @throws {Error} id parameter should not be an empty string.
    * @throws {Error} question parameter of type "string|null|undefined" is required.
+   * @throws {Error} non-empty choices parameter is required.
+   * @throws {Error} choices parameter of type "string|object Array" is required.
+   * @throws {Error} no numbers allowed in choices.
    */
   constructor(organisationId, id, question, choices) {
     if (typeof organisationId !== 'string') {
@@ -49,10 +52,25 @@ export default class ChoiceChallenge {
      * @type {string} [question] A hint or question related to the choices.
      */
     this.question = question;
-    if (typeof choices !== 'object') {
+
+    if (!Array.isArray(choices)) {
       throw new Error(
-        'choices parameter of type "Array" is required');
+        'choices parameter of type "string|object Array" is required');
     }
+    if (choices.length === 0) {
+      throw new Error('non-empty choices parameter is required');
+    }
+    choices.map(choice => {
+      if (typeof choice !== 'string' && typeof choice !== 'object') {
+        throw new Error(
+          'choices parameter of type "string|object Array" is required');
+      }
+
+      if (/\d/.test(choice)) {
+        throw new Error(
+          'no numbers allowed in choices');
+      }
+    });
 
     /**
      * @type {string[]} choices The sentences of which at most one may be recognised.
