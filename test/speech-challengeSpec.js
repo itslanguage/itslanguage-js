@@ -55,7 +55,7 @@ describe('SpeechChallenge API interaction test', () => {
     // Workaround by attaching a spy while appending to FormData.
     // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
-    url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech';
+    url = 'https://api.itslanguage.nl/challenges/speech';
   });
 
   afterEach(() => {
@@ -229,8 +229,7 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should get an existing speech challenge', done => {
-    url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/speech/4';
+    url = 'https://api.itslanguage.nl/challenges/speech/4';
     const content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',

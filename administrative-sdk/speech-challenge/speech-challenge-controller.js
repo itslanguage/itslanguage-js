@@ -36,8 +36,7 @@ export default class SpeechChallengeController {
     if (speechChallenge.referenceAudio) {
       fd.append('referenceAudio', speechChallenge.referenceAudio);
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      speechChallenge.organisationId + '/challenges/speech';
+    const url = this._connection.settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
@@ -59,8 +58,7 @@ export default class SpeechChallengeController {
    * @throws {Promise} If no result could not be found.
    */
   getSpeechChallenge(organisationId, challengeId) {
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      organisationId + '/challenges/speech/' + challengeId;
+    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId;
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
@@ -79,8 +77,7 @@ export default class SpeechChallengeController {
    * @throws {Promise} If no result could not be found.
    */
   listSpeechChallenges(organisationId) {
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      organisationId + '/challenges/speech';
+    const url = this._connection.settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
