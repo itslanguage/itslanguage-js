@@ -1,5 +1,5 @@
 import Base64Utils from '../utils/base64-utils';
-import Connection from './../connection/connection-controller';
+import Connection from '../connection/connection-controller';
 import SpeechRecording from './speech-recording';
 import Student from '../student/student';
 import when from 'when';

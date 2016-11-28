@@ -1,4 +1,4 @@
-import CordovaMediaRecorder from '../cordova-media-recorder';
+import CordovaMediaRecorder from '../src/audio/cordova-media-recorder';
 
 describe('Cordova media recorder', () => {
   beforeEach(() => {

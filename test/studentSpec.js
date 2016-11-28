@@ -1,7 +1,7 @@
 import 'jasmine-ajax';
-import Connection from '../administrative-sdk/connection/connection-controller';
-import Student from '../administrative-sdk/student/student';
-import StudentController from '../administrative-sdk/student/student-controller';
+import Connection from '../src/administrative-sdk/connection/connection-controller';
+import Student from '../src/administrative-sdk/student/student';
+import StudentController from '../src/administrative-sdk/student/student-controller';
 
 describe('Student object test', () => {
   it('should not instantiate a Student without an organisationId', () => {

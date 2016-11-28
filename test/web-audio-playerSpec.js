@@ -1,4 +1,4 @@
-import WebAudioPlayer from '../web-audio-player';
+import WebAudioPlayer from '../src/audio/web-audio-player';
 
 describe('WebAudioPlayer', () => {
   let audioMock;

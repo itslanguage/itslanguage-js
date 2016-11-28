@@ -1,12 +1,12 @@
 import 'jasmine-ajax';
-import Connection from '../administrative-sdk/connection/connection-controller';
-import Controller from '../administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller';
-import Phoneme from '../administrative-sdk/phoneme/phoneme';
-import PronunciationAnalysis from '../administrative-sdk/pronunciation-analysis/pronunciation-analysis';
-import PronunciationChallenge from '../administrative-sdk/pronunciation-challenge/pronunciation-challenge';
-import Student from '../administrative-sdk/student/student';
-import Word from '../administrative-sdk/word/word';
-import WordChunk from '../administrative-sdk/word-chunk/word-chunk';
+import Connection from '../src/administrative-sdk/connection/connection-controller';
+import Controller from '../src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller';
+import Phoneme from '../src/administrative-sdk/phoneme/phoneme';
+import PronunciationAnalysis from '../src/administrative-sdk/pronunciation-analysis/pronunciation-analysis';
+import PronunciationChallenge from '../src/administrative-sdk/pronunciation-challenge/pronunciation-challenge';
+import Student from '../src/administrative-sdk/student/student';
+import Word from '../src/administrative-sdk/word/word';
+import WordChunk from '../src/administrative-sdk/word-chunk/word-chunk';
 import autobahn from 'autobahn';
 import when from 'when';
 
