@@ -673,8 +673,7 @@ describe('API interaction', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice/4/recognitions/5';
+    const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions/5';
     const challenge = new SpeechChallenge('fb', '4');
     const controller = new ChoiceRecognitionController(api);
     controller.getChoiceRecognition(challenge, '5')
@@ -708,8 +707,7 @@ describe('API interaction', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice/4/recognitions/5';
+    const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions/5';
     const challenge = new SpeechChallenge('fb', '4');
     const controller = new ChoiceRecognitionController(api);
     controller.getChoiceRecognition(challenge, '5')
@@ -731,8 +729,7 @@ describe('API interaction', () => {
 
   it('should get a list of existing choice recognitions', done => {
     const challenge = new SpeechChallenge('fb', '4');
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice/4/recognitions';
+    const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions';
     const content = [{
       id: '5',
       created: '2014-12-31T23:59:59Z',

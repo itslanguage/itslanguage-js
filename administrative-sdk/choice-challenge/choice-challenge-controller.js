@@ -29,8 +29,7 @@ export default class ChoiceChallengeController {
     if (!choiceChallenge.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      choiceChallenge.organisationId + '/challenges/choice';
+    const url = this._connection.settings.apiUrl + '/challenges/choice';
     const fd = new FormData();
     if (choiceChallenge.id !== undefined &&
       choiceChallenge.id !== null) {
@@ -42,7 +41,7 @@ export default class ChoiceChallengeController {
     });
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new ChoiceChallenge(data.organisationId, data.id, data.question, data.choices);
+        const result = new ChoiceChallenge(choiceChallenge.organisationId, data.id, data.question, data.choices);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.status = data.status;
@@ -63,8 +62,7 @@ export default class ChoiceChallengeController {
    * @throws {Promise} If no result could not be found.
    */
   getChoiceChallenge(organisationId, challengeId) {
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      organisationId + '/challenges/choice/' + challengeId;
+    const url = this._connection.settings.apiUrl + '/challenges/choice/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new ChoiceChallenge(organisationId, data.id,
@@ -88,8 +86,7 @@ export default class ChoiceChallengeController {
    * @throws {Promise} If no result could not be found.
    */
   listChoiceChallenges(organisationId) {
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      organisationId + '/challenges/choice';
+    const url = this._connection.settings.apiUrl + '/challenges/choice';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];

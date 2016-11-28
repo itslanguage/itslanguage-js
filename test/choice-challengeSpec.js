@@ -67,8 +67,7 @@ describe('ChoiceChallenge API interaction test', () => {
     challenge.updated = new Date(stringDate);
     challenge.status = 'preparing';
 
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice';
+    const url = 'https://api.itslanguage.nl/challenges/choice';
 
     const api = new Connection({
       oAuth2Token: 'token'
@@ -76,7 +75,6 @@ describe('ChoiceChallenge API interaction test', () => {
     const controller = new ChoiceChallengeController(api);
     const content = {
       id: '1',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       question: 'q',
@@ -119,8 +117,7 @@ describe('ChoiceChallenge API interaction test', () => {
     challenge.updated = new Date(stringDate);
     challenge.status = 'preparing';
 
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice';
+    const url = 'https://api.itslanguage.nl/challenges/choice';
 
     const api = new Connection({
       oAuth2Token: 'token'
@@ -128,7 +125,6 @@ describe('ChoiceChallenge API interaction test', () => {
     const controller = new ChoiceChallengeController(api);
     const content = {
       id: '1',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       question: 'q',
@@ -222,8 +218,7 @@ describe('ChoiceChallenge API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice/1';
+    const url = 'https://api.itslanguage.nl/challenges/choice/1';
 
     const content = {
       id: '1',
@@ -292,8 +287,7 @@ describe('ChoiceChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    const url = 'https://api.itslanguage.nl/organisations/fb' +
-      '/challenges/choice';
+    const url = 'https://api.itslanguage.nl/challenges/choice';
 
     const stringDate = '2014-12-31T23:59:59Z';
     const challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'a2']);
