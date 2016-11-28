@@ -223,7 +223,7 @@ export default class Connection {
               }
               return Promise.reject(result);
             } catch (err) {
-              return Promise.reject(response.status + ': ' + response.statusText + '. ' + textResponse);
+              return Promise.reject((response.status + ': ' + response.statusText + '. ' + textResponse).trim());
             }
           });
   }

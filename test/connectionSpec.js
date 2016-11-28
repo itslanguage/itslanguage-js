@@ -239,7 +239,7 @@ describe('Connection', () => {
             fail('No result should be returned');
           })
           .catch(error => {
-            expect(error).toEqual('400: Bad Request. ');
+            expect(error).toEqual('400: Bad Request.');
           })
           .then(done);
       });
@@ -258,7 +258,7 @@ describe('Connection', () => {
             fail('No result should be returned');
           })
           .catch(error => {
-            expect(error).toEqual('400: Bad Request. ');
+            expect(error).toEqual('400: Bad Request.');
           })
           .then(done);
       });
@@ -277,7 +277,7 @@ describe('Connection', () => {
             fail('No result should be returned');
           })
           .catch(error => {
-            expect(error).toEqual('400: Bad Request. ');
+            expect(error).toEqual('400: Bad Request.');
           })
           .then(done);
       });
