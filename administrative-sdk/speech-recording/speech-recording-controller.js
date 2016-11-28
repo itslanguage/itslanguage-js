@@ -210,9 +210,7 @@ export default class SpeechRecordingController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/speech/' +
-      challenge.id + '/recordings/' + recordingId;
+    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challenge.id + '/recordings/' + recordingId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(challenge.organisationId, data.studentId);
@@ -239,10 +237,7 @@ export default class SpeechRecordingController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/speech/' +
-      challenge.id + '/recordings';
-
+    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challenge.id + '/recordings';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const recordings = [];

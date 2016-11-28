@@ -76,20 +76,20 @@ export default class PronunciationChallengeController {
   }
 
   /**
-   * List all pronunciation challenges in the organisation. The organisation is derived from the OAuth2 Token scope
-   * used to authorize the request.
+   * List all pronunciation challenges in the organisation.
    *
+   * @param {PronunciationChallenge#organisationId} organisationId - The organisation ID.
    * @returns {Promise} Promise containing a list of PronunciationChallenges.
    * @throws {Promise} If no result could not be found.
    */
-  listPronunciationChallenges() {
+  listPronunciationChallenges(organisationId) {
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {
           const challenge = new PronunciationChallenge(
-            datum.organisationId, datum.id, datum.transcription);
+            organisationId, datum.id, datum.transcription);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenge.referenceAudioUrl = datum.referenceAudioUrl;

@@ -278,7 +278,6 @@ describe('PronunciationChallenge API interaction test', () => {
   it('should get a list of existing challenges', done => {
     const content = [{
       id: '4',
-      organisationId: 'fb',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       transcription: 'Hi',
@@ -292,7 +291,7 @@ describe('PronunciationChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.listPronunciationChallenges()
+    controller.listPronunciationChallenges('fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

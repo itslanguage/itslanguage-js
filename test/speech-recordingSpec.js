@@ -123,7 +123,7 @@ describe('SpeechRecording API interaction test', () => {
   });
 
   it('should get an existing speech recording', done => {
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech' +
+    const url = 'https://api.itslanguage.nl/challenges/speech' +
       '/4/recordings/5';
     const content = {
       id: '5',
@@ -197,7 +197,7 @@ describe('SpeechRecording API interaction test', () => {
   });
 
   it('should get a list of existing speech recordings', done => {
-    const url = 'https://api.itslanguage.nl/organisations/fb/challenges/speech' +
+    const url = 'https://api.itslanguage.nl/challenges/speech' +
       '/4/recordings';
     const content = [{
       id: '5',
