@@ -251,8 +251,7 @@ export default class ChoiceRecognitionController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/choice/' +
+    const url = this._connection.settings.apiUrl + '/challenges/choice/' +
       challenge.id + '/recognitions/' + recognitionId;
 
     return this._connection._secureAjaxGet(url)
@@ -287,8 +286,7 @@ export default class ChoiceRecognitionController {
     if (!challenge.organisationId) {
       return Promise.reject(new Error('challenge.organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
-      challenge.organisationId + '/challenges/choice/' +
+    const url = this._connection.settings.apiUrl + '/challenges/choice/' +
       challenge.id + '/recognitions';
     return this._connection._secureAjaxGet(url)
       .then(data => {
