@@ -33,28 +33,8 @@ describe('ChoiceChallenge object test', () => {
     [0, 4, undefined, false].map(v => {
       expect(() => {
         new ChoiceChallenge('org', null, 'question', v);
-      }).toThrowError('choices parameter of type "string|object Array" is required');
+      }).toThrowError('choices parameter of type "Array" is required');
     });
-
-    expect(() => {
-      new ChoiceChallenge('org', null, 'question', [2, 2]);
-    }).toThrowError('choices parameter of type "string|object Array" is required');
-
-    expect(() => {
-      new ChoiceChallenge('org', null, 'question', [2, '2']);
-    }).toThrowError('choices parameter of type "string|object Array" is required');
-
-    expect(() => {
-      new ChoiceChallenge('org', null, 'question', ['bike4']);
-    }).toThrowError('no numbers allowed in choices');
-
-    expect(() => {
-      new ChoiceChallenge('org', null, 'question', ['bike', '4']);
-    }).toThrowError('no numbers allowed in choices');
-
-    expect(() => {
-      new ChoiceChallenge('org', null, 'question', []);
-    }).toThrowError('non-empty choices parameter is required');
   });
   it('should instantiate a ChoiceChallenge', () => {
     const s = new ChoiceChallenge('fb', 'test', 'q', ['a', 'aa']);

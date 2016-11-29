@@ -55,22 +55,8 @@ export default class ChoiceChallenge {
 
     if (!Array.isArray(choices)) {
       throw new Error(
-        'choices parameter of type "string|object Array" is required');
+        'choices parameter of type "Array" is required');
     }
-    if (choices.length === 0) {
-      throw new Error('non-empty choices parameter is required');
-    }
-    choices.map(choice => {
-      if (typeof choice !== 'string' && typeof choice !== 'object') {
-        throw new Error(
-          'choices parameter of type "string|object Array" is required');
-      }
-
-      if (/\d/.test(choice)) {
-        throw new Error(
-          'no numbers allowed in choices');
-      }
-    });
 
     /**
      * @type {string[]} choices The sentences of which at most one may be recognised.
