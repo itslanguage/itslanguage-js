@@ -308,27 +308,13 @@ describe('PronunciationChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should reject when deleting a challenge without organisationId', done => {
-    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
-    challenge.organisationId = null;
-    controller.deletePronunciationChallenge(challenge)
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should reject when deleting a challenge without id', done => {
-    const challenge = new PronunciationChallenge('fb', null, 'test', blob);
-    controller.deletePronunciationChallenge(challenge)
+    controller.deletePronunciationChallenge()
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('id field is required');
+        expect(error.message).toEqual('challengeId field is required');
       })
       .then(done);
   });
@@ -350,12 +336,12 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    controller.deletePronunciationChallenge(challenge)
+    controller.deletePronunciationChallenge(challenge.id)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('DELETE');
-        expect(result).toEqual(challenge);
+        expect(result).toEqual(challenge.id);
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
@@ -383,7 +369,7 @@ describe('PronunciationChallenge API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    controller.deletePronunciationChallenge(challenge)
+    controller.deletePronunciationChallenge(challenge.id)
       .then(() => {
         fail('An error should be a thrown');
       })

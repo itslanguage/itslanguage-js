@@ -38,7 +38,7 @@ export default class PronunciationChallenge {
      * @type {string}
      */
     this.transcription = transcription;
-    if (!referenceAudio || typeof referenceAudio !== 'object') {
+    if (typeof referenceAudio !== 'object' && referenceAudio) {
       throw new Error(
         'referenceAudio parameter of type "Blob" is required');
     }

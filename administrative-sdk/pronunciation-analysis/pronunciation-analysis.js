@@ -5,7 +5,7 @@ export default class PronunciationAnalysis {
   /**
    * Create a pronunciation analysis domain model.
    *
-   * @param {PronunciationChallenge} challenge - The challenge identifier.
+   * @param {PronunciationChallenge#id} challenge - The challenge identifier.
    * @param {Student} student - The student identifier on whose behalf this audio is uploaded.
    * @param {string} id - The pronunciation analysis identifier.
    * @param {Date} created - The creation date of the entity.

@@ -282,26 +282,27 @@ export default class PronunciationAnalysisController {
   /**
    * Get a pronunciation analysis in a pronunciation challenge.
    *
-   * @param {PronunciationChallenge} challenge - Specify a pronunciation challenge.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {PronunciationChallenge} challengeId - Specify a pronunciation challenge identifier.
    * @param {PronunciationChallenge#id} analysisId - Specify a pronunciation analysis identifier.
    * @returns {Promise} Promise containing a PronunciationAnalysis.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getPronunciationAnalysis(challenge, analysisId) {
-    if (!challenge || !challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+  getPronunciationAnalysis(organisationId, challengeId, analysisId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
     }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' +
-      challenge.id + '/analyses/' + analysisId;
+      challengeId + '/analyses/' + analysisId;
     return this._connection._secureAjaxGet(url)
       .then(datum => {
-        const student = new Student(challenge.organisationId, datum.studentId);
-        const analysis = new PronunciationAnalysis(challenge, student,
+        const student = new Student(organisationId, datum.studentId);
+        const analysis = new PronunciationAnalysis(challengeId, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl);
         // Alignment may not be successful, in which case the analysis
@@ -318,22 +319,24 @@ export default class PronunciationAnalysisController {
   /**
    * List all pronunciation analyses in a specific pronunciation challenge.
    *
-   * @param {PronunciationChallenge} challenge - Specify a pronunciation challenge to list speech recordings for.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
+   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier to list
+   * speech recordings for.
    * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
    * @returns {Promise} Promise containing a list of PronunciationAnalyses.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  listPronunciationAnalyses(challenge, detailed) {
-    if (!challenge || !challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+  listPronunciationAnalyses(organisationId, challengeId, detailed) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
     }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
     let url = this._connection.settings.apiUrl + '/challenges/pronunciation/' +
-      challenge.id + '/analyses';
+      challengeId + '/analyses';
     if (detailed) {
       url += '?detailed=true';
     }
@@ -341,8 +344,8 @@ export default class PronunciationAnalysisController {
       .then(data => {
         const analyses = [];
         data.forEach(datum => {
-          const student = new Student(challenge.organisationId, datum.studentId);
-          const analysis = new PronunciationAnalysis(challenge, student,
+          const student = new Student(organisationId, datum.studentId);
+          const analysis = new PronunciationAnalysis(challengeId, student,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl);
           // Alignment may not be successful, in which case the analysis

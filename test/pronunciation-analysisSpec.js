@@ -798,33 +798,18 @@ describe('PronunciationAnalyses API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject when challenge does not exist', done => {
-    const api = new Connection({
-      oAuth2Token: 'token'
-    });
-    const controller = new Controller(api);
-    controller.getPronunciationAnalysis(null, '5')
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
-      })
-      .then(done);
-  });
-
   it('should reject to get when challenge has no id', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('fb', '', 'test', new Blob());
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge, '5')
+    controller.getPronunciationAnalysis(challenge.organisationId, null)
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
+        expect(error.message).toEqual('challengeId field is required');
       })
       .then(done);
   });
@@ -836,12 +821,12 @@ describe('PronunciationAnalyses API interaction test', () => {
     const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
     challenge.organisationId = null;
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge, '5')
+    controller.getPronunciationAnalysis()
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.organisationId field is required');
+        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });
@@ -868,14 +853,14 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge, '5')
+    controller.getPronunciationAnalysis(challenge.organisationId, challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
         const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge, student,
+        const analysis = new PronunciationAnalysis(challenge.id, student,
           '5', new Date(stringDate), new Date(stringDate), audioUrl);
         expect(result).toEqual(analysis);
       })
@@ -929,14 +914,14 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge, '5')
+    controller.getPronunciationAnalysis(challenge.organisationId, challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
         const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge, student,
+        const analysis = new PronunciationAnalysis(challenge.id, student,
           '5', new Date(stringDate), new Date(stringDate), audioUrl);
         analysis.score = 7.5;
         const chunk = [
@@ -1006,18 +991,18 @@ describe('PronunciationAnalyses API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses';
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge, false)
+    controller.listPronunciationAnalyses(challenge.organisationId, challenge.id, false)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
         const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge, student,
+        const analysis = new PronunciationAnalysis(challenge.id, student,
           '5', new Date(stringDate), new Date(stringDate));
         analysis.audioUrl = audioUrl;
         const student2 = new Student('fb', '24');
-        const analysis2 = new PronunciationAnalysis(challenge, student2,
+        const analysis2 = new PronunciationAnalysis(challenge.id, student2,
           '6', new Date(stringDate), new Date(stringDate));
         analysis2.audioUrl = audioUrl;
         analysis2.score = 7.5;
@@ -1038,33 +1023,18 @@ describe('PronunciationAnalyses API interaction test', () => {
       .then(done);
   });
 
-  it('should reject to get a list when challenge is not present', done => {
-    const api = new Connection({
-      oAuth2Token: 'token'
-    });
-    const controller = new Controller(api);
-    controller.listPronunciationAnalyses(null, '5')
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
-      })
-      .then(done);
-  });
-
   it('should reject to get a list when challenge.id is not present', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
     const challenge = new PronunciationChallenge('fb', '', 'test', new Blob());
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge, '5')
+    controller.listPronunciationAnalyses(challenge.organisationId, null)
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
+        expect(error.message).toEqual('challengeId field is required');
       })
       .then(done);
   });
@@ -1076,12 +1046,12 @@ describe('PronunciationAnalyses API interaction test', () => {
     const challenge = new PronunciationChallenge('fb', '7', 'test', new Blob());
     challenge.organisationId = null;
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge, '5')
+    controller.listPronunciationAnalyses()
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.organisationId field is required');
+        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });
@@ -1167,18 +1137,18 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge, true)
+    controller.listPronunciationAnalyses(challenge.organisationId, challenge.id, true)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
         const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge, student,
+        const analysis = new PronunciationAnalysis(challenge.id, student,
           '5', new Date(stringDate), new Date(stringDate));
         analysis.audioUrl = audioUrl;
         const student2 = new Student('fb', '24');
-        const analysis2 = new PronunciationAnalysis(challenge, student2,
+        const analysis2 = new PronunciationAnalysis(challenge.id, student2,
           '6', new Date(stringDate), new Date(stringDate));
         analysis2.audioUrl = audioUrl;
         analysis2.score = 7.5;
