@@ -47,9 +47,20 @@ export default class StudentController {
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {Student#id} studentId - Specify a student identifier.
    * @returns {Promise} Promise containing a Student.
+<<<<<<< Updated upstream
+=======
+   * @throws {Promise} {@link Organisation#id} is required.
+   * @throws {Promise} {@link Student#id} field is required.
+>>>>>>> Stashed changes
    * @throws {Promise} If no result could not be found.
    */
   getStudent(organisationId, studentId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
+    if (!studentId) {
+      return Promise.reject(new Error('studentId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
     return this._connection._secureAjaxGet(url)
@@ -70,6 +81,9 @@ export default class StudentController {
    * @throws {Promise} If no result could not be found.
    */
   listStudents(organisationId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/organisations/' +
       organisationId + '/students';
     return this._connection._secureAjaxGet(url)
