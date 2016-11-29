@@ -620,9 +620,21 @@ describe('API interaction', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject when challenge has no id', done => {
+  it('should reject when there is no organisationId', done => {
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition('4', '')
+    controller.getChoiceRecognition()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should reject when there is no challenge id', done => {
+    const controller = new ChoiceRecognitionController(api);
+    controller.getChoiceRecognition('fb')
       .then(() => {
         fail('An error should be thrown');
       })
@@ -632,15 +644,14 @@ describe('API interaction', () => {
       .then(done);
   });
 
-  it('should reject when challenge has no organisationId', done => {
-    const challenge = new SpeechChallenge('', '4');
+  it('should reject when there is no recognition id', done => {
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition(challenge.organisationId, challenge.id, '1')
+    controller.getChoiceRecognition('fb', '1')
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
+        expect(error.message).toEqual('recognitionId field is required');
       })
       .then(done);
   });

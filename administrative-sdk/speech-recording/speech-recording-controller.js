@@ -199,11 +199,12 @@ export default class SpeechRecordingController {
    * Get a speech recording in a speech challenge.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @param {SpeechChallenge} challengeId - Specify a speech challenge identifier.
+   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
    * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
    * @returns {Promise} Promise containing a SpeechRecording.
-   * @throws {Promise} {@link SpeechChallenge#id} is required.
-   * @throws {Promise} {@link Organisation#id} is required.
+   * @throws {Promise} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} {@link SpeechRecording#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getSpeechRecording(organisationId, challengeId, recordingId) {
@@ -212,6 +213,9 @@ export default class SpeechRecordingController {
     }
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
+    }
+    if (!recordingId) {
+      return Promise.reject(new Error('recordingId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings/' + recordingId;
     return this._connection._secureAjaxGet(url)
@@ -230,7 +234,7 @@ export default class SpeechRecordingController {
    * List all speech recordings in a specific speech challenge.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
-   * @param {SpeechChallenge} challengeId - Specify a speech challenge identifier to list speech recordings for.
+   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier to list speech recordings for.
    * @returns {Promise} Promise containing a list of SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} is required.
    * @throws {Promise} {@link Organisation#id} is required.

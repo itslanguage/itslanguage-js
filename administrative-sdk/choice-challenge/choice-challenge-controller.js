@@ -64,11 +64,11 @@ export default class ChoiceChallengeController {
    * @throws {Promise} If no result could not be found.
    */
   getChoiceChallenge(organisationId, challengeId) {
-    if (!challengeId) {
-      return Promise.reject(new Error('challengeId field is required'));
-    }
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
+    }
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/choice/' + challengeId;
     return this._connection._secureAjaxGet(url)

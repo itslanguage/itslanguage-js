@@ -214,6 +214,28 @@ describe('ChoiceChallenge API interaction test', () => {
       .then(done);
   });
 
+  it('should fail to get when organisationId is missing', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new ChoiceChallengeController(api);
+    controller.getChoiceChallenge()
+      .then(() => fail('No result should be returned'))
+      .catch(error => expect(error.message).toEqual('organisationId field is required'))
+      .then(done);
+  });
+
+  it('should fail to get when challenge id is missing', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new ChoiceChallengeController(api);
+    controller.getChoiceChallenge('fb')
+      .then(() => fail('No result should be returned'))
+      .catch(error => expect(error.message).toEqual('challengeId field is required'))
+      .then(done);
+  });
+
   it('should get an existing choice challenge', done => {
     const api = new Connection({
       oAuth2Token: 'token'
@@ -257,6 +279,17 @@ describe('ChoiceChallenge API interaction test', () => {
       }).catch(error => {
         fail('No error should be thrown: ' + error);
       }).then(done);
+  });
+
+  it('should fail to list when organisationId is missing', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new ChoiceChallengeController(api);
+    controller.listChoiceChallenges()
+      .then(() => fail('No result should be returned'))
+      .catch(error => expect(error.message).toEqual('organisationId field is required'))
+      .then(done);
   });
 
   it('should get a list of existing challenges', done => {

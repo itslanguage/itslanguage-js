@@ -52,12 +52,20 @@ export default class SpeechChallengeController {
   /**
    * Get a speech challenge.
    *
-   * @param {string} organisationId - Specify an organisation identifier.
-   * @param {string} challengeId - Specify a speech challenge identifier.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
    * @returns {Promise} Promise containing a SpeechChallenge.
+   * @throws {Promise} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getSpeechChallenge(organisationId, challengeId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId;
 
     return this._connection._secureAjaxGet(url)
@@ -72,7 +80,7 @@ export default class SpeechChallengeController {
   /**
    * List all speech challenges in the organisation.
    *
-   * @param {string} organisationId - Specify an organisation identifier.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing a list of SpeechChallenges.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.

@@ -238,19 +238,23 @@ export default class ChoiceRecognitionController {
    * Get a choice recognition in a choice challenge.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @param {ChoiceChallenge} challengeId - Specify a choice challenge identifier.
+   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
    * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
    * @returns {Promise} Promise containing a ChoiceRecognition.
-   * @throws {Promise} {@link ChoiceChallenge#id} is required.
-   * @throws {Promise} {@link Organisation#id} is required.
+   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} {@link ChoiceRecognition#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getChoiceRecognition(organisationId, challengeId, recognitionId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
+    if (!recognitionId) {
+      return Promise.reject(new Error('recognitionId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/choice/' +
       challengeId + '/recognitions/' + recognitionId;
@@ -274,11 +278,11 @@ export default class ChoiceRecognitionController {
   /**
    * List all choice recognitions in a specific {@link ChoiceChallenge}.
    *
-   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
    * @returns {Promise} Promise containing an array of ChoiceRecognitions.
+   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
-   * @throws {Promise} {@link ChoiceChallenge#organisationId} is required.
    * @throws {Promise} If no result could not be found.
    */
   listChoiceRecognitions(organisationId, challengeId) {

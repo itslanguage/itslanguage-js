@@ -228,6 +228,28 @@ describe('SpeechChallenge API interaction test', () => {
       .then(done);
   });
 
+  it('should not get when organisation id is missing', done => {
+    controller.getSpeechChallenge()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should not get when challenge id is missing', done => {
+    controller.getSpeechChallenge('fb')
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challengeId field is required');
+      })
+      .then(done);
+  });
+
   it('should get an existing speech challenge', done => {
     url = 'https://api.itslanguage.nl/challenges/speech/4';
     const content = {
@@ -256,6 +278,28 @@ describe('SpeechChallenge API interaction test', () => {
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
+      })
+      .then(done);
+  });
+
+  it('should not list when there is no organisation id', done => {
+    controller.listSpeechChallenges()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should not list when there is no organisation id', done => {
+    controller.listSpeechChallenges()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });

@@ -148,6 +148,32 @@ describe('Student API interaction test', () => {
       .then(done);
   });
 
+  it('should not get when organisation id is missing', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new StudentController(api);
+    controller.getStudent()
+      .then(fail)
+      .catch(err => {
+        expect(err.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should not get when student id is missing', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new StudentController(api);
+    controller.getStudent('fb')
+      .then(fail)
+      .catch(err => {
+        expect(err.message).toEqual('studentId field is required');
+      })
+      .then(done);
+  });
+
   it('should get an existing student through API', done => {
     const api = new Connection({
       oAuth2Token: 'token'
@@ -180,6 +206,19 @@ describe('Student API interaction test', () => {
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
+      })
+      .then(done);
+  });
+
+  it('should not list when organisation id is missing', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new StudentController(api);
+    controller.listStudents()
+      .then(fail)
+      .catch(err => {
+        expect(err.message).toEqual('organisationId field is required');
       })
       .then(done);
   });

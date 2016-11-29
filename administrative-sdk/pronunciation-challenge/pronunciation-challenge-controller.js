@@ -57,12 +57,20 @@ export default class PronunciationChallengeController {
   /**
    * Get a pronunciation challenge.
    *
-   * @param {string} organisationId - Specify an organisation identifier.
-   * @param {string} challengeId - Specify a pronunciation challenge identifier.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
    * @returns {Promise} Promise containing a PronunciationChallenge.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getPronunciationChallenge(organisationId, challengeId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
@@ -79,11 +87,15 @@ export default class PronunciationChallengeController {
   /**
    * List all pronunciation challenges in the organisation.
    *
-   * @param {PronunciationChallenge#organisationId} organisationId - The organisation ID.
+   * @param {Organisation#id} organisationId - The organisation ID.
    * @returns {Promise} Promise containing a list of PronunciationChallenges.
+   * @throws {Promise} organisationId field is required.
    * @throws {Promise} If no result could not be found.
    */
   listPronunciationChallenges(organisationId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
     return this._connection._secureAjaxGet(url)
       .then(data => {

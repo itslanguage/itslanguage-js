@@ -162,6 +162,19 @@ describe('Organisation API interaction test', () => {
       .then(done);
   });
 
+  it('should not get when there is no organisation id', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new OrganisationController(api);
+    controller.getOrganisation()
+      .then(fail)
+      .catch(err => {
+        expect(err.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
   it('should get an existing organisation through API', done => {
     const api = new Connection({
       oAuth2Token: 'token'
