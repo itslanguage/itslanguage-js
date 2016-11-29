@@ -59,9 +59,17 @@ export default class ChoiceChallengeController {
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
    * @returns {Promise} Containing a ChoiceChallenge.
+   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getChoiceChallenge(organisationId, challengeId) {
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
+    }
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/choice/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
@@ -83,9 +91,13 @@ export default class ChoiceChallengeController {
    *
    * @param {Organisation#id} organisationId - Specify an {@link Organisation} identifier.
    * @returns {Promise} Containing an array of ChoiceChallenges.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   listChoiceChallenges(organisationId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/choice';
     return this._connection._secureAjaxGet(url)
       .then(data => {
