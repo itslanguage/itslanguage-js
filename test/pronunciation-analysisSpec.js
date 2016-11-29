@@ -798,6 +798,23 @@ describe('PronunciationAnalyses API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
+  it('should reject to get when challenge has no organisationId', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
+    challenge.organisationId = null;
+    const controller = new Controller(api);
+    controller.getPronunciationAnalysis()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
   it('should reject to get when challenge has no id', done => {
     const api = new Connection({
       oAuth2Token: 'token'
@@ -814,19 +831,18 @@ describe('PronunciationAnalyses API interaction test', () => {
       .then(done);
   });
 
-  it('should reject to get when challenge has no organisationId', done => {
+  it('should reject to get when there is no analysis id', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
-    challenge.organisationId = null;
+    const challenge = new PronunciationChallenge('fb', '1', 'test', new Blob());
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis()
+    controller.getPronunciationAnalysis(challenge.organisationId, challenge.id)
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
+        expect(error.message).toEqual('analysisId field is required');
       })
       .then(done);
   });

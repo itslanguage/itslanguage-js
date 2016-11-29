@@ -63,6 +63,12 @@ export default class PronunciationChallengeController {
    * @throws {Promise} If no result could not be found.
    */
   getPronunciationChallenge(organisationId, challengeId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
@@ -84,6 +90,9 @@ export default class PronunciationChallengeController {
    * @throws {Promise} If no result could not be found.
    */
   listPronunciationChallenges(organisationId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
     return this._connection._secureAjaxGet(url)
       .then(data => {

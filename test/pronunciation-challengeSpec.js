@@ -190,6 +190,28 @@ describe('PronunciationChallenge API interaction test', () => {
       .then(done);
   });
 
+  it('should not get when missing organisation id', done => {
+    controller.getPronunciationChallenge()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should not get when missing challenge id', done => {
+    controller.getPronunciationChallenge('fb')
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('challengeId field is required');
+      })
+      .then(done);
+  });
+
   it('should handle errors while creating a new challenge', done => {
     const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
     const content = {
@@ -267,6 +289,28 @@ describe('PronunciationChallenge API interaction test', () => {
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
+      })
+      .then(done);
+  });
+
+  it('should not list when organisationId is missing', done => {
+    controller.listPronunciationChallenges()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should not list when organisationId is missing', done => {
+    controller.listPronunciationChallenges()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });
