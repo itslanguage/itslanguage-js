@@ -202,8 +202,9 @@ export default class SpeechRecordingController {
    * @param {SpeechChallenge} challengeId - Specify a speech challenge identifier.
    * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
    * @returns {Promise} Promise containing a SpeechRecording.
-   * @throws {Promise} {@link SpeechChallenge#id} is required.
-   * @throws {Promise} {@link Organisation#id} is required.
+   * @throws {Promise} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} {@link SpeechRecording#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getSpeechRecording(organisationId, challengeId, recordingId) {

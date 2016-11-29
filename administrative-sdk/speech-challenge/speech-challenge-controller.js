@@ -55,6 +55,8 @@ export default class SpeechChallengeController {
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
    * @returns {Promise} Promise containing a SpeechChallenge.
+   * @throws {Promise} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getSpeechChallenge(organisationId, challengeId) {

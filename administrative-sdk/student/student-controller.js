@@ -47,11 +47,8 @@ export default class StudentController {
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {Student#id} studentId - Specify a student identifier.
    * @returns {Promise} Promise containing a Student.
-<<<<<<< Updated upstream
-=======
-   * @throws {Promise} {@link Organisation#id} is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} {@link Student#id} field is required.
->>>>>>> Stashed changes
    * @throws {Promise} If no result could not be found.
    */
   getStudent(organisationId, studentId) {
@@ -78,6 +75,7 @@ export default class StudentController {
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing a list of Students.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   listStudents(organisationId) {

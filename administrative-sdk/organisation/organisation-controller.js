@@ -40,6 +40,7 @@ export default class OrganisationController {
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing an Organisation.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getOrganisation(organisationId) {

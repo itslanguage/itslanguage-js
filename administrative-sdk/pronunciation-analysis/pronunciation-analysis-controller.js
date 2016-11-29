@@ -283,11 +283,12 @@ export default class PronunciationAnalysisController {
    * Get a pronunciation analysis in a pronunciation challenge.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @param {PronunciationChallenge} challengeId - Specify a pronunciation challenge identifier.
-   * @param {PronunciationChallenge#id} analysisId - Specify a pronunciation analysis identifier.
+   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
+   * @param {PronunciationAnalysis#id} analysisId - Specify a pronunciation analysis identifier.
    * @returns {Promise} Promise containing a PronunciationAnalysis.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} {@link PronunciationAnalysis#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getPronunciationAnalysis(organisationId, challengeId, analysisId) {

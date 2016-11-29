@@ -60,6 +60,8 @@ export default class PronunciationChallengeController {
    * @param {string} organisationId - Specify an organisation identifier.
    * @param {string} challengeId - Specify a pronunciation challenge identifier.
    * @returns {Promise} Promise containing a PronunciationChallenge.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   getPronunciationChallenge(organisationId, challengeId) {
@@ -87,6 +89,7 @@ export default class PronunciationChallengeController {
    *
    * @param {PronunciationChallenge#organisationId} organisationId - The organisation ID.
    * @returns {Promise} Promise containing a list of PronunciationChallenges.
+   * @throws {Promise} organisationId field is required.
    * @throws {Promise} If no result could not be found.
    */
   listPronunciationChallenges(organisationId) {
