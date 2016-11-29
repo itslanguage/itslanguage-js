@@ -862,8 +862,8 @@ describe('PronunciationAnalyses API interaction test', () => {
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -923,8 +923,8 @@ describe('PronunciationAnalyses API interaction test', () => {
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -999,8 +999,8 @@ describe('PronunciationAnalyses API interaction test', () => {
 
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -1161,8 +1161,8 @@ describe('PronunciationAnalyses API interaction test', () => {
 
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));

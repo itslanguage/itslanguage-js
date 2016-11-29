@@ -84,8 +84,8 @@ describe('SpeechChallenge API interaction test', () => {
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -119,8 +119,8 @@ describe('SpeechChallenge API interaction test', () => {
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -159,8 +159,8 @@ describe('SpeechChallenge API interaction test', () => {
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -202,8 +202,8 @@ describe('SpeechChallenge API interaction test', () => {
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 422,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -239,8 +239,8 @@ describe('SpeechChallenge API interaction test', () => {
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -270,8 +270,8 @@ describe('SpeechChallenge API interaction test', () => {
     }];
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
-      header: {
-        'Content-type': 'application/json'
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
