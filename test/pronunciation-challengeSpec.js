@@ -33,6 +33,15 @@ describe('PronunciationChallenge object test', () => {
     expect(s.transcription).toBe('hi');
     expect(s.referenceAudio).toBe(blob);
   });
+
+  it('should instantiate a PronunciationChallenge wihtout referenceAudio', () => {
+    const s = new PronunciationChallenge('fb', 'test', 'hi');
+    expect(s).toBeDefined();
+    expect(s.id).toBe('test');
+    expect(s.organisationId).toBe('fb');
+    expect(s.transcription).toBe('hi');
+    expect(s.referenceAudio).toBeUndefined();
+  });
 });
 
 describe('PronunciationChallenge API interaction test', () => {
