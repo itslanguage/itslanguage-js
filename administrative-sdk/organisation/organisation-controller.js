@@ -38,11 +38,14 @@ export default class OrganisationController {
   /**
    * Get an organisation.
    *
-   * @param {string} organisationId - Specify an organisation identifier.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing an Organisation.
    * @throws {Promise} If no result could not be found.
    */
   getOrganisation(organisationId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/organisations/' + organisationId;
 
     return this._connection._secureAjaxGet(url)
