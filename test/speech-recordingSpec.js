@@ -87,7 +87,18 @@ describe('SpeechRecording API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject to get a recording if challenge.id is not present', done => {
+  it('should reject to get a recording if organisationId is not present', done => {
+    controller.getSpeechRecording()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should reject to get a recording if challenge id is not present', done => {
     const challenge = new SpeechChallenge('fb', '');
     controller.getSpeechRecording(challenge.organisationId, null)
       .then(() => {
@@ -99,13 +110,14 @@ describe('SpeechRecording API interaction test', () => {
       .then(done);
   });
 
-  it('should reject to get a recording if challenge.organisationId is not present', done => {
-    controller.getSpeechRecording()
+  it('should reject to get a recording if recording id is not present', done => {
+    const challenge = new SpeechChallenge('fb', '1');
+    controller.getSpeechRecording(challenge.organisationId, challenge.id)
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
+        expect(error.message).toEqual('recordingId field is required');
       })
       .then(done);
   });
@@ -149,7 +161,18 @@ describe('SpeechRecording API interaction test', () => {
       .then(done);
   });
 
-  it('should reject to get a list of recordings if challenge.id is not present', done => {
+  it('should reject to get a list of recordings if organisationId is not present', done => {
+    controller.listSpeechRecordings()
+      .then(() => {
+        fail('An error should be thrown');
+      })
+      .catch(error => {
+        expect(error.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
+  it('should reject to get a list of recordings if challenge id is not present', done => {
     const challenge = new SpeechChallenge('fb', '');
     controller.listSpeechRecordings(challenge.organisationId)
       .then(() => {
@@ -157,17 +180,6 @@ describe('SpeechRecording API interaction test', () => {
       })
       .catch(error => {
         expect(error.message).toEqual('challengeId field is required');
-      })
-      .then(done);
-  });
-
-  it('should reject to get a list of recordings if challenge.organisationId is not present', done => {
-    controller.listSpeechRecordings()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });

@@ -213,6 +213,9 @@ export default class SpeechRecordingController {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
+    if (!recordingId) {
+      return Promise.reject(new Error('recordingId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings/' + recordingId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
