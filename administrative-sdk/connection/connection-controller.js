@@ -215,14 +215,15 @@ export default class Connection {
   handleResponse(response) {
     return response.text()
           .then(textResponse => {
-            if (!textResponse) {
+            if (response.headers.get('Content-type').includes('application/json')) {
+              const result = JSON.parse(textResponse);
+              if (response.ok) {
+                return result;
+              }
+              return Promise.reject(result);
+            } else if (!response.ok) {
               return Promise.reject(response.status + ': ' + response.statusText);
             }
-            const result = JSON.parse(textResponse);
-            if (response.ok) {
-              return result;
-            }
-            return Promise.reject(result);
           });
   }
 

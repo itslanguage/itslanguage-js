@@ -93,6 +93,9 @@ describe('Connection', () => {
   let url;
   describe('POST, GET and DELETE', () => {
     beforeEach(() => {
+      api = new Connection({
+        oAuth2Token: 'token'
+      });
       jasmine.Ajax.install();
     });
 
@@ -101,7 +104,7 @@ describe('Connection', () => {
     });
 
     it('should throw error on required auth credentials on GET', done => {
-      api = new Connection();
+      api.settings.oAuth2Token = null;
       api._secureAjaxGet()
         .then(fail)
         .catch(error => {
@@ -111,6 +114,7 @@ describe('Connection', () => {
     });
 
     it('should throw error on required auth credentials on POST', done => {
+      api.settings.oAuth2Token = null;
       api._secureAjaxPost()
         .then(fail)
         .catch(error => {
@@ -120,6 +124,7 @@ describe('Connection', () => {
     });
 
     it('should throw error on required auth credentials on DELETE', done => {
+      api.settings.oAuth2Token = null;
       api._secureAjaxDelete()
         .then(fail)
         .catch(error => {
@@ -130,14 +135,11 @@ describe('Connection', () => {
 
     describe('Authorization header', () => {
       beforeEach(() => {
-        api = new Connection({
-          oAuth2Token: 'token'
-        });
         url = api.settings.apiUrl;
         fakeResponse = new Response(JSON.stringify({}), {
           status: 200,
-          header: {
-            'Content-type': 'application/json'
+          headers: {
+            'Content-type': 'application/json; charset=utf-8'
           }
         });
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -186,8 +188,8 @@ describe('Connection', () => {
         };
         fakeResponse = new Response(JSON.stringify(content), {
           status: 400,
-          header: {
-            'Content-type': 'application/json'
+          headers: {
+            'Content-type': 'application/json; charset=utf-8'
           }
         });
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -229,8 +231,8 @@ describe('Connection', () => {
         fakeResponse = new Response(JSON.stringify(), {
           status: 400,
           statusText: 'Bad Request',
-          header: {
-            'Content-type': 'application/json'
+          headers: {
+            'Content-type': 'octet/stream; charset=utf-8'
           }
         });
         window.fetch.and.returnValue(Promise.resolve(fakeResponse));
@@ -248,8 +250,8 @@ describe('Connection', () => {
         fakeResponse = new Response(JSON.stringify(), {
           status: 400,
           statusText: 'Bad Request',
-          header: {
-            'Content-type': 'application/json'
+          headers: {
+            'Content-type': 'octet/stream; charset=utf-8'
           }
         });
         window.fetch.and.returnValue(Promise.resolve(fakeResponse));
@@ -267,8 +269,8 @@ describe('Connection', () => {
         fakeResponse = new Response(JSON.stringify(), {
           status: 400,
           statusText: 'Bad Request',
-          header: {
-            'Content-type': 'application/json'
+          headers: {
+            'Content-type': 'octet/stream; charset=utf-8'
           }
         });
         window.fetch.and.returnValue(Promise.resolve(fakeResponse));
@@ -282,6 +284,48 @@ describe('Connection', () => {
           .then(done);
       });
     });
+
+    it('should handle an empty response on GET', done => {
+      fakeResponse = new Response(null, {
+        status: 204,
+        statusText: 'No Request',
+        headers: {
+          'Content-type': 'octet/stream'
+        }
+      });
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api._secureAjaxGet(url)
+        .catch(fail)
+        .then(done);
+    });
+
+    it('should handle an empty response on POST', done => {
+      fakeResponse = new Response(null, {
+        status: 204,
+        statusText: 'No Request',
+        headers: {
+          'Content-type': 'octet/stream'
+        }
+      });
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api._secureAjaxPost(url)
+        .catch(fail)
+        .then(done);
+    });
+
+    it('should handle an empty response on DELETE', done => {
+      fakeResponse = new Response(null, {
+        status: 204,
+        statusText: 'No Request',
+        headers: {
+          'Content-type': 'octet/stream'
+        }
+      });
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      api._secureAjaxDelete(url)
+        .catch(fail)
+        .then(done);
+    });
   });
 
   describe('Connection oauth2 token get', () => {
@@ -291,8 +335,8 @@ describe('Connection', () => {
       };
       fakeResponse = new Response(JSON.stringify(content), {
         status: 400,
-        header: {
-          'Content-type': 'application/json'
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
         }
       });
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -311,8 +355,8 @@ describe('Connection', () => {
       };
       fakeResponse = new Response(JSON.stringify(content), {
         status: 400,
-        header: {
-          'Content-type': 'application/json'
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
         }
       });
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
@@ -333,8 +377,8 @@ describe('Connection', () => {
       };
       fakeResponse = new Response(JSON.stringify(content), {
         status: 200,
-        header: {
-          'Content-type': 'application/json'
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
         }
       });
       const basicAuth = new BasicAuth('4', 'principal', 'credentials');
@@ -367,8 +411,8 @@ describe('Connection', () => {
       };
       fakeResponse = new Response(JSON.stringify(content), {
         status: 200,
-        header: {
-          'Content-type': 'application/json'
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
         }
       });
       const basicAuth = new BasicAuth('4', 'principal', 'credentials');
@@ -399,8 +443,8 @@ describe('Connection', () => {
       };
       fakeResponse = new Response(JSON.stringify(content), {
         status: 200,
-        header: {
-          'Content-type': 'application/json'
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
         }
       });
       const basicAuth = new BasicAuth('4', 'principal', 'credentials');
@@ -429,8 +473,8 @@ describe('Connection', () => {
       };
       fakeResponse = new Response(JSON.stringify(content), {
         status: 400,
-        header: {
-          'Content-type': 'application/json'
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
         }
       });
       const basicAuth = new BasicAuth('4', null, 'credentials');
