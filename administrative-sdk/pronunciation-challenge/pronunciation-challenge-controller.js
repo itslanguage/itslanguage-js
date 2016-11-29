@@ -43,7 +43,8 @@ export default class PronunciationChallengeController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new PronunciationChallenge(challenge.organisationId, data.id, data.transcription);
+        const result = new PronunciationChallenge(challenge.organisationId, data.id, data.transcription,
+          data.referenceAudio);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.referenceAudio = challenge.referenceAudio;
@@ -66,7 +67,7 @@ export default class PronunciationChallengeController {
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new PronunciationChallenge(organisationId, data.id,
-          data.transcription);
+          data.transcription, data.referenceAudio);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         challenge.referenceAudioUrl = data.referenceAudioUrl;
@@ -89,7 +90,7 @@ export default class PronunciationChallengeController {
         const challenges = [];
         data.forEach(datum => {
           const challenge = new PronunciationChallenge(
-            organisationId, datum.id, datum.transcription);
+            organisationId, datum.id, datum.transcription, datum.referenceAudio);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenge.referenceAudioUrl = datum.referenceAudioUrl;
@@ -103,22 +104,18 @@ export default class PronunciationChallengeController {
   /**
    * Delete a pronunciation challenge.
    *
-   * @param {PronunciationChallenge} challenge - A pronunciation challenge object.
+   * @param {PronunciationChallenge#id} challengeId - A pronunciation challenge identifier.
    * @returns {Promise} Promise containing this.
-   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} If the server returned an error.
    */
-  deletePronunciationChallenge(challenge) {
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
-    if (!challenge.id) {
-      return Promise.reject(new Error('id field is required'));
+  deletePronunciationChallenge(challengeId) {
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' +
-      challenge.id;
+      challengeId;
     return this._connection._secureAjaxDelete(url)
-      .then(() => challenge);
+      .then(() => challengeId);
   }
 }

@@ -20,9 +20,9 @@ export default class SpeechRecording {
      * @type {string}
      */
     this.id = id;
-    if (typeof challenge !== 'object' || !challenge) {
+    if (typeof challenge !== 'string' || !challenge) {
       throw new Error(
-        'challenge parameter of type "SpeechChallenge" is required');
+        'challenge parameter of type "SpeechChallenge ID" is required');
     }
 
     /**

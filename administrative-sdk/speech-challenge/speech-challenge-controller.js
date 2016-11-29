@@ -74,9 +74,13 @@ export default class SpeechChallengeController {
    *
    * @param {string} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing a list of SpeechChallenges.
+   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
   listSpeechChallenges(organisationId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     const url = this._connection.settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxGet(url)

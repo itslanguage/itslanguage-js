@@ -37,12 +37,12 @@ describe('ChoiceChallenge object test', () => {
     });
   });
   it('should instantiate a ChoiceChallenge', () => {
-    const s = new ChoiceChallenge('fb', 'test', 'q', ['a', 'a2']);
+    const s = new ChoiceChallenge('fb', 'test', 'q', ['a', 'aa']);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
     expect(s.question).toBe('q');
-    expect(s.choices).toEqual(['a', 'a2']);
+    expect(s.choices).toEqual(['a', 'aa']);
   });
 });
 
@@ -274,7 +274,7 @@ describe('ChoiceChallenge API interaction test', () => {
         choice: 'a',
         audioUrl: ''
       }, {
-        choice: 'a2',
+        choice: 'aa',
         audioUrl: ''
       }]
     }];
@@ -290,7 +290,7 @@ describe('ChoiceChallenge API interaction test', () => {
     const url = 'https://api.itslanguage.nl/challenges/choice';
 
     const stringDate = '2014-12-31T23:59:59Z';
-    const challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'a2']);
+    const challenge = new ChoiceChallenge('fb', '4', 'q', ['a', 'aa']);
     challenge.created = new Date(stringDate);
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';

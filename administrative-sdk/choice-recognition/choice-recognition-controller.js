@@ -237,27 +237,28 @@ export default class ChoiceRecognitionController {
   /**
    * Get a choice recognition in a choice challenge.
    *
-   * @param {ChoiceChallenge} challenge - Specify a choice challenge.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {ChoiceChallenge} challengeId - Specify a choice challenge identifier.
    * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
    * @returns {Promise} Promise containing a ChoiceRecognition.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
-   * @throws {Promise} {@link ChoiceChallenge#organisationId} is required.
+   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} If no result could not be found.
    */
-  getChoiceRecognition(challenge, recognitionId) {
-    if (!challenge || !challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+  getChoiceRecognition(organisationId, challengeId, recognitionId) {
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/choice/' +
-      challenge.id + '/recognitions/' + recognitionId;
+      challengeId + '/recognitions/' + recognitionId;
 
     return this._connection._secureAjaxGet(url)
       .then(datum => {
-        const student = new Student(challenge.organisationId, datum.studentId);
-        const recognition = new ChoiceRecognition(challenge, student,
+        const student = new Student(organisationId, datum.studentId);
+        const recognition = new ChoiceRecognition(challengeId, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl);
         // Alignment may not be successful, in which case the recognition
@@ -273,27 +274,28 @@ export default class ChoiceRecognitionController {
   /**
    * List all choice recognitions in a specific {@link ChoiceChallenge}.
    *
-   * @param {ChoiceChallenge} challenge - Specify a choice challenge to list speech recognitions for.
+   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing an array of ChoiceRecognitions.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
    * @throws {Promise} {@link ChoiceChallenge#organisationId} is required.
    * @throws {Promise} If no result could not be found.
    */
-  listChoiceRecognitions(challenge) {
-    if (!challenge || !challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+  listChoiceRecognitions(organisationId, challengeId) {
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/choice/' +
-      challenge.id + '/recognitions';
+      challengeId + '/recognitions';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const recognitions = [];
         data.forEach(datum => {
-          const student = new Student(challenge.organisationId, datum.studentId);
-          const recognition = new ChoiceRecognition(challenge, student,
+          const student = new Student(organisationId, datum.studentId);
+          const recognition = new ChoiceRecognition(challengeId, student,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl);
           // Recognition may not be successful, in which case the recognition
