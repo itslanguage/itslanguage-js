@@ -1,4 +1,4 @@
-import WavePacker from '../wave-packer';
+import WavePacker from '../src/audio/wave-packer';
 
 describe('WavePacker', () => {
   it('should warn when the sample rates are invalid', () => {

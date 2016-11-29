@@ -1,8 +1,8 @@
 /* eslint-disable
  camelcase
  */
-import Base64Utils from './../utils/base64-utils';
-import Connection from './../connection/connection-controller';
+import Base64Utils from '../utils/base64-utils';
+import Connection from '../connection/connection-controller';
 import Phoneme from '../phoneme/phoneme';
 import PronunciationAnalysis from './pronunciation-analysis';
 import Student from '../student/student';

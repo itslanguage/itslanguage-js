@@ -1,7 +1,7 @@
 import 'jasmine-ajax';
-import ChoiceChallenge from '../administrative-sdk/choice-challenge/choice-challenge';
-import ChoiceChallengeController from '../administrative-sdk/choice-challenge/choice-challenge-controller';
-import Connection from '../administrative-sdk/connection/connection-controller';
+import ChoiceChallenge from '../src/administrative-sdk/choice-challenge/choice-challenge';
+import ChoiceChallengeController from '../src/administrative-sdk/choice-challenge/choice-challenge-controller';
+import Connection from '../src/administrative-sdk/connection/connection-controller';
 
 describe('ChoiceChallenge object test', () => {
   it('should require all required fields in constructor', () => {

@@ -1,5 +1,5 @@
 import CordovaMediaPlayer from './cordova-media-player';
-import Stopwatch from './tools';
+import Stopwatch from '../tools';
 import WebAudioPlayer from './web-audio-player';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';

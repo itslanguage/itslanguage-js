@@ -1,5 +1,5 @@
 import 'jasmine-ajax';
-import CordovaMediaPlayer from '../cordova-media-player';
+import CordovaMediaPlayer from '../src/audio/cordova-media-player';
 
 describe('Cordova Media Player', () => {
   let player;

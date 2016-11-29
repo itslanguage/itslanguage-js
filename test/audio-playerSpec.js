@@ -1,7 +1,7 @@
-import * as Stopwatch from '../tools';
-import AudioPlayer from '../audio-player';
-import CordovaMediaPlayer from '../cordova-media-player';
-import WebAudioPlayer from '../web-audio-player';
+import * as Stopwatch from '../src/tools';
+import AudioPlayer from '../src/audio/audio-player';
+import CordovaMediaPlayer from '../src/audio/cordova-media-player';
+import WebAudioPlayer from '../src/audio/web-audio-player';
 
 describe('Audio player', () => {
   let oldMedia;

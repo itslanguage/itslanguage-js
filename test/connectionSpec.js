@@ -4,8 +4,8 @@ camelcase
 
 import 'jasmine-ajax';
 import Autobahn from 'autobahn';
-import BasicAuth from '../administrative-sdk/basic-auth/basic-auth';
-import Connection from '../administrative-sdk/connection/connection-controller';
+import BasicAuth from '../src/administrative-sdk/basic-auth/basic-auth';
+import Connection from '../src/administrative-sdk/connection/connection-controller';
 let api;
 
 describe('Events', () => {

@@ -1,9 +1,9 @@
 import 'jasmine-ajax';
-import Connection from '../administrative-sdk/connection/connection-controller';
-import SpeechChallenge from '../administrative-sdk/speech-challenge/speech-challenge';
-import SpeechRecording from '../administrative-sdk/speech-recording/speech-recording';
-import SpeechRecordingController from '../administrative-sdk/speech-recording/speech-recording-controller';
-import Student from '../administrative-sdk/student/student';
+import Connection from '../src/administrative-sdk/connection/connection-controller';
+import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-challenge';
+import SpeechRecording from '../src/administrative-sdk/speech-recording/speech-recording';
+import SpeechRecordingController from '../src/administrative-sdk/speech-recording/speech-recording-controller';
+import Student from '../src/administrative-sdk/student/student';
 import autobahn from 'autobahn';
 
 describe('SpeechRecording object test', () => {

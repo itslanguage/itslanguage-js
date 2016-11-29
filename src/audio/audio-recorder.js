@@ -1,6 +1,6 @@
 import CordovaMediaRecorder from './cordova-media-recorder';
 import MediaRecorder from './media-recorder';
-import Stopwatch from './tools';
+import Stopwatch from '../tools';
 import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
 import allOff from 'event-emitter/all-off';

@@ -1,4 +1,4 @@
-import Stopwatch from '../tools';
+import Stopwatch from '../src/tools';
 
 describe('Stopwatch', () => {
   it('should construct', () => {

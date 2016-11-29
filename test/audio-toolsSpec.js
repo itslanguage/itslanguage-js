@@ -1,4 +1,4 @@
-import VolumeMeter, {generateWaveSample} from '../audio-tools';
+import VolumeMeter, {generateWaveSample} from '../src/audio/audio-tools';
 
 describe('Audio tools', () => {
   it('should construct', () => {

@@ -1,7 +1,7 @@
 import 'jasmine-ajax';
-import Connection from '../administrative-sdk/connection/connection-controller';
-import Organisation from '../administrative-sdk/organisation/organisation';
-import OrganisationController from '../administrative-sdk/organisation/organisation-controller';
+import Connection from '../src/administrative-sdk/connection/connection-controller';
+import Organisation from '../src/administrative-sdk/organisation/organisation';
+import OrganisationController from '../src/administrative-sdk/organisation/organisation-controller';
 
 describe('Organisation object test', () => {
   it('should not instantiate an Organisation with an invalid id', () => {
