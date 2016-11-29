@@ -11,58 +11,58 @@ describe('SpeechRecording object test', () => {
     expect(() => {
       new SpeechRecording();
     }).toThrowError(
-      'challenge parameter of type "SpeechChallenge" is required');
+      'challenge parameter of type "SpeechChallenge ID" is required');
     expect(() => {
       new SpeechRecording(1);
     }).toThrowError(
-      'challenge parameter of type "SpeechChallenge" is required');
+      'challenge parameter of type "SpeechChallenge ID" is required');
 
-    const challenge = new SpeechChallenge('fb');
+    const challenge = new SpeechChallenge('fb', '1');
     expect(() => {
-      new SpeechRecording(challenge);
+      new SpeechRecording(challenge.id);
     }).toThrowError(
       'student parameter of type "Student" is required');
     expect(() => {
-      new SpeechRecording(challenge, 1);
+      new SpeechRecording(challenge.id, 1);
     }).toThrowError(
       'student parameter of type "Student" is required');
 
     const student = new Student('org');
     expect(() => {
-      new SpeechRecording(challenge, student, 1);
+      new SpeechRecording(challenge.id, student, 1);
     }).toThrowError('id parameter of type "string|null" is required');
 
     expect(() => {
-      new SpeechRecording(challenge, student, '1', 'foo');
+      new SpeechRecording(challenge.id, student, '1', 'foo');
     }).toThrowError('audio parameter of type "Blob|null" is required');
   });
   it('should instantiate a SpeechRecording', () => {
     const blob = new Blob(['1234567890']);
-    const challenge = new SpeechChallenge('fb');
+    const challenge = new SpeechChallenge('fb', '1');
     const student = new Student('org');
 
     // Without audio
-    let s = new SpeechRecording(challenge, student, null);
+    let s = new SpeechRecording(challenge.id, student, null);
     expect(s).toBeDefined();
     expect(s.id).toBeNull();
     expect(s.audio).toBeUndefined();
-    expect(s.challenge).toBe(challenge);
+    expect(s.challenge).toBe(challenge.id);
     expect(s.student).toBe(student);
 
     // Without id
-    s = new SpeechRecording(challenge, student, null, blob);
+    s = new SpeechRecording(challenge.id, student, null, blob);
     expect(s).toBeDefined();
     expect(s.id).toBe(null);
     expect(s.audio).toBe(blob);
-    expect(s.challenge).toBe(challenge);
+    expect(s.challenge).toBe(challenge.id);
     expect(s.student).toBe(student);
 
     // With id
-    s = new SpeechRecording(challenge, student, 'test', blob);
+    s = new SpeechRecording(challenge.id, student, 'test', blob);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.audio).toBe(blob);
-    expect(s.challenge).toBe(challenge);
+    expect(s.challenge).toBe(challenge.id);
     expect(s.student).toBe(student);
   });
 });
@@ -87,37 +87,25 @@ describe('SpeechRecording API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject to get a recording if challenge is not present', done => {
-    controller.getSpeechRecording(null, '5')
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
-      })
-      .then(done);
-  });
-
   it('should reject to get a recording if challenge.id is not present', done => {
     const challenge = new SpeechChallenge('fb', '');
-    controller.getSpeechRecording(challenge, '5')
+    controller.getSpeechRecording(challenge.organisationId, null)
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
+        expect(error.message).toEqual('challengeId field is required');
       })
       .then(done);
   });
 
   it('should reject to get a recording if challenge.organisationId is not present', done => {
-    const challenge = new SpeechChallenge('', '4');
-    controller.getSpeechRecording(challenge, '5')
+    controller.getSpeechRecording()
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.organisationId field is required');
+        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });
@@ -141,13 +129,13 @@ describe('SpeechRecording API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
     const challenge = new SpeechChallenge('fb', '4');
-    controller.getSpeechRecording(challenge, '5')
+    controller.getSpeechRecording(challenge.organisationId, challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const student = new Student('fb', '6');
-        const recording = new SpeechRecording(challenge, student, '5');
+        const recording = new SpeechRecording(challenge.id, student, '5');
         const stringDate = '2014-12-31T23:59:59Z';
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);
@@ -161,37 +149,25 @@ describe('SpeechRecording API interaction test', () => {
       .then(done);
   });
 
-  it('should reject to get a list of recordings if challenge is not present', done => {
-    controller.listSpeechRecordings(null)
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
-      })
-      .then(done);
-  });
-
   it('should reject to get a list of recordings if challenge.id is not present', done => {
     const challenge = new SpeechChallenge('fb', '');
-    controller.listSpeechRecordings(challenge)
+    controller.listSpeechRecordings(challenge.organisationId)
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
+        expect(error.message).toEqual('challengeId field is required');
       })
       .then(done);
   });
 
   it('should reject to get a list of recordings if challenge.organisationId is not present', done => {
-    const challenge = new SpeechChallenge('', '4');
-    controller.listSpeechRecordings(challenge)
+    controller.listSpeechRecordings()
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.organisationId field is required');
+        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });
@@ -214,13 +190,13 @@ describe('SpeechRecording API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const challenge = new SpeechChallenge('fb', '4');
-    controller.listSpeechRecordings(challenge)
+    controller.listSpeechRecordings(challenge.organisationId, challenge.id)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const student = new Student('fb', '6');
-        const recording = new SpeechRecording(challenge, student, '5');
+        const recording = new SpeechRecording(challenge.id, student, '5');
         const stringDate = '2014-12-31T23:59:59Z';
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);
@@ -722,7 +698,7 @@ describe('Speech Recording Websocket API interaction test', () => {
         progressCalled = true;
       })
       .then(result => {
-        expect(result.challenge).toEqual(challenge);
+        expect(result.challenge).toEqual(challenge.id);
         expect(result.student.organisationId).toBe(challenge.organisationId);
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(

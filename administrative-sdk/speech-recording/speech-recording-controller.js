@@ -107,7 +107,7 @@ export default class SpeechRecordingController {
       function _cb(data) {
         const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(
-          challenge, student, data.id);
+          challenge.id, student, data.id);
         recording.created = new Date(data.created);
         recording.updated = new Date(data.updated);
         recording.audioUrl = self._connection.addAccessToken(data.audioUrl);
@@ -198,23 +198,26 @@ export default class SpeechRecordingController {
   /**
    * Get a speech recording in a speech challenge.
    *
-   * @param {SpeechChallenge} challenge - Specify a speech challenge.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {SpeechChallenge} challengeId - Specify a speech challenge identifier.
    * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
    * @returns {Promise} Promise containing a SpeechRecording.
+   * @throws {Promise} {@link SpeechChallenge#id} is required.
+   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} If no result could not be found.
    */
-  getSpeechRecording(challenge, recordingId) {
-    if (!challenge || !challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+  getSpeechRecording(organisationId, challengeId, recordingId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
     }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challenge.id + '/recordings/' + recordingId;
+    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings/' + recordingId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const student = new Student(challenge.organisationId, data.studentId);
-        const recording = new SpeechRecording(challenge, student, data.id);
+        const student = new Student(organisationId, data.studentId);
+        const recording = new SpeechRecording(challengeId, student, data.id);
         recording.audio = null;
         recording.audioUrl = this._connection.addAccessToken(data.audioUrl);
         recording.created = new Date(data.created);
@@ -226,24 +229,27 @@ export default class SpeechRecordingController {
   /**
    * List all speech recordings in a specific speech challenge.
    *
-   * @param {SpeechChallenge} challenge - Specify a speech challenge to list speech recordings for.
+   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
+   * @param {SpeechChallenge} challengeId - Specify a speech challenge identifier to list speech recordings for.
    * @returns {Promise} Promise containing a list of SpeechRecording.
+   * @throws {Promise} {@link SpeechChallenge#id} is required.
+   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} If no result could not be found.
    */
-  listSpeechRecordings(challenge) {
-    if (!challenge || !challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+  listSpeechRecordings(organisationId, challengeId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
     }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
+    if (!challengeId) {
+      return Promise.reject(new Error('challengeId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challenge.id + '/recordings';
+    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const recordings = [];
         data.forEach(datum => {
-          const student = new Student(challenge.organisationId, datum.studentId);
-          const recording = new SpeechRecording(challenge, student, datum.id);
+          const student = new Student(organisationId, datum.studentId);
+          const recording = new SpeechRecording(challengeId, student, datum.id);
           recording.audio = null;
           recording.audioUrl = this._connection.addAccessToken(datum.audioUrl);
           recording.created = new Date(datum.created);
