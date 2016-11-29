@@ -246,11 +246,14 @@ export default class ChoiceRecognitionController {
    * @throws {Promise} If no result could not be found.
    */
   getChoiceRecognition(organisationId, challengeId, recognitionId) {
+    if (!organisationId) {
+      return Promise.reject(new Error('organisationId field is required'));
+    }
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
+    if (!recognitionId) {
+      return Promise.reject(new Error('recognitionId field is required'));
     }
     const url = this._connection.settings.apiUrl + '/challenges/choice/' +
       challengeId + '/recognitions/' + recognitionId;
@@ -278,7 +281,7 @@ export default class ChoiceRecognitionController {
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing an array of ChoiceRecognitions.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
-   * @throws {Promise} {@link ChoiceChallenge#organisationId} is required.
+   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} If no result could not be found.
    */
   listChoiceRecognitions(organisationId, challengeId) {
