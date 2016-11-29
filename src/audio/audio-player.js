@@ -9,9 +9,10 @@ import ee from 'event-emitter';
 export default class AudioPlayer {
   /**
    * Construct an AudioPlayer for playing .wav or .mp3 files.
-   * Fires all events the HTML5 Audio also fires. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
-   * @param {Object} [options] Override any of the default settings.
+   *
+   * @param {Object} [options] - Override any of the default settings.
    * @emits {Event} 'playbackstopped' When playback has ended, been stopped or been paused.
+   * @emits {Event} All events the HTML5 Audio also fires. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
    */
   constructor(options) {
     this.settings = Object.assign({}, options);
@@ -91,6 +92,7 @@ export default class AudioPlayer {
   /**
    * Check for mandatory browser compatibility.
    * Logs detailed browser compatibilities related to for audio playback.
+   *
    * @throws {Error} If no native wave or MP3 playback is available.
    */
   _playbackCompatibility() {
@@ -184,9 +186,9 @@ export default class AudioPlayer {
    * Preload audio from an URL.
    *
    * @param {string} url - The URL that contains the audio.
-   * @param {boolean} [preload=true] Try preloading metadata and possible some audio. Set to false to not download
+   * @param {boolean} [preload=true] - Try preloading metadata and possible some audio. Set to false to not download
    * anything until playing.
-   * @param {Function} [loadedCb] The callback that is invoked when the duration of the audio file
+   * @param {Function} [loadedCb] - The callback that is invoked when the duration of the audio file
    * is first known.
    * @emits {Event} 'canplay' When the player is ready to play.
    */
@@ -203,6 +205,7 @@ export default class AudioPlayer {
 
   /**
    * Unload previously loaded audio. Stops the player and any stopwatch.
+   *
    * @emits {Event} 'unloaded'
    */
   reset() {
@@ -214,7 +217,7 @@ export default class AudioPlayer {
   /**
    * Start or continue playback of audio. Also starts the stopwatch at the given position.
    *
-   * @param {number} [position] When position is given, start playing from this position (seconds).
+   * @param {number} [position] - When position is given, start playing from this position (seconds).
    */
   play(position) {
     if (this.player.isPlaying()) {
@@ -288,7 +291,7 @@ export default class AudioPlayer {
   /**
    * Returns the percentage of which the buffer is filled.
    *
-   * @returns {Number} percentage of buffer fill.
+   * @returns {number} Percentage of buffer fill.
    */
   getBufferFill() {
     return this.player.getBufferFill();
@@ -297,7 +300,7 @@ export default class AudioPlayer {
   /**
    * Returns the current playing time as offset in seconds from the start.
    *
-   * @returns {Number} time in seconds as offset from the start.
+   * @returns {number} Time in seconds as offset from the start.
    */
   getCurrentTime() {
     return this.player.getCurrentTime();
@@ -306,7 +309,7 @@ export default class AudioPlayer {
   /**
    * Returns the total duration in seconds.
    *
-   * @returns {Number} time in seconds of fragment duration.
+   * @returns {number} Time in seconds of fragment duration.
    */
   getDuration() {
     return this.player.getDuration();
@@ -336,7 +339,7 @@ export default class AudioPlayer {
    *
    * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
    * @throws {Error} If tickCb is null.
-   * @returns {Stopwatch}
+   * @returns {Stopwatch} New Stopwatch object.
    */
   bindStopwatch(tickCb) {
     this._stopwatch = new Stopwatch(time => {

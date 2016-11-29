@@ -15,8 +15,7 @@ export default class AudioRecorder {
   /**
    * ITSLanguage AudioRecorder.
    *
-   * @constructor
-   * @param {object} [options] Override any of the default settings.
+   * @param {Object} [options] - Override any of the default settings.
    *
    */
   constructor(options) {
@@ -205,6 +204,7 @@ export default class AudioRecorder {
   /**
    * Audio access was granted, start analysing.
    *
+   * @param {MediaStream} stream - Media Stream.
    * @private
    */
   _startUserMedia(stream) {
@@ -301,7 +301,7 @@ export default class AudioRecorder {
    *
    * @param {number} id - When defined, stick this id to the recorded blob.
    *
-   * @returns {Number} The id that was given or a unique generated one.
+   * @returns {number} The id that was given or a unique generated one.
    */
   startRecordingSession(id) {
     // Generate a uuid to remember this recording by (locally).
@@ -313,7 +313,7 @@ export default class AudioRecorder {
   /**
    * Start recording microphone input until stopped.
    *
-   * @param {Function} [cb] The callback that provides a piece of raw audio when
+   * @param {Function} [cb] - The callback that provides a piece of raw audio when
    * it becomes available. It may be used for streaming.
    * @emits {Event} 'recording' With arguments: [recording ID].
    */
@@ -398,6 +398,13 @@ export default class AudioRecorder {
     return this.recorder.getAudioSpecs();
   }
 
+  /**
+   * Bind a stopwatch to sync with the playing and stopping functionality of the recorder.
+   *
+   * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
+   * @throws {Error} If tickCb is null.
+   * @returns {Stopwatch} New Stopwatch object.
+   */
   bindStopwatch(tickCb) {
     this._stopwatch = new Stopwatch(tickCb);
     return this._stopwatch;

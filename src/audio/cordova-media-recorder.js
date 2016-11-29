@@ -4,7 +4,7 @@ device,
 Media
  */
 
-/*
+/**
  * Use the Cordova Media recorder for recording and encoding audio
  * on a WebView, wrapped in a native App.
  * Supports 3GPP recording on Android, WAV recording on iOS.
@@ -14,7 +14,7 @@ Media
  */
 export default class CordovaMediaRecorder {
   /**
-   * MediaRecorder
+   * MediaRecorder.
    */
   constructor() {
     this._isRecording = false;
