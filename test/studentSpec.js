@@ -49,6 +49,21 @@ describe('Student API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
+  it('should not create when student.organisationId is missing', done => {
+    const student = new Student('fb', '1', 'Mark');
+    student.organisationId = null;
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new StudentController(api);
+    controller.createStudent(student)
+      .then(fail)
+      .catch(err => {
+        expect(err.message).toEqual('organisationId field is required');
+      })
+      .then(done);
+  });
+
   it('should create a new student through API', done => {
     const student = new Student('fb', '1', 'Mark');
     const api = new Connection({
