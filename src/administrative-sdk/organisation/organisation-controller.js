@@ -23,7 +23,7 @@ export default class OrganisationController {
    * @throws {Promise} If the server returned an error.
    */
   createOrganisation(organisation) {
-    const url = this._connection.settings.apiUrl + '/organisations';
+    const url = this._connection._settings.apiUrl + '/organisations';
     const fd = JSON.stringify(organisation);
 
     return this._connection._secureAjaxPost(url, fd)
@@ -47,7 +47,7 @@ export default class OrganisationController {
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' + organisationId;
+    const url = this._connection._settings.apiUrl + '/organisations/' + organisationId;
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
@@ -65,7 +65,7 @@ export default class OrganisationController {
    * @throws {Promise} If no result could not be found.
    */
   listOrganisations() {
-    const url = this._connection.settings.apiUrl + '/organisations';
+    const url = this._connection._settings.apiUrl + '/organisations';
 
     return this._connection._secureAjaxGet(url)
       .then(data => {

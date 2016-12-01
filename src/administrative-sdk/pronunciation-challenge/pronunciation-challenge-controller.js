@@ -32,7 +32,7 @@ export default class PronunciationChallengeController {
       return Promise.reject(new Error(
         'referenceAudio parameter of type "Blob" is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
+    const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
     const fd = new FormData();
     if (typeof challenge.id !== 'undefined' &&
       challenge.id !== null) {
@@ -71,7 +71,7 @@ export default class PronunciationChallengeController {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' + challengeId;
+    const url = this._connection._settings.apiUrl + '/challenges/pronunciation/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new PronunciationChallenge(organisationId, data.id,
@@ -96,7 +96,7 @@ export default class PronunciationChallengeController {
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/pronunciation';
+    const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
@@ -125,7 +125,7 @@ export default class PronunciationChallengeController {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/pronunciation/' +
+    const url = this._connection._settings.apiUrl + '/challenges/pronunciation/' +
       challengeId;
     return this._connection._secureAjaxDelete(url)
       .then(() => challengeId);

@@ -29,7 +29,7 @@ export default class ChoiceChallengeController {
     if (!choiceChallenge.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/choice';
+    const url = this._connection._settings.apiUrl + '/challenges/choice';
     const fd = new FormData();
     if (choiceChallenge.id !== undefined &&
       choiceChallenge.id !== null) {
@@ -70,7 +70,7 @@ export default class ChoiceChallengeController {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/choice/' + challengeId;
+    const url = this._connection._settings.apiUrl + '/challenges/choice/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenge = new ChoiceChallenge(organisationId, data.id,
@@ -98,7 +98,7 @@ export default class ChoiceChallengeController {
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/choice';
+    const url = this._connection._settings.apiUrl + '/challenges/choice';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];

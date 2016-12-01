@@ -46,7 +46,7 @@ export default class WebAudioRecorder {
     // This is a workaround for a bug in Chrome that would otherwise lead to
     // the recorder being garbage collected before it even recorded anything.
     // https://bugs.webkit.org/show_bug.cgi?id=112521
-    this.recorder = recorder;
+    this._recorder = recorder;
 
     const self = this;
     recorder.onaudioprocess = function(e) {

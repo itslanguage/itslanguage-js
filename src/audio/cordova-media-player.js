@@ -23,7 +23,7 @@ export default class CordovaMediaPlayer {
    *
    */
   constructor(options) {
-    this.settings = Object.assign({}, options);
+    this._settings = Object.assign({}, options);
 
     this._isPlaying = false;
     this._canPlay = false;
@@ -108,15 +108,15 @@ export default class CordovaMediaPlayer {
         const duration = self.sound.getDuration();
         console.debug('Duration: ' + duration);
 
-        if (duration > 0 && closure.settings.durationchangeCb) {
-          closure.settings.durationchangeCb();
+        if (duration > 0 && closure._settings.durationchangeCb) {
+          closure._settings.durationchangeCb();
         }
       });
 
     // Trigger 'canplay' event on sound (which is what HTML5 would do).
     this._canPlay = true;
-    if (closure.settings.canplayCb) {
-      closure.settings.canplayCb();
+    if (closure._settings.canplayCb) {
+      closure._settings.canplayCb();
     }
 
     // When Media is initialised, nothing is preloaded. Trigger loading of

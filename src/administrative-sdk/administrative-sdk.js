@@ -12,115 +12,115 @@ import StudentController from './student/student-controller';
  */
 export default class AdministrativeSDK {
   constructor(connection) {
-    this.connection = connection;
-    this.choiceChallengeController = new ChoiceChallengeController(this.connection);
-    this.choiceRecognitionController = new ChoiceRecognitionController(this.connection);
-    this.organisationController = new OrganisationController(this.connection);
-    this.pronAnalaController = new PronAnalaController(this.connection);
-    this.pronChallController = new PronChallController(this.connection);
-    this.speechChallengeController = new SpeechChallengeController(this.connection);
-    this.speechRecordingController = new SpeechRecordingController(this.connection);
-    this.studentController = new StudentController(this.connection);
+    this._connection = connection;
+    this._choiceChallengeController = new ChoiceChallengeController(this._connection);
+    this._choiceRecognitionController = new ChoiceRecognitionController(this._connection);
+    this._organisationController = new OrganisationController(this._connection);
+    this._pronAnalaController = new PronAnalaController(this._connection);
+    this._pronChallController = new PronChallController(this._connection);
+    this._speechChallengeController = new SpeechChallengeController(this._connection);
+    this._speechRecordingController = new SpeechRecordingController(this._connection);
+    this._studentController = new StudentController(this._connection);
   }
 
   createChoiceChallenge(choiceChallenge) {
-    return this.choiceChallengeController.createChoiceChallenge(choiceChallenge);
+    return this._choiceChallengeController.createChoiceChallenge(choiceChallenge);
   }
 
   getChoiceChallenge(organisationId, challengeId) {
-    return this.choiceChallengeController.getChoiceChallenge(organisationId, challengeId);
+    return this._choiceChallengeController.getChoiceChallenge(organisationId, challengeId);
   }
 
   listChoiceChallenges(organisationId) {
-    return this.choiceChallengeController.listChoiceChallenges(organisationId);
+    return this._choiceChallengeController.listChoiceChallenges(organisationId);
   }
 
   startStreamingChoiceRecognition(challenge, recorder, trim) {
-    return this.choiceRecognitionController.startStreamingChoiceRecognition(challenge, recorder, trim);
+    return this._choiceRecognitionController.startStreamingChoiceRecognition(challenge, recorder, trim);
   }
 
   getChoiceRecognition(organisationId, challengeId, recognitionId) {
-    return this.choiceRecognitionController.getChoiceRecognition(organisationId, challengeId, recognitionId);
+    return this._choiceRecognitionController.getChoiceRecognition(organisationId, challengeId, recognitionId);
   }
 
   listChoiceRecognitions(organisationId, challengeId) {
-    return this.choiceRecognitionController.listChoiceRecognitions(organisationId, challengeId);
+    return this._choiceRecognitionController.listChoiceRecognitions(organisationId, challengeId);
   }
 
   createOrganisation(organisation) {
-    return this.organisationController.createOrganisation(organisation);
+    return this._organisationController.createOrganisation(organisation);
   }
 
   getOrganisation(organisationId) {
-    return this.organisationController.getOrganisation(organisationId);
+    return this._organisationController.getOrganisation(organisationId);
   }
 
   listOrganisations() {
-    return this.organisationController.listOrganisations();
+    return this._organisationController.listOrganisations();
   }
 
   startStreamingPronunciationAnalysis(challenge, recorder, trim) {
-    return this.pronAnalaController.startStreamingPronunciationAnalysis(challenge, recorder, trim);
+    return this._pronAnalaController.startStreamingPronunciationAnalysis(challenge, recorder, trim);
   }
 
   getPronunciationAnalysis(organisationId, challengeId, analysisId) {
-    return this.pronAnalaController.getPronunciationAnalysis(organisationId, challengeId, analysisId);
+    return this._pronAnalaController.getPronunciationAnalysis(organisationId, challengeId, analysisId);
   }
 
   listPronunciationAnalyses(organisationId, challengeId, detailed) {
-    return this.pronAnalaController.listPronunciationAnalyses(organisationId, challengeId, detailed);
+    return this._pronAnalaController.listPronunciationAnalyses(organisationId, challengeId, detailed);
   }
 
   createPronunciationChallenge(challenge) {
-    return this.pronChallController.createPronunciationChallenge(challenge);
+    return this._pronChallController.createPronunciationChallenge(challenge);
   }
 
   getPronunciationChallenge(organisationId, challengeId) {
-    return this.pronChallController.getPronunciationChallenge(organisationId, challengeId);
+    return this._pronChallController.getPronunciationChallenge(organisationId, challengeId);
   }
 
   listPronunciationChallenges(organisationId) {
-    return this.pronChallController.listPronunciationChallenges(organisationId);
+    return this._pronChallController.listPronunciationChallenges(organisationId);
   }
 
   deletePronunciationChallenge(challengeId) {
-    return this.pronChallController.deletePronunciationChallenge(challengeId);
+    return this._pronChallController.deletePronunciationChallenge(challengeId);
   }
 
   createSpeechChallenge(speechChallenge) {
-    return this.speechChallengeController.createSpeechChallenge(speechChallenge);
+    return this._speechChallengeController.createSpeechChallenge(speechChallenge);
   }
 
   getSpeechChallenge(organisationId, challengeId) {
-    return this.speechChallengeController.getSpeechChallenge(organisationId, challengeId);
+    return this._speechChallengeController.getSpeechChallenge(organisationId, challengeId);
   }
 
   listSpeechChallenges(organisationId) {
-    return this.speechChallengeController.listSpeechChallenges(organisationId);
+    return this._speechChallengeController.listSpeechChallenges(organisationId);
   }
 
   startStreamingSpeechRecording(challenge, recorder) {
-    return this.speechRecordingController.startStreamingSpeechRecording(challenge, recorder);
+    return this._speechRecordingController.startStreamingSpeechRecording(challenge, recorder);
   }
 
   getSpeechRecording(organisationId, challengeId, recordingId) {
-    return this.speechRecordingController.getSpeechRecording(organisationId, challengeId, recordingId);
+    return this._speechRecordingController.getSpeechRecording(organisationId, challengeId, recordingId);
   }
 
   listSpeechRecordings(organisationId, challengeId) {
-    return this.speechRecordingController.listSpeechRecordings(organisationId, challengeId);
+    return this._speechRecordingController.listSpeechRecordings(organisationId, challengeId);
   }
 
   createStudent(student) {
-    return this.studentController.createStudent(student);
+    return this._studentController.createStudent(student);
   }
 
   getStudent(organisationId, studentId) {
-    return this.studentController.getStudent(organisationId, studentId);
+    return this._studentController.getStudent(organisationId, studentId);
   }
 
   listStudents(organisationId) {
-    return this.studentController.listStudents(organisationId);
+    return this._studentController.listStudents(organisationId);
   }
 }
 

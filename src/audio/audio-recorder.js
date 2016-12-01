@@ -19,7 +19,7 @@ export default class AudioRecorder {
    *
    */
   constructor(options) {
-    this.settings = Object.assign({}, options);
+    this._settings = Object.assign({}, options);
 
     this._recordingCompatibility();
 
@@ -29,7 +29,7 @@ export default class AudioRecorder {
      *
      * @type {CordovaMediaRecorder|WebAudioRecorder|MediaRecorder} The specific recorder type.
      */
-    this.recorder = null;
+    this._recorder = null;
 
     this._emitter = ee({});
 
@@ -38,7 +38,7 @@ export default class AudioRecorder {
       // Through the App permissions, access to the microphone was
       // already granted.
       this.userMediaApproval = true;
-      this.recorder = this._getBestRecorder();
+      this._recorder = this._getBestRecorder();
     }
     this._stopwatch = null;
   }
@@ -231,7 +231,7 @@ export default class AudioRecorder {
     // Connect the microphone source to a gain node.
     micInput.connect(micInputGain);
 
-    this.recorder = this._getBestRecorder(micInputGain);
+    this._recorder = this._getBestRecorder(micInputGain);
 
     return micInputGain;
   }
@@ -253,10 +253,10 @@ export default class AudioRecorder {
     // environments get detected. While this is technically valid -Ripple is
     // running in Chrome, which supports WebAudio-, it's not a sandbox that
     // also disables functionality that would not be available on a device.
-    if (this.canUseCordovaMedia && !this.settings.forceWave) {
+    if (this.canUseCordovaMedia && !this._settings.forceWave) {
       // Use Cordova audio encoding (used codec depends on the platform).
       recorder = new CordovaMediaRecorder();
-    } else if (this.canUserMediaRecorder && !this.settings.forceWave) {
+    } else if (this.canUserMediaRecorder && !this._settings.forceWave) {
       // Use the recorder with MediaRecorder implementation.
       recorder = new MediaRecorder(micInputGain);
     } else if (this.canGetUserMedia) {
@@ -287,7 +287,7 @@ export default class AudioRecorder {
    * @returns {boolean} True when permission was already granted. False otherwise.
    */
   _requireGetUserMedia() {
-    if (this.recorder) {
+    if (this._recorder) {
       return true;
     }
     console.log('Requesting getUserMedia permission first.');
@@ -325,9 +325,9 @@ export default class AudioRecorder {
       throw new Error('Already recording, stop recording first.');
     }
 
-    this.recorder.record();
+    this._recorder.record();
     if (this._stopwatch) {
-      this._stopwatch.value = 0;
+      this._stopwatch._value = 0;
       this._stopwatch.start();
     }
 
@@ -347,18 +347,18 @@ export default class AudioRecorder {
    * @emits {Event} 'recorded' With arguments: [recording ID, audio Blob, forced].
    */
   stop(forced) {
-    if (!this.recorder.isRecording()) {
+    if (!this._recorder.isRecording()) {
       console.error('Recorder was already stopped.');
       return;
     }
-    this.recorder.stop();
+    this._recorder.stop();
     if (this._stopwatch) {
       this._stopwatch.stop();
     }
     console.log('Stopped recording for id: ' + this.activeRecordingId);
 
     const self = this;
-    this.recorder.getEncodedAudio(blob => {
+    this._recorder.getEncodedAudio(blob => {
       console.log('Received encoded audio of type: ' + blob.type);
       // Allow direct playback from local blob.
       self.fireEvent('recorded', [self.activeRecordingId, blob, Boolean(forced)]);
@@ -371,10 +371,10 @@ export default class AudioRecorder {
    * @returns {boolean} True if user is currently recording audio. False` otherwise.
    */
   isRecording() {
-    if (!this.recorder) {
+    if (!this._recorder) {
       return false;
     }
-    return this.recorder.isRecording();
+    return this._recorder.isRecording();
   }
 
   /**
@@ -394,14 +394,14 @@ export default class AudioRecorder {
    * @returns {Object} Containing audioFormat and audioParameters describing the format.
    */
   getAudioSpecs() {
-    return this.recorder.getAudioSpecs();
+    return this._recorder.getAudioSpecs();
   }
 
   /**
    * Bind a stopwatch to sync with the playing and stopping functionality of the recorder.
    *
    * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
-   * @throws {Error} If tickCb is null.
+   * @throws {Error} If _tickCb is null.
    * @returns {Stopwatch} New Stopwatch object.
    */
   bindStopwatch(tickCb) {

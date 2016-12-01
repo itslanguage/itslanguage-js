@@ -57,7 +57,7 @@ export default class WavePacker {
     }
     // Both the left and right channel's data is a view (Float32Array)
     // on top of the buffer (ArrayBuffer). Each buffer's element should
-    // have value between -1 and 1.
+    // have _value between -1 and 1.
     // The audio to export are 16 bit PCM samples that are wrapped in
     // a WAVE file at the server. Therefore convert from float here.
     const converted = convertFloat32ToInt16(left);

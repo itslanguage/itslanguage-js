@@ -23,7 +23,7 @@ export default class Connection {
     /**
      * @type {Object}
      */
-    this.settings = Object.assign({
+    this._settings = Object.assign({
       // ITSL connection parameters.
       apiUrl: 'https://api.itslanguage.nl',
       oAuth2Token: null,
@@ -75,10 +75,10 @@ export default class Connection {
    * @throws {Promise} If the oAuth2Token in {@link Connection#settings} is not set.
    */
   _getAuthHeaders() {
-    if (!this.settings.oAuth2Token) {
+    if (!this._settings.oAuth2Token) {
       return Promise.reject('Please set oAuth2Token');
     }
-    const authHeader = 'Bearer ' + this.settings.oAuth2Token;
+    const authHeader = 'Bearer ' + this._settings.oAuth2Token;
     return Promise.resolve(authHeader);
   }
 
@@ -96,12 +96,12 @@ export default class Connection {
      */
     function onOAuth2Challenge(session, method) {
       if (method === 'ticket') {
-        return self.settings.oAuth2Token;
+        return self._settings.oAuth2Token;
       }
       throw new Error(`don't know how to authenticate using '${method}'`);
     }
 
-    const authUrl = this.settings.wsUrl;
+    const authUrl = this._settings.wsUrl;
     let connection = null;
     // Open a websocket connection for streaming audio
     try {
@@ -113,7 +113,7 @@ export default class Connection {
         authmethods: ['ticket'],
         authid: 'oauth2',
         details: {
-          ticket: this.settings.oAuth2Token
+          ticket: this._settings.oAuth2Token
         },
         onchallenge: onOAuth2Challenge
       });
@@ -234,11 +234,11 @@ export default class Connection {
    * @returns {string} An url with the access token appended.
    */
   addAccessToken(url) {
-    if (!this.settings.oAuth2Token) {
+    if (!this._settings.oAuth2Token) {
       throw new Error('Please set oAuth2Token');
     }
     const secureUrl = url + (url.match(/\?/) ? '&' : '?') + 'access_token=' +
-      encodeURIComponent(this.settings.oAuth2Token);
+      encodeURIComponent(this._settings.oAuth2Token);
     return secureUrl;
   }
 
@@ -302,7 +302,7 @@ export default class Connection {
    * @throws {Promise} If the server returned an error.
    */
   getOauth2Token(basicAuth, organisationId, studentId) {
-    const url = this.settings.apiUrl + '/tokens';
+    const url = this._settings.apiUrl + '/tokens';
     let scopes = 'tenant/' + basicAuth.tenantId;
     if (organisationId) {
       scopes += '/organisation/' + organisationId;
@@ -326,7 +326,7 @@ export default class Connection {
         response.json()
           .then(data => {
             if (response.ok) {
-              this.settings.oAuth2Token = data.access_token;
+              this._settings.oAuth2Token = data.access_token;
               return data;
             }
             throw data;
