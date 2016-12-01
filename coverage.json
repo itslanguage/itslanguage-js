@@ -1,0 +1,179 @@
+{
+  "coverage": "84.58%",
+  "expectCount": 253,
+  "actualCount": 214,
+  "files": {
+    "src/administrative-sdk/administrative-sdk.js": {
+      "expectCount": 27,
+      "actualCount": 27,
+      "undocumentLines": []
+    },
+    "src/audio/audio-player.js": {
+      "expectCount": 21,
+      "actualCount": 19,
+      "undocumentLines": [
+        103,
+        110
+      ]
+    },
+    "src/audio/audio-recorder.js": {
+      "expectCount": 23,
+      "actualCount": 15,
+      "undocumentLines": [
+        308,
+        213,
+        107,
+        112,
+        144,
+        126,
+        227,
+        26
+      ]
+    },
+    "src/administrative-sdk/utils/base64-utils.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/administrative-sdk/basic-auth/basic-auth.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-challenge/choice-challenge.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-recognition/choice-recognition.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/connection/connection-controller.js": {
+      "expectCount": 10,
+      "actualCount": 9,
+      "undocumentLines": [
+        215
+      ]
+    },
+    "src/audio/cordova-media-player.js": {
+      "expectCount": 14,
+      "actualCount": 10,
+      "undocumentLines": [
+        36,
+        38,
+        37,
+        94
+      ]
+    },
+    "src/audio/cordova-media-recorder.js": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        28,
+        53,
+        29
+      ]
+    },
+    "src/audio/media-recorder.js": {
+      "expectCount": 9,
+      "actualCount": 5,
+      "undocumentLines": [
+        16,
+        42,
+        24,
+        41
+      ]
+    },
+    "src/administrative-sdk/organisation/organisation.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/administrative-sdk/phoneme/phoneme.js": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/speech-challenge/speech-challenge.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/speech-recording/speech-recording.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/tools.js": {
+      "expectCount": 9,
+      "actualCount": 7,
+      "undocumentLines": [
+        86,
+        90
+      ]
+    },
+    "src/administrative-sdk/student/student.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/audio/audio-tools.js": {
+      "expectCount": 10,
+      "actualCount": 4,
+      "undocumentLines": [
+        41,
+        74,
+        49,
+        50,
+        71,
+        72
+      ]
+    },
+    "src/audio/web-audio-player.js": {
+      "expectCount": 15,
+      "actualCount": 14,
+      "undocumentLines": [
+        26
+      ]
+    },
+    "src/audio/web-audio-recorder.js": {
+      "expectCount": 12,
+      "actualCount": 7,
+      "undocumentLines": [
+        30,
+        34,
+        20,
+        16,
+        24
+      ]
+    },
+    "src/administrative-sdk/word/word.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/word-chunk/word-chunk.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    }
+  }
+}

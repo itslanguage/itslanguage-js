@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/administrative-sdk/administrative-sdk.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/itslanguage/itslanguage-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tools.js~Stopwatch.html">Stopwatch</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html">AdministrativeSDK</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/basic-auth</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-recognition</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/organisation</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/phoneme</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/phoneme/phoneme.js~Phoneme.html">Phoneme</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-analysis</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-recording</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/student</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/student/student.js~Student.html">Student</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/utils/base64-utils.js~Base64Utils.html">Base64Utils</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word/word.js~Word.html">Word</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word-chunk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">audio</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/cordova-media-player.js~CordovaMediaPlayer.html">CordovaMediaPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/cordova-media-recorder.js~CordovaMediaRecorder.html">CordovaMediaRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/media-recorder.js~MediaRecorder.html">MediaRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-player.js~WebAudioPlayer.html">WebAudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-recorder.js~WebAudioRecorder.html">WebAudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/administrative-sdk/administrative-sdk.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import ChoiceChallengeController from &apos;./choice-challenge/choice-challenge-controller&apos;;
+import ChoiceRecognitionController from &apos;./choice-recognition/choice-recognition-controller&apos;;
+import OrganisationController from &apos;./organisation/organisation-controller&apos;;
+import PronAnalaController from &apos;./pronunciation-analysis/pronunciation-analysis-controller&apos;;
+import PronChallController from &apos;./pronunciation-challenge/pronunciation-challenge-controller&apos;;
+import SpeechChallengeController from &apos;./speech-challenge/speech-challenge-controller&apos;;
+import SpeechRecordingController from &apos;./speech-recording/speech-recording-controller&apos;;
+import StudentController from &apos;./student/student-controller&apos;;
+
+/**
+ * Facade for all methods used in the ITSLanguage Administrative SDK.
+ */
+export default class AdministrativeSDK {
+  /**
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
+   */
+  constructor(connection) {
+    this._connection = connection;
+    this._choiceChallengeController = new ChoiceChallengeController(this._connection);
+    this._choiceRecognitionController = new ChoiceRecognitionController(this._connection);
+    this._organisationController = new OrganisationController(this._connection);
+    this._pronAnalaController = new PronAnalaController(this._connection);
+    this._pronChallController = new PronChallController(this._connection);
+    this._speechChallengeController = new SpeechChallengeController(this._connection);
+    this._speechRecordingController = new SpeechRecordingController(this._connection);
+    this._studentController = new StudentController(this._connection);
+  }
+
+  /**
+   * Create a choice challenge.
+   * It is necessary for a choice challenge to exist for a recording to be valid.
+   *
+   * @param {ChoiceChallenge} choiceChallenge - Object to create.
+   * @returns {Promise} Containing the newly created object.
+   * @throws {Promise} {@link ChoiceChallenge#organisationId} field is required.
+   * @throws {Promise} If the server returned an error.
+   */
+  createChoiceChallenge(choiceChallenge) {
+    return this._choiceChallengeController.createChoiceChallenge(choiceChallenge);
+  }
+
+  /**
+   * Get a choice challenge. A choice challenge is identified by its identifier and its {@link Organisation}&apos;s
+   * identifier.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
+   * @returns {Promise} Containing a ChoiceChallenge.
+   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getChoiceChallenge(organisationId, challengeId) {
+    return this._choiceChallengeController.getChoiceChallenge(organisationId, challengeId);
+  }
+
+  /**
+   * List all choice challenges in the {@link Organisation}.
+   *
+   * @param {Organisation#id} organisationId - Specify an {@link Organisation} identifier.
+   * @returns {Promise} Containing an array of ChoiceChallenges.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  listChoiceChallenges(organisationId) {
+    return this._choiceChallengeController.listChoiceChallenges(organisationId);
+  }
+
+  /**
+   * Start a choice recognition from streaming audio.
+   *
+   * @param {ChoiceChallenge} challenge - The choice challenge to perform.
+   * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
+   * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
+   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @emits {string} &apos;ReadyToReceive&apos; when the call is made to receive audio. The recorder can now send audio.
+   * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
+   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise} {@link ChoiceChallenge#organisationId} field is required.
+   * @throws {Promise} If the connection is not open.
+   * @throws {Promise} If the recorder is already recording.
+   * @throws {Promise} If a recognition session is already in progress.
+   * @throws {Promise} If something went wrong during analysis.
+   */
+  startStreamingChoiceRecognition(challenge, recorder, trim) {
+    return this._choiceRecognitionController.startStreamingChoiceRecognition(challenge, recorder, trim);
+  }
+
+  /**
+   * Get a choice recognition in a choice challenge.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
+   * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
+   * @returns {Promise} Promise containing a ChoiceRecognition.
+   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} {@link ChoiceRecognition#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getChoiceRecognition(organisationId, challengeId, recognitionId) {
+    return this._choiceRecognitionController.getChoiceRecognition(organisationId, challengeId, recognitionId);
+  }
+
+  /**
+   * List all choice recognitions in a specific {@link ChoiceChallenge}.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
+   * @returns {Promise} Promise containing an array of ChoiceRecognitions.
+   * @throws {Promise} {@link Organisation#id} is required.
+   * @throws {Promise} {@link ChoiceChallenge#id} is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  listChoiceRecognitions(organisationId, challengeId) {
+    return this._choiceRecognitionController.listChoiceRecognitions(organisationId, challengeId);
+  }
+
+  /**
+   * Create an organisation.
+   *
+   * @param {Organisation} organisation - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} If the server returned an error.
+   */
+  createOrganisation(organisation) {
+    return this._organisationController.createOrganisation(organisation);
+  }
+
+  /**
+   * Get an organisation.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @returns {Promise} Promise containing an Organisation.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getOrganisation(organisationId) {
+    return this._organisationController.getOrganisation(organisationId);
+  }
+
+  /**
+   * List all organisations.
+   *
+   * @returns {Promise} Promise containing a list of Organisations.
+   * @throws {Promise} If no result could not be found.
+   */
+  listOrganisations() {
+    return this._organisationController.listOrganisations();
+  }
+
+  /**
+   * Start a pronunciation analysis from streaming audio.
+   *
+   * @param {PronunciationChallenge} challenge - The pronunciation challenge to perform.
+   * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
+   * @param {boolean} [trim] - Whether to trim the start and end of recorded audio (default: true).
+   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @emits {string} &apos;ReadyToReceive&apos; when the call is made to receive audio. The recorder can now send audio.
+   * @emits {Object} When the sent audio has finished alignment. Aligning audio is the process of mapping the audio
+   * to spoken words and determining when what is said. An object is sent containing a property &apos;progress&apos;,
+   * which is the sent audio alignment, and a property &apos;referenceAlignment&apos; which is the alignment of the
+   * reference audio.
+   * @throws {Promise} If challenge is not an object or not defined.
+   * @throws {Promise} If challenge has no id.
+   * @throws {Promise} If challenge has no organisationId.
+   * @throws {Promise} If the connection is not open.
+   * @throws {Promise} If the recorder is already recording.
+   * @throws {Promise} If a session is already in progress.
+   * @throws {Promise} If something went wrong during analysis.
+   */
+  startStreamingPronunciationAnalysis(challenge, recorder, trim) {
+    return this._pronAnalaController.startStreamingPronunciationAnalysis(challenge, recorder, trim);
+  }
+
+  /**
+   * Get a pronunciation analysis in a pronunciation challenge.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
+   * @param {PronunciationAnalysis#id} analysisId - Specify a pronunciation analysis identifier.
+   * @returns {Promise} Promise containing a PronunciationAnalysis.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} {@link PronunciationAnalysis#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getPronunciationAnalysis(organisationId, challengeId, analysisId) {
+    return this._pronAnalaController.getPronunciationAnalysis(organisationId, challengeId, analysisId);
+  }
+
+  /**
+   * List all pronunciation analyses in a specific pronunciation challenge.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
+   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier to list
+   * speech recordings for.
+   * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
+   * @returns {Promise} Promise containing a list of PronunciationAnalyses.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  listPronunciationAnalyses(organisationId, challengeId, detailed) {
+    return this._pronAnalaController.listPronunciationAnalyses(organisationId, challengeId, detailed);
+  }
+
+  /**
+   * Create a pronunciation challenge.
+   *
+   * @param {PronunciationChallenge} challenge - Object to create..
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
+   * @throws {Promise} {@link PronunciationChallenge#referenceAudio} of type &quot;Blob&quot; is required.
+   * @throws {Promise} If the server returned an error.
+   */
+  createPronunciationChallenge(challenge) {
+    return this._pronChallController.createPronunciationChallenge(challenge);
+  }
+
+  /**
+   * Get a pronunciation challenge.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
+   * @returns {Promise} Promise containing a PronunciationChallenge.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getPronunciationChallenge(organisationId, challengeId) {
+    return this._pronChallController.getPronunciationChallenge(organisationId, challengeId);
+  }
+
+  /**
+   * List all pronunciation challenges in the organisation.
+   *
+   * @param {Organisation#id} organisationId - The organisation ID.
+   * @returns {Promise} Promise containing a list of PronunciationChallenges.
+   * @throws {Promise} organisationId field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  listPronunciationChallenges(organisationId) {
+    return this._pronChallController.listPronunciationChallenges(organisationId);
+  }
+
+  /**
+   * Delete a pronunciation challenge.
+   *
+   * @param {PronunciationChallenge#id} challengeId - A pronunciation challenge identifier.
+   * @returns {Promise} Promise containing this.
+   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise} If the server returned an error.
+   */
+  deletePronunciationChallenge(challengeId) {
+    return this._pronChallController.deletePronunciationChallenge(challengeId);
+  }
+
+  /**
+   * Create a speech challenge.
+   *
+   * @param {SpeechChallenge} speechChallenge - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} {@link SpeechChallenge#organisationId} field is required
+   * @throws {Promise} If the server returned an error.
+   */
+  createSpeechChallenge(speechChallenge) {
+    return this._speechChallengeController.createSpeechChallenge(speechChallenge);
+  }
+
+  /**
+   * Get a speech challenge.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
+   * @returns {Promise} Promise containing a SpeechChallenge.
+   * @throws {Promise} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getSpeechChallenge(organisationId, challengeId) {
+    return this._speechChallengeController.getSpeechChallenge(organisationId, challengeId);
+  }
+
+  /**
+   * List all speech challenges in the organisation.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @returns {Promise} Promise containing a list of SpeechChallenges.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  listSpeechChallenges(organisationId) {
+    return this._speechChallengeController.listSpeechChallenges(organisationId);
+  }
+
+  /**
+   * Start a speech recording from streaming audio.
+   *
+   * @param {SpeechChallenge} challenge - The speech challenge to perform.
+   * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
+   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
+   * @emits {string} &apos;ReadyToReceive&apos; when the call is made to receive audio. The recorder can now send audio.
+   * @throws {Promise} If challenge is not an object or not defined.
+   * @throws {Promise} If challenge has no id.
+   * @throws {Promise} If challenge has no organisationId.
+   * @throws {Promise} If the connection is not open.
+   * @throws {Promise} If the recorder is already recording.
+   * @throws {Promise} If a session is already in progress.
+   * @throws {Promise} If something went wrong during recording.
+   */
+  startStreamingSpeechRecording(challenge, recorder) {
+    return this._speechRecordingController.startStreamingSpeechRecording(challenge, recorder);
+  }
+
+  /**
+   * Get a speech recording in a speech challenge.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
+   * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
+   * @returns {Promise} Promise containing a SpeechRecording.
+   * @throws {Promise} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} {@link SpeechRecording#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getSpeechRecording(organisationId, challengeId, recordingId) {
+    return this._speechRecordingController.getSpeechRecording(organisationId, challengeId, recordingId);
+  }
+
+  /**
+   * List all speech recordings in a specific speech challenge.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
+   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier to list speech recordings for.
+   * @returns {Promise} Promise containing a list of SpeechRecording.
+   * @throws {Promise} {@link SpeechChallenge#id} is required.
+   * @throws {Promise} {@link Organisation#id} is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  listSpeechRecordings(organisationId, challengeId) {
+    return this._speechRecordingController.listSpeechRecordings(organisationId, challengeId);
+  }
+
+  /**
+   * Create a student.
+   *
+   * @param {Student} student - Object to create.
+   * @returns {Promise} Promise containing the newly created object.
+   * @throws {Promise} {@link Student#organisationId} field is required.
+   * @throws {Promise} If the server returned an error.
+   */
+  createStudent(student) {
+    return this._studentController.createStudent(student);
+  }
+
+  /**
+   * Get a student.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {Student#id} studentId - Specify a student identifier.
+   * @returns {Promise} Promise containing a Student.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} {@link Student#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  getStudent(organisationId, studentId) {
+    return this._studentController.getStudent(organisationId, studentId);
+  }
+
+  /**
+   * List all students in the organisation.
+   *
+   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @returns {Promise} Promise containing a list of Students.
+   * @throws {Promise} {@link Organisation#id} field is required.
+   * @throws {Promise} If no result could not be found.
+   */
+  listStudents(organisationId) {
+    return this._studentController.listStudents(organisationId);
+  }
+}
+
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/administrative-sdk/choice-recognition/choice-recognition-controller.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/itslanguage/itslanguage-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tools.js~Stopwatch.html">Stopwatch</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html">AdministrativeSDK</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/basic-auth</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-recognition</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/organisation</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/phoneme</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/phoneme/phoneme.js~Phoneme.html">Phoneme</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-analysis</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-recording</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/student</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/student/student.js~Student.html">Student</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/utils</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/utils/base64-utils.js~Base64Utils.html">Base64Utils</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word/word.js~Word.html">Word</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word-chunk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">audio</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/cordova-media-player.js~CordovaMediaPlayer.html">CordovaMediaPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/cordova-media-recorder.js~CordovaMediaRecorder.html">CordovaMediaRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/media-recorder.js~MediaRecorder.html">MediaRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-player.js~WebAudioPlayer.html">WebAudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-recorder.js~WebAudioRecorder.html">WebAudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/administrative-sdk/choice-recognition/choice-recognition-controller.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Base64Utils from &apos;../utils/base64-utils&apos;;
+import ChoiceRecognition from &apos;./choice-recognition&apos;;
+import PronunciationAnalysis from &apos;../pronunciation-analysis/pronunciation-analysis&apos;;
+import Student from &apos;../student/student&apos;;
+import when from &apos;when&apos;;
+/**
+ * Controller class for the ChoiceRecognition model.
+ * @private
+ */
+export default class ChoiceRecognitionController {
+  /**
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
+   */
+  constructor(connection) {
+    /**
+     * Object to use for making a connection to the REST API and Websocket server.
+     * @type {Connection}
+     */
+    this._connection = connection;
+  }
+
+  /**
+   * Initialise the choice recognition challenge through RPCs.
+   *
+   * @param {ChoiceChallenge} challenge - ChoiceChallenge.
+   * @private
+   */
+  choiceRecognitionInitChallenge(challenge) {
+    return this._connection._session.call(&apos;nl.itslanguage.choice.init_challenge&apos;,
+      [this._connection._recognitionId, challenge.organisationId, challenge.id])
+      .then(
+        // RPC success callback
+        recognitionId =&gt; {
+          console.log(&apos;Challenge initialised for recognitionId: &apos; + this._connection._recognitionId);
+          return recognitionId;
+        },
+        // RPC error callback
+        res =&gt; {
+          console.error(&apos;RPC error returned:&apos;, res.error);
+          return Promise.reject(res);
+        }
+      );
+  }
+
+  /**
+   * Initialise the pronunciation analysis audio specs through RPCs.
+   *
+   * @param {AudioRecorder} recorder - AudioRecorder.
+   * @param {Function} dataavailableCb - Callback.
+   * @private
+   */
+  choiceRecognitionInitAudio(recorder, dataavailableCb) {
+    // Indicate to the socket server that we&apos;re about to start recording a
+    // challenge. This allows the socket server some time to fetch the metadata
+    // and reference audio to start the analysis when audio is actually submitted.
+    const specs = recorder.getAudioSpecs();
+    return this._connection._session.call(&apos;nl.itslanguage.choice.init_audio&apos;,
+      [this._connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
+      // RPC success callback
+      recognitionId =&gt; {
+        console.log(&apos;Accepted audio parameters for recognitionId after init_audio: &apos; + this._connection._recognitionId);
+        // Start listening for streaming data.
+        recorder.addEventListener(&apos;dataavailable&apos;, dataavailableCb);
+        return recognitionId;
+      },
+      // RPC error callback
+      res =&gt; {
+        console.error(&apos;RPC error returned:&apos;, res.error);
+        return Promise.reject(res);
+      }
+    );
+  }
+
+  startStreamingChoiceRecognition(challenge, recorder, trim) {
+    if (typeof challenge !== &apos;object&apos; || !challenge) {
+      return Promise.reject(new Error(
+        &apos;&quot;challenge&quot; parameter is required or invalid&apos;));
+    }
+    if (!challenge.id) {
+      return Promise.reject(new Error(&apos;challenge.id field is required&apos;));
+    }
+    if (!challenge.organisationId) {
+      return Promise.reject(new Error(&apos;challenge.organisationId field is required&apos;));
+    }
+
+    // Validate environment prerequisites.
+    if (!this._connection._session) {
+      return Promise.reject(new Error(&apos;WebSocket connection was not open.&apos;));
+    }
+
+    if (recorder.isRecording()) {
+      return Promise.reject(new Error(&apos;Recorder should not yet be recording.&apos;));
+    }
+
+    if (this._connection._recognitionId !== null) {
+      return Promise.reject(new Error(&apos;Session with recognitionId &apos; + this._connection._recognitionId +
+        &apos; still in progress.&apos;));
+    }
+
+    const self = this;
+    let trimAudioStart = 0.15;
+    const trimAudioEnd = 0.0;
+    if (trim === false) {
+      trimAudioStart = 0.0;
+    }
+    return new when.Promise((resolve, reject, notify) =&gt; {
+      function _cb(data) {
+        const recognition = new ChoiceRecognition(
+          challenge.id, data.studentId, data.id,
+          new Date(data.created), new Date(data.updated),
+          self._connection.addAccessToken(data.audioUrl), data.recognised);
+        recognition.recognitionId = self._connection._recognitionId;
+        resolve(recognition);
+      }
+
+      function _ecb(data) {
+        // There was an unexpected error.
+        const analysis = new PronunciationAnalysis(
+          challenge.id, data.studentId, data.id,
+          new Date(data.created), new Date(data.updated),
+          self._connection.addAccessToken(data.audioUrl));
+        reject(
+          {
+            analysis,
+            message: data.message
+          }
+        );
+      }
+
+      self._connection._recognitionId = null;
+
+      // Start streaming the binary audio when the user instructs
+      // the audio recorder to start recording.
+      function dataavailableCb(chunk) {
+        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        console.log(&apos;Sending audio chunk to websocket for recognitionId: &apos; +
+          self._connection._recognitionId);
+        self._connection._session.call(&apos;nl.itslanguage.choice.write&apos;,
+          [self._connection._recognitionId, encoded, &apos;base64&apos;]).then(
+          // RPC success callback
+          res =&gt; {
+            console.debug(&apos;Delivered audio successfully&apos;);
+            return res;
+          },
+          // RPC error callback
+          res =&gt; {
+            console.error(&apos;RPC error returned:&apos;, res.error);
+            _ecb(res);
+          }
+        );
+      }
+
+      function recognitionInitCb(recognitionId) {
+        self._connection._recognitionId = recognitionId;
+        console.log(&apos;Got recognitionId after initialisation: &apos; + self._connection._recognitionId);
+      }
+      self._connection._session.call(&apos;nl.itslanguage.choice.init_recognition&apos;, [],
+        {
+          trimStart: trimAudioStart,
+          trimEnd: trimAudioEnd
+        })
+        .then(recognitionInitCb)
+        .then(() =&gt; {
+          self.choiceRecognitionInitChallenge(challenge)
+            .then(() =&gt; {
+              const p = new Promise(resolve_ =&gt; {
+                if (recorder.hasUserMediaApproval()) {
+                  resolve_();
+                } else {
+                  recorder.addEventListener(&apos;ready&apos;, resolve_);
+                }
+              });
+              p.then(() =&gt; {
+                self.choiceRecognitionInitAudio(recorder, dataavailableCb)
+                  .catch(reject);
+              });
+            })
+            .then(() =&gt; notify(&apos;ReadyToReceive&apos;))
+            .catch(reject);
+        })
+        .catch(res =&gt; {
+          console.error(&apos;RPC error returned:&apos;, res.error);
+          reject(res);
+        });
+
+      // Stop listening when the audio recorder stopped.
+      function recordedCb() {
+        // When done, submit any plain text (non-JSON) to start analysing.
+        self._connection._session.call(&apos;nl.itslanguage.choice.recognise&apos;,
+          [self._connection._recognitionId]).then(
+          // RPC success callback
+          res =&gt; {
+            // Wait for analysis results to come back.
+            _cb(res);
+          },
+          // RPC error callback
+          res =&gt; {
+            console.error(&apos;RPC error returned:&apos;, res.error);
+            if (res.error === &apos;nl.itslanguage.recognition_failed&apos;) {
+              res.kwargs.recognition.message = &apos;Recognition failed&apos;;
+            } else {
+              res.kwargs.recognition.message = &apos;Unhandled error&apos;;
+            }
+            _ecb(res.kwargs.analysis);
+          });
+
+        recorder.removeEventListener(&apos;recorded&apos;, recordedCb);
+        recorder.removeEventListener(&apos;dataavailable&apos;, dataavailableCb);
+      }
+      recorder.addEventListener(&apos;recorded&apos;, recordedCb);
+    })
+      .then(res =&gt; {
+        self._connection._recognitionId = null;
+        return Promise.resolve(res);
+      })
+      .catch(error =&gt; {
+        self._connection._recognitionId = null;
+        return Promise.reject(error);
+      });
+  }
+
+  getChoiceRecognition(organisationId, challengeId, recognitionId) {
+    if (!organisationId) {
+      return Promise.reject(new Error(&apos;organisationId field is required&apos;));
+    }
+    if (!challengeId) {
+      return Promise.reject(new Error(&apos;challengeId field is required&apos;));
+    }
+    if (!recognitionId) {
+      return Promise.reject(new Error(&apos;recognitionId field is required&apos;));
+    }
+    const url = this._connection._settings.apiUrl + &apos;/challenges/choice/&apos; +
+      challengeId + &apos;/recognitions/&apos; + recognitionId;
+
+    return this._connection._secureAjaxGet(url)
+      .then(datum =&gt; {
+        const student = new Student(organisationId, datum.studentId);
+        const recognition = new ChoiceRecognition(challengeId, student,
+          datum.id, new Date(datum.created), new Date(datum.updated),
+          datum.audioUrl);
+        // Alignment may not be successful, in which case the recognition
+        // is not available, but it&apos;s still an attempt that is available,
+        // albeit without extended attributes like score and phonemes.
+        if (datum.recognised) {
+          recognition.recognised = datum.recognised;
+        }
+        return recognition;
+      });
+  }
+
+  listChoiceRecognitions(organisationId, challengeId) {
+    if (!challengeId) {
+      return Promise.reject(new Error(&apos;challengeId field is required&apos;));
+    }
+    if (!organisationId) {
+      return Promise.reject(new Error(&apos;organisationId field is required&apos;));
+    }
+    const url = this._connection._settings.apiUrl + &apos;/challenges/choice/&apos; +
+      challengeId + &apos;/recognitions&apos;;
+    return this._connection._secureAjaxGet(url)
+      .then(data =&gt; {
+        const recognitions = [];
+        data.forEach(datum =&gt; {
+          const student = new Student(organisationId, datum.studentId);
+          const recognition = new ChoiceRecognition(challengeId, student,
+            datum.id, new Date(datum.created), new Date(datum.updated),
+            datum.audioUrl);
+          // Recognition may not be successful, in which case the recognition
+          // is not available, but it&apos;s still an attempt that is available,
+          // albeit without extended attributes like recognised.
+          if (datum.recognised) {
+            recognition.recognised = datum.recognised;
+          }
+          recognitions.push(recognition);
+        });
+        return recognitions;
+      });
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
