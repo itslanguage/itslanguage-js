@@ -1,5 +1,9 @@
 # ITSLanguage JavaScript SDK
 
+## Documentation
+
+[Read the GitHub Pages website](https://itslanguage.github.io/itslanguage-js/)
+
 ## Installing
 
 To add the ITSLanguage SDK to your project:
@@ -28,14 +32,3 @@ console.log(itslanguage.audioSdk === audioSdk);
 
 For more usage examples, see the
 [ITSLanguage JavaScript SDK Examples](https://github.com/itslanguage/itslanguage-js-examples).
-
-
-## Documentation
-
-Generate and read documentation:
-
-```js
-npm install
-npm run docs
-sensible-browser esdoc/index.html
-```
