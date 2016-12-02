@@ -3,6 +3,11 @@ dist: trusty
 language: node_js
 node_js:
   - node
+script: "bash ./deploy.sh"
+env:
+  global:
+  - ENCRYPTION_LABEL: "72243f7e1ca1"
+  - COMMIT_AUTHOR_EMAIL: "loek@d-centralize.nl"
 before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
