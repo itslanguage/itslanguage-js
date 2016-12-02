@@ -17,7 +17,7 @@ export default class WebAudioPlayer {
    * @param {Object} [options] - Override any of the default settings.
    */
   constructor(options) {
-    this.settings = Object.assign({}, options);
+    this._settings = Object.assign({}, options);
 
     this._initPlayer();
   }
@@ -31,32 +31,32 @@ export default class WebAudioPlayer {
     const self = this;
 
     this.sound.addEventListener('playing', () => {
-      if (self.settings.playingCb) {
-        self.settings.playingCb();
+      if (self._settings.playingCb) {
+        self._settings.playingCb();
       }
     });
 
     this.sound.addEventListener('timeupdate', () => {
-      if (self.settings.timeupdateCb) {
-        self.settings.timeupdateCb();
+      if (self._settings.timeupdateCb) {
+        self._settings.timeupdateCb();
       }
     });
 
     this.sound.addEventListener('durationchange', () => {
-      if (self.settings.durationchangeCb) {
-        self.settings.durationchangeCb();
+      if (self._settings.durationchangeCb) {
+        self._settings.durationchangeCb();
       }
     });
 
     this.sound.addEventListener('canplay', () => {
-      if (self.settings.canplayCb) {
-        self.settings.canplayCb();
+      if (self._settings.canplayCb) {
+        self._settings.canplayCb();
       }
     });
 
     this.sound.addEventListener('ended', () => {
-      if (self.settings.endedCb) {
-        self.settings.endedCb();
+      if (self._settings.endedCb) {
+        self._settings.endedCb();
       }
     });
 
@@ -66,20 +66,20 @@ export default class WebAudioPlayer {
       // explicitly stopped (not paused) the audio.
       if (self._pauseIsStop === true) {
         self._pauseIsStop = false;
-        if (self.settings.pauseCb) {
-          self.settings.pauseCb();
+        if (self._settings.pauseCb) {
+          self._settings.pauseCb();
         }
-      } else if (self.settings.stoppedCb) {
-        self.settings.stoppedCb();
+      } else if (self._settings.stoppedCb) {
+        self._settings.stoppedCb();
       }
-      if (self.settings.playbackStoppedCb) {
-        self.settings.playbackStoppedCb();
+      if (self._settings.playbackStoppedCb) {
+        self._settings.playbackStoppedCb();
       }
     });
 
     this.sound.addEventListener('progress', () => {
-      if (self.settings.progressCb) {
-        self.settings.progressCb();
+      if (self._settings.progressCb) {
+        self._settings.progressCb();
       }
     });
 
@@ -108,8 +108,8 @@ export default class WebAudioPlayer {
           console.error('An unknown error occurred.');
           break;
       }
-      if (self.settings.errorCb) {
-        self.settings.errorCb();
+      if (self._settings.errorCb) {
+        self._settings.errorCb();
       }
     });
   }

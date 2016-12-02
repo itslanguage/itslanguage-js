@@ -15,7 +15,7 @@ export default class AudioPlayer {
    * @emits {Event} All events the HTML5 Audio also fires. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
    */
   constructor(options) {
-    this.settings = Object.assign({}, options);
+    this._settings = Object.assign({}, options);
 
     this._playbackCompatibility();
     const self = this;
@@ -57,7 +57,7 @@ export default class AudioPlayer {
     /**
      * @type {CordovaMediaPlayer|WebAudioPlayer} player - Specific audio player.
      */
-    this.player = this._getBestPlayer(callbacks);
+    this._player = this._getBestPlayer(callbacks);
     this._emitter = ee({});
     this._stopwatch = null;
   }
@@ -194,7 +194,7 @@ export default class AudioPlayer {
    */
   load(url, preload, loadedCb) {
     this.reset();
-    this.player.load(url, preload, loadedCb);
+    this._player.load(url, preload, loadedCb);
 
     // If preloading is disabled, the 'canplay' event won't be triggered.
     // In that case, fire it manually.
@@ -210,7 +210,7 @@ export default class AudioPlayer {
    */
   reset() {
     this.stop();
-    this.player.reset();
+    this._player.reset();
     this._emitter.emit('unloaded', []);
   }
 
@@ -220,13 +220,13 @@ export default class AudioPlayer {
    * @param {number} [position] - When position is given, start playing from this position (seconds).
    */
   play(position) {
-    if (this.player.isPlaying()) {
+    if (this._player.isPlaying()) {
       return;
     }
-    this.player.play(position);
+    this._player.play(position);
     if (this._stopwatch) {
-      const time = Math.round(this.player.getCurrentTime() * 10);
-      this._stopwatch.value = time;
+      const time = Math.round(this._player.getCurrentTime() * 10);
+      this._stopwatch._value = time;
       this._stopwatch.start();
     }
   }
@@ -239,7 +239,7 @@ export default class AudioPlayer {
       this._stopwatch.reset();
       this._stopwatch.stop();
     }
-    this.player.stop();
+    this._player.stop();
   }
 
   /**
@@ -249,14 +249,14 @@ export default class AudioPlayer {
     if (this._stopwatch) {
       this._stopwatch.stop();
     }
-    this.player.pause();
+    this._player.pause();
   }
 
   /**
    * Toggle audio playback. Switch from playing to paused state and back.
    */
   togglePlayback() {
-    if (this.player.isPlaying()) {
+    if (this._player.isPlaying()) {
       this.pause();
     } else {
       this.play();
@@ -267,7 +267,7 @@ export default class AudioPlayer {
    * Start preloading audio.
    */
   preload() {
-    this.player.preload();
+    this._player.preload();
   }
 
   /**
@@ -277,14 +277,14 @@ export default class AudioPlayer {
    */
   scrub(percentage) {
     if (percentage < 0) {
-      this.player.scrub(0);
+      this._player.scrub(0);
     } else if (percentage > 100) {
-      this.player.scrub(100);
+      this._player.scrub(100);
     } else {
-      this.player.scrub(percentage);
+      this._player.scrub(percentage);
     }
     if (this._stopwatch) {
-      this._stopwatch.value = Math.round(this.player.getCurrentTime() * 10);
+      this._stopwatch._value = Math.round(this._player.getCurrentTime() * 10);
     }
   }
 
@@ -294,7 +294,7 @@ export default class AudioPlayer {
    * @returns {number} Percentage of buffer fill.
    */
   getBufferFill() {
-    return this.player.getBufferFill();
+    return this._player.getBufferFill();
   }
 
   /**
@@ -303,7 +303,7 @@ export default class AudioPlayer {
    * @returns {number} Time in seconds as offset from the start.
    */
   getCurrentTime() {
-    return this.player.getCurrentTime();
+    return this._player.getCurrentTime();
   }
 
   /**
@@ -312,7 +312,7 @@ export default class AudioPlayer {
    * @returns {number} Time in seconds of fragment duration.
    */
   getDuration() {
-    return this.player.getDuration();
+    return this._player.getDuration();
   }
 
   /**
@@ -321,7 +321,7 @@ export default class AudioPlayer {
    * @returns {boolean} True if user is currently playing audio. False otherwise.
    */
   isPlaying() {
-    return this.player.isPlaying();
+    return this._player.isPlaying();
   }
 
   /**
@@ -331,14 +331,14 @@ export default class AudioPlayer {
    * or the player is preparing.
    */
   canPlay() {
-    return this.player.canPlay();
+    return this._player.canPlay();
   }
 
   /**
    * Bind a stopwatch to sync with the playing and stopping functionality of the player.
    *
    * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
-   * @throws {Error} If tickCb is null.
+   * @throws {Error} If _tickCb is null.
    * @returns {Stopwatch} New Stopwatch object.
    */
   bindStopwatch(tickCb) {

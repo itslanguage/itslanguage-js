@@ -113,15 +113,15 @@ describe('Cordova Media Player', () => {
     };
     window.Media.MEDIA_STARTING = 0;
     const mockClosure = {
-      settings: {
+      _settings: {
         durationchangeCb: jasmine.createSpy(),
         canplayCb: jasmine.createSpy()
       }
     };
     player._loadMedia(filePath, mockClosure, cb);
     expect(player._canPlay).toBeTruthy();
-    expect(mockClosure.settings.durationchangeCb).toHaveBeenCalledTimes(1);
-    expect(mockClosure.settings.canplayCb).toHaveBeenCalledTimes(1);
+    expect(mockClosure._settings.durationchangeCb).toHaveBeenCalledTimes(1);
+    expect(mockClosure._settings.canplayCb).toHaveBeenCalledTimes(1);
     expect(player.sound.seekTo).toHaveBeenCalledWith(0);
     expect(console.debug).toHaveBeenCalledTimes(6);
     expect(console.debug).toHaveBeenCalledWith('Loading media: filePath/file.file');
@@ -149,7 +149,7 @@ describe('Cordova Media Player', () => {
     };
     window.Media.MEDIA_STARTING = 1;
     const mockClosure = {
-      settings: {}
+      _settings: {}
     };
     player._loadMedia(filePath, mockClosure);
     expect(player._canPlay).toBeTruthy();

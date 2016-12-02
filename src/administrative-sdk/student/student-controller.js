@@ -27,7 +27,7 @@ export default class StudentController {
     if (!student.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection._settings.apiUrl + '/organisations/' +
       student.organisationId + '/students';
     const fd = JSON.stringify(student);
 
@@ -58,7 +58,7 @@ export default class StudentController {
     if (!studentId) {
       return Promise.reject(new Error('studentId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection._settings.apiUrl + '/organisations/' +
       organisationId + '/students/' + studentId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
@@ -82,7 +82,7 @@ export default class StudentController {
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/organisations/' +
+    const url = this._connection._settings.apiUrl + '/organisations/' +
       organisationId + '/students';
     return this._connection._secureAjaxGet(url)
       .then(data => {

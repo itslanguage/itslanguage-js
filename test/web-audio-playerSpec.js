@@ -67,7 +67,7 @@ describe('WebAudioPlayer', () => {
       webAudioPlayer._pauseIsStop = true;
       audioMock.firePausedEvent();
 
-      expect(webAudioPlayer.settings).toEqual(options);
+      expect(webAudioPlayer._settings).toEqual(options);
       expect(webAudioPlayer._pauseIsStop).toBeFalsy();
       expect(options.playingCb).toHaveBeenCalledTimes(1);
       expect(options.timeupdateCb).toHaveBeenCalledTimes(1);
@@ -111,7 +111,7 @@ describe('WebAudioPlayer', () => {
       webAudioPlayer = new WebAudioPlayer(null);
       webAudioPlayer._pauseIsStop = true;
       audioMock.firePausedEvent();
-      expect(webAudioPlayer.settings).toEqual({});
+      expect(webAudioPlayer._settings).toEqual({});
       expect(webAudioPlayer._pauseIsStop).toBeFalsy();
     });
   });

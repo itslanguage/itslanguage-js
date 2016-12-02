@@ -44,7 +44,7 @@ describe('WebAudioRecorder', () => {
       expect(webAudioRecorder.sampleRate).toEqual(24000);
       expect(webAudioRecorder.channels).toEqual(1);
       expect(webAudioRecorder.packer).toEqual(packerMock);
-      expect(webAudioRecorder.recorder).toEqual(mockRecorder);
+      expect(webAudioRecorder._recorder).toEqual(mockRecorder);
       expect(source.connect).toHaveBeenCalledTimes(1);
       expect(source.connect).toHaveBeenCalledWith(mockRecorder);
       expect(mockRecorder.onaudioprocess).toBeDefined();
@@ -61,7 +61,7 @@ describe('WebAudioRecorder', () => {
       expect(webAudioRecorder.sampleRate).toEqual(48000);
       expect(webAudioRecorder.channels).toEqual(1);
       expect(webAudioRecorder.packer).toEqual(packerMock);
-      expect(webAudioRecorder.recorder).toEqual(mockRecorder);
+      expect(webAudioRecorder._recorder).toEqual(mockRecorder);
       expect(source.connect).toHaveBeenCalledTimes(1);
       expect(source.connect).toHaveBeenCalledWith(mockRecorder);
       expect(mockRecorder.onaudioprocess).toBeDefined();

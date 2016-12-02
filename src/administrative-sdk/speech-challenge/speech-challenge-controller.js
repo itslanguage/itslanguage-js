@@ -36,7 +36,7 @@ export default class SpeechChallengeController {
     if (speechChallenge.referenceAudio) {
       fd.append('referenceAudio', speechChallenge.referenceAudio);
     }
-    const url = this._connection.settings.apiUrl + '/challenges/speech';
+    const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
@@ -66,7 +66,7 @@ export default class SpeechChallengeController {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId;
+    const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId;
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
@@ -89,7 +89,7 @@ export default class SpeechChallengeController {
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/speech';
+    const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxGet(url)
       .then(data => {

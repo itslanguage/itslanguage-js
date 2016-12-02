@@ -104,7 +104,7 @@ describe('Connection', () => {
     });
 
     it('should throw error on required auth credentials on GET', done => {
-      api.settings.oAuth2Token = null;
+      api._settings.oAuth2Token = null;
       api._secureAjaxGet()
         .then(fail)
         .catch(error => {
@@ -114,7 +114,7 @@ describe('Connection', () => {
     });
 
     it('should throw error on required auth credentials on POST', done => {
-      api.settings.oAuth2Token = null;
+      api._settings.oAuth2Token = null;
       api._secureAjaxPost()
         .then(fail)
         .catch(error => {
@@ -124,7 +124,7 @@ describe('Connection', () => {
     });
 
     it('should throw error on required auth credentials on DELETE', done => {
-      api.settings.oAuth2Token = null;
+      api._settings.oAuth2Token = null;
       api._secureAjaxDelete()
         .then(fail)
         .catch(error => {
@@ -135,7 +135,7 @@ describe('Connection', () => {
 
     describe('Authorization header', () => {
       beforeEach(() => {
-        url = api.settings.apiUrl;
+        url = api._settings.apiUrl;
         fakeResponse = new Response(JSON.stringify({}), {
           status: 200,
           headers: {
@@ -395,7 +395,7 @@ describe('Connection', () => {
         expect(result.token_type).toEqual('Bearer');
         expect(result.access_token).toEqual('2b198b6bc87db1bdb');
         expect(result.scope).toEqual('tenant/4');
-        expect(api.settings.oAuth2Token).toEqual('2b198b6bc87db1bdb');
+        expect(api._settings.oAuth2Token).toEqual('2b198b6bc87db1bdb');
       })
       .catch(error => {
         fail('No error should be thrown ' + error);
@@ -628,7 +628,7 @@ describe('Autobahn', () => {
     spyOn(console, 'log');
     spyOn(console, 'debug');
     spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
-    api.settings.oAuth2Token = 'token';
+    api._settings.oAuth2Token = 'token';
     api.webSocketConnect();
     mockSession.call('apiUrl', 'extra argument');
     expect(api.fireEvent).toHaveBeenCalledWith('websocketError', ['error']);

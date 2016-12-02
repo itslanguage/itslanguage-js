@@ -30,10 +30,10 @@ export default class Stopwatch {
     if (!tickCb) {
       throw new Error('tickCb parameter required');
     }
-    this.interval = null;
-    this.value = 0;
-    this.tickCb = tickCb;
-    this.emitter = ee({});
+    this._interval = null;
+    this._value = 0;
+    this._tickCb = tickCb;
+    this._emitter = ee({});
   }
 
   /**
@@ -43,7 +43,7 @@ export default class Stopwatch {
     console.debug('Start counting');
     // Tick every 100ms (0.1s)
     const self = this;
-    this.interval = setInterval(() => {
+    this._interval = setInterval(() => {
       self.update();
     }, 100);
   }
@@ -53,9 +53,9 @@ export default class Stopwatch {
    */
   stop() {
     console.debug('Stop counting');
-    clearInterval(this.interval);
+    clearInterval(this._interval);
     this.tick();
-    this.interval = null;
+    this._interval = null;
   }
 
   /**
@@ -63,7 +63,7 @@ export default class Stopwatch {
    */
   reset() {
     console.debug('Reset count');
-    this.value = 0;
+    this._value = 0;
     this.tick();
   }
 
@@ -72,23 +72,23 @@ export default class Stopwatch {
    */
   update() {
     this.tick();
-    this.value++;
+    this._value++;
   }
 
   /**
    * Invoke the tick callback with the current value.
    */
   tick() {
-    this.tickCb(this.value);
-    this.emitter.emit('tick', this.value);
+    this._tickCb(this._value);
+    this._emitter.emit('tick', this._value);
   }
 
   registerListener(tickCb) {
-    this.emitter.on('tick', tickCb);
+    this._emitter.on('tick', tickCb);
   }
 
   stopListening(tickCb) {
-    this.emitter.off('tick', tickCb);
+    this._emitter.off('tick', tickCb);
   }
 
 }

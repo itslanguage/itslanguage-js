@@ -217,7 +217,7 @@ export default class SpeechRecordingController {
     if (!recordingId) {
       return Promise.reject(new Error('recordingId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings/' + recordingId;
+    const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings/' + recordingId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(organisationId, data.studentId);
@@ -247,7 +247,7 @@ export default class SpeechRecordingController {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
-    const url = this._connection.settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings';
+    const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const recordings = [];
