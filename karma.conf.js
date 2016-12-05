@@ -56,7 +56,7 @@ module.exports = config => {
       'test/**/*.js': ['browserify']
     },
     browserify: {
-      entries: './index.js',
+      entries: 'src/index.js',
       debug: true,
       transform: [
         istanbul({instrumenter: require('isparta')}),
