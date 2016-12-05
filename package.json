@@ -21,7 +21,8 @@
     "client-oauth2": "2.2.0",
     "event-emitter": "^0.3.4",
     "guid": "0.0.12",
-    "pcmjs": "^0.0.2"
+    "pcmjs": "^0.0.2",
+    "when": "^3.7.7"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -45,7 +46,6 @@
     "karma-cli": "^1.0.1",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.0.2",
-    "watchify": "^3.7.0",
-    "when": "^3.7.7"
+    "watchify": "^3.7.0"
   }
 }
