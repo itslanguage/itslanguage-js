@@ -3,7 +3,7 @@ dist: trusty
 language: node_js
 node_js:
   - node
-script: "bash ./deploy.sh"
+after_success: "bash ./deploy.sh"
 env:
   global:
   - ENCRYPTION_LABEL: "72243f7e1ca1"
