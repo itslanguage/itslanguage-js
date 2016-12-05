@@ -12,7 +12,7 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 before_deploy:
-- babel src index.js --out-dir build --source-maps inline && cp package.json build/
+- babel src --out-dir build --source-maps inline && cp package.json build/
 deploy:
   - provider: npm
     email: kvdb@d-centralize.nl
