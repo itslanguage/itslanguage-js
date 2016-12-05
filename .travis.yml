@@ -14,15 +14,15 @@ before_install:
 before_deploy:
 - babel src index.js --out-dir build --source-maps inline && cp package.json build/
 deploy:
-  provider: npm
-  email: kvdb@d-centralize.nl
-  api_key:
-    secure: KlsdLI5KOLYVhkuQTAxxHlBMNcWtKJ3mCoX66jy1vv4CaIaYBrtgpU8BBPoR8zpQOfvpr7LwaOmeSSmCvfsOC3Ai+0XtmJNBeotnpCkHOz5Z7+vFpUmpDjWiCtIkerlZZdCFBIv1t8Lz870RVoTyevZo7txHcr6BD4QMEJcS8siZmGNLOSiUeoJXkpd9e4VNHKjodbm8stCWQjdIQ4f85B/EvGPzS3vosh8M6W++w1j1vNeJXCGfjoI+bfDr1sg0P31h2KBSWmTF+idFMSEWPgbPwq0/rrcUwTrrpaA2mbarNG5aDLRIdmUFdw+xw3TW/TE6euy6SVNFOcE+Wy8BKgOsZLVtz9s6TWB0eHcfoWg5nEwbRwu1FHHItmVMP9nW7aX7mKBlXBnXh5egekw4m6vGwUEe9ayhJs0xXz8vyrvkwJvAtDmx0eGaCLupBbHJRnjZvlLqU+2HeUMxNz3t/MbXdbytazyA5TDiBp5ZSJ9srCoCby0mnFjkQxmgFB6XbEpVz6Zo1e0hOwdP5P7iWxbKzBGvwgK2QjZDhLpCctvTWPGNmO0bUZMbCdVPPRcfIKe2m83CTvVbUy47vzreeiaVhx+Wef0MUr/cm1SvDOoNaIWb2j5eVHUvbOr5+L1uV0peR6oO26xOVmQZzyMBjC+K9vfiGeHUO3t4072C4nk=
-  on:
-    tags: true
-  local_dir: build
+  - provider: npm
+    email: kvdb@d-centralize.nl
+    api_key:
+      secure: KlsdLI5KOLYVhkuQTAxxHlBMNcWtKJ3mCoX66jy1vv4CaIaYBrtgpU8BBPoR8zpQOfvpr7LwaOmeSSmCvfsOC3Ai+0XtmJNBeotnpCkHOz5Z7+vFpUmpDjWiCtIkerlZZdCFBIv1t8Lz870RVoTyevZo7txHcr6BD4QMEJcS8siZmGNLOSiUeoJXkpd9e4VNHKjodbm8stCWQjdIQ4f85B/EvGPzS3vosh8M6W++w1j1vNeJXCGfjoI+bfDr1sg0P31h2KBSWmTF+idFMSEWPgbPwq0/rrcUwTrrpaA2mbarNG5aDLRIdmUFdw+xw3TW/TE6euy6SVNFOcE+Wy8BKgOsZLVtz9s6TWB0eHcfoWg5nEwbRwu1FHHItmVMP9nW7aX7mKBlXBnXh5egekw4m6vGwUEe9ayhJs0xXz8vyrvkwJvAtDmx0eGaCLupBbHJRnjZvlLqU+2HeUMxNz3t/MbXdbytazyA5TDiBp5ZSJ9srCoCby0mnFjkQxmgFB6XbEpVz6Zo1e0hOwdP5P7iWxbKzBGvwgK2QjZDhLpCctvTWPGNmO0bUZMbCdVPPRcfIKe2m83CTvVbUy47vzreeiaVhx+Wef0MUr/cm1SvDOoNaIWb2j5eVHUvbOr5+L1uV0peR6oO26xOVmQZzyMBjC+K9vfiGeHUO3t4072C4nk=
+    on:
+      tags: true
+    local_dir: build
 
-  provider: script
-  script: ./deploy.sh
-  on:
-    tags: true
+  - provider: script
+    script: ./deploy.sh
+    on:
+      tags: true
