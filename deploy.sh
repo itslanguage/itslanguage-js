@@ -39,5 +39,3 @@ git subtree split --prefix esdoc/ -b gh-pages
 git push -f origin gh-pages:gh-pages
 
 npm run babelify
-
-cd build/
