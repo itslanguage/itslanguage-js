@@ -37,3 +37,5 @@ git commit -m "Deploy to GitHub Pages: ${SHA}"
 
 git subtree split --prefix esdoc/ -b gh-pages
 git push -f origin gh-pages:gh-pages
+
+npm run babelify
