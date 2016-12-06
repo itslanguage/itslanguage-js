@@ -26,4 +26,4 @@ deploy:
       tags: true
     skip_cleanup: true
     file_glob: true
-    file: "build/**/*"
+    file: build/
