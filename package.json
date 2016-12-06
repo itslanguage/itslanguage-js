@@ -1,6 +1,6 @@
 {
   "name": "itslanguage",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "The core JavaScript SDK for ITSLanguage.",
   "main": "index.js",
   "scripts": {
