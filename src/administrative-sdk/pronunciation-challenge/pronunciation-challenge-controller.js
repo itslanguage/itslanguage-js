@@ -16,18 +16,15 @@ export default class PronunciationChallengeController {
   }
 
   /**
-   * Create a pronunciation challenge.
+   * Create a pronunciation challenge. The created challenge will be part of the current active {@link Organisation}
+   * derived from the OAuth2 scope.
    *
    * @param {PronunciationChallenge} challenge - Object to create..
    * @returns {Promise} Promise containing the newly created object.
-   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} {@link PronunciationChallenge#referenceAudio} of type "Blob" is required.
    * @throws {Promise} If the server returned an error.
    */
   createPronunciationChallenge(challenge) {
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
     if (typeof challenge.referenceAudio !== 'object' || !challenge.referenceAudio) {
       return Promise.reject(new Error(
         'referenceAudio parameter of type "Blob" is required'));
@@ -43,7 +40,7 @@ export default class PronunciationChallengeController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new PronunciationChallenge(challenge.organisationId, data.id, data.transcription,
+        const result = new PronunciationChallenge(data.id, data.transcription,
           data.referenceAudio);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
@@ -55,27 +52,21 @@ export default class PronunciationChallengeController {
   }
 
   /**
-   * Get a pronunciation challenge.
+   * Get a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
    * @returns {Promise} Promise containing a PronunciationChallenge.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getPronunciationChallenge(organisationId, challengeId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getPronunciationChallenge(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const challenge = new PronunciationChallenge(organisationId, data.id,
-          data.transcription, data.referenceAudio);
+        const challenge = new PronunciationChallenge(data.id, data.transcription, data.referenceAudio);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         challenge.referenceAudioUrl = data.referenceAudioUrl;
@@ -85,24 +76,17 @@ export default class PronunciationChallengeController {
   }
 
   /**
-   * List all pronunciation challenges in the organisation.
-   *
-   * @param {Organisation#id} organisationId - The organisation ID.
+   * List all pronunciation challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    * @returns {Promise} Promise containing a list of PronunciationChallenges.
-   * @throws {Promise} organisationId field is required.
    * @throws {Promise} If no result could not be found.
    */
-  listPronunciationChallenges(organisationId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  listPronunciationChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {
-          const challenge = new PronunciationChallenge(
-            organisationId, datum.id, datum.transcription, datum.referenceAudio);
+          const challenge = new PronunciationChallenge(datum.id, datum.transcription, datum.referenceAudio);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenge.referenceAudioUrl = datum.referenceAudioUrl;
@@ -114,8 +98,7 @@ export default class PronunciationChallengeController {
   }
 
   /**
-   * Delete a pronunciation challenge.
-   *
+   * Delete a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    * @param {PronunciationChallenge#id} challengeId - A pronunciation challenge identifier.
    * @returns {Promise} Promise containing this.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
