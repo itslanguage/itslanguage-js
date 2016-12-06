@@ -4,7 +4,8 @@
   "description": "The core JavaScript SDK for ITSLanguage.",
   "main": "index.js",
   "scripts": {
-    "test": "concurrently 'eslint .' 'karma start --single-run --color'"
+    "test": "concurrently 'eslint .' 'karma start --single-run --color'",
+    "esdoc": "esdoc -c esdoc.json"
   },
   "author": "ITSLanguage",
   "license": "MIT",

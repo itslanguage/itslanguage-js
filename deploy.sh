@@ -31,7 +31,7 @@ chmod 600 itsl_js_deploy_key
 eval `ssh-agent -s`
 ssh-add itsl_js_deploy_key
 
-esdoc -c esdoc.json
+npm run esdoc
 git add esdoc/
 git commit -m "Deploy to GitHub Pages: ${SHA}"
 
