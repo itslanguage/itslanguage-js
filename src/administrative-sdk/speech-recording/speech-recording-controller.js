@@ -71,7 +71,6 @@ export default class SpeechRecordingController {
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} If challenge is not an object or not defined.
    * @throws {Promise} If challenge has no id.
-   * @throws {Promise} If challenge has no organisationId.
    * @throws {Promise} If the connection is not open.
    * @throws {Promise} If the recorder is already recording.
    * @throws {Promise} If a session is already in progress.
@@ -85,9 +84,6 @@ export default class SpeechRecordingController {
     }
     if (!challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
-    }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
     }
     if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
@@ -191,21 +187,17 @@ export default class SpeechRecordingController {
   }
 
   /**
-   * Get a speech recording in a speech challenge.
+   * Get a speech recording in a speech challenge from the current active {@link Organisation} derived from the OAuth2
+   * scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
    * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
    * @returns {Promise} Promise containing a SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} field is required.
-   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} {@link SpeechRecording#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getSpeechRecording(organisationId, challengeId, recordingId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getSpeechRecording(challengeId, recordingId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -219,19 +211,15 @@ export default class SpeechRecordingController {
   }
 
   /**
-   * List all speech recordings in a specific speech challenge.
+   * List all speech recordings in a specific speech challenge from the current active {@link Organisation} derived
+   * from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier to list speech recordings for.
    * @returns {Promise} Promise containing a list of SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} is required.
-   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} If no result could not be found.
    */
-  listSpeechRecordings(organisationId, challengeId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  listSpeechRecordings(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
