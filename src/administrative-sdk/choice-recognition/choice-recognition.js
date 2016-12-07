@@ -10,7 +10,7 @@ export default class ChoiceRecognition {
    * @param {string} id - The {@link ChoiceRecognition} identifier.
    * @param {Date} created - The creation date of the entity.
    * @param {Date} updated - The most recent update date of the entity.
-   * @param {URL} audioUrl - The audio fragment as streaming audio link.
+   * @param {string} audioUrl - The audio fragment as streaming audio link.
    * @param {string} recognised - The recognised sentence.
    */
   constructor(challenge, student, id, created, updated, audioUrl, recognised) {
