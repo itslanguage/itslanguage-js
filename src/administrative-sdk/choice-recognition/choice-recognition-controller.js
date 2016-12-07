@@ -262,16 +262,9 @@ export default class ChoiceRecognitionController {
     return this._connection._secureAjaxGet(url)
       .then(datum => {
         const student = new Student(organisationId, datum.studentId);
-        const recognition = new ChoiceRecognition(challengeId, student,
+        return new ChoiceRecognition(challengeId, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl);
-        // Alignment may not be successful, in which case the recognition
-        // is not available, but it's still an attempt that is available,
-        // albeit without extended attributes like score and phonemes.
-        if (datum.recognised) {
-          recognition.recognised = datum.recognised;
-        }
-        return recognition;
+          datum.audioUrl, datum.recognised);
       });
   }
 
@@ -301,13 +294,7 @@ export default class ChoiceRecognitionController {
           const student = new Student(organisationId, datum.studentId);
           const recognition = new ChoiceRecognition(challengeId, student,
             datum.id, new Date(datum.created), new Date(datum.updated),
-            datum.audioUrl);
-          // Recognition may not be successful, in which case the recognition
-          // is not available, but it's still an attempt that is available,
-          // albeit without extended attributes like recognised.
-          if (datum.recognised) {
-            recognition.recognised = datum.recognised;
-          }
+            datum.audioUrl, datum.recognised);
           recognitions.push(recognition);
         });
         return recognitions;

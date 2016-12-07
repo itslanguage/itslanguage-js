@@ -55,20 +55,5 @@ export default class ChoiceRecognition {
      * @type {string}
      */
     this.recognised = recognised;
-
-    /**
-     * @type {Date} created The creation date of the challenge entity.
-     */
-    this.created = null;
-
-    /**
-     * @type {Date} updated The most recent update date of the challenge entity.
-     */
-    this.updated = null;
-
-    /**
-     * @type {Blob}
-     */
-    this.audio = null;
   }
 }
