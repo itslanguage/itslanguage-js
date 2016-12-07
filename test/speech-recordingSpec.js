@@ -6,67 +6,6 @@ import SpeechRecordingController from '../src/administrative-sdk/speech-recordin
 import Student from '../src/administrative-sdk/student/student';
 import autobahn from 'autobahn';
 
-describe('SpeechRecording object test', () => {
-  it('should require all required fields in constructor', () => {
-    expect(() => {
-      new SpeechRecording();
-    }).toThrowError(
-      'challenge parameter of type "SpeechChallenge ID" is required');
-    expect(() => {
-      new SpeechRecording(1);
-    }).toThrowError(
-      'challenge parameter of type "SpeechChallenge ID" is required');
-
-    const challenge = new SpeechChallenge('fb', '1');
-    expect(() => {
-      new SpeechRecording(challenge.id);
-    }).toThrowError(
-      'student parameter of type "Student" is required');
-    expect(() => {
-      new SpeechRecording(challenge.id, 1);
-    }).toThrowError(
-      'student parameter of type "Student" is required');
-
-    const student = new Student('org');
-    expect(() => {
-      new SpeechRecording(challenge.id, student, 1);
-    }).toThrowError('id parameter of type "string|null" is required');
-
-    expect(() => {
-      new SpeechRecording(challenge.id, student, '1', 'foo');
-    }).toThrowError('audio parameter of type "Blob|null" is required');
-  });
-  it('should instantiate a SpeechRecording', () => {
-    const blob = new Blob(['1234567890']);
-    const challenge = new SpeechChallenge('fb', '1');
-    const student = new Student('org');
-
-    // Without audio
-    let s = new SpeechRecording(challenge.id, student, null);
-    expect(s).toBeDefined();
-    expect(s.id).toBeNull();
-    expect(s.audio).toBeUndefined();
-    expect(s.challenge).toBe(challenge.id);
-    expect(s.student).toBe(student);
-
-    // Without id
-    s = new SpeechRecording(challenge.id, student, null, blob);
-    expect(s).toBeDefined();
-    expect(s.id).toBe(null);
-    expect(s.audio).toBe(blob);
-    expect(s.challenge).toBe(challenge.id);
-    expect(s.student).toBe(student);
-
-    // With id
-    s = new SpeechRecording(challenge.id, student, 'test', blob);
-    expect(s).toBeDefined();
-    expect(s.id).toBe('test');
-    expect(s.audio).toBe(blob);
-    expect(s.challenge).toBe(challenge.id);
-    expect(s.student).toBe(student);
-  });
-});
-
 describe('SpeechRecording API interaction test', () => {
   const api = new Connection({
     oAuth2Token: 'token'
@@ -151,7 +90,6 @@ describe('SpeechRecording API interaction test', () => {
         const stringDate = '2014-12-31T23:59:59Z';
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);
-        recording.audio = null;
         recording.audioUrl = audioUrl + '?access_token=token';
         expect(result).toEqual(recording);
       })
@@ -212,7 +150,6 @@ describe('SpeechRecording API interaction test', () => {
         const stringDate = '2014-12-31T23:59:59Z';
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);
-        recording.audio = null;
         recording.audioUrl = audioUrl + '?access_token=token';
         expect(result[0]).toEqual(recording);
       })
