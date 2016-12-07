@@ -10,62 +10,41 @@ export default class SpeechRecording {
    * @param {string} [id] - The speech recording identifier. If none is given, one is generated.
    * @param {Blob} audio - The recorded audio fragment.
    */
-  constructor(challenge, student, id, audio) {
-    if (id && typeof id !== 'string') {
-      throw new Error(
-        'id parameter of type "string|null" is required');
-    }
+  constructor(challenge, student, id, created, updated, audioUrl) {
     /**
      * The speech recording identifier.
      * @type {string}
      */
     this.id = id;
-    if (typeof challenge !== 'string' || !challenge) {
-      throw new Error(
-        'challenge parameter of type "SpeechChallenge ID" is required');
-    }
 
     /**
      * The SpeechChallenge instance this speech is recorded for.
      * @type {SpeechChallenge}
      */
     this.challenge = challenge;
-    if (typeof student !== 'object' || !student) {
-      throw new Error(
-        'student parameter of type "Student" is required');
-    }
+
     /**
      * The Student instance on whose behalf this audio is recorded.
      * @type {Student}
      */
     this.student = student;
 
-    if (!(audio instanceof Blob || audio === null || audio === undefined)) {
-      throw new Error(
-        'audio parameter of type "Blob|null" is required');
-    }
-    /**
-     * The recorded audio fragment.
-     * @type {Blob}
-     */
-    this.audio = audio;
-
     /**
      * The creation date of the entity.
      * @type {Date}
      */
-    this.created = null;
+    this.created = created;
 
     /**
      * The most recent update date of the entity.
      * @type {Date}
      */
-    this.updated = null;
+    this.updated = updated;
 
     /**
      * The audio fragment as streaming audio link.
      * @type {string}
      */
-    this.audioUrl = null;
+    this.audioUrl = audioUrl;
   }
 }
