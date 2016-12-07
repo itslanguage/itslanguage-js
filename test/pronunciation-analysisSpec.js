@@ -877,7 +877,7 @@ describe('PronunciationAnalyses API interaction test', () => {
         const stringDate = '2014-12-31T23:59:59Z';
         const student = new Student('fb', '6');
         const analysis = new PronunciationAnalysis(challenge.id, student,
-          '5', new Date(stringDate), new Date(stringDate), audioUrl);
+          '5', new Date(stringDate), new Date(stringDate), audioUrl, undefined, undefined, null);
         expect(result).toEqual(analysis);
       })
       .catch(error => {
@@ -1015,11 +1015,11 @@ describe('PronunciationAnalyses API interaction test', () => {
         const stringDate = '2014-12-31T23:59:59Z';
         const student = new Student('fb', '6');
         const analysis = new PronunciationAnalysis(challenge.id, student,
-          '5', new Date(stringDate), new Date(stringDate));
+          '5', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis.audioUrl = audioUrl;
         const student2 = new Student('fb', '24');
         const analysis2 = new PronunciationAnalysis(challenge.id, student2,
-          '6', new Date(stringDate), new Date(stringDate));
+          '6', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis2.audioUrl = audioUrl;
         analysis2.score = 7.5;
         const chunk = [
@@ -1161,11 +1161,11 @@ describe('PronunciationAnalyses API interaction test', () => {
         const stringDate = '2014-12-31T23:59:59Z';
         const student = new Student('fb', '6');
         const analysis = new PronunciationAnalysis(challenge.id, student,
-          '5', new Date(stringDate), new Date(stringDate));
+          '5', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis.audioUrl = audioUrl;
         const student2 = new Student('fb', '24');
         const analysis2 = new PronunciationAnalysis(challenge.id, student2,
-          '6', new Date(stringDate), new Date(stringDate));
+          '6', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis2.audioUrl = audioUrl;
         analysis2.score = 7.5;
         const phoneme1 = new Phoneme('b', 0.9);

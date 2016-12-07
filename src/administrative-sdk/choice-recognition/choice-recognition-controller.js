@@ -1,6 +1,5 @@
 import Base64Utils from '../utils/base64-utils';
 import ChoiceRecognition from './choice-recognition';
-import PronunciationAnalysis from '../pronunciation-analysis/pronunciation-analysis';
 import Student from '../student/student';
 import when from 'when';
 /**
@@ -76,7 +75,7 @@ export default class ChoiceRecognitionController {
    * @param {ChoiceChallenge} challenge - The choice challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
    * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
@@ -130,13 +129,13 @@ export default class ChoiceRecognitionController {
 
       function _ecb(data) {
         // There was an unexpected error.
-        const analysis = new PronunciationAnalysis(
+        const recognition = new ChoiceRecognition(
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
-          self._connection.addAccessToken(data.audioUrl));
+          self._connection.addAccessToken(data.audioUrl), null);
         reject(
           {
-            analysis,
+            recognition,
             message: data.message
           }
         );
@@ -262,16 +261,9 @@ export default class ChoiceRecognitionController {
     return this._connection._secureAjaxGet(url)
       .then(datum => {
         const student = new Student(organisationId, datum.studentId);
-        const recognition = new ChoiceRecognition(challengeId, student,
+        return new ChoiceRecognition(challengeId, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl);
-        // Alignment may not be successful, in which case the recognition
-        // is not available, but it's still an attempt that is available,
-        // albeit without extended attributes like score and phonemes.
-        if (datum.recognised) {
-          recognition.recognised = datum.recognised;
-        }
-        return recognition;
+          datum.audioUrl, datum.recognised);
       });
   }
 
@@ -301,13 +293,7 @@ export default class ChoiceRecognitionController {
           const student = new Student(organisationId, datum.studentId);
           const recognition = new ChoiceRecognition(challengeId, student,
             datum.id, new Date(datum.created), new Date(datum.updated),
-            datum.audioUrl);
-          // Recognition may not be successful, in which case the recognition
-          // is not available, but it's still an attempt that is available,
-          // albeit without extended attributes like recognised.
-          if (datum.recognised) {
-            recognition.recognised = datum.recognised;
-          }
+            datum.audioUrl, datum.recognised);
           recognitions.push(recognition);
         });
         return recognitions;
