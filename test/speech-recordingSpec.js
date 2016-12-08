@@ -646,8 +646,8 @@ describe('Speech Recording Websocket API interaction test', () => {
       })
       .then(result => {
         expect(result.recording.id).toEqual('4');
-        expect(result.recording.challenge).toEqual(challenge.id);
-        expect(result.recording.student.organisationId).toBe(challenge.organisationId);
+        expect(result.recording.challengeId).toEqual(challenge.id);
+        expect(result.recording.studentId).toBe('1');
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.recording.init_recording', []);

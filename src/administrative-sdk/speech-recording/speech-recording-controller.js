@@ -107,7 +107,7 @@ export default class SpeechRecordingController {
       function _cb(data) {
         const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(
-          challenge.id, student, data.id, new Date(data.created), new Date(data.updated),
+          challenge.id, student.id, data.id, new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl));
         resolve({recordingId: self._connection._recordingId, recording});
       }
