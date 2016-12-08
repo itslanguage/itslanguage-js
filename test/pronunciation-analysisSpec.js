@@ -83,6 +83,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
       id: '4',
+      studentId: '1',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -778,6 +779,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         expect(progressCalled[1]).toEqual(expectedNotifyCall);
         expect(result.analysis.challengeId).toEqual(challenge.id);
         expect(result.analysis.id).toEqual('4');
+        expect(result.analysis.studentId).toBe('1');
         expect(result.analysisId).toEqual(fakeResponse);
       })
       .catch(error => {

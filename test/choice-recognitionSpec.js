@@ -73,6 +73,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
       id: '4',
+      studentId: '1',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -202,6 +203,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         expect(result.recognition.challengeId).toEqual(challenge.id);
         expect(result.recognition.id).toEqual('4');
         expect(result.recognitionId).toBe(fakeResponse);
+        expect(result.recognition.studentId).toEqual('1');
       })
       .catch(error => {
         fail('No error should be thrown ' + error);
@@ -219,6 +221,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(result.recognition.challengeId).toEqual(challenge.id);
           expect(result.recognition.id).toEqual('4');
           expect(result.recognitionId).toEqual(fakeResponse);
+          expect(result.recognition.studentId).toEqual('1');
         })
         .catch(error => {
           fail('No error should be thrown ' + error);

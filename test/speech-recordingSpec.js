@@ -177,6 +177,7 @@ describe('Speech Recording Websocket API interaction test', () => {
     });
     fakeResponse = {
       id: '4',
+      studentId: '1',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
