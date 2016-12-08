@@ -123,8 +123,7 @@ export default class ChoiceRecognitionController {
           challenge.id, data.studentId, data.id,
           new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl), data.recognised);
-        recognition.recognitionId = self._connection._recognitionId;
-        resolve(recognition);
+        resolve({recognitionId: self._connection._recognitionId, recognition});
       }
 
       function _ecb(data) {
