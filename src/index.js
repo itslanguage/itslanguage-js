@@ -10,6 +10,7 @@ import CordovaMediaRecorder from './audio/cordova-media-recorder';
 import MediaRecorder from './audio/media-recorder';
 import Organisation from './administrative-sdk/organisation/organisation';
 import Phoneme from './administrative-sdk/phoneme/phoneme';
+import Profile from './administrative-sdk/profile/profile';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
 import SpeechChallenge from './administrative-sdk/speech-challenge/speech-challenge';
 import Student from './administrative-sdk/student/student';
@@ -27,6 +28,7 @@ export {
   Connection,
   Organisation,
   Phoneme,
+  Profile,
   PronunciationChallenge,
   SpeechChallenge,
   Student,
