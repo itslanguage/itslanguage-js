@@ -1,4 +1,4 @@
-import * as Stopwatch from '../src/tools';
+import * as Stopwatch from '../src/audio/tools';
 import AudioPlayer from '../src/audio/audio-player';
 import CordovaMediaPlayer from '../src/audio/cordova-media-player';
 import WebAudioPlayer from '../src/audio/web-audio-player';

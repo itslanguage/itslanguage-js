@@ -13,7 +13,7 @@ import Phoneme from './administrative-sdk/phoneme/phoneme';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
 import SpeechChallenge from './administrative-sdk/speech-challenge/speech-challenge';
 import Student from './administrative-sdk/student/student';
-import Tools from './tools';
+import Tools from './audio/tools';
 import WavePacker from './audio/wave-packer';
 import WebAudioPlayer from './audio/web-audio-player';
 import WebAudioRecorder from './audio/web-audio-recorder';
