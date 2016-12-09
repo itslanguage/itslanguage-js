@@ -70,7 +70,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
       id: '4',
-      studentId: '1',
+      userId: '1',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -184,7 +184,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         expect(result.recognition.challengeId).toEqual(challenge.id);
         expect(result.recognition.id).toEqual('4');
         expect(result.recognitionId).toBe(fakeResponse);
-        expect(result.recognition.studentId).toEqual('1');
+        expect(result.recognition.userId).toEqual('1');
       })
       .catch(error => {
         fail('No error should be thrown ' + error);
@@ -202,7 +202,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           expect(result.recognition.challengeId).toEqual(challenge.id);
           expect(result.recognition.id).toEqual('4');
           expect(result.recognitionId).toEqual(fakeResponse);
-          expect(result.recognition.studentId).toEqual('1');
+          expect(result.recognition.userId).toEqual('1');
         })
         .catch(error => {
           fail('No error should be thrown ' + error);
@@ -249,7 +249,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         d.reject({
           message: 'Encountered an error during writing',
           error: 'error',
-          studentId: '1',
+          userId: '1',
           id: '2',
           created: stringDate,
           updated: stringDate,
@@ -266,7 +266,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         .catch(error => {
           expect(error.message).toEqual('Encountered an error during writing');
           expect(error.recognition.id).toEqual('2');
-          expect(error.recognition.studentId).toEqual('1');
+          expect(error.recognition.userId).toEqual('1');
           expect(error.recognition.created).toEqual(new Date(stringDate));
           expect(error.recognition.updated).toEqual(new Date(stringDate));
           expect(error.recognition.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -489,7 +489,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
             },
             analysis: {
               message: 'Encountered an error',
-              studentId: '1',
+              userId: '1',
               id: '2',
               created: stringDate,
               updated: stringDate,
@@ -510,7 +510,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         .catch(error => {
           expect(error.message).toEqual('Encountered an error');
           expect(error.recognition.id).toEqual('2');
-          expect(error.recognition.studentId).toEqual('1');
+          expect(error.recognition.userId).toEqual('1');
           expect(error.recognition.created).toEqual(new Date(stringDate));
           expect(error.recognition.updated).toEqual(new Date(stringDate));
           expect(error.recognition.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -564,7 +564,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
             },
             analysis: {
               message: 'Encountered an error',
-              studentId: '1',
+              userId: '1',
               id: '2',
               created: stringDate,
               updated: stringDate,
@@ -585,7 +585,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         .catch(error => {
           expect(error.message).toEqual('Encountered an error');
           expect(error.recognition.id).toEqual('2');
-          expect(error.recognition.studentId).toEqual('1');
+          expect(error.recognition.userId).toEqual('1');
           expect(error.recognition.created).toEqual(new Date(stringDate));
           expect(error.recognition.updated).toEqual(new Date(stringDate));
           expect(error.recognition.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -632,7 +632,7 @@ describe('API interaction', () => {
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
       recognised: 'recognised',
-      studentId: '6'
+      userId: '6'
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -665,7 +665,7 @@ describe('API interaction', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6'
+      userId: '6'
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -701,13 +701,13 @@ describe('API interaction', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6'
+      userId: '6'
     }, {
       id: '6',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '24',
+      userId: '24',
       recognised: 'Hi'
     }];
     const fakeResponse = new Response(JSON.stringify(content), {

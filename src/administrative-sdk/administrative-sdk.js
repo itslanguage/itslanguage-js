@@ -6,7 +6,7 @@ import PronAnalaController from './pronunciation-analysis/pronunciation-analysis
 import PronChallController from './pronunciation-challenge/pronunciation-challenge-controller';
 import SpeechChallengeController from './speech-challenge/speech-challenge-controller';
 import SpeechRecordingController from './speech-recording/speech-recording-controller';
-import StudentController from './student/student-controller';
+import UserController from './user/user-controller';
 
 /**
  * Facade for all methods used in the ITSLanguage Administrative SDK.
@@ -22,7 +22,7 @@ export default class AdministrativeSDK {
     this._pronChallController = new PronChallController(this._connection);
     this._speechChallengeController = new SpeechChallengeController(this._connection);
     this._speechRecordingController = new SpeechRecordingController(this._connection);
-    this._studentController = new StudentController(this._connection);
+    this._userController = new UserController(this._connection);
   }
 
   /**
@@ -321,41 +321,41 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * Create a student.
+   * Create a user. The user will be created in the {@Organisation} that is linked by the User.
    *
-   * @param {Student} student - Object to create.
-   * @returns {Promise.<Student>} Promise containing the newly created Student.
-   * @throws {Promise} {@link Student#organisationId} field is required.
+   * @param {User} user - User to create.
+   * @returns {Promise.<User>} Promise containing the newly created User.
+   * @throws {Promise} {@link User#organisationId} field is required.
    * @throws {Promise} If the server returned an error.
    */
-  createStudent(student) {
-    return this._studentController.createStudent(student);
+  createUser(user) {
+    return this._userController.createUser(user);
   }
 
   /**
-   * Get a student.
+   * Get a user in the given {@link Organisation}.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @param {Student#id} studentId - Specify a student identifier.
-   * @returns {Promise.<Student>} Promise containing a Student.
+   * @param {User#id} userId - Specify a user identifier.
+   * @returns {Promise.<User>} Promise containing a User.
    * @throws {Promise} {@link Organisation#id} field is required.
-   * @throws {Promise} {@link Student#id} field is required.
+   * @throws {Promise} {@link User#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getStudent(organisationId, studentId) {
-    return this._studentController.getStudent(organisationId, studentId);
+  getUser(organisationId, userId) {
+    return this._userController.getUser(organisationId, userId);
   }
 
   /**
-   * List all students in the organisation.
+   * List all users in the organisation.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @returns {Promise.<Student[]>} Promise containing an array of Students.
+   * @returns {Promise.<User[]>} Promise containing an array of Users.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  listStudents(organisationId) {
-    return this._studentController.listStudents(organisationId);
+  listUsers(organisationId) {
+    return this._userController.listUsers(organisationId);
   }
 
   /**

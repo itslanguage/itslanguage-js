@@ -6,7 +6,7 @@ export default class PronunciationAnalysis {
    * Create a pronunciation analysis domain model.
    *
    * @param {string} challengeId - The challenge identifier.
-   * @param {string} studentId - The student identifier on whose behalf this audio is uploaded.
+   * @param {string} userId - The user identifier on whose behalf this audio is uploaded.
    * @param {string} id - The pronunciation analysis identifier.
    * @param {Date} created - The creation date of the entity.
    * @param {Date} updated - The most recent update date of the entity.
@@ -16,7 +16,7 @@ export default class PronunciationAnalysis {
    * actually the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
    * @param {Word[]} words - The spoken sentence, split in graphemes per word.
    */
-  constructor(challengeId, studentId, id, created, updated, audioUrl, score, confidenceScore, words) {
+  constructor(challengeId, userId, id, created, updated, audioUrl, score, confidenceScore, words) {
     /**
      * The pronunciation analysis identifier.
      * @type {string}
@@ -30,10 +30,10 @@ export default class PronunciationAnalysis {
     this.challengeId = challengeId;
 
     /**
-     * The student identifier on whose behalf this audio is uploaded.
+     * The user identifier on whose behalf this audio is uploaded.
      * @type {string}
      */
-    this.studentId = studentId;
+    this.userId = userId;
 
     /**
      * The creation date of the entity.

@@ -16,8 +16,8 @@ import Profile from './administrative-sdk/profile/profile';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
 import Role from './administrative-sdk/role/role';
 import SpeechChallenge from './administrative-sdk/speech-challenge/speech-challenge';
-import Student from './administrative-sdk/student/student';
 import Tools from './audio/tools';
+import User from './administrative-sdk/user/user';
 import WavePacker from './audio/wave-packer';
 import WebAudioPlayer from './audio/web-audio-player';
 import WebAudioRecorder from './audio/web-audio-recorder';
@@ -37,7 +37,7 @@ export {
   PronunciationChallenge,
   Role,
   SpeechChallenge,
-  Student,
+  User,
   Word,
   WordChunk,
 

@@ -149,7 +149,7 @@ export default class PronunciationAnalysisController {
     return new when.Promise((resolve, reject, notify) => {
       function reportDone(data) {
         const analysis = new PronunciationAnalysis(
-          challenge.id, data.studentId, data.id,
+          challenge.id, data.userId, data.id,
           new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl),
           data.score, data.confidenceScore,
@@ -167,7 +167,7 @@ export default class PronunciationAnalysisController {
         // align, in which case no analysis is provided, but just the
         // basic metadata.
         const analysis = new PronunciationAnalysis(
-          challenge.id, data.studentId, data.id,
+          challenge.id, data.userId, data.id,
           new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl));
         reject({analysis, message: data.message});
@@ -282,7 +282,7 @@ export default class PronunciationAnalysisController {
       challengeId + '/analyses/' + analysisId;
     return this._connection._secureAjaxGet(url)
       .then(datum => {
-        const analysis = new PronunciationAnalysis(challengeId, datum.studentId,
+        const analysis = new PronunciationAnalysis(challengeId, datum.userId,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl, datum.score, datum.confidenceScore, null);
         // Alignment may not be successful, in which case the analysis
@@ -319,7 +319,7 @@ export default class PronunciationAnalysisController {
       .then(data => {
         const analyses = [];
         data.forEach(datum => {
-          const analysis = new PronunciationAnalysis(challengeId, datum.studentId,
+          const analysis = new PronunciationAnalysis(challengeId, datum.userId,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl, datum.score, datum.confidenceScore, null);
           // Alignment may not be successful, in which case the analysis

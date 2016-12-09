@@ -81,7 +81,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
       id: '4',
-      studentId: '1',
+      userId: '1',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -204,7 +204,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         d.reject({
           message: 'Encountered an error during writing',
           error: 'error',
-          studentId: '1',
+          userId: '1',
           id: '2',
           created: stringDate,
           updated: stringDate,
@@ -251,7 +251,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Encountered an error during writing');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.studentId).toEqual('1');
+        expect(error.analysis.userId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -438,7 +438,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
             kwargs: {
               analysis: {
                 message: null,
-                studentId: '1',
+                userId: '1',
                 id: '2',
                 created: stringDate,
                 updated: stringDate,
@@ -490,7 +490,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Reference alignment failed');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.studentId).toEqual('1');
+        expect(error.analysis.userId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -511,7 +511,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
             kwargs: {
               analysis: {
                 message: null,
-                studentId: '1',
+                userId: '1',
                 id: '2',
                 created: stringDate,
                 updated: stringDate,
@@ -563,7 +563,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Alignment failed');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.studentId).toEqual('1');
+        expect(error.analysis.userId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -584,7 +584,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
             kwargs: {
               analysis: {
                 message: null,
-                studentId: '1',
+                userId: '1',
                 id: '2',
                 created: stringDate,
                 updated: stringDate,
@@ -636,7 +636,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Analysis failed');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.studentId).toEqual('1');
+        expect(error.analysis.userId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -657,7 +657,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
             kwargs: {
               analysis: {
                 message: null,
-                studentId: '1',
+                userId: '1',
                 id: '2',
                 created: stringDate,
                 updated: stringDate,
@@ -709,7 +709,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Unhandled error');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.studentId).toEqual('1');
+        expect(error.analysis.userId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -760,7 +760,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         expect(progressCalled[1]).toEqual(expectedNotifyCall);
         expect(result.analysis.challengeId).toEqual(challenge.id);
         expect(result.analysis.id).toEqual('4');
-        expect(result.analysis.studentId).toBe('1');
+        expect(result.analysis.userId).toBe('1');
         expect(result.analysisId).toEqual(fakeResponse);
       })
       .catch(error => {
@@ -818,7 +818,7 @@ describe('PronunciationAnalyses API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6'
+      userId: '6'
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -856,7 +856,7 @@ describe('PronunciationAnalyses API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6',
+      userId: '6',
       score: 7.5,
       words: [
         {
@@ -924,13 +924,13 @@ describe('PronunciationAnalyses API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6'
+      userId: '6'
     }, {
       id: '6',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '24',
+      userId: '24',
       score: 7.5,
       words: [
         {
@@ -1024,13 +1024,13 @@ describe('PronunciationAnalyses API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6'
+      userId: '6'
     }, {
       id: '6',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '24',
+      userId: '24',
       score: 7.5,
       words: [
         {

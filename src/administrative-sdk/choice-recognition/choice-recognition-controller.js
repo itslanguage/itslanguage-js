@@ -105,7 +105,7 @@ export default class ChoiceRecognitionController {
     return new when.Promise((resolve, reject, notify) => {
       function _cb(data) {
         const recognition = new ChoiceRecognition(
-          challenge.id, data.studentId, data.id,
+          challenge.id, data.userId, data.id,
           new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl), data.recognised);
         resolve({recognitionId: self._connection._recognitionId, recognition});
@@ -114,7 +114,7 @@ export default class ChoiceRecognitionController {
       function _ecb(data) {
         // There was an unexpected error.
         const recognition = new ChoiceRecognition(
-          challenge.id, data.studentId, data.id,
+          challenge.id, data.userId, data.id,
           new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl), null);
         reject(
@@ -236,7 +236,7 @@ export default class ChoiceRecognitionController {
       challengeId + '/recognitions/' + recognitionId;
 
     return this._connection._secureAjaxGet(url)
-      .then(datum => new ChoiceRecognition(challengeId, datum.studentId,
+      .then(datum => new ChoiceRecognition(challengeId, datum.userId,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl, datum.recognised));
   }
@@ -260,7 +260,7 @@ export default class ChoiceRecognitionController {
       .then(data => {
         const recognitions = [];
         data.forEach(datum => {
-          const recognition = new ChoiceRecognition(challengeId, datum.studentId,
+          const recognition = new ChoiceRecognition(challengeId, datum.userId,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl, datum.recognised);
           recognitions.push(recognition);
