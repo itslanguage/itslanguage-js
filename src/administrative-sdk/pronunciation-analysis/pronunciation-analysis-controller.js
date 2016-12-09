@@ -66,7 +66,7 @@ export default class PronunciationAnalysisController {
    */
   pronunciationAnalysisInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.pronunciation.init_challenge',
-      [this._connection._analysisId, challenge.organisationId, challenge.id])
+      [this._connection._analysisId, challenge.id])
       .catch(res => {
         Connection.logRPCError(res);
         return Promise.reject(res);

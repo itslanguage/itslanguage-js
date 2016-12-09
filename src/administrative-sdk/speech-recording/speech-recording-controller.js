@@ -23,7 +23,7 @@ export default class SpeechRecordingController {
    */
   speechRecordingInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.recording.init_challenge',
-      [this._connection._recordingId, challenge.organisationId, challenge.id]).then(
+      [this._connection._recordingId, challenge.id]).then(
       // RPC success callback
       recordingId => {
         console.log('Challenge initialised for recordingId: ' + this._connection._recordingId);
