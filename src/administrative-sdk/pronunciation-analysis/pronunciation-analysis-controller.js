@@ -5,7 +5,6 @@ import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import Phoneme from '../phoneme/phoneme';
 import PronunciationAnalysis from './pronunciation-analysis';
-import Student from '../student/student';
 import Word from '../word/word';
 import WordChunk from '../word-chunk/word-chunk';
 import when from 'when';
@@ -305,8 +304,7 @@ export default class PronunciationAnalysisController {
       challengeId + '/analyses/' + analysisId;
     return this._connection._secureAjaxGet(url)
       .then(datum => {
-        const student = new Student(organisationId, datum.studentId);
-        const analysis = new PronunciationAnalysis(challengeId, student,
+        const analysis = new PronunciationAnalysis(challengeId, datum.studentId,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl, datum.score, datum.confidenceScore, null);
         // Alignment may not be successful, in which case the analysis
@@ -347,8 +345,7 @@ export default class PronunciationAnalysisController {
       .then(data => {
         const analyses = [];
         data.forEach(datum => {
-          const student = new Student(organisationId, datum.studentId);
-          const analysis = new PronunciationAnalysis(challengeId, student,
+          const analysis = new PronunciationAnalysis(challengeId, datum.studentId,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl, datum.score, datum.confidenceScore, null);
           // Alignment may not be successful, in which case the analysis

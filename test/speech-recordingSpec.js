@@ -3,7 +3,6 @@ import Connection from '../src/administrative-sdk/connection/connection-controll
 import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-challenge';
 import SpeechRecording from '../src/administrative-sdk/speech-recording/speech-recording';
 import SpeechRecordingController from '../src/administrative-sdk/speech-recording/speech-recording-controller';
-import Student from '../src/administrative-sdk/student/student';
 import autobahn from 'autobahn';
 
 describe('SpeechRecording API interaction test', () => {
@@ -85,8 +84,7 @@ describe('SpeechRecording API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
-        const student = new Student('fb', '6');
-        const recording = new SpeechRecording(challenge.id, student, '5');
+        const recording = new SpeechRecording(challenge.id, '6', '5');
         const stringDate = '2014-12-31T23:59:59Z';
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);
@@ -145,8 +143,7 @@ describe('SpeechRecording API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
-        const student = new Student('fb', '6');
-        const recording = new SpeechRecording(challenge.id, student, '5');
+        const recording = new SpeechRecording(challenge.id, '6', '5');
         const stringDate = '2014-12-31T23:59:59Z';
         recording.created = new Date(stringDate);
         recording.updated = new Date(stringDate);

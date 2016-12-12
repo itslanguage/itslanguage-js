@@ -4,7 +4,6 @@ import ChoiceRecognition from '../src/administrative-sdk/choice-recognition/choi
 import ChoiceRecognitionController from '../src/administrative-sdk/choice-recognition/choice-recognition-controller';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-challenge';
-import Student from '../src/administrative-sdk/student/student';
 import autobahn from 'autobahn';
 
 describe('ChoiceRecognition Websocket API interaction test', () => {
@@ -687,8 +686,7 @@ describe('API interaction', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '6');
-        const recognition = new ChoiceRecognition(challenge.id, student,
+        const recognition = new ChoiceRecognition(challenge.id, '6',
           '5', new Date(stringDate), new Date(stringDate), audioUrl, 'recognised');
         expect(result).toEqual(recognition);
       })
@@ -721,8 +719,7 @@ describe('API interaction', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '6');
-        const recognition = new ChoiceRecognition(challenge.id, student,
+        const recognition = new ChoiceRecognition(challenge.id, '6',
           '5', new Date(stringDate), new Date(stringDate));
         recognition.audioUrl = audioUrl;
         expect(result).toEqual(recognition);
@@ -763,13 +760,11 @@ describe('API interaction', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '6');
-        const recognition = new ChoiceRecognition(challenge.id, student,
+        const recognition = new ChoiceRecognition(challenge.id, '6',
           '5', new Date(stringDate), new Date(stringDate));
         recognition.audioUrl = audioUrl;
 
-        const student2 = new Student('fb', '24');
-        const recognition2 = new ChoiceRecognition(challenge.id, student2,
+        const recognition2 = new ChoiceRecognition(challenge.id, '24',
           '6', new Date(stringDate), new Date(stringDate));
         recognition2.audioUrl = audioUrl;
         recognition2.recognised = 'Hi';
