@@ -179,6 +179,7 @@ describe('Speech Recording Websocket API interaction test', () => {
       oAuth2Token: 'token'
     });
     fakeResponse = {
+      id: '4',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -647,8 +648,9 @@ describe('Speech Recording Websocket API interaction test', () => {
         progressCalled = true;
       })
       .then(result => {
-        expect(result.challenge).toEqual(challenge.id);
-        expect(result.student.organisationId).toBe(challenge.organisationId);
+        expect(result.recording.id).toEqual('4');
+        expect(result.recording.challenge).toEqual(challenge.id);
+        expect(result.recording.student.organisationId).toBe(challenge.organisationId);
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.recording.init_recording', []);
