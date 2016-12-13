@@ -25,7 +25,7 @@ export default class ChoiceRecognitionController {
    */
   choiceRecognitionInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.choice.init_challenge',
-      [this._connection._recognitionId, challenge.organisationId, challenge.id])
+      [this._connection._recognitionId, challenge.id])
       .then(
         // RPC success callback
         recognitionId => {
