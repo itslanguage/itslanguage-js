@@ -11,6 +11,7 @@ import MediaRecorder from './audio/media-recorder';
 import Organisation from './administrative-sdk/organisation/organisation';
 import Phoneme from './administrative-sdk/phoneme/phoneme';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
+import Role from './administrative-sdk/role/role';
 import SpeechChallenge from './administrative-sdk/speech-challenge/speech-challenge';
 import Student from './administrative-sdk/student/student';
 import Tools from './audio/tools';
@@ -28,6 +29,7 @@ export {
   Organisation,
   Phoneme,
   PronunciationChallenge,
+  Role,
   SpeechChallenge,
   Student,
   Word,
