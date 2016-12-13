@@ -14,7 +14,7 @@ To release a new version, run:
 
 ```sh
 npm version minor
-git push upstream --tags
+git push upstream master --tags
 ```
 
 Travis will deploy it to the npm registry and publish the docs to gh-pages.
