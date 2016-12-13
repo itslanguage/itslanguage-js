@@ -11,8 +11,12 @@ export default class PronunciationAnalysis {
    * @param {Date} created - The creation date of the entity.
    * @param {Date} updated - The most recent update date of the entity.
    * @param {string} audioUrl - The audio fragment as streaming audio link.
+   * @param {number} score - The average score of all phonemes grading the entire attempt.
+   * @param {float} confidenceScore - This value provides a reliable prediction that the pronounced phonemes are
+   * actually the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
+   * @param {Word[]} words - The spoken sentence, split in graphemes per word.
    */
-  constructor(challenge, student, id, created, updated, audioUrl) {
+  constructor(challenge, student, id, created, updated, audioUrl, score, confidenceScore, words) {
     /**
      * The pronunciation analysis identifier.
      * @type {string}
@@ -50,28 +54,22 @@ export default class PronunciationAnalysis {
     this.audioUrl = audioUrl;
 
     /**
-     * The recorded audio fragment.
-     * @type {Blob}
-     */
-    this.audio = null;
-
-    /**
      * The average score of all phonemes grading the entire attempt.
      * @type {number}
      */
-    this.score = null;
+    this.score = score;
 
     /**
      * This value provides a reliable prediction that the pronounced phonemes are
      * actually the phonemes that are supposed to be pronounced. There is no absolute scale defined yet.
      * @type {float}
      */
-    this.confidenceScore = null;
+    this.confidenceScore = confidenceScore;
 
     /**
      * The spoken sentence, split in graphemes per word.
      * @type {Word[][]}
      */
-    this.words = null;
+    this.words = words;
   }
 }

@@ -22,9 +22,10 @@ describe('Administrative SDK', () => {
     ['createOrganisation', 'getOrganisation', 'listOrganisations']);
   const fakePronunciationAnalysisController = jasmine.createSpyObj('PronunciationAnalysisController',
     ['startStreamingPronunciationAnalysis', 'getPronunciationAnalysis', 'listPronunciationAnalyses']);
-  const fakePronunciationChallengeController = jasmine.createSpyObj('PronunciationChallengeController',
-    ['createPronunciationChallenge', 'getPronunciationChallenge', 'listPronunciationChallenges',
-      'deletePronunciationChallenge']);
+  const fakePronunciationChallengeController = jasmine.createSpyObj(
+    'PronunciationChallengeController',
+    ['createPronunciationChallenge', 'getPronunciationChallenge',
+      'listPronunciationChallenges', 'deletePronunciationChallenge']);
   const fakeSpeechChallengeController = jasmine.createSpyObj('SpeechChallengeController',
     ['createSpeechChallenge', 'getSpeechChallenge', 'listSpeechChallenges']);
   const fakeSpeechRecordingController = jasmine.createSpyObj('SpeechRecordingController',

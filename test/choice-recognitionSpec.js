@@ -73,6 +73,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     recorder = new RecorderMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
+      id: '4',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -199,6 +200,8 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           'nl.itslanguage.choice.init_recognition', [],
           {trimStart: 0.15, trimEnd: 0});
         expect(progressCalled).toBeTruthy();
+        expect(result.recognition.challenge).toEqual(challenge.id);
+        expect(result.recognition.id).toEqual('4');
         expect(result.recognitionId).toBe(fakeResponse);
       })
       .catch(error => {
@@ -209,11 +212,14 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
 
   it('should start streaming a new choice recognition without trimming', done => {
     controller.startStreamingChoiceRecognition(challenge, recorder, false)
-        .then(() => {
+        .then(result => {
           expect(api._session.call).toHaveBeenCalled();
           expect(api._session.call).toHaveBeenCalledWith(
             'nl.itslanguage.choice.init_recognition', [],
             {trimStart: 0.00, trimEnd: 0});
+          expect(result.recognition.challenge).toEqual(challenge.id);
+          expect(result.recognition.id).toEqual('4');
+          expect(result.recognitionId).toEqual(fakeResponse);
         })
         .catch(error => {
           fail('No error should be thrown ' + error);
@@ -276,11 +282,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         .then(result => fail('An error should be thrown ' + JSON.stringify(result)))
         .catch(error => {
           expect(error.message).toEqual('Encountered an error during writing');
-          expect(error.analysis.id).toEqual('2');
-          expect(error.analysis.student).toEqual('1');
-          expect(error.analysis.created).toEqual(new Date(stringDate));
-          expect(error.analysis.updated).toEqual(new Date(stringDate));
-          expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(error.recognition.id).toEqual('2');
+          expect(error.recognition.student).toEqual('1');
+          expect(error.recognition.created).toEqual(new Date(stringDate));
+          expect(error.recognition.updated).toEqual(new Date(stringDate));
+          expect(error.recognition.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
           expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
@@ -520,11 +526,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         })
         .catch(error => {
           expect(error.message).toEqual('Encountered an error');
-          expect(error.analysis.id).toEqual('2');
-          expect(error.analysis.student).toEqual('1');
-          expect(error.analysis.created).toEqual(new Date(stringDate));
-          expect(error.analysis.updated).toEqual(new Date(stringDate));
-          expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(error.recognition.id).toEqual('2');
+          expect(error.recognition.student).toEqual('1');
+          expect(error.recognition.created).toEqual(new Date(stringDate));
+          expect(error.recognition.updated).toEqual(new Date(stringDate));
+          expect(error.recognition.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
           expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);
@@ -595,11 +601,11 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         })
         .catch(error => {
           expect(error.message).toEqual('Encountered an error');
-          expect(error.analysis.id).toEqual('2');
-          expect(error.analysis.student).toEqual('1');
-          expect(error.analysis.created).toEqual(new Date(stringDate));
-          expect(error.analysis.updated).toEqual(new Date(stringDate));
-          expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(error.recognition.id).toEqual('2');
+          expect(error.recognition.student).toEqual('1');
+          expect(error.recognition.created).toEqual(new Date(stringDate));
+          expect(error.recognition.updated).toEqual(new Date(stringDate));
+          expect(error.recognition.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
           expect(controller._connection._recognitionId).toBeNull();
         })
         .then(done);

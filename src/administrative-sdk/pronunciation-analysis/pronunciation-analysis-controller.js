@@ -66,7 +66,7 @@ export default class PronunciationAnalysisController {
    */
   pronunciationAnalysisInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.pronunciation.init_challenge',
-      [this._connection._analysisId, challenge.organisationId, challenge.id])
+      [this._connection._analysisId, challenge.id])
       .catch(res => {
         Connection.logRPCError(res);
         return Promise.reject(res);
@@ -166,11 +166,11 @@ export default class PronunciationAnalysisController {
       function reportDone(data) {
         const analysis = new PronunciationAnalysis(
           challenge.id, data.studentId, data.id,
-          null, null,
-          self._connection.addAccessToken(data.audioUrl));
-        analysis.score = data.score;
-        analysis.confidenceScore = data.confidenceScore;
-        analysis.words = PronunciationAnalysisController._wordsToModels(data.words);
+          new Date(data.created), new Date(data.updated),
+          self._connection.addAccessToken(data.audioUrl),
+          data.score, data.confidenceScore,
+          PronunciationAnalysisController._wordsToModels(data.words)
+        );
         resolve({analysisId: self._connection._analysisId, analysis});
       }
 
@@ -308,12 +308,11 @@ export default class PronunciationAnalysisController {
         const student = new Student(organisationId, datum.studentId);
         const analysis = new PronunciationAnalysis(challengeId, student,
           datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl);
+          datum.audioUrl, datum.score, datum.confidenceScore, null);
         // Alignment may not be successful, in which case the analysis
         // is not available, but it's still an attempt that is available,
         // albeit without extended attributes like score and phonemes.
-        if (datum.score) {
-          analysis.score = datum.score;
+        if (datum.words) {
           analysis.words = PronunciationAnalysisController._wordsToModels(datum.words);
         }
         return analysis;
@@ -351,12 +350,11 @@ export default class PronunciationAnalysisController {
           const student = new Student(organisationId, datum.studentId);
           const analysis = new PronunciationAnalysis(challengeId, student,
             datum.id, new Date(datum.created), new Date(datum.updated),
-            datum.audioUrl);
+            datum.audioUrl, datum.score, datum.confidenceScore, null);
           // Alignment may not be successful, in which case the analysis
           // is not available, but it's still an attempt that is available,
           // albeit without extended attributes like score and phonemes.
-          if (datum.score) {
-            analysis.score = datum.score;
+          if (datum.words) {
             analysis.words = PronunciationAnalysisController._wordsToModels(datum.words);
           }
           analyses.push(analysis);

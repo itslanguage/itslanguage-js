@@ -23,7 +23,7 @@ export default class SpeechRecordingController {
    */
   speechRecordingInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.recording.init_challenge',
-      [this._connection._recordingId, challenge.organisationId, challenge.id]).then(
+      [this._connection._recordingId, challenge.id]).then(
       // RPC success callback
       recordingId => {
         console.log('Challenge initialised for recordingId: ' + this._connection._recordingId);
@@ -107,12 +107,9 @@ export default class SpeechRecordingController {
       function _cb(data) {
         const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(
-          challenge.id, student, data.id);
-        recording.created = new Date(data.created);
-        recording.updated = new Date(data.updated);
-        recording.audioUrl = self._connection.addAccessToken(data.audioUrl);
-        recording.recordingId = self._connection._recordingId;
-        resolve(recording);
+          challenge.id, student, data.id, new Date(data.created), new Date(data.updated),
+          self._connection.addAccessToken(data.audioUrl));
+        resolve({recordingId: self._connection._recordingId, recording});
       }
 
       function recordedCb(activeRecordingId, audioBlob, forcedStop) {
@@ -221,12 +218,8 @@ export default class SpeechRecordingController {
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const student = new Student(organisationId, data.studentId);
-        const recording = new SpeechRecording(challengeId, student, data.id);
-        recording.audio = null;
-        recording.audioUrl = this._connection.addAccessToken(data.audioUrl);
-        recording.created = new Date(data.created);
-        recording.updated = new Date(data.updated);
-        return recording;
+        return new SpeechRecording(challengeId, student, data.id, new Date(data.created),
+          new Date(data.updated), this._connection.addAccessToken(data.audioUrl));
       });
   }
 
@@ -253,11 +246,8 @@ export default class SpeechRecordingController {
         const recordings = [];
         data.forEach(datum => {
           const student = new Student(organisationId, datum.studentId);
-          const recording = new SpeechRecording(challengeId, student, datum.id);
-          recording.audio = null;
-          recording.audioUrl = this._connection.addAccessToken(datum.audioUrl);
-          recording.created = new Date(datum.created);
-          recording.updated = new Date(datum.updated);
+          const recording = new SpeechRecording(challengeId, student, datum.id, new Date(datum.created),
+            new Date(datum.updated), this._connection.addAccessToken(datum.audioUrl));
           recordings.push(recording);
         });
         return recordings;
