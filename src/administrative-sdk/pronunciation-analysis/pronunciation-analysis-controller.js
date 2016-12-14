@@ -106,7 +106,7 @@ export default class PronunciationAnalysisController {
    * @param {PronunciationChallenge} challenge - The pronunciation challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
    * @param {?boolean} trim - Whether to trim the start and end of recorded audio (default: true).
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @returns {Promise.<PronunciationAnalysis>} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @emits {Object} When the sent audio has finished alignment. Aligning audio is the process of mapping the audio
    * to spoken words and determining when what is said. An object is sent containing a property 'progress',
@@ -265,7 +265,7 @@ export default class PronunciationAnalysisController {
    *
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
    * @param {PronunciationAnalysis#id} analysisId - Specify a pronunciation analysis identifier.
-   * @returns {Promise} Promise containing a PronunciationAnalysis.
+   * @returns {Promise.<PronunciationAnalysis>} Promise containing a PronunciationAnalysis.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} {@link PronunciationAnalysis#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -301,7 +301,7 @@ export default class PronunciationAnalysisController {
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier to list
    * speech recordings for.
    * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
-   * @returns {Promise} Promise containing a list of PronunciationAnalyses.
+   * @returns {Promise.<PronunciationAnalysis[]>} Promise containing an array PronunciationAnalyses.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */

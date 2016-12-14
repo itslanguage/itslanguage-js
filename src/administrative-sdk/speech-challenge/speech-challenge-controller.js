@@ -19,7 +19,7 @@ export default class SpeechChallengeController {
    * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
-   * @returns {Promise} Promise containing the newly created object.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge) {
@@ -49,7 +49,7 @@ export default class SpeechChallengeController {
    * Get a speech challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
-   * @returns {Promise} Promise containing a SpeechChallenge.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing a SpeechChallenge.
    * @throws {Promise} {@link SpeechChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -71,7 +71,7 @@ export default class SpeechChallengeController {
   /**
    * List all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @returns {Promise} Promise containing a list of SpeechChallenges.
+   * @returns {Promise.<SpeechChallenge[]>} Promise containing an array of SpeechChallenges.
    * @throws {Promise} If no result could not be found.
    */
   listSpeechChallenges() {

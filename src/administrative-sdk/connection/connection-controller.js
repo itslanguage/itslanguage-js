@@ -71,7 +71,7 @@ export default class Connection {
   /**
    * Assemble a HTTP Authentication header.
    *
-   * @returns {Promise} Promise containing an authorization header string.
+   * @returns {Promise.<string>} Promise containing an authorization header string.
    * @throws {Promise} If the oAuth2Token in {@link Connection#settings} is not set.
    */
   _getAuthHeaders() {

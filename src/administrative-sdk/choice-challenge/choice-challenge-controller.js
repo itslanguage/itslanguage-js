@@ -21,7 +21,7 @@ export default class ChoiceChallengeController {
    * It is necessary for a choice challenge to exist for a recording to be valid.
    *
    * @param {ChoiceChallenge} choiceChallenge - Object to create.
-   * @returns {Promise} Containing the newly created object.
+   * @returns {Promise.<ChoiceChallenge>} Containing the newly created ChoiceChallenge.
    * @throws {Promise} If the server returned an error.
    */
   createChoiceChallenge(choiceChallenge) {
@@ -53,7 +53,7 @@ export default class ChoiceChallengeController {
    * {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
-   * @returns {Promise} Containing a ChoiceChallenge.
+   * @returns {Promise.<ChoiceChallenge>} Containing a ChoiceChallenge.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -79,7 +79,7 @@ export default class ChoiceChallengeController {
   /**
    * List all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @returns {Promise} Containing an array of ChoiceChallenges.
+   * @returns {Promise.<ChoiceChallenge[]>} Containing an array of ChoiceChallenges.
    * @throws {Promise} If no result could not be found.
    */
   listChoiceChallenges() {

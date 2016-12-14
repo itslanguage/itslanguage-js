@@ -29,7 +29,7 @@ export default class AdministrativeSDK {
    * It is necessary for a choice challenge to exist for a recording to be valid.
    *
    * @param {ChoiceChallenge} choiceChallenge - Object to create.
-   * @returns {Promise} Containing the newly created object.
+   * @returns {Promise.<ChoiceChallenge>} Containing the newly created ChoiceChallenge.
    * @throws {Promise} If the server returned an error.
    */
   createChoiceChallenge(choiceChallenge) {
@@ -41,7 +41,7 @@ export default class AdministrativeSDK {
    * {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
-   * @returns {Promise} Containing a ChoiceChallenge.
+   * @returns {Promise.<ChoiceChallenge>} Containing a ChoiceChallenge.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -52,7 +52,7 @@ export default class AdministrativeSDK {
   /**
    * List all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @returns {Promise} Containing an array of ChoiceChallenges.
+   * @returns {Promise.<ChoiceChallenge[]>} Containing an array of ChoiceChallenges.
    * @throws {Promise} If no result could not be found.
    */
   listChoiceChallenges() {
@@ -65,7 +65,7 @@ export default class AdministrativeSDK {
    * @param {ChoiceChallenge} challenge - The choice challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
    * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
+   * @returns {Promise.<ChoiceRecognition>} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
@@ -84,7 +84,7 @@ export default class AdministrativeSDK {
    *
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
    * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
-   * @returns {Promise} Promise containing a ChoiceRecognition.
+   * @returns {Promise.<ChoiceRecognition>} Promise containing a ChoiceRecognition.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
    * @throws {Promise} {@link ChoiceRecognition#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -98,7 +98,7 @@ export default class AdministrativeSDK {
    * derived from the OAuth2 scope.
    *
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
-   * @returns {Promise} Promise containing an array of ChoiceRecognitions.
+   * @returns {Promise.<ChoiceRecognition[]>} Promise containing an array of ChoiceRecognitions.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -110,7 +110,7 @@ export default class AdministrativeSDK {
    * Create an organisation. The organisation will be owned by the current active tenant.
    *
    * @param {Organisation} organisation - Object to create.
-   * @returns {Promise} Promise containing the newly created object.
+   * @returns {Promise.<Organisation>} Promise containing the newly created Organisation.
    * @throws {Promise} If the server returned an error.
    */
   createOrganisation(organisation) {
@@ -121,7 +121,7 @@ export default class AdministrativeSDK {
    * Get an organisation. You can only get an organisation the current tenant is an owner of.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @returns {Promise} Promise containing an Organisation.
+   * @returns {Promise.<Organisation>} Promise containing an Organisation.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -132,7 +132,7 @@ export default class AdministrativeSDK {
   /**
    * List all organisations the current tenant is owner of.
    *
-   * @returns {Promise} Promise containing a list of Organisations.
+   * @returns {Promise.<Organisation[]>} Promise containing an array of Organisations.
    * @throws {Promise} If no result could not be found.
    */
   listOrganisations() {
@@ -145,7 +145,7 @@ export default class AdministrativeSDK {
    * @param {PronunciationChallenge} challenge - The pronunciation challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
    * @param {boolean} [trim] - Whether to trim the start and end of recorded audio (default: true).
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @returns {Promise.<PronunciationAnalysis>} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @emits {Object} When the sent audio has finished alignment. Aligning audio is the process of mapping the audio
    * to spoken words and determining when what is said. An object is sent containing a property 'progress',
@@ -168,7 +168,7 @@ export default class AdministrativeSDK {
    *
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
    * @param {PronunciationAnalysis#id} analysisId - Specify a pronunciation analysis identifier.
-   * @returns {Promise} Promise containing a PronunciationAnalysis.
+   * @returns {Promise.<PronunciationAnalysis>} Promise containing a PronunciationAnalysis.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} {@link PronunciationAnalysis#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -184,7 +184,7 @@ export default class AdministrativeSDK {
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier to list
    * speech recordings for.
    * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
-   * @returns {Promise} Promise containing a list of PronunciationAnalyses.
+   * @returns {Promise.<PronunciationAnalysis[]>} Promise containing an array PronunciationAnalyses.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -197,7 +197,7 @@ export default class AdministrativeSDK {
    * derived from the OAuth2 scope.
    *
    * @param {PronunciationChallenge} challenge - Object to create..
-   * @returns {Promise} Promise containing the newly created object.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created PronunciationChallenge.
    * @throws {Promise} {@link PronunciationChallenge#referenceAudio} of type "Blob" is required.
    * @throws {Promise} If the server returned an error.
    */
@@ -209,7 +209,7 @@ export default class AdministrativeSDK {
    * Get a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
-   * @returns {Promise} Promise containing a PronunciationChallenge.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing a PronunciationChallenge.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -220,7 +220,7 @@ export default class AdministrativeSDK {
   /**
    * List all pronunciation challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @returns {Promise} Promise containing a list of PronunciationChallenges.
+   * @returns {Promise.<PronunciationChallenge[]>} Promise containing an array of PronunciationChallenges.
    * @throws {Promise} If no result could not be found.
    */
   listPronunciationChallenges() {
@@ -231,7 +231,7 @@ export default class AdministrativeSDK {
    * Delete a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {PronunciationChallenge#id} challengeId - A pronunciation challenge identifier.
-   * @returns {Promise} Promise containing this.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing the given challenge ID.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} If the server returned an error.
    */
@@ -243,7 +243,7 @@ export default class AdministrativeSDK {
    * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
-   * @returns {Promise} Promise containing the newly created object.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge) {
@@ -254,7 +254,7 @@ export default class AdministrativeSDK {
    * Get a speech challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
-   * @returns {Promise} Promise containing a SpeechChallenge.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing a SpeechChallenge.
    * @throws {Promise} {@link SpeechChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -265,7 +265,7 @@ export default class AdministrativeSDK {
   /**
    * List all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @returns {Promise} Promise containing a list of SpeechChallenges.
+   * @returns {Promise.<SpeechChallenge[]>} Promise containing an array of SpeechChallenges.
    * @throws {Promise} If no result could not be found.
    */
   listSpeechChallenges() {
@@ -277,7 +277,7 @@ export default class AdministrativeSDK {
    *
    * @param {SpeechChallenge} challenge - The speech challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
+   * @returns {Promise.<SpeechRecording>} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} If challenge is not an object or not defined.
    * @throws {Promise} If challenge has no id.
@@ -296,7 +296,7 @@ export default class AdministrativeSDK {
    *
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
    * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
-   * @returns {Promise} Promise containing a SpeechRecording.
+   * @returns {Promise.<SpeechRecording>} Promise containing a SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} field is required.
    * @throws {Promise} {@link SpeechRecording#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -310,7 +310,7 @@ export default class AdministrativeSDK {
    * from the OAuth2 scope.
    *
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier to list speech recordings for.
-   * @returns {Promise} Promise containing a list of SpeechRecording.
+   * @returns {Promise.<SpeechRecording[]>} Promise containing an array of SpeechRecordings.
    * @throws {Promise} {@link SpeechChallenge#id} is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -322,7 +322,7 @@ export default class AdministrativeSDK {
    * Create a student.
    *
    * @param {Student} student - Object to create.
-   * @returns {Promise} Promise containing the newly created object.
+   * @returns {Promise.<Student>} Promise containing the newly created Student.
    * @throws {Promise} {@link Student#organisationId} field is required.
    * @throws {Promise} If the server returned an error.
    */
@@ -335,7 +335,7 @@ export default class AdministrativeSDK {
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {Student#id} studentId - Specify a student identifier.
-   * @returns {Promise} Promise containing a Student.
+   * @returns {Promise.<Student>} Promise containing a Student.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} {@link Student#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -348,7 +348,7 @@ export default class AdministrativeSDK {
    * List all students in the organisation.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @returns {Promise} Promise containing a list of Students.
+   * @returns {Promise.<Student[]>} Promise containing an array of Students.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
