@@ -340,8 +340,8 @@ export default class AdministrativeSDK {
    * @throws {Promise} {@link Student#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getStudent(studentId) {
-    return this._studentController.getStudent(studentId);
+  getStudent(organisationId, studentId) {
+    return this._studentController.getStudent(organisationId, studentId);
   }
 
   /**
@@ -352,8 +352,8 @@ export default class AdministrativeSDK {
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  listStudents() {
-    return this._studentController.listStudents();
+  listStudents(organisationId) {
+    return this._studentController.listStudents(organisationId);
   }
 }
 
