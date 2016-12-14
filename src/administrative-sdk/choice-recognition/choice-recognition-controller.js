@@ -228,8 +228,8 @@ export default class ChoiceRecognitionController {
   }
 
   /**
-   * Get a choice recognition in a choice challenge from the current active {@link Organisation} derived from the
-   * OAuth2 scope.
+   * Get a choice recognition in a choice challenge from the current active {@link Organisation} derived from
+   * the OAuth2 scope.
    *
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
    * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.

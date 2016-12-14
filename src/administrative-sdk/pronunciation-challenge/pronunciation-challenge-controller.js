@@ -77,6 +77,7 @@ export default class PronunciationChallengeController {
 
   /**
    * List all pronunciation challenges in the current active {@link Organisation} derived from the OAuth2 scope.
+   *
    * @returns {Promise} Promise containing a list of PronunciationChallenges.
    * @throws {Promise} If no result could not be found.
    */
@@ -99,6 +100,7 @@ export default class PronunciationChallengeController {
 
   /**
    * Delete a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
+   *
    * @param {PronunciationChallenge#id} challengeId - A pronunciation challenge identifier.
    * @returns {Promise} Promise containing this.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
