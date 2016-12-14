@@ -5,7 +5,7 @@ import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
-import guid from 'guid';
+import uuid from 'node-uuid';
 
 /**
  * Audio recording component.
@@ -304,9 +304,9 @@ export default class AudioRecorder {
    */
   startRecordingSession(id) {
     // Generate a uuid to remember this recording by (locally).
-    const uuid = id === undefined ? guid.create() : id;
-    this.activeRecordingId = uuid;
-    return uuid;
+    const uuid_ = id === undefined ? uuid.v4() : id;
+    this.activeRecordingId = uuid_;
+    return uuid_;
   }
 
   /**
