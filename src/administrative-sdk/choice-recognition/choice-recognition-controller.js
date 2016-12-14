@@ -1,6 +1,5 @@
 import Base64Utils from '../utils/base64-utils';
 import ChoiceRecognition from './choice-recognition';
-import Student from '../student/student';
 import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.
@@ -258,12 +257,9 @@ export default class ChoiceRecognitionController {
       challengeId + '/recognitions/' + recognitionId;
 
     return this._connection._secureAjaxGet(url)
-      .then(datum => {
-        const student = new Student(organisationId, datum.studentId);
-        return new ChoiceRecognition(challengeId, student,
+      .then(datum => new ChoiceRecognition(challengeId, datum.studentId,
           datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl, datum.recognised);
-      });
+          datum.audioUrl, datum.recognised));
   }
 
   /**
@@ -289,8 +285,7 @@ export default class ChoiceRecognitionController {
       .then(data => {
         const recognitions = [];
         data.forEach(datum => {
-          const student = new Student(organisationId, datum.studentId);
-          const recognition = new ChoiceRecognition(challengeId, student,
+          const recognition = new ChoiceRecognition(challengeId, datum.studentId,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl, datum.recognised);
           recognitions.push(recognition);

@@ -4,7 +4,6 @@ import Controller from '../src/administrative-sdk/pronunciation-analysis/pronunc
 import Phoneme from '../src/administrative-sdk/phoneme/phoneme';
 import PronunciationAnalysis from '../src/administrative-sdk/pronunciation-analysis/pronunciation-analysis';
 import PronunciationChallenge from '../src/administrative-sdk/pronunciation-challenge/pronunciation-challenge';
-import Student from '../src/administrative-sdk/student/student';
 import Word from '../src/administrative-sdk/word/word';
 import WordChunk from '../src/administrative-sdk/word-chunk/word-chunk';
 import autobahn from 'autobahn';
@@ -878,8 +877,7 @@ describe('PronunciationAnalyses API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge.id, student,
+        const analysis = new PronunciationAnalysis(challenge.id, '6',
           '5', new Date(stringDate), new Date(stringDate), audioUrl, undefined, undefined, null);
         expect(result).toEqual(analysis);
       })
@@ -939,8 +937,7 @@ describe('PronunciationAnalyses API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge.id, student,
+        const analysis = new PronunciationAnalysis(challenge.id, '6',
           '5', new Date(stringDate), new Date(stringDate), audioUrl);
         analysis.score = 7.5;
         const chunk = [
@@ -1016,12 +1013,10 @@ describe('PronunciationAnalyses API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge.id, student,
+        const analysis = new PronunciationAnalysis(challenge.id, '6',
           '5', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis.audioUrl = audioUrl;
-        const student2 = new Student('fb', '24');
-        const analysis2 = new PronunciationAnalysis(challenge.id, student2,
+        const analysis2 = new PronunciationAnalysis(challenge.id, '24',
           '6', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis2.audioUrl = audioUrl;
         analysis2.score = 7.5;
@@ -1162,12 +1157,10 @@ describe('PronunciationAnalyses API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '6');
-        const analysis = new PronunciationAnalysis(challenge.id, student,
+        const analysis = new PronunciationAnalysis(challenge.id, '6',
           '5', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis.audioUrl = audioUrl;
-        const student2 = new Student('fb', '24');
-        const analysis2 = new PronunciationAnalysis(challenge.id, student2,
+        const analysis2 = new PronunciationAnalysis(challenge.id, '24',
           '6', new Date(stringDate), new Date(stringDate), undefined, undefined, undefined, null);
         analysis2.audioUrl = audioUrl;
         analysis2.score = 7.5;
