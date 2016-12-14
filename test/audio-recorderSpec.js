@@ -3,7 +3,7 @@ import * as MediaRecorder from '../src/audio/media-recorder';
 import * as WebAudioRecorder from '../src/audio/web-audio-recorder';
 import AudioRecorder from '../src/audio/audio-recorder';
 import Stopwatch from '../src/audio/tools';
-import guid from 'guid';
+import uuid from 'node-uuid';
 
 describe('Audio recorder', () => {
   beforeEach(() => {
@@ -265,11 +265,11 @@ describe('Audio recorder', () => {
 
   it('should set a new recording session id without given id', () => {
     const recorder = new AudioRecorder();
-    guid.create = jasmine.createSpy().and.returnValue(1);
+    spyOn(uuid, 'v4').and.returnValue(1);
     recorder._recorder = jasmine.createSpyObj('recorder', ['record']);
     const result = recorder.startRecordingSession();
     expect(result).toEqual(1);
-    expect(guid.create).toHaveBeenCalledTimes(1);
+    expect(uuid.v4).toHaveBeenCalledTimes(1);
     expect(recorder.activeRecordingId).toEqual(1);
   });
 

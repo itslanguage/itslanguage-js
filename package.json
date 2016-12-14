@@ -22,7 +22,7 @@
     "autobahn": "0.10.1",
     "client-oauth2": "2.2.0",
     "event-emitter": "^0.3.4",
-    "guid": "0.0.12",
+    "node-uuid": "^1.4.7",
     "pcmjs": "^0.0.2",
     "when": "^3.7.7"
   },
