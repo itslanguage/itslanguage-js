@@ -68,7 +68,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       };
     };
 
-    challenge = new ChoiceChallenge('fb', '4', null, ['a']);
+    challenge = new ChoiceChallenge('4', null, ['a']);
     recorder = new RecorderMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
@@ -135,7 +135,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new ChoiceChallenge('1', null, null, ['a']);
+    challenge = new ChoiceChallenge(null, null, ['a']);
     controller.startStreamingChoiceRecognition(challenge, null)
         .then(() => {
           fail('No result should be returned');
@@ -146,22 +146,10 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         .then(done);
   });
 
-  it('should fail streaming when challenge.organisationId is not present', done => {
-    challenge = new ChoiceChallenge('', '2', null, ['a']);
-    controller.startStreamingChoiceRecognition(challenge, null)
-        .then(() => {
-          fail('No result should be returned');
-        })
-        .catch(error => {
-          expect(error.message).toEqual('challenge.organisationId field is required');
-        })
-        .then(done);
-  });
-
   it('should fail streaming when recording is already recording', done => {
     recorder.isRecording = () => true;
     api._session = {};
-    challenge = new ChoiceChallenge('1', '4', null, ['a']);
+    challenge = new ChoiceChallenge('4', null, ['a']);
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('No result should be returned');
@@ -177,7 +165,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     api._recognitionId = '5';
     api._session = {};
     controller = new ChoiceRecognitionController(api);
-    challenge = new ChoiceChallenge('1', '4', null, ['a']);
+    challenge = new ChoiceChallenge('4', null, ['a']);
     controller.startStreamingChoiceRecognition(challenge, recorder)
         .then(() => {
           fail('No result should be returned');
@@ -628,21 +616,9 @@ describe('API interaction', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject when there is no organisationId', done => {
-    const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should reject when there is no challenge id', done => {
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition('fb')
+    controller.getChoiceRecognition()
       .then(() => {
         fail('An error should be thrown');
       })
@@ -654,7 +630,7 @@ describe('API interaction', () => {
 
   it('should reject when there is no recognition id', done => {
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition('fb', '1')
+    controller.getChoiceRecognition('1')
       .then(() => {
         fail('An error should be thrown');
       })
@@ -681,9 +657,9 @@ describe('API interaction', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions/5';
-    const challenge = new SpeechChallenge('fb', '4');
+    const challenge = new SpeechChallenge('4');
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition(challenge.organisationId, challenge.id, '5')
+    controller.getChoiceRecognition(challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -714,9 +690,9 @@ describe('API interaction', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions/5';
-    const challenge = new SpeechChallenge('fb', '4');
+    const challenge = new SpeechChallenge('4');
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition(challenge.organisationId, challenge.id, '5')
+    controller.getChoiceRecognition(challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -733,7 +709,7 @@ describe('API interaction', () => {
   });
 
   it('should get a list of existing choice recognitions', done => {
-    const challenge = new SpeechChallenge('fb', '4');
+    const challenge = new SpeechChallenge('4');
     const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions';
     const content = [{
       id: '5',
@@ -757,7 +733,7 @@ describe('API interaction', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new ChoiceRecognitionController(api);
-    controller.listChoiceRecognitions('fb', challenge.id)
+    controller.listChoiceRecognitions(challenge.id)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -792,32 +768,6 @@ describe('API interaction', () => {
         })
         .catch(error => {
           expect(error.message).toEqual('challengeId field is required');
-        })
-        .then(done);
-  });
-
-  it('should reject to get a list when challenge has no id', done => {
-    const challenge = new SpeechChallenge('4', '');
-    const controller = new ChoiceRecognitionController(api);
-    controller.listChoiceRecognitions('4', challenge.id)
-        .then(() => {
-          fail('An error should be thrown');
-        })
-        .catch(error => {
-          expect(error.message).toEqual('challengeId field is required');
-        })
-        .then(done);
-  });
-
-  it('should reject to get a list when challenge has no organisationId', done => {
-    const challenge = new SpeechChallenge('', '4');
-    const controller = new ChoiceRecognitionController(api);
-    controller.listChoiceRecognitions('', challenge.id)
-        .then(() => {
-          fail('An error should be thrown');
-        })
-        .catch(error => {
-          expect(error.message).toEqual('organisationId field is required');
         })
         .then(done);
   });

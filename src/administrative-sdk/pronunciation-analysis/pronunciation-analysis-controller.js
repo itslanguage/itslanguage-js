@@ -126,7 +126,6 @@ export default class PronunciationAnalysisController {
    * reference audio.
    * @throws {Promise} If challenge is not an object or not defined.
    * @throws {Promise} If challenge has no id.
-   * @throws {Promise} If challenge has no organisationId.
    * @throws {Promise} If the connection is not open.
    * @throws {Promise} If the recorder is already recording.
    * @throws {Promise} If a session is already in progress.
@@ -139,9 +138,6 @@ export default class PronunciationAnalysisController {
     }
     if (!challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
-    }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
     }
     if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
@@ -279,21 +275,17 @@ export default class PronunciationAnalysisController {
   }
 
   /**
-   * Get a pronunciation analysis in a pronunciation challenge.
+   * Get a pronunciation analysis in a pronunciation challenge from the current active {@link Organisation} derived
+   * from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
    * @param {PronunciationAnalysis#id} analysisId - Specify a pronunciation analysis identifier.
    * @returns {Promise} Promise containing a PronunciationAnalysis.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} {@link PronunciationAnalysis#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getPronunciationAnalysis(organisationId, challengeId, analysisId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getPronunciationAnalysis(challengeId, analysisId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -318,21 +310,17 @@ export default class PronunciationAnalysisController {
   }
 
   /**
-   * List all pronunciation analyses in a specific pronunciation challenge.
+   * List all pronunciation analyses in a specific pronunciation challenge from the current active {@link Organisation}
+   * derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier to list
    * speech recordings for.
    * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
    * @returns {Promise} Promise containing a list of PronunciationAnalyses.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  listPronunciationAnalyses(organisationId, challengeId, detailed) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  listPronunciationAnalyses(challengeId, detailed) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }

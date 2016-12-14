@@ -78,7 +78,6 @@ export default class ChoiceRecognitionController {
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} {@link ChoiceChallenge#organisationId} field is required.
    * @throws {Promise} If the connection is not open.
    * @throws {Promise} If the recorder is already recording.
    * @throws {Promise} If a recognition session is already in progress.
@@ -91,9 +90,6 @@ export default class ChoiceRecognitionController {
     }
     if (!challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
-    }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
     }
 
     // Validate environment prerequisites.
@@ -232,21 +228,17 @@ export default class ChoiceRecognitionController {
   }
 
   /**
-   * Get a choice recognition in a choice challenge.
+   * Get a choice recognition in a choice challenge from the current active {@link Organisation} derived from
+   * the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
    * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
    * @returns {Promise} Promise containing a ChoiceRecognition.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} {@link ChoiceRecognition#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getChoiceRecognition(organisationId, challengeId, recognitionId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getChoiceRecognition(challengeId, recognitionId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -263,21 +255,17 @@ export default class ChoiceRecognitionController {
   }
 
   /**
-   * List all choice recognitions in a specific {@link ChoiceChallenge}.
+   * List all choice recognitions in a specific {@link ChoiceChallenge} from the current active {@link Organisation}
+   * derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
    * @returns {Promise} Promise containing an array of ChoiceRecognitions.
-   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
    * @throws {Promise} If no result could not be found.
    */
-  listChoiceRecognitions(organisationId, challengeId) {
+  listChoiceRecognitions(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
-    }
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/choice/' +
       challengeId + '/recognitions';

@@ -72,36 +72,36 @@ describe('Administrative SDK', () => {
     sdk.listStudents(1);
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);
-    expect(fakeChoiceChallengeController.getChoiceChallenge).toHaveBeenCalledWith(1, 2);
-    expect(fakeChoiceChallengeController.listChoiceChallenges).toHaveBeenCalledWith(1);
+    expect(fakeChoiceChallengeController.getChoiceChallenge).toHaveBeenCalledWith(1);
+    expect(fakeChoiceChallengeController.listChoiceChallenges).toHaveBeenCalledWith();
 
     expect(fakeChoiceRecognitionController.startStreamingChoiceRecognition).toHaveBeenCalledWith(1, 2, 3);
-    expect(fakeChoiceRecognitionController.getChoiceRecognition).toHaveBeenCalledWith(1, 2, 3);
-    expect(fakeChoiceRecognitionController.listChoiceRecognitions).toHaveBeenCalledWith(1, 2);
+    expect(fakeChoiceRecognitionController.getChoiceRecognition).toHaveBeenCalledWith(1, 2);
+    expect(fakeChoiceRecognitionController.listChoiceRecognitions).toHaveBeenCalledWith(1);
 
     expect(fakeOrganisationController.createOrganisation).toHaveBeenCalledWith(1);
     expect(fakeOrganisationController.getOrganisation).toHaveBeenCalledWith(1);
     expect(fakeOrganisationController.listOrganisations).toHaveBeenCalledWith();
 
     expect(fakePronunciationAnalysisController.startStreamingPronunciationAnalysis).toHaveBeenCalledWith(1, 2, 3);
-    expect(fakePronunciationAnalysisController.getPronunciationAnalysis).toHaveBeenCalledWith(1, 2, 3);
-    expect(fakePronunciationAnalysisController.listPronunciationAnalyses).toHaveBeenCalledWith(1, 2, 3);
+    expect(fakePronunciationAnalysisController.getPronunciationAnalysis).toHaveBeenCalledWith(1, 2);
+    expect(fakePronunciationAnalysisController.listPronunciationAnalyses).toHaveBeenCalledWith(1, 2);
 
     expect(fakePronunciationChallengeController.createPronunciationChallenge).toHaveBeenCalledWith(1);
-    expect(fakePronunciationChallengeController.getPronunciationChallenge).toHaveBeenCalledWith(1, 2);
-    expect(fakePronunciationChallengeController.listPronunciationChallenges).toHaveBeenCalledWith(1);
+    expect(fakePronunciationChallengeController.getPronunciationChallenge).toHaveBeenCalledWith(1);
+    expect(fakePronunciationChallengeController.listPronunciationChallenges).toHaveBeenCalledWith();
     expect(fakePronunciationChallengeController.deletePronunciationChallenge).toHaveBeenCalledWith(1);
 
     expect(fakeSpeechChallengeController.createSpeechChallenge).toHaveBeenCalledWith(1);
-    expect(fakeSpeechChallengeController.getSpeechChallenge).toHaveBeenCalledWith(1, 2);
-    expect(fakeSpeechChallengeController.listSpeechChallenges).toHaveBeenCalledWith(1);
+    expect(fakeSpeechChallengeController.getSpeechChallenge).toHaveBeenCalledWith(1);
+    expect(fakeSpeechChallengeController.listSpeechChallenges).toHaveBeenCalledWith();
 
     expect(fakeSpeechRecordingController.startStreamingSpeechRecording).toHaveBeenCalledWith(1, 2);
-    expect(fakeSpeechRecordingController.getSpeechRecording).toHaveBeenCalledWith(1, 2, 3);
-    expect(fakeSpeechRecordingController.listSpeechRecordings).toHaveBeenCalledWith(1, 2);
+    expect(fakeSpeechRecordingController.getSpeechRecording).toHaveBeenCalledWith(1, 2);
+    expect(fakeSpeechRecordingController.listSpeechRecordings).toHaveBeenCalledWith(1);
 
     expect(fakeStudentController.createStudent).toHaveBeenCalledWith(1);
-    expect(fakeStudentController.getStudent).toHaveBeenCalledWith(1, 2);
-    expect(fakeStudentController.listStudents).toHaveBeenCalledWith(1);
+    expect(fakeStudentController.getStudent).toHaveBeenCalledWith(1);
+    expect(fakeStudentController.listStudents).toHaveBeenCalledWith();
   });
 });

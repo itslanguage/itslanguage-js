@@ -25,19 +25,8 @@ describe('SpeechRecording API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject to get a recording if organisationId is not present', done => {
-    controller.getSpeechRecording()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should reject to get a recording if challenge id is not present', done => {
-    const challenge = new SpeechChallenge('fb', '');
+    const challenge = new SpeechChallenge('');
     controller.getSpeechRecording(challenge.organisationId, null)
       .then(() => {
         fail('An error should be thrown');
@@ -49,8 +38,8 @@ describe('SpeechRecording API interaction test', () => {
   });
 
   it('should reject to get a recording if recording id is not present', done => {
-    const challenge = new SpeechChallenge('fb', '1');
-    controller.getSpeechRecording(challenge.organisationId, challenge.id)
+    const challenge = new SpeechChallenge('1');
+    controller.getSpeechRecording(challenge.id)
       .then(() => {
         fail('An error should be thrown');
       })
@@ -78,8 +67,8 @@ describe('SpeechRecording API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    const challenge = new SpeechChallenge('fb', '4');
-    controller.getSpeechRecording(challenge.organisationId, challenge.id, '5')
+    const challenge = new SpeechChallenge('4');
+    controller.getSpeechRecording(challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -97,20 +86,8 @@ describe('SpeechRecording API interaction test', () => {
       .then(done);
   });
 
-  it('should reject to get a list of recordings if organisationId is not present', done => {
-    controller.listSpeechRecordings()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should reject to get a list of recordings if challenge id is not present', done => {
-    const challenge = new SpeechChallenge('fb', '');
-    controller.listSpeechRecordings(challenge.organisationId)
+    controller.listSpeechRecordings()
       .then(() => {
         fail('An error should be thrown');
       })
@@ -137,8 +114,8 @@ describe('SpeechRecording API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const challenge = new SpeechChallenge('fb', '4');
-    controller.listSpeechRecordings(challenge.organisationId, challenge.id)
+    const challenge = new SpeechChallenge('4');
+    controller.listSpeechRecordings(challenge.id)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -231,7 +208,7 @@ describe('Speech Recording Websocket API interaction test', () => {
         return d.promise;
       };
     };
-    challenge = new SpeechChallenge('fb', '4');
+    challenge = new SpeechChallenge('4');
     recorder = new RecorderMock();
     session = new SessionMock();
     stringDate = '2014-12-31T23:59:59Z';
@@ -266,7 +243,7 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new SpeechChallenge('1', '', '', null);
+    challenge = new SpeechChallenge('', '', null);
     controller.startStreamingSpeechRecording(challenge, null)
       .then(() => {
         fail('No result should be returned');
@@ -277,22 +254,10 @@ describe('Speech Recording Websocket API interaction test', () => {
       .then(done);
   });
 
-  it('should fail streaming when challenge.organisationId is not present', done => {
-    challenge = new SpeechChallenge('', '2', '', null);
-    controller.startStreamingSpeechRecording(challenge, null)
-      .then(() => {
-        fail('No result should be returned');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challenge.organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should fail streaming when recording is already recording', done => {
     recorder.isRecording = () => true;
     api._session = {};
-    challenge = new SpeechChallenge('1', '4', '', null);
+    challenge = new SpeechChallenge('4', '', null);
     controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('No result should be returned');
@@ -308,7 +273,7 @@ describe('Speech Recording Websocket API interaction test', () => {
     api._recordingId = '5';
     api._session = {};
     controller = new SpeechRecordingController(api);
-    challenge = new SpeechChallenge('1', '4', '', null);
+    challenge = new SpeechChallenge('4', '', null);
     controller.startStreamingSpeechRecording(challenge, recorder)
       .then(() => {
         fail('No result should be returned');

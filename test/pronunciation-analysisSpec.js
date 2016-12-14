@@ -78,7 +78,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
     };
 
-    challenge = new PronunciationChallenge('fb', '4', 'foo', new Blob(['a']));
+    challenge = new PronunciationChallenge('4', 'foo', new Blob(['a']));
     recorder = new RecorderMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
@@ -145,26 +145,13 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new PronunciationChallenge('1', '', '', new Blob(['a']));
+    challenge = new PronunciationChallenge('', '', new Blob(['a']));
     controller.startStreamingPronunciationAnalysis(challenge, null)
       .then(() => {
         fail('No result should be returned');
       })
       .catch(error => {
         expect(error.message).toEqual('challenge.id field is required');
-      })
-      .then(done);
-  });
-
-  it('should fail streaming when challenge.organisationId is not present', done => {
-    challenge = new PronunciationChallenge('fb', '2', '', new Blob(['a']));
-    challenge.organisationId = null;
-    controller.startStreamingPronunciationAnalysis(challenge, null)
-      .then(() => {
-        fail('No result should be returned');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challenge.organisationId field is required');
       })
       .then(done);
   });
@@ -802,30 +789,12 @@ describe('PronunciationAnalyses API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject to get when challenge has no organisationId', done => {
-    const api = new Connection({
-      oAuth2Token: 'token'
-    });
-    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
-    challenge.organisationId = null;
-    const controller = new Controller(api);
-    controller.getPronunciationAnalysis()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should reject to get when challenge has no id', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('fb', '', 'test', new Blob());
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge.organisationId, null)
+    controller.getPronunciationAnalysis()
       .then(() => {
         fail('An error should be thrown');
       })
@@ -839,9 +808,9 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('fb', '1', 'test', new Blob());
+    const challenge = new PronunciationChallenge('1', 'test', new Blob());
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge.organisationId, challenge.id)
+    controller.getPronunciationAnalysis(challenge.id)
       .then(() => {
         fail('An error should be thrown');
       })
@@ -855,7 +824,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
+    const challenge = new PronunciationChallenge('4', 'test', new Blob());
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = {
@@ -873,7 +842,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge.organisationId, challenge.id, '5')
+    controller.getPronunciationAnalysis(challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -893,7 +862,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
+    const challenge = new PronunciationChallenge('4', 'test', new Blob());
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = {
@@ -933,7 +902,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new Controller(api);
-    controller.getPronunciationAnalysis(challenge.organisationId, challenge.id, '5')
+    controller.getPronunciationAnalysis(challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -962,7 +931,7 @@ describe('PronunciationAnalyses API interaction test', () => {
       oAuth2Token: 'token'
     });
 
-    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
+    const challenge = new PronunciationChallenge('4', 'test', new Blob());
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = [{
       id: '5',
@@ -1009,7 +978,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses';
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge.organisationId, challenge.id, false)
+    controller.listPronunciationAnalyses(challenge.id, false)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -1043,7 +1012,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('fb', '', 'test', new Blob());
+    const challenge = new PronunciationChallenge('', 'test', new Blob());
     const controller = new Controller(api);
     controller.listPronunciationAnalyses(challenge.organisationId, null)
       .then(() => {
@@ -1055,29 +1024,12 @@ describe('PronunciationAnalyses API interaction test', () => {
       .then(done);
   });
 
-  it('should reject to get a list when challenge.organisationId is not present', done => {
-    const api = new Connection({
-      oAuth2Token: 'token'
-    });
-    const challenge = new PronunciationChallenge('fb', '7', 'test', new Blob());
-    challenge.organisationId = null;
-    const controller = new Controller(api);
-    controller.listPronunciationAnalyses()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should get a detailed list of pronunciation analyses', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
 
-    const challenge = new PronunciationChallenge('fb', '4', 'test', new Blob());
+    const challenge = new PronunciationChallenge('4', 'test', new Blob());
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses?detailed=true';
 
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
@@ -1153,7 +1105,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge.organisationId, challenge.id, true)
+    controller.listPronunciationAnalyses(challenge.id, true)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

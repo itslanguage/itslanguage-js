@@ -7,36 +7,29 @@ describe('SpeechChallenge object test', () => {
   it('should require all required fields in constructor', () => {
     expect(() => {
       new SpeechChallenge(4);
-    }).toThrowError(
-      'organisationId parameter of type "string|null" is required');
-
-    expect(() => {
-      new SpeechChallenge(null, 4);
     }).toThrowError('id parameter of type "string|null" is required');
 
     expect(() => {
-      new SpeechChallenge('fb', null, 'hi', '1');
+      new SpeechChallenge('hi', '1', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
 
     expect(() => {
-      new SpeechChallenge('fb', '2', 66, '1');
+      new SpeechChallenge('1', 66);
     }).toThrowError('topic parameter of type "string" is required');
   });
   it('should instantiate a SpeechChallenge with referenceAudio', () => {
     const blob = new Blob(['1234567890']);
 
-    const s = new SpeechChallenge('fb', 'test', 'hi', blob);
+    const s = new SpeechChallenge('test', 'hi', blob);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
-    expect(s.organisationId).toBe('fb');
     expect(s.topic).toBe('hi');
     expect(s.referenceAudio).toBe(blob);
   });
   it('should instantiate a SpeechChallenge', () => {
-    const s = new SpeechChallenge('fb', 'test', 'hi');
+    const s = new SpeechChallenge('test', 'hi');
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
-    expect(s.organisationId).toBe('fb');
     expect(s.topic).toBe('hi');
     expect(s.referenceAudio).toBe(null);
   });
@@ -62,20 +55,8 @@ describe('SpeechChallenge API interaction test', () => {
     jasmine.Ajax.uninstall();
   });
 
-  it('should reject creation when organisationId is not present', done => {
-    const challenge = new SpeechChallenge(null, '1', 'Hi');
-    controller.createSpeechChallenge(challenge)
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should create a challenge without an id', done => {
-    const challenge = new SpeechChallenge('fb', null, 'Hi');
+    const challenge = new SpeechChallenge(null, 'Hi');
     const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
@@ -98,7 +79,7 @@ describe('SpeechChallenge API interaction test', () => {
         expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
         expect(FormData.prototype.append.calls.count()).toEqual(1);
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new SpeechChallenge('fb', '1', 'Hi');
+        const outChallenge = new SpeechChallenge('1', 'Hi');
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         expect(result).toEqual(outChallenge);
@@ -110,7 +91,7 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should create a new challenge', done => {
-    const challenge = new SpeechChallenge('fb', '1', 'Hi');
+    const challenge = new SpeechChallenge('1', 'Hi');
     const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
@@ -134,7 +115,7 @@ describe('SpeechChallenge API interaction test', () => {
         expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
         expect(FormData.prototype.append.calls.count()).toEqual(2);
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new SpeechChallenge('fb', '1', 'Hi');
+        const outChallenge = new SpeechChallenge('1', 'Hi');
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         expect(result).toEqual(outChallenge);
@@ -147,7 +128,7 @@ describe('SpeechChallenge API interaction test', () => {
 
   it('should create a new challenge with referenceAudio', done => {
     const blob = new Blob(['1234567890']);
-    const challenge = new SpeechChallenge('fb', '1', 'Hi', blob);
+    const challenge = new SpeechChallenge('1', 'Hi', blob);
     const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
     const content = {
@@ -175,7 +156,7 @@ describe('SpeechChallenge API interaction test', () => {
         expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
         expect(FormData.prototype.append.calls.count()).toEqual(3);
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new SpeechChallenge('fb', '1', 'Hi', blob);
+        const outChallenge = new SpeechChallenge('1', 'Hi', blob);
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         outChallenge.referenceAudio = challenge.referenceAudio;
@@ -189,7 +170,7 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should handle errors while creating a new challenge', done => {
-    const challenge = new SpeechChallenge('fb', '1', 'Hi');
+    const challenge = new SpeechChallenge('1', 'Hi');
     const content = {
       message: 'Validation failed',
       errors: [
@@ -228,19 +209,8 @@ describe('SpeechChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should not get when organisation id is missing', done => {
-    controller.getSpeechChallenge()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should not get when challenge id is missing', done => {
-    controller.getSpeechChallenge('fb')
+    controller.getSpeechChallenge()
       .then(() => {
         fail('An error should be thrown');
       })
@@ -265,41 +235,19 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.getSpeechChallenge('fb', '4')
+    controller.getSpeechChallenge('4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new SpeechChallenge('fb', '4', 'Hi');
+        const challenge = new SpeechChallenge('4', 'Hi');
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         expect(result).toEqual(challenge);
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
-      })
-      .then(done);
-  });
-
-  it('should not list when there is no organisation id', done => {
-    controller.listSpeechChallenges()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
-  it('should not list when there is no organisation id', done => {
-    controller.listSpeechChallenges()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });
@@ -318,13 +266,13 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.listSpeechChallenges('fb')
+    controller.listSpeechChallenges()
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new SpeechChallenge('fb', '4', 'Hi');
+        const challenge = new SpeechChallenge('4', 'Hi');
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         expect(result[0]).toEqual(challenge);
