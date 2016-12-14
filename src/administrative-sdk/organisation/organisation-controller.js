@@ -16,7 +16,7 @@ export default class OrganisationController {
   }
 
   /**
-   * Create an organisation.
+   * Create an organisation. The organisation will be owned by the current active tenant.
    *
    * @param {Organisation} organisation - Object to create.
    * @returns {Promise} Promise containing the newly created object.
@@ -36,7 +36,7 @@ export default class OrganisationController {
   }
 
   /**
-   * Get an organisation.
+   * Get an organisation the current tenant is an owner of.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise} Promise containing an Organisation.
@@ -59,7 +59,7 @@ export default class OrganisationController {
   }
 
   /**
-   * List all organisations.
+   * List all organisations the current tenant is an owner of.
    *
    * @returns {Promise} Promise containing a list of Organisations.
    * @throws {Promise} If no result could not be found.
