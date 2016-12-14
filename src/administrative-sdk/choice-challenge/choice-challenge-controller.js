@@ -2,6 +2,7 @@ import ChoiceChallenge from './choice-challenge';
 
 /**
  * Controller class for the {@link ChoiceChallenge} model.
+ * @private
  */
 export default class ChoiceChallengeController {
   /**

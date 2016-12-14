@@ -2,6 +2,7 @@ import Student from './student';
 
 /**
  * Controller class for the Student model.
+ * @private
  */
 export default class StudentController {
   /**

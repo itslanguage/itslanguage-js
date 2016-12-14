@@ -2,6 +2,7 @@ import Organisation from './organisation';
 
 /**
  * Controller class for the Organisation model.
+ * @private
  */
 export default class OrganisationController {
   /**

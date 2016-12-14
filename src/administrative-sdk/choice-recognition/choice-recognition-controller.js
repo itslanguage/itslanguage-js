@@ -3,6 +3,7 @@ import ChoiceRecognition from './choice-recognition';
 import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.
+ * @private
  */
 export default class ChoiceRecognitionController {
   /**
