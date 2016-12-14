@@ -83,6 +83,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
       id: '4',
+      studentId: '1',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -269,7 +270,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Encountered an error during writing');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.student).toEqual('1');
+        expect(error.analysis.studentId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -508,7 +509,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Reference alignment failed');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.student).toEqual('1');
+        expect(error.analysis.studentId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -581,7 +582,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Alignment failed');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.student).toEqual('1');
+        expect(error.analysis.studentId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -654,7 +655,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Analysis failed');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.student).toEqual('1');
+        expect(error.analysis.studentId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -727,7 +728,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       .catch(error => {
         expect(error.message).toEqual('Unhandled error');
         expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.student).toEqual('1');
+        expect(error.analysis.studentId).toEqual('1');
         expect(error.analysis.created).toEqual(new Date(stringDate));
         expect(error.analysis.updated).toEqual(new Date(stringDate));
         expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
@@ -776,8 +777,9 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
           {trimStart: 0.15, trimEnd: 0.0});
         expect(progressCalled[0]).toEqual('ReadyToReceive');
         expect(progressCalled[1]).toEqual(expectedNotifyCall);
-        expect(result.analysis.challenge).toEqual(challenge.id);
+        expect(result.analysis.challengeId).toEqual(challenge.id);
         expect(result.analysis.id).toEqual('4');
+        expect(result.analysis.studentId).toBe('1');
         expect(result.analysisId).toEqual(fakeResponse);
       })
       .catch(error => {

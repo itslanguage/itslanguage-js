@@ -5,32 +5,32 @@ export default class ChoiceRecognition {
   /**
    * Create a choice recognition domain model.
    *
-   * @param {ChoiceChallenge#id} challenge - The {@link ChoiceChallenge} identifier.
-   * @param {Student#id} student - The {@link Student} identifier on whose behalf this audio is uploaded.
+   * @param {string} challengeId - The {@link ChoiceChallenge} identifier.
+   * @param {string} studentId - The {@link Student} identifier on whose behalf this audio is uploaded.
    * @param {string} id - The {@link ChoiceRecognition} identifier.
    * @param {Date} created - The creation date of the entity.
    * @param {Date} updated - The most recent update date of the entity.
    * @param {string} audioUrl - The audio fragment as streaming audio link.
    * @param {string} recognised - The recognised sentence.
    */
-  constructor(challenge, student, id, created, updated, audioUrl, recognised) {
+  constructor(challengeId, studentId, id, created, updated, audioUrl, recognised) {
     /**
      *
-     * @type {ChoiceRecognition#id}
+     * @type {string}
      */
     this.id = id;
 
     /**
      *
-     * @type {PronunciationChallenge#id}
+     * @type {string}
      */
-    this.challenge = challenge;
+    this.challengeId = challengeId;
 
     /**
      *
-     * @type {Student#id}
+     * @type {string}
      */
-    this.student = student;
+    this.studentId = studentId;
 
     /**
      *
