@@ -66,20 +66,12 @@ export default class PronunciationAnalysisController {
   pronunciationAnalysisInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.pronunciation.init_challenge',
       [this._connection._analysisId, challenge.id])
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
-      })
       .then(analysisId => {
         console.log('Challenge initialised for analysisId: ' + this._connection._analysisId);
         return analysisId;
       })
       .then(() => this._connection._session.call('nl.itslanguage.pronunciation.alignment',
         [this._connection._analysisId]))
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
-      })
       .then(alignment => {
         this._referenceAlignment = alignment;
         console.log('Reference alignment retrieved', alignment);
@@ -105,10 +97,6 @@ export default class PronunciationAnalysisController {
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return analysisId;
-      })
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
       });
   }
 
@@ -192,12 +180,12 @@ export default class PronunciationAnalysisController {
           self._connection._analysisId);
         self._connection._session.call('nl.itslanguage.pronunciation.write',
           [self._connection._analysisId, encoded, 'base64'])
+          .then(() => {
+            console.debug('Delivered audio successfully');
+          })
           .catch(res => {
             Connection.logRPCError(res);
             reportError(res);
-          })
-          .then(() => {
-            console.debug('Delivered audio successfully');
           });
       }
 
@@ -240,7 +228,7 @@ export default class PronunciationAnalysisController {
           trimEnd: trimAudioEnd
         })
         .then(initAnalysis)
-        .then(() => {
+        .then(() =>
           self.pronunciationAnalysisInitChallenge(challenge)
             .then(() => {
               const p = new Promise(resolve_ => {
@@ -257,12 +245,8 @@ export default class PronunciationAnalysisController {
               });
             })
             .then(() => notify('ReadyToReceive'))
-            .catch(reject);
-        })
-        .catch(res => {
-          Connection.logRPCError(res);
-          reject(res);
-        });
+        )
+        .catch(reject);
     })
       .then(res => {
         self._connection._analysisId = null;
@@ -270,6 +254,7 @@ export default class PronunciationAnalysisController {
       })
       .catch(error => {
         self._connection._analysisId = null;
+        Connection.logRPCError(error);
         return Promise.reject(error);
       });
   }

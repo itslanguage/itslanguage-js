@@ -27,13 +27,7 @@ export default class SpeechRecordingController {
       recordingId => {
         console.log('Challenge initialised for recordingId: ' + this._connection._recordingId);
         return recordingId;
-      },
-      // RPC error callback
-      res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
-      }
-    );
+      });
   }
 
   /**
@@ -55,10 +49,6 @@ export default class SpeechRecordingController {
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recordingId;
-      })
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
       });
   }
 
@@ -153,7 +143,7 @@ export default class SpeechRecordingController {
       recorder.addEventListener('recorded', recordedCb);
       self._connection._session.call('nl.itslanguage.recording.init_recording', [])
         .then(startRecording)
-        .then(() => {
+        .then(() =>
           self.speechRecordingInitChallenge(challenge)
               .then(() => {
                 const p = new Promise(resolve_ => {
@@ -169,12 +159,8 @@ export default class SpeechRecordingController {
                 });
               })
             .then(() => notify('ReadyToReceive'))
+        )
             .catch(reject);
-        },
-          res => {
-            Connection.logRPCError(res);
-            reject(res);
-          });
     })
       .then(res => {
         self._connection._recordingId = null;
@@ -182,6 +168,7 @@ export default class SpeechRecordingController {
       })
       .catch(error => {
         self._connection._recordingId = null;
+        Connection.logRPCError(error);
         return Promise.reject(error);
       });
   }
