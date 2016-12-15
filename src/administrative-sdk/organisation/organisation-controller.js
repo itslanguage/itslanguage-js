@@ -36,7 +36,7 @@ export default class OrganisationController {
   }
 
   /**
-   * Get an organisation the current tenant is an owner of.
+   * Get an organisation the current tenant is the owner of.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @returns {Promise.<Organisation>} Promise containing an Organisation.
@@ -59,7 +59,7 @@ export default class OrganisationController {
   }
 
   /**
-   * List all organisations the current tenant is an owner of.
+   * List all organisations the current tenant is the owner of.
    *
    * @returns {Promise.<Organisation[]>} Promise containing an array of Organisations.
    * @throws {Promise} If no result could not be found.
