@@ -34,8 +34,7 @@ export default class UserController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new User(user.organisationId, data.id, data.firstName, data.lastName, data.gender,
-          data.birthYear);
+        const result = new User(data.id, organisationId, data.profile, data.groups, data.roles);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         return result;
@@ -63,8 +62,7 @@ export default class UserController {
       organisationId + '/users/' + userId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const user = new User(organisationId, data.id, data.firstName,
-          data.lastName, data.gender, data.birthYear);
+        const user = new User(data.id, organisationId, data.profile, data.groups, data.roles);
         user.created = new Date(data.created);
         user.updated = new Date(data.updated);
         return user;
@@ -89,8 +87,7 @@ export default class UserController {
       .then(data => {
         const users = [];
         data.forEach(datum => {
-          const user = new User(organisationId, datum.id,
-            datum.firstName, datum.lastName, datum.gender, datum.birthYear);
+          const user = new User(datum.id, organisationId, datum.profile, datum.groups, datum.roles);
           user.created = new Date(datum.created);
           user.updated = new Date(datum.updated);
           users.push(user);
