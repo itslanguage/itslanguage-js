@@ -11,6 +11,7 @@ import when from 'when';
 
 /**
  * Controller class for the PronunciationAnalysis model.
+ * @private
  */
 export default class PronunciationAnalysisController {
   /**

@@ -5,6 +5,7 @@ import when from 'when';
 
 /**
  * Controller class for the SpeechRecording model.
+ * @private
  */
 export default class SpeechRecordingController {
   /**

@@ -2,6 +2,7 @@ import PronunciationChallenge from './pronunciation-challenge';
 
 /**
  * Controller class for the PronunciationChallenge model.
+ * @private
  */
 export default class PronunciationChallengeController {
   /**

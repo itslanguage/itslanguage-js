@@ -4,6 +4,7 @@ import Connection from '../connection/connection-controller';
 import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.
+ * @private
  */
 export default class ChoiceRecognitionController {
   /**

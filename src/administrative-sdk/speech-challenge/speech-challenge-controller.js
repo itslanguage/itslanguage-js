@@ -2,6 +2,7 @@ import SpeechChallenge from './speech-challenge';
 
 /**
  * Controller class for the SpeechChallenge model.
+ * @private
  */
 export default class SpeechChallengeController {
   /**
