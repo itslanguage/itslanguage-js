@@ -120,6 +120,7 @@ export default class AdministrativeSDK {
    *
    * @param {Organisation} organisation - Object to create.
    * @returns {Promise.<Organisation>} Promise containing the newly created Organisation.
+   * @throws {Promise.<Error>} organisation field of type "Organisation" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createOrganisation(organisation) {
@@ -131,7 +132,7 @@ export default class AdministrativeSDK {
    *
    * @param {string} organisationId - Specify an organisation identifier.
    * @returns {Promise.<Organisation>} Promise containing an Organisation.
-   * @throws {Promise.<Error>} {@link Organisation#id} field is required.
+   * @throws {Promise.<Error>} {@link Organisation#id} field of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
   getOrganisation(organisationId) {
