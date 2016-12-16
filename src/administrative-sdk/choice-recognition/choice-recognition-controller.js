@@ -1,5 +1,6 @@
 import Base64Utils from '../utils/base64-utils';
 import ChoiceRecognition from './choice-recognition';
+import Connection from '../connection/connection-controller';
 import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.
@@ -30,13 +31,7 @@ export default class ChoiceRecognitionController {
         recognitionId => {
           console.log('Challenge initialised for recognitionId: ' + this._connection._recognitionId);
           return recognitionId;
-        },
-        // RPC error callback
-        res => {
-          console.error('RPC error returned:', res.error);
-          return Promise.reject(res);
-        }
-      );
+        });
   }
 
   /**
@@ -59,13 +54,7 @@ export default class ChoiceRecognitionController {
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recognitionId;
-      },
-      // RPC error callback
-      res => {
-        console.error('RPC error returned:', res.error);
-        return Promise.reject(res);
-      }
-    );
+      });
   }
 
   /**
@@ -168,7 +157,7 @@ export default class ChoiceRecognitionController {
           trimEnd: trimAudioEnd
         })
         .then(recognitionInitCb)
-        .then(() => {
+        .then(() =>
           self.choiceRecognitionInitChallenge(challenge)
             .then(() => {
               const p = new Promise(resolve_ => {
@@ -184,12 +173,8 @@ export default class ChoiceRecognitionController {
               });
             })
             .then(() => notify('ReadyToReceive'))
+        )
             .catch(reject);
-        })
-        .catch(res => {
-          console.error('RPC error returned:', res.error);
-          reject(res);
-        });
 
       // Stop listening when the audio recorder stopped.
       function recordedCb() {
@@ -223,6 +208,7 @@ export default class ChoiceRecognitionController {
       })
       .catch(error => {
         self._connection._recognitionId = null;
+        Connection.logRPCError(error);
         return Promise.reject(error);
       });
   }
