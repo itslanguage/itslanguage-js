@@ -75,8 +75,8 @@ describe('Administrative SDK', () => {
     sdk.getSpeechRecording(1, 2, 3);
     sdk.listSpeechRecordings(1, 2);
     sdk.createUser(1);
-    sdk.getUser(1, 2);
-    sdk.listUsers(1);
+    sdk.getUser(1);
+    sdk.listUsers();
     sdk.createEmailCredentials(1, 2);
     sdk.listRoles();
 
@@ -112,8 +112,8 @@ describe('Administrative SDK', () => {
     expect(fakeSpeechRecordingController.listSpeechRecordings).toHaveBeenCalledWith(1);
 
     expect(fakeUserController.createUser).toHaveBeenCalledWith(1);
-    expect(fakeUserController.getUser).toHaveBeenCalledWith(1, 2);
-    expect(fakeUserController.listUsers).toHaveBeenCalledWith(1);
+    expect(fakeUserController.getUser).toHaveBeenCalledWith(1);
+    expect(fakeUserController.listUsers).toHaveBeenCalledWith();
 
     expect(fakeRoleController.listRoles).toHaveBeenCalledWith();
   });

@@ -51,3 +51,58 @@ describe('User object test', () => {
     expect(s.roles).toEqual([{}]);
   });
 });
+
+describe('User API interaction test', () => {
+  it('should list users', done => {
+    const stringDate = '2014-12-31T23:59:59Z';
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const controller = new UserController(api);
+    const url = 'https://api.itslanguage.nl/users';
+    const content = [
+      {
+        "id": "sdcjb823jhguys5j",
+        "firstName": "Najat",
+        "infix": "van der",
+        "lastName": "Lee",
+        "tenantId": null,
+        "created": stringDate,
+        "updated": stringDate
+      },
+      {
+        "id": "iosdhrfd893ufg",
+        "firstName": "Chrissy",
+        "infix": null,
+        "lastName": "Haagen",
+        "tenantId": null,
+        "created": stringDate,
+        "updated": stringDate
+      }
+    ];
+    const fakeResponse = new Response(JSON.stringify(content), {
+      status: 201,
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    controller.listUsers()
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('POST');
+        expect(request[1].body).toEqual(JSON.stringify(expected));
+        expect(result.length).toEqual(2);
+        expect(result[0]).toEqual(jasmine.any(User));
+        expect(result[0].created).toEqual(new Date(stringDate));
+        expect(result[0].updated).toEqual(new Date(stringDate));
+        expect(result[1]).toEqual(jasmine.any(User));
+        expect(result[1].created).toEqual(new Date(stringDate));
+        expect(result[1].updated).toEqual(new Date(stringDate));
+      })
+      .catch(fail)
+      .then(done);
+  });
+});
+
