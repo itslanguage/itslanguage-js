@@ -1,5 +1,6 @@
 import * as ChoiceChallengeController from '../src/administrative-sdk/choice-challenge/choice-challenge-controller';
 import * as ChoiceRecogController from '../src/administrative-sdk/choice-recognition/choice-recognition-controller';
+import * as EmailCredentialsController from '../src/administrative-sdk/email-credentials/email-credentials-controller';
 import * as OrganisationController from '../src/administrative-sdk/organisation/organisation-controller';
 import * as ProAnalaControl from '../src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller';
 import * as ProChalControl from '../src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller';
@@ -18,6 +19,8 @@ describe('Administrative SDK', () => {
     ['createChoiceChallenge', 'getChoiceChallenge', 'listChoiceChallenges']);
   const fakeChoiceRecognitionController = jasmine.createSpyObj('ChoiceRecogController',
     ['startStreamingChoiceRecognition', 'getChoiceRecognition', 'listChoiceRecognitions']);
+  const fakeEmailCredentialsController = jasmine.createSpyObj('EmailCredentialsController',
+  ['createEmailCredentials']);
   const fakeOrganisationController = jasmine.createSpyObj('OrganisationController',
     ['createOrganisation', 'getOrganisation', 'listOrganisations']);
   const fakePronunciationAnalysisController = jasmine.createSpyObj('PronunciationAnalysisController',
@@ -35,6 +38,7 @@ describe('Administrative SDK', () => {
   beforeEach(() => {
     spyOn(ChoiceChallengeController, 'default').and.returnValue(fakeChoiceChallengeController);
     spyOn(ChoiceRecogController, 'default').and.returnValue(fakeChoiceRecognitionController);
+    spyOn(EmailCredentialsController, 'default').and.returnValue(fakeEmailCredentialsController);
     spyOn(OrganisationController, 'default').and.returnValue(fakeOrganisationController);
     spyOn(ProAnalaControl, 'default').and.returnValue(fakePronunciationAnalysisController);
     spyOn(ProChalControl, 'default').and.returnValue(fakePronunciationChallengeController);
@@ -70,6 +74,7 @@ describe('Administrative SDK', () => {
     sdk.createStudent(1);
     sdk.getStudent(1, 2);
     sdk.listStudents(1);
+    sdk.createEmailCredentials(1, 2);
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);
     expect(fakeChoiceChallengeController.getChoiceChallenge).toHaveBeenCalledWith(1);
@@ -78,6 +83,8 @@ describe('Administrative SDK', () => {
     expect(fakeChoiceRecognitionController.startStreamingChoiceRecognition).toHaveBeenCalledWith(1, 2, 3);
     expect(fakeChoiceRecognitionController.getChoiceRecognition).toHaveBeenCalledWith(1, 2);
     expect(fakeChoiceRecognitionController.listChoiceRecognitions).toHaveBeenCalledWith(1);
+
+    expect(fakeEmailCredentialsController.createEmailCredentials).toHaveBeenCalledWith(1, 2);
 
     expect(fakeOrganisationController.createOrganisation).toHaveBeenCalledWith(1);
     expect(fakeOrganisationController.getOrganisation).toHaveBeenCalledWith(1);

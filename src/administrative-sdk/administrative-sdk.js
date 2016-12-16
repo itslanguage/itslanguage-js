@@ -1,5 +1,6 @@
 import ChoiceChallengeController from './choice-challenge/choice-challenge-controller';
 import ChoiceRecognitionController from './choice-recognition/choice-recognition-controller';
+import EmailCredentialsController from './email-credentials/email-credentials-controller';
 import OrganisationController from './organisation/organisation-controller';
 import PronAnalaController from './pronunciation-analysis/pronunciation-analysis-controller';
 import PronChallController from './pronunciation-challenge/pronunciation-challenge-controller';
@@ -15,6 +16,7 @@ export default class AdministrativeSDK {
     this._connection = connection;
     this._choiceChallengeController = new ChoiceChallengeController(this._connection);
     this._choiceRecognitionController = new ChoiceRecognitionController(this._connection);
+    this._emailCredentialsController = new EmailCredentialsController(this._connection);
     this._organisationController = new OrganisationController(this._connection);
     this._pronAnalaController = new PronAnalaController(this._connection);
     this._pronChallController = new PronChallController(this._connection);
@@ -354,6 +356,20 @@ export default class AdministrativeSDK {
    */
   listStudents(organisationId) {
     return this._studentController.listStudents(organisationId);
+  }
+
+  /**
+   * Register credentials to the given user. Multiple credentials can be registered to one user.
+   *
+   * @param {string} userId - The identifier of the user to register credentials to.
+   * @param {EmailCredentials} emailCredentials - The credentials to register to the user.
+   * @returns {Promise.<EmailCredentials>} A promise containing the created EmailCredentials.
+   * @throws {Promise} UserId field is required.
+   * @throws {Promise} EmailCredentials field is required.
+   * @throws {Promise} If the server returned an error.
+   */
+  createEmailCredentials(userId, emailCredentials) {
+    return this._emailCredentialsController.createEmailCredentials(userId, emailCredentials);
   }
 }
 
