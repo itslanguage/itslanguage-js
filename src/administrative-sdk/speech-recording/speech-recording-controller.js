@@ -58,7 +58,7 @@ export default class SpeechRecordingController {
    *
    * @param {SpeechChallenge} challenge - The speech challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
+   * @returns {Promise.<SpeechRecording>} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} If challenge is not an object or not defined.
    * @throws {Promise} If challenge has no id.
@@ -180,7 +180,7 @@ export default class SpeechRecordingController {
    *
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
    * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
-   * @returns {Promise} Promise containing a SpeechRecording.
+   * @returns {Promise.<SpeechRecording>} Promise containing a SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} field is required.
    * @throws {Promise} {@link SpeechRecording#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -203,7 +203,7 @@ export default class SpeechRecordingController {
    * from the OAuth2 scope.
    *
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier to list speech recordings for.
-   * @returns {Promise} Promise containing a list of SpeechRecording.
+   * @returns {Promise.<SpeechRecording[]>} Promise containing an array of SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} is required.
    * @throws {Promise} If no result could not be found.
    */

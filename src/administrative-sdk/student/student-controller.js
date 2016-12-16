@@ -20,7 +20,7 @@ export default class StudentController {
    * Create a student.
    *
    * @param {Student} student - Object to create.
-   * @returns {Promise} Promise containing the newly created object.
+   * @returns {Promise.<Student>} Promise containing the newly created Student.
    * @throws {Promise} {@link Student#organisationId} field is required.
    * @throws {Promise} If the server returned an error.
    */
@@ -47,7 +47,7 @@ export default class StudentController {
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {Student#id} studentId - Specify a student identifier.
-   * @returns {Promise} Promise containing a Student.
+   * @returns {Promise.<Student>} Promise containing a Student.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} {@link Student#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -75,7 +75,7 @@ export default class StudentController {
    * List all students in the organisation.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @returns {Promise} Promise containing a list of Students.
+   * @returns {Promise.<Student[]>} Promise containing an array of Students.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */

@@ -101,7 +101,7 @@ describe('Administrative SDK', () => {
     expect(fakeSpeechRecordingController.listSpeechRecordings).toHaveBeenCalledWith(1);
 
     expect(fakeStudentController.createStudent).toHaveBeenCalledWith(1);
-    expect(fakeStudentController.getStudent).toHaveBeenCalledWith(1);
-    expect(fakeStudentController.listStudents).toHaveBeenCalledWith();
+    expect(fakeStudentController.getStudent).toHaveBeenCalledWith(1, 2);
+    expect(fakeStudentController.listStudents).toHaveBeenCalledWith(1);
   });
 });

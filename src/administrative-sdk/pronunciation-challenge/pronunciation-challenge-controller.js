@@ -21,7 +21,7 @@ export default class PronunciationChallengeController {
    * derived from the OAuth2 scope.
    *
    * @param {PronunciationChallenge} challenge - Object to create..
-   * @returns {Promise} Promise containing the newly created object.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created PronunciationChallenge.
    * @throws {Promise} {@link PronunciationChallenge#referenceAudio} of type "Blob" is required.
    * @throws {Promise} If the server returned an error.
    */
@@ -56,7 +56,7 @@ export default class PronunciationChallengeController {
    * Get a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
-   * @returns {Promise} Promise containing a PronunciationChallenge.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing a PronunciationChallenge.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
@@ -79,7 +79,7 @@ export default class PronunciationChallengeController {
   /**
    * List all pronunciation challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @returns {Promise} Promise containing a list of PronunciationChallenges.
+   * @returns {Promise.<PronunciationChallenge[]>} Promise containing a list of PronunciationChallenges.
    * @throws {Promise} If no result could not be found.
    */
   listPronunciationChallenges() {
@@ -103,7 +103,7 @@ export default class PronunciationChallengeController {
    * Delete a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {PronunciationChallenge#id} challengeId - A pronunciation challenge identifier.
-   * @returns {Promise} Promise containing this.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing the given challenge ID.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise} If the server returned an error.
    */

@@ -64,7 +64,7 @@ export default class ChoiceRecognitionController {
    * @param {ChoiceChallenge} challenge - The choice challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
    * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
+   * @returns {Promise.<ChoiceRecognition>} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
@@ -220,7 +220,7 @@ export default class ChoiceRecognitionController {
    *
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
    * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
-   * @returns {Promise} Promise containing a ChoiceRecognition.
+   * @returns {Promise.<ChoiceRecognition>} Promise containing a ChoiceRecognition.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
    * @throws {Promise} {@link ChoiceRecognition#id} field is required.
    * @throws {Promise} If no result could not be found.
@@ -246,7 +246,7 @@ export default class ChoiceRecognitionController {
    * derived from the OAuth2 scope.
    *
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
-   * @returns {Promise} Promise containing an array of ChoiceRecognitions.
+   * @returns {Promise.<ChoiceRecognition[]>} Promise containing an array of ChoiceRecognitions.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
    * @throws {Promise} If no result could not be found.
    */
