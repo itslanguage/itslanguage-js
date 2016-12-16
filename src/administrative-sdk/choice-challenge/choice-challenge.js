@@ -5,8 +5,8 @@ export default class ChoiceChallenge {
   /**
    * Create a choice challenge domain model.
    *
-   * @param {string} [id] - The {@link ChoiceChallenge} identifier. If none is given, one is generated.
-   * @param {string} [question] - A hint or question related to the choices.
+   * @param {?string} id - The {@link ChoiceChallenge} identifier. If none is given, one is generated.
+   * @param {?string} question - A hint or question related to the choices.
    * @param {string[]} choices - The sentences of which at most one may be recognised.
    * @throws {Error} id parameter of type "string|null|undefined" is required.
    * @throws {Error} id parameter should not be an empty string.

@@ -117,7 +117,7 @@ export default class PronunciationAnalysisController {
    *
    * @param {PronunciationChallenge} challenge - The pronunciation challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
-   * @param {boolean} [trim] - Whether to trim the start and end of recorded audio (default: true).
+   * @param {?boolean} trim - Whether to trim the start and end of recorded audio (default: true).
    * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @emits {Object} When the sent audio has finished alignment. Aligning audio is the process of mapping the audio

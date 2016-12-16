@@ -5,9 +5,9 @@ export default class SpeechChallenge {
   /**
    * Create a speech SpeechChallenge domain model.
    *
-   * @param {string} [id] - The speech challenge identifier. If none is given, one is generated.
-   * @param {string} [topic] - A question or topic serving as guidance.
-   * @param {Blob} [referenceAudio] - The reference audio fragment.
+   * @param {?string} id - The speech challenge identifier. If none is given, one is generated.
+   * @param {?string} topic - A question or topic serving as guidance.
+   * @param {?Blob} referenceAudio - The reference audio fragment.
    */
   constructor(id, topic, referenceAudio) {
     if (id && typeof id !== 'string') {
