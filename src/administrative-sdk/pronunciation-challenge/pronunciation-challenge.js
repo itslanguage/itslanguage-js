@@ -5,7 +5,7 @@ export default class PronunciationChallenge {
   /**
    * Create a pronunciation challenge domain model.
    *
-   * @param {string} [id] - The pronunciation challenge identifier. If none is given, one is generated.
+   * @param {?string} id - The pronunciation challenge identifier. If none is given, one is generated.
    * @param {string} transcription - The spoken word or sentence as plain text.
    * @param {Blob} referenceAudio - The reference audio fragment.
    */

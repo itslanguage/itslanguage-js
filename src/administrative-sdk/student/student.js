@@ -6,11 +6,11 @@ export default class Student {
    * Create a Student domain model.
    *
    * @param {string} organisationId - The organisation identifier this student is a member of.
-   * @param {string} [id] - The student identifier. If none is given, one is generated.
-   * @param {string} [firstName] - First name of the student.
-   * @param {string} [lastName] - Last name of the student.
-   * @param {string} [gender] - Gender of the student (either `male` or `female`).
-   * @param {number} [birthYear] - Birth year of the student.
+   * @param {?string} id - The student identifier. If none is given, one is generated.
+   * @param {?string} firstName - First name of the student.
+   * @param {?string} lastName - Last name of the student.
+   * @param {?string} gender - Gender of the student (either `male` or `female`).
+   * @param {?number} birthYear - Birth year of the student.
    */
   constructor(organisationId, id, firstName, lastName, gender, birthYear) {
     if (id && typeof id !== 'string') {

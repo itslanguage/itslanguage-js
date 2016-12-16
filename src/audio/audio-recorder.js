@@ -15,7 +15,7 @@ export default class AudioRecorder {
   /**
    * ITSLanguage AudioRecorder.
    *
-   * @param {Object} [options] - Override any of the default settings.
+   * @param {?Object} options - Override any of the default settings.
    *
    */
   constructor(options) {
@@ -312,7 +312,7 @@ export default class AudioRecorder {
   /**
    * Start recording microphone input until stopped.
    *
-   * @param {Function} [cb] - The callback that provides a piece of raw audio when
+   * @param {?Function} cb - The callback that provides a piece of raw audio when
    * it becomes available. It may be used for streaming.
    * @emits {Event} 'recording' With arguments: [recording ID].
    */
