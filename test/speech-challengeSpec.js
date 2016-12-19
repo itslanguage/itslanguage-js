@@ -209,13 +209,14 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should get an existing speech challenge', done => {
-    url = 'https://api.itslanguage.nl/challenges/speech/4';
+    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+      '/YsjdG37bUGseu8-bsJ';
     const content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi',
-      referenceAudioUrl: null
+      referenceAudioUrl,
+      topic: 'Hi'
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -233,6 +234,7 @@ describe('SpeechChallenge API interaction test', () => {
         const challenge = new SpeechChallenge('4', 'Hi', null);
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
+        challenge.referenceAudioUrl = url;
         expect(result).toEqual(challenge);
       })
       .catch(error => {
@@ -242,12 +244,14 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should get a list of existing challenges', done => {
+    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+      '/YsjdG37bUGseu8-bsJ';
     const content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi',
-      referenceAudioUrl: null
+      referenceAudioUrl,
+      topic: 'Hi'
     }];
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -265,6 +269,7 @@ describe('SpeechChallenge API interaction test', () => {
         const challenge = new SpeechChallenge('4', 'Hi', null);
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
+        challenge.referenceAudioUrl = url;
         expect(result[0]).toEqual(challenge);
         expect(result.length).toBe(1);
       })

@@ -18,7 +18,9 @@ export default class SpeechChallengeController {
 
   /**
    * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
-   * Additional information like audio, .srt files or images can be added in HTML5 Blob format.
+   * The created speech challenge will not contain the submitted audio file, but instead a property
+   * `referenceAudioUrl` which is the URL to download the submitted audio file.
+   * Additional information like .srt files or images can also be added in HTML5 Blob format.
    * The returned SpeechChallenge will contain links to download the given files.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
@@ -50,6 +52,8 @@ export default class SpeechChallengeController {
 
   /**
    * Get a speech challenge from the current active {@link Organisation} derived from the OAuth2 scope.
+   * The returned speech challenge will not contain an audio file, but instead a property
+   * `referenceAudioUrl` which is the URL to download the submitted audio file.
    *
    * @param {string} challengeId - Specify a speech challenge identifier.
    * @returns {Promise.<PronunciationChallenge>} Promise containing a SpeechChallenge.
