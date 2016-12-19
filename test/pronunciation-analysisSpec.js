@@ -1000,7 +1000,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     const challenge = new PronunciationChallenge('', 'test', new Blob());
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge.organisationId, null)
+    controller.listPronunciationAnalyses(challenge.id, null)
       .then(() => {
         fail('An error should be thrown');
       })

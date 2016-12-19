@@ -17,7 +17,7 @@ describe('SpeechRecording API interaction test', () => {
 
   it('should reject to get a recording if challenge id is not present', done => {
     const challenge = new SpeechChallenge('');
-    controller.getSpeechRecording(challenge.organisationId, null)
+    controller.getSpeechRecording(challenge.id, null)
       .then(() => {
         fail('An error should be thrown');
       })
