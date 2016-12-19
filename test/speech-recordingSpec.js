@@ -12,9 +12,6 @@ describe('SpeechRecording API interaction test', () => {
   const controller = new SpeechRecordingController(api);
 
   beforeEach(() => {
-    // XXX: jasmine-ajax doesn't support asserting FormData yet.
-    // Workaround by attaching a spy while appending to FormData.
-    // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
   });
 

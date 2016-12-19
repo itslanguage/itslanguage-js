@@ -772,9 +772,6 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
 
 describe('PronunciationAnalyses API interaction test', () => {
   beforeEach(() => {
-    // XXX: jasmine-ajax doesn't support asserting FormData yet.
-    // Workaround by attaching a spy while appending to FormData.
-    // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
   });
 
