@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import ChoiceChallenge from '../src/administrative-sdk/choice-challenge/choice-challenge';
 import ChoiceRecognition from '../src/administrative-sdk/choice-recognition/choice-recognition';
 import ChoiceRecognitionController from '../src/administrative-sdk/choice-recognition/choice-recognition-controller';
@@ -17,7 +16,6 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   let controller;
 
   beforeEach(() => {
-    jasmine.Ajax.install();
     api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar',
@@ -88,10 +86,6 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
     spyOn(api._session, 'call').and.callThrough();
     spyOn(api, 'addAccessToken').and.callFake(url => url + 'token');
     controller = new ChoiceRecognitionController(api);
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
   });
 
   it('should fail streaming when websocket connection is closed', done => {
@@ -607,14 +601,6 @@ describe('API interaction', () => {
     oAuth2Token: 'token'
   });
   const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
-
-  beforeEach(() => {
-    jasmine.Ajax.install();
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
-  });
 
   it('should reject when there is no challenge id', done => {
     const controller = new ChoiceRecognitionController(api);

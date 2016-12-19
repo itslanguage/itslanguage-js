@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 import Student from '../src/administrative-sdk/student/student';
 import StudentController from '../src/administrative-sdk/student/student-controller';
@@ -41,14 +40,6 @@ describe('Student object test', () => {
 });
 
 describe('Student API interaction test', () => {
-  beforeEach(() => {
-    jasmine.Ajax.install();
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
-  });
-
   it('should not create when student.organisationId is missing', done => {
     const student = new Student('fb', '1', 'Mark');
     student.organisationId = null;

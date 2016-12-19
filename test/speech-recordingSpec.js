@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-challenge';
 import SpeechRecording from '../src/administrative-sdk/speech-recording/speech-recording';
@@ -13,16 +12,7 @@ describe('SpeechRecording API interaction test', () => {
   const controller = new SpeechRecordingController(api);
 
   beforeEach(() => {
-    jasmine.Ajax.install();
-
-    // XXX: jasmine-ajax doesn't support asserting FormData yet.
-    // Workaround by attaching a spy while appending to FormData.
-    // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
   });
 
   it('should reject to get a recording if challenge id is not present', done => {
@@ -146,7 +136,6 @@ describe('Speech Recording Websocket API interaction test', () => {
   let controller;
 
   beforeEach(() => {
-    jasmine.Ajax.install();
     api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar',
@@ -214,10 +203,6 @@ describe('Speech Recording Websocket API interaction test', () => {
     stringDate = '2014-12-31T23:59:59Z';
     controller = new SpeechRecordingController(api);
     api._session = new SessionMock();
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
   });
 
   it('should fail streaming when challenge is not present', done => {

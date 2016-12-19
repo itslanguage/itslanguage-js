@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 import Organisation from '../src/administrative-sdk/organisation/organisation';
 import OrganisationController from '../src/administrative-sdk/organisation/organisation-controller';
@@ -31,14 +30,6 @@ describe('Organisation object test', () => {
 });
 
 describe('Organisation API interaction test', () => {
-  beforeEach(() => {
-    jasmine.Ajax.install();
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
-  });
-
   it('should create a new organisation through API', done => {
     const organisation = new Organisation('1', 'School of silly walks');
     const api = new Connection({

@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import ChoiceChallenge from '../src/administrative-sdk/choice-challenge/choice-challenge';
 import ChoiceChallengeController from '../src/administrative-sdk/choice-challenge/choice-challenge-controller';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
@@ -40,16 +39,7 @@ describe('ChoiceChallenge object test', () => {
 
 describe('ChoiceChallenge API interaction test', () => {
   beforeEach(() => {
-    jasmine.Ajax.install();
-
-    // XXX: jasmine-ajax doesn't support asserting FormData yet.
-    // Workaround by attaching a spy while appending to FormData.
-    // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
   });
 
   it('should create a new choice challenge through API', done => {
