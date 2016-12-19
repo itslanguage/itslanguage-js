@@ -74,6 +74,17 @@ describe('SpeechChallenge API interaction test', () => {
     url = 'https://api.itslanguage.nl/challenges/speech';
   });
 
+  it('should not create a challenge with invalid input', done => {
+    [0, '0', {}, [], true, false, null, undefined].map(v => {
+      controller.createSpeechChallenge(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('speechChallenge field of type "SpeechChallenge" is required');
+        })
+        .then(done);
+    });
+  });
+
   it('should create a challenge without an id', done => {
     const challenge = new SpeechChallenge(null, 'Hi', null);
     const content = {
@@ -186,15 +197,15 @@ describe('SpeechChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should not get when challenge id is missing', done => {
-    controller.getSpeechChallenge()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challengeId field is required');
-      })
-      .then(done);
+  it('should not get on invalid challenge id', done => {
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getSpeechChallenge(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('challengeId field of type "string" is required');
+        })
+        .then(done);
+    });
   });
 
   it('should get an existing speech challenge', done => {

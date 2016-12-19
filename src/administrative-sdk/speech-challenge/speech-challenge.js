@@ -25,9 +25,9 @@ export default class SpeechChallenge {
      */
     this.id = id;
 
-    if (topic && typeof topic !== 'string') {
+    if (topic !== null && typeof topic !== 'string') {
       throw new Error(
-        'topic parameter of type "string" is required');
+        'topic parameter of type "string|null" is required');
     }
     /**
      * A question or topic serving as guidance.

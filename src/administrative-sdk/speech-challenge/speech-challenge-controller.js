@@ -26,9 +26,13 @@ export default class SpeechChallengeController {
    * @param {?Blob} srtFile - SRT file in HTML5 Blob format to accompany the challenge.
    * @param {?Blob} image - Image file in HTML5 Blob format to accompany the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
+   * @throws {Promise.<Error>} speechChallenge field of type "SpeechChallenge" is required
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge, audioBlob, srtFile, image) {
+    if(!(speechChallenge instanceof SpeechChallenge)){
+      return Promise.reject(new Error('speechChallenge field of type "SpeechChallenge" is required'));
+    }
     speechChallenge.referenceAudio = audioBlob;
     speechChallenge.srt = srtFile;
     speechChallenge.image = image;
@@ -49,12 +53,12 @@ export default class SpeechChallengeController {
    *
    * @param {string} challengeId - Specify a speech challenge identifier.
    * @returns {Promise.<PronunciationChallenge>} Promise containing a SpeechChallenge.
-   * @throws {Promise.<Error>} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise.<Error>} {@link SpeechChallenge#id} field of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
   getSpeechChallenge(challengeId) {
-    if (!challengeId) {
-      return Promise.reject(new Error('challengeId field is required'));
+    if (typeof challengeId !== 'string') {
+      return Promise.reject(new Error('challengeId field of type "string" is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId;
 
