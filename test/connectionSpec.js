@@ -2,7 +2,6 @@
 camelcase
  */
 
-import 'jasmine-ajax';
 import Autobahn from 'autobahn';
 import BasicAuth from '../src/administrative-sdk/basic-auth/basic-auth';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
@@ -96,11 +95,6 @@ describe('Connection', () => {
       api = new Connection({
         oAuth2Token: 'token'
       });
-      jasmine.Ajax.install();
-    });
-
-    afterEach(() => {
-      jasmine.Ajax.uninstall();
     });
 
     it('should throw error on required auth credentials on GET', done => {

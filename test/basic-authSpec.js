@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import BasicAuth from '../src/administrative-sdk/basic-auth/basic-auth';
 
 describe('BasicAuth object test', () => {

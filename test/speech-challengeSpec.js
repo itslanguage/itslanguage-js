@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-challenge';
 import SpeechChallengeController from '../src/administrative-sdk/speech-challenge/speech-challenge-controller';
@@ -42,17 +41,11 @@ describe('SpeechChallenge API interaction test', () => {
   });
   const controller = new SpeechChallengeController(api);
   beforeEach(() => {
-    jasmine.Ajax.install();
-
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
     // Workaround by attaching a spy while appending to FormData.
     // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
     url = 'https://api.itslanguage.nl/challenges/speech';
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
   });
 
   it('should create a challenge without an id', done => {

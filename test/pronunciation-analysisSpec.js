@@ -1,4 +1,3 @@
-import 'jasmine-ajax';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 import Controller from '../src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller';
 import Phoneme from '../src/administrative-sdk/phoneme/phoneme';
@@ -20,7 +19,6 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   let controller;
 
   beforeEach(() => {
-    jasmine.Ajax.install();
     api = new Connection({
       wsToken: 'foo',
       wsUrl: 'ws://foo.bar',
@@ -99,10 +97,6 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     spyOn(api, 'addAccessToken').and.callFake(url => url + 'token');
     controller = new Controller(api);
     spyOn(Controller, '_wordsToModels');
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
   });
 
   it('should fail streaming when websocket connection is closed', done => {
@@ -778,15 +772,10 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
 
 describe('PronunciationAnalyses API interaction test', () => {
   beforeEach(() => {
-    jasmine.Ajax.install();
     // XXX: jasmine-ajax doesn't support asserting FormData yet.
     // Workaround by attaching a spy while appending to FormData.
     // https://github.com/pivotal/jasmine-ajax/issues/51
     spyOn(FormData.prototype, 'append');
-  });
-
-  afterEach(() => {
-    jasmine.Ajax.uninstall();
   });
 
   it('should reject to get when challenge has no id', done => {
