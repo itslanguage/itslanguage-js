@@ -3,7 +3,6 @@ import ChoiceChallenge from '../src/administrative-sdk/choice-challenge/choice-c
 import ChoiceRecognition from '../src/administrative-sdk/choice-recognition/choice-recognition';
 import ChoiceRecognitionController from '../src/administrative-sdk/choice-recognition/choice-recognition-controller';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
-import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-challenge';
 import autobahn from 'autobahn';
 
 describe('ChoiceRecognition Websocket API interaction test', () => {
@@ -657,15 +656,15 @@ describe('API interaction', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions/5';
-    const challenge = new SpeechChallenge('4');
+    const challengeId = '4';
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition(challenge.id, '5')
+    controller.getChoiceRecognition(challengeId, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const recognition = new ChoiceRecognition(challenge.id, '6',
+        const recognition = new ChoiceRecognition(challengeId, '6',
           '5', new Date(stringDate), new Date(stringDate), audioUrl, 'recognised');
         expect(result).toEqual(recognition);
       })
@@ -690,15 +689,15 @@ describe('API interaction', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions/5';
-    const challenge = new SpeechChallenge('4');
+    const challengeId = '4';
     const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition(challenge.id, '5')
+    controller.getChoiceRecognition(challengeId, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const recognition = new ChoiceRecognition(challenge.id, '6',
+        const recognition = new ChoiceRecognition(challengeId, '6',
           '5', new Date(stringDate), new Date(stringDate));
         recognition.audioUrl = audioUrl;
         expect(result).toEqual(recognition);
@@ -709,7 +708,7 @@ describe('API interaction', () => {
   });
 
   it('should get a list of existing choice recognitions', done => {
-    const challenge = new SpeechChallenge('4');
+    const challengeId = '4';
     const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions';
     const content = [{
       id: '5',
@@ -733,17 +732,17 @@ describe('API interaction', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new ChoiceRecognitionController(api);
-    controller.listChoiceRecognitions(challenge.id)
+    controller.listChoiceRecognitions(challengeId)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const recognition = new ChoiceRecognition(challenge.id, '6',
+        const recognition = new ChoiceRecognition(challengeId, '6',
           '5', new Date(stringDate), new Date(stringDate));
         recognition.audioUrl = audioUrl;
 
-        const recognition2 = new ChoiceRecognition(challenge.id, '24',
+        const recognition2 = new ChoiceRecognition(challengeId, '24',
           '6', new Date(stringDate), new Date(stringDate));
         recognition2.audioUrl = audioUrl;
         recognition2.recognised = 'Hi';
