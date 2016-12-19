@@ -16,8 +16,7 @@ describe('SpeechRecording API interaction test', () => {
   });
 
   it('should reject to get a recording if challenge id is not present', done => {
-    const challenge = new SpeechChallenge('', null, null);
-    controller.getSpeechRecording(challenge.id, null)
+    controller.getSpeechRecording(null, null)
       .then(() => {
         fail('An error should be thrown');
       })
@@ -228,7 +227,7 @@ describe('Speech Recording Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new SpeechChallenge('', '', null);
+    challenge = new SpeechChallenge(null, null, null);
     controller.startStreamingSpeechRecording(challenge, null)
       .then(() => {
         fail('No result should be returned');
