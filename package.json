@@ -6,7 +6,8 @@
   "scripts": {
     "test": "concurrently 'eslint .' 'karma start --single-run --color'",
     "esdoc": "esdoc -c esdoc.json",
-    "babelify": "babel src --out-dir build --source-maps inline && cp package.json README.md build/"
+    "babelify": "babel src --out-dir build --source-maps inline && cp package.json README.md build/",
+    "clearbuild": "rm -rf build/"
   },
   "author": "ITSLanguage",
   "license": "MIT",
