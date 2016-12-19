@@ -5,7 +5,7 @@ import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
-import guid from 'guid';
+import uuid from 'node-uuid';
 
 /**
  * Audio recording component.
@@ -15,7 +15,7 @@ export default class AudioRecorder {
   /**
    * ITSLanguage AudioRecorder.
    *
-   * @param {Object} [options] - Override any of the default settings.
+   * @param {?Object} options - Override any of the default settings.
    *
    */
   constructor(options) {
@@ -304,15 +304,15 @@ export default class AudioRecorder {
    */
   startRecordingSession(id) {
     // Generate a uuid to remember this recording by (locally).
-    const uuid = id === undefined ? guid.create() : id;
-    this.activeRecordingId = uuid;
-    return uuid;
+    const uuid_ = id === undefined ? uuid.v4() : id;
+    this.activeRecordingId = uuid_;
+    return uuid_;
   }
 
   /**
    * Start recording microphone input until stopped.
    *
-   * @param {Function} [cb] - The callback that provides a piece of raw audio when
+   * @param {?Function} cb - The callback that provides a piece of raw audio when
    * it becomes available. It may be used for streaming.
    * @emits {Event} 'recording' With arguments: [recording ID].
    */

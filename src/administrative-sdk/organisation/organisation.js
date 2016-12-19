@@ -2,7 +2,7 @@ export default class Organisation {
   /**
    * Organisation domain model.
    *
-   * @param {string} [id] - The organisation identifier. If none is given, one is generated.
+   * @param {?string} id - The organisation identifier. If none is given, one is generated.
    * @param {string} name - Name of the organisation.
    */
   constructor(id, name) {

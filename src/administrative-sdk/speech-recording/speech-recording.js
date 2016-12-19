@@ -5,14 +5,14 @@ export default class SpeechRecording {
   /**
    * Create a speech recording domain model.
    *
-   * @param {SpeechChallenge} challenge - The SpeechChallenge instance this speech is recorded for.
-   * @param {Student} student - The Student instance on whose behalf this audio is recorded.
+   * @param {string} challengeId - The SpeechChallenge identifier this speech is recorded for.
+   * @param {string} studentId - The Student identifier on whose behalf this audio is recorded.
    * @param {string} id - The speech recording identifier.
    * @param {Date} created - The creation date of the entity.
    * @param {Date} updated - The most recent update date of the entity.
    * @param {string} audioUrl - The audio fragment as streaming audio link.
    */
-  constructor(challenge, student, id, created, updated, audioUrl) {
+  constructor(challengeId, studentId, id, created, updated, audioUrl) {
     /**
      * The speech recording identifier.
      * @type {string}
@@ -20,16 +20,16 @@ export default class SpeechRecording {
     this.id = id;
 
     /**
-     * The SpeechChallenge instance this speech is recorded for.
-     * @type {SpeechChallenge}
+     * The SpeechChallenge identifier this speech is recorded for.
+     * @type {string}
      */
-    this.challenge = challenge;
+    this.challengeId = challengeId;
 
     /**
      * The Student instance on whose behalf this audio is recorded.
-     * @type {Student}
+     * @type {string}
      */
-    this.student = student;
+    this.studentId = studentId;
 
     /**
      * The creation date of the entity.

@@ -56,7 +56,7 @@ export default class VolumeMeter {
    *
    * @param {Function} callback - This function is called when there's a new volume reading is available.
    * First parameter is the volume.
-   * @param {Array} [args] - Optional array of parameters to pass to the callback after the volume parameter.
+   * @param {?Array} args - Optional array of parameters to pass to the callback after the volume parameter.
    */
   getVolumeIndication(callback, args) {
     if (!callback) {

@@ -10,7 +10,7 @@ export default class AudioPlayer {
   /**
    * Construct an AudioPlayer for playing .wav or .mp3 files.
    *
-   * @param {Object} [options] - Override any of the default settings.
+   * @param {?Object} options - Override any of the default settings.
    * @emits {Event} 'playbackstopped' When playback has ended, been stopped or been paused.
    * @emits {Event} All events the HTML5 Audio also fires. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
    */
@@ -188,7 +188,7 @@ export default class AudioPlayer {
    * @param {string} url - The URL that contains the audio.
    * @param {boolean} [preload=true] - Try preloading metadata and possible some audio. Set to false to not download
    * anything until playing.
-   * @param {Function} [loadedCb] - The callback that is invoked when the duration of the audio file
+   * @param {?Function} loadedCb - The callback that is invoked when the duration of the audio file
    * is first known.
    * @emits {Event} 'canplay' When the player is ready to play.
    */
@@ -217,7 +217,7 @@ export default class AudioPlayer {
   /**
    * Start or continue playback of audio. Also starts the stopwatch at the given position.
    *
-   * @param {number} [position] - When position is given, start playing from this position (seconds).
+   * @param {?number} position - When position is given, start playing from this position (seconds).
    */
   play(position) {
     if (this._player.isPlaying()) {

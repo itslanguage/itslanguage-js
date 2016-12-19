@@ -7,38 +7,31 @@ describe('PronunciationChallenge object test', () => {
   it('should require all required fields in constructor', () => {
     expect(() => {
       new PronunciationChallenge(4);
-    }).toThrowError(
-      'organisationId parameter of type "string" is required');
-
-    expect(() => {
-      new PronunciationChallenge(null, 4);
     }).toThrowError('id parameter of type "string|null" is required');
 
     expect(() => {
-      new PronunciationChallenge('1', '1', null);
+      new PronunciationChallenge('1', null);
     }).toThrowError('transcription parameter of type "string" is required');
 
     expect(() => {
-      new PronunciationChallenge('fb', null, 'hi', '1');
+      new PronunciationChallenge('hi', '1', '1');
     }).toThrowError('referenceAudio parameter of type "Blob" is required');
   });
 
   it('should instantiate a PronunciationChallenge', () => {
     const blob = new Blob(['1234567890']);
 
-    const s = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    const s = new PronunciationChallenge('test', 'hi', blob);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
-    expect(s.organisationId).toBe('fb');
     expect(s.transcription).toBe('hi');
     expect(s.referenceAudio).toBe(blob);
   });
 
   it('should instantiate a PronunciationChallenge wihtout referenceAudio', () => {
-    const s = new PronunciationChallenge('fb', 'test', 'hi');
+    const s = new PronunciationChallenge('test', 'hi');
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
-    expect(s.organisationId).toBe('fb');
     expect(s.transcription).toBe('hi');
     expect(s.referenceAudio).toBeUndefined();
   });
@@ -74,7 +67,7 @@ describe('PronunciationChallenge API interaction test', () => {
     // Because referenceAudio is not available when fetching existing
     // PronunciationChallenges from the server, the domain model doesn't
     // require the field, but the createPronunciationChallenge() should.
-    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+    const challenge = new PronunciationChallenge('1', 'test', blob);
     challenge.referenceAudio = null;
     controller.createPronunciationChallenge(challenge)
       .then(() => {
@@ -87,7 +80,7 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should check for required referenceAudio field', done => {
-    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+    const challenge = new PronunciationChallenge('1', 'test', blob);
     challenge.referenceAudio = null;
     controller.createPronunciationChallenge(challenge)
       .then(() => {
@@ -99,21 +92,8 @@ describe('PronunciationChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should not create a new challenge if organisationId is missing', done => {
-    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
-    challenge.organisationId = null;
-    controller.createPronunciationChallenge(challenge)
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should create a new pronunciation challenge through API', done => {
-    const challenge = new PronunciationChallenge('fb', '1', 'test', blob);
+    const challenge = new PronunciationChallenge('1', 'test', blob);
     const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
@@ -142,7 +122,7 @@ describe('PronunciationChallenge API interaction test', () => {
           'transcription', 'test');
         expect(FormData.prototype.append.calls.count()).toEqual(3);
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new PronunciationChallenge('fb', '1', 'test', blob);
+        const outChallenge = new PronunciationChallenge('1', 'test', blob);
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         outChallenge.referenceAudio = challenge.referenceAudio;
@@ -157,7 +137,7 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should create a new pronunciation challenge through API without an id', done => {
-    const challenge = new PronunciationChallenge('fb', null, 'test', blob);
+    const challenge = new PronunciationChallenge(null, 'test', blob);
     const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
@@ -185,7 +165,7 @@ describe('PronunciationChallenge API interaction test', () => {
           'transcription', 'test');
         expect(FormData.prototype.append.calls.count()).toEqual(2);
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new PronunciationChallenge('fb', '1', 'test', blob);
+        const outChallenge = new PronunciationChallenge('1', 'test', blob);
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         outChallenge.referenceAudio = challenge.referenceAudio;
@@ -199,19 +179,8 @@ describe('PronunciationChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should not get when missing organisation id', done => {
-    controller.getPronunciationChallenge()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
   it('should not get when missing challenge id', done => {
-    controller.getPronunciationChallenge('fb')
+    controller.getPronunciationChallenge()
       .then(() => {
         fail('An error should be thrown');
       })
@@ -222,7 +191,7 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should handle errors while creating a new challenge', done => {
-    const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    const challenge = new PronunciationChallenge('test', 'hi', blob);
     const content = {
       message: 'Validation failed',
       errors: [
@@ -283,13 +252,13 @@ describe('PronunciationChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.getPronunciationChallenge('fb', '4')
+    controller.getPronunciationChallenge('4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new PronunciationChallenge('fb', '4', 'Hi', JSON.parse(JSON.stringify(blob)));
+        const challenge = new PronunciationChallenge('4', 'Hi', JSON.parse(JSON.stringify(blob)));
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         challenge.referenceAudioUrl = referenceAudioUrl;
@@ -298,28 +267,6 @@ describe('PronunciationChallenge API interaction test', () => {
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
-      })
-      .then(done);
-  });
-
-  it('should not list when organisationId is missing', done => {
-    controller.listPronunciationChallenges()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
-      })
-      .then(done);
-  });
-
-  it('should not list when organisationId is missing', done => {
-    controller.listPronunciationChallenges()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('organisationId field is required');
       })
       .then(done);
   });
@@ -347,7 +294,7 @@ describe('PronunciationChallenge API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new PronunciationChallenge('fb', '4', 'Hi', JSON.parse(JSON.stringify(blob)));
+        const challenge = new PronunciationChallenge('4', 'Hi', JSON.parse(JSON.stringify(blob)));
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         challenge.referenceAudioUrl = referenceAudioUrl;
@@ -373,7 +320,7 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should delete a an existing challenge', done => {
-    const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    const challenge = new PronunciationChallenge('test', 'hi', blob);
     url = 'https://api.itslanguage.nl/challenges/pronunciation/test';
 
     const content =
@@ -403,7 +350,7 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should not delete a non existing challenge', done => {
-    const challenge = new PronunciationChallenge('fb', 'test', 'hi', blob);
+    const challenge = new PronunciationChallenge('test', 'hi', blob);
     const content = {
       message: 'Validation failed',
       errors: [

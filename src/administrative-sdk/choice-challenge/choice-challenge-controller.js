@@ -2,6 +2,7 @@ import ChoiceChallenge from './choice-challenge';
 
 /**
  * Controller class for the {@link ChoiceChallenge} model.
+ * @private
  */
 export default class ChoiceChallengeController {
   /**
@@ -16,19 +17,15 @@ export default class ChoiceChallengeController {
   }
 
   /**
-   * Create a choice challenge.
+   * Create a choice challenge. The choice challenge will be created in the current active {@link Organisation} derived
+   * from the OAuth2 scope.
    * It is necessary for a choice challenge to exist for a recording to be valid.
    *
    * @param {ChoiceChallenge} choiceChallenge - Object to create.
-   * @returns {Promise} Containing the newly created object.
-   * @throws {Promise} {@link ChoiceChallenge#organisationId} field is required.
+   * @returns {Promise.<ChoiceChallenge>} Containing the newly created ChoiceChallenge.
    * @throws {Promise} If the server returned an error.
    */
   createChoiceChallenge(choiceChallenge) {
-    // Validate required domain model fields.
-    if (!choiceChallenge.organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
     const url = this._connection._settings.apiUrl + '/challenges/choice';
     const fd = new FormData();
     if (choiceChallenge.id !== undefined &&
@@ -41,7 +38,7 @@ export default class ChoiceChallengeController {
     });
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new ChoiceChallenge(choiceChallenge.organisationId, data.id, data.question, data.choices);
+        const result = new ChoiceChallenge(data.id, data.question, data.choices);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.status = data.status;
@@ -53,28 +50,22 @@ export default class ChoiceChallengeController {
   }
 
   /**
-   * Get a choice challenge. A choice challenge is identified by its identifier and its {@link Organisation}'s
-   * identifier.
+   * Get a choice challenge. A choice challenge is identified by its identifier and the current active
+   * {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
-   * @returns {Promise} Containing a ChoiceChallenge.
+   * @returns {Promise.<ChoiceChallenge>} Containing a ChoiceChallenge.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getChoiceChallenge(organisationId, challengeId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getChoiceChallenge(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/choice/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const challenge = new ChoiceChallenge(organisationId, data.id,
-          data.question, data.choices);
+        const challenge = new ChoiceChallenge(data.id, data.question, data.choices);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         challenge.status = data.status;
@@ -87,24 +78,18 @@ export default class ChoiceChallengeController {
   }
 
   /**
-   * List all choice challenges in the {@link Organisation}.
+   * List all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an {@link Organisation} identifier.
-   * @returns {Promise} Containing an array of ChoiceChallenges.
-   * @throws {Promise} {@link Organisation#id} field is required.
+   * @returns {Promise.<ChoiceChallenge[]>} Containing an array of ChoiceChallenges.
    * @throws {Promise} If no result could not be found.
    */
-  listChoiceChallenges(organisationId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  listChoiceChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/choice';
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {
-          const challenge = new ChoiceChallenge(
-            organisationId, datum.id, datum.question, datum.choices);
+          const challenge = new ChoiceChallenge(datum.id, datum.question, datum.choices);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenge.status = datum.status;

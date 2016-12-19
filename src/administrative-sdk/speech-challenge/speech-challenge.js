@@ -5,12 +5,11 @@ export default class SpeechChallenge {
   /**
    * Create a speech SpeechChallenge domain model.
    *
-   * @param {string} organisationId - The organisation identifier this challenge is an entry in.
-   * @param {string} [id] - The speech challenge identifier. If none is given, one is generated.
-   * @param {string} [topic] - A question or topic serving as guidance.
-   * @param {Blob} [referenceAudio] - The reference audio fragment.
+   * @param {?string} id - The speech challenge identifier. If none is given, one is generated.
+   * @param {?string} topic - A question or topic serving as guidance.
+   * @param {?Blob} referenceAudio - The reference audio fragment.
    */
-  constructor(organisationId, id, topic, referenceAudio) {
+  constructor(id, topic, referenceAudio) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
@@ -20,15 +19,7 @@ export default class SpeechChallenge {
      * @type {string}
      */
     this.id = id;
-    if (organisationId && typeof organisationId !== 'string') {
-      throw new Error(
-        'organisationId parameter of type "string|null" is required');
-    }
-    /**
-     * The organisation identifier this challenge is an entry in.
-     * @type {string}
-     */
-    this.organisationId = organisationId;
+
     if (topic && typeof topic !== 'string') {
       throw new Error(
         'topic parameter of type "string" is required');

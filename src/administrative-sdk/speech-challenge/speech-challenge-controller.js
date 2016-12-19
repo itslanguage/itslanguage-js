@@ -2,6 +2,7 @@ import SpeechChallenge from './speech-challenge';
 
 /**
  * Controller class for the SpeechChallenge model.
+ * @private
  */
 export default class SpeechChallengeController {
   /**
@@ -16,17 +17,13 @@ export default class SpeechChallengeController {
   }
 
   /**
-   * Create a speech challenge.
+   * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
-   * @returns {Promise} Promise containing the newly created object.
-   * @throws {Promise} {@link SpeechChallenge#organisationId} field is required
+   * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge) {
-    if (!speechChallenge.organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
     const fd = new FormData();
     if (typeof speechChallenge.id !== 'undefined' &&
       speechChallenge.id !== null) {
@@ -40,7 +37,7 @@ export default class SpeechChallengeController {
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new SpeechChallenge(speechChallenge.organisationId, data.id, data.topic);
+        const result = new SpeechChallenge(data.id, data.topic);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.referenceAudio = speechChallenge.referenceAudio;
@@ -50,19 +47,14 @@ export default class SpeechChallengeController {
   }
 
   /**
-   * Get a speech challenge.
+   * Get a speech challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
-   * @returns {Promise} Promise containing a SpeechChallenge.
+   * @returns {Promise.<PronunciationChallenge>} Promise containing a SpeechChallenge.
    * @throws {Promise} {@link SpeechChallenge#id} field is required.
-   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getSpeechChallenge(organisationId, challengeId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getSpeechChallenge(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -70,7 +62,7 @@ export default class SpeechChallengeController {
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const challenge = new SpeechChallenge(organisationId, data.id, data.topic);
+        const challenge = new SpeechChallenge(data.id, data.topic);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         return challenge;
@@ -78,24 +70,19 @@ export default class SpeechChallengeController {
   }
 
   /**
-   * List all speech challenges in the organisation.
+   * List all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @returns {Promise} Promise containing a list of SpeechChallenges.
-   * @throws {Promise} {@link Organisation#id} field is required.
+   * @returns {Promise.<SpeechChallenge[]>} Promise containing an array of SpeechChallenges.
    * @throws {Promise} If no result could not be found.
    */
-  listSpeechChallenges(organisationId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  listSpeechChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
         const challenges = [];
         data.forEach(datum => {
-          const challenge = new SpeechChallenge(organisationId, datum.id,
+          const challenge = new SpeechChallenge(datum.id,
             datum.topic);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);

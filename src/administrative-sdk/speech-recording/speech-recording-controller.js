@@ -1,11 +1,11 @@
 import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import SpeechRecording from './speech-recording';
-import Student from '../student/student';
 import when from 'when';
 
 /**
  * Controller class for the SpeechRecording model.
+ * @private
  */
 export default class SpeechRecordingController {
   /**
@@ -28,13 +28,7 @@ export default class SpeechRecordingController {
       recordingId => {
         console.log('Challenge initialised for recordingId: ' + this._connection._recordingId);
         return recordingId;
-      },
-      // RPC error callback
-      res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
-      }
-    );
+      });
   }
 
   /**
@@ -56,10 +50,6 @@ export default class SpeechRecordingController {
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recordingId;
-      })
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
       });
   }
 
@@ -68,11 +58,10 @@ export default class SpeechRecordingController {
    *
    * @param {SpeechChallenge} challenge - The speech challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
+   * @returns {Promise.<SpeechRecording>} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} If challenge is not an object or not defined.
    * @throws {Promise} If challenge has no id.
-   * @throws {Promise} If challenge has no organisationId.
    * @throws {Promise} If the connection is not open.
    * @throws {Promise} If the recorder is already recording.
    * @throws {Promise} If a session is already in progress.
@@ -86,9 +75,6 @@ export default class SpeechRecordingController {
     }
     if (!challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
-    }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
     }
     if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
@@ -105,9 +91,8 @@ export default class SpeechRecordingController {
       self._connection._recordingId = null;
 
       function _cb(data) {
-        const student = new Student(challenge.organisationId, data.studentId);
         const recording = new SpeechRecording(
-          challenge.id, student, data.id, new Date(data.created), new Date(data.updated),
+          challenge.id, data.studentId, data.id, new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl));
         resolve({recordingId: self._connection._recordingId, recording});
       }
@@ -159,7 +144,7 @@ export default class SpeechRecordingController {
       recorder.addEventListener('recorded', recordedCb);
       self._connection._session.call('nl.itslanguage.recording.init_recording', [])
         .then(startRecording)
-        .then(() => {
+        .then(() =>
           self.speechRecordingInitChallenge(challenge)
               .then(() => {
                 const p = new Promise(resolve_ => {
@@ -175,12 +160,8 @@ export default class SpeechRecordingController {
                 });
               })
             .then(() => notify('ReadyToReceive'))
+        )
             .catch(reject);
-        },
-          res => {
-            Connection.logRPCError(res);
-            reject(res);
-          });
     })
       .then(res => {
         self._connection._recordingId = null;
@@ -188,26 +169,23 @@ export default class SpeechRecordingController {
       })
       .catch(error => {
         self._connection._recordingId = null;
+        Connection.logRPCError(error);
         return Promise.reject(error);
       });
   }
 
   /**
-   * Get a speech recording in a speech challenge.
+   * Get a speech recording in a speech challenge from the current active {@link Organisation} derived from the OAuth2
+   * scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
    * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
-   * @returns {Promise} Promise containing a SpeechRecording.
+   * @returns {Promise.<SpeechRecording>} Promise containing a SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} field is required.
-   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} {@link SpeechRecording#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getSpeechRecording(organisationId, challengeId, recordingId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getSpeechRecording(challengeId, recordingId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -216,27 +194,20 @@ export default class SpeechRecordingController {
     }
     const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings/' + recordingId;
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const student = new Student(organisationId, data.studentId);
-        return new SpeechRecording(challengeId, student, data.id, new Date(data.created),
-          new Date(data.updated), this._connection.addAccessToken(data.audioUrl));
-      });
+      .then(data => new SpeechRecording(challengeId, data.studentId, data.id, new Date(data.created),
+          new Date(data.updated), this._connection.addAccessToken(data.audioUrl)));
   }
 
   /**
-   * List all speech recordings in a specific speech challenge.
+   * List all speech recordings in a specific speech challenge from the current active {@link Organisation} derived
+   * from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
    * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier to list speech recordings for.
-   * @returns {Promise} Promise containing a list of SpeechRecording.
+   * @returns {Promise.<SpeechRecording[]>} Promise containing an array of SpeechRecording.
    * @throws {Promise} {@link SpeechChallenge#id} is required.
-   * @throws {Promise} {@link Organisation#id} is required.
    * @throws {Promise} If no result could not be found.
    */
-  listSpeechRecordings(organisationId, challengeId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  listSpeechRecordings(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -245,8 +216,7 @@ export default class SpeechRecordingController {
       .then(data => {
         const recordings = [];
         data.forEach(datum => {
-          const student = new Student(organisationId, datum.studentId);
-          const recording = new SpeechRecording(challengeId, student, datum.id, new Date(datum.created),
+          const recording = new SpeechRecording(challengeId, datum.studentId, datum.id, new Date(datum.created),
             new Date(datum.updated), this._connection.addAccessToken(datum.audioUrl));
           recordings.push(recording);
         });

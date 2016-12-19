@@ -5,11 +5,9 @@ export default class ChoiceChallenge {
   /**
    * Create a choice challenge domain model.
    *
-   * @param {string} organisationId - The {@link Organisation} identifier this challenge is an entry in.
-   * @param {string} [id] - The {@link ChoiceChallenge} identifier. If none is given, one is generated.
-   * @param {string} [question] - A hint or question related to the choices.
+   * @param {?string} id - The {@link ChoiceChallenge} identifier. If none is given, one is generated.
+   * @param {?string} question - A hint or question related to the choices.
    * @param {string[]} choices - The sentences of which at most one may be recognised.
-   * @throws {Error} {@link Organisation#id} parameter of type "string" is required.
    * @throws {Error} id parameter of type "string|null|undefined" is required.
    * @throws {Error} id parameter should not be an empty string.
    * @throws {Error} question parameter of type "string|null|undefined" is required.
@@ -17,16 +15,7 @@ export default class ChoiceChallenge {
    * @throws {Error} choices parameter of type "string|object Array" is required.
    * @throws {Error} no numbers allowed in choices.
    */
-  constructor(organisationId, id, question, choices) {
-    if (typeof organisationId !== 'string') {
-      throw new Error(
-        'organisationId parameter of type "string" is required');
-    }
-
-    /**
-     * @type {string} organisationId The organisation identifier this challenge is an entry in.
-     */
-    this.organisationId = organisationId;
+  constructor(id, question, choices) {
     if (typeof id !== 'string' && id !== null && id !== undefined) {
       throw new Error(
         'id parameter of type "string|null|undefined" is required');

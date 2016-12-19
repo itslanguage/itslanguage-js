@@ -19,7 +19,7 @@ export default class CordovaMediaPlayer {
    * It uses the Cordova Media component to provide playback capability
    * through native Android or iOS code.
    *
-   * @param {Object} [options] - Override any of the default settings.
+   * @param {?Object} options - Override any of the default settings.
    *
    */
   constructor(options) {
@@ -135,7 +135,7 @@ export default class CordovaMediaPlayer {
    * @param {string} url - The URL that contains the audio.
    * @param {boolean} [preload=true] - Try preloading metadata and possible some audio (default).
    * Set to false to not download anything until playing.
-   * @param {Function} [loadedCb] - The callback that is invoked when the duration of
+   * @param {?Function} loadedCb - The callback that is invoked when the duration of
    * the audio file is first known.
    */
   load(url, preload, loadedCb) {
@@ -170,7 +170,7 @@ export default class CordovaMediaPlayer {
   /**
    * Start or continue playback of audio.
    *
-   * @param {number} [position] - When position is given, start playing from this position (seconds).
+   * @param {?number} position - When position is given, start playing from this position (seconds).
    */
   play(position) {
     this._isPlaying = true;

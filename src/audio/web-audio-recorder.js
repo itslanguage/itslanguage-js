@@ -9,7 +9,7 @@ export default class WebAudioRecorder {
    * Currently supported in all modern HTML5/WebAudio browsers.
    *
    * @param {GainNode} source - The source to record.
-   * @param {Function} [streamingCallback] - The callback to deliver audio chunks to.
+   * @param {?Function} streamingCallback - The callback to deliver audio chunks to.
    * @param {WavePacker} packer - Packer to use.
    */
   constructor(source, streamingCallback, packer) {

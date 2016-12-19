@@ -5,13 +5,13 @@ import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import Phoneme from '../phoneme/phoneme';
 import PronunciationAnalysis from './pronunciation-analysis';
-import Student from '../student/student';
 import Word from '../word/word';
 import WordChunk from '../word-chunk/word-chunk';
 import when from 'when';
 
 /**
  * Controller class for the PronunciationAnalysis model.
+ * @private
  */
 export default class PronunciationAnalysisController {
   /**
@@ -67,20 +67,12 @@ export default class PronunciationAnalysisController {
   pronunciationAnalysisInitChallenge(challenge) {
     return this._connection._session.call('nl.itslanguage.pronunciation.init_challenge',
       [this._connection._analysisId, challenge.id])
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
-      })
       .then(analysisId => {
         console.log('Challenge initialised for analysisId: ' + this._connection._analysisId);
         return analysisId;
       })
       .then(() => this._connection._session.call('nl.itslanguage.pronunciation.alignment',
         [this._connection._analysisId]))
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
-      })
       .then(alignment => {
         this._referenceAlignment = alignment;
         console.log('Reference alignment retrieved', alignment);
@@ -106,10 +98,6 @@ export default class PronunciationAnalysisController {
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return analysisId;
-      })
-      .catch(res => {
-        Connection.logRPCError(res);
-        return Promise.reject(res);
       });
   }
 
@@ -118,8 +106,8 @@ export default class PronunciationAnalysisController {
    *
    * @param {PronunciationChallenge} challenge - The pronunciation challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
-   * @param {boolean} [trim] - Whether to trim the start and end of recorded audio (default: true).
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
+   * @param {?boolean} trim - Whether to trim the start and end of recorded audio (default: true).
+   * @returns {Promise.<PronunciationAnalysis>} A {@link https://github.com/cujojs/when} Promise containing a {@link PronunciationAnalysis}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @emits {Object} When the sent audio has finished alignment. Aligning audio is the process of mapping the audio
    * to spoken words and determining when what is said. An object is sent containing a property 'progress',
@@ -127,7 +115,6 @@ export default class PronunciationAnalysisController {
    * reference audio.
    * @throws {Promise} If challenge is not an object or not defined.
    * @throws {Promise} If challenge has no id.
-   * @throws {Promise} If challenge has no organisationId.
    * @throws {Promise} If the connection is not open.
    * @throws {Promise} If the recorder is already recording.
    * @throws {Promise} If a session is already in progress.
@@ -140,9 +127,6 @@ export default class PronunciationAnalysisController {
     }
     if (!challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
-    }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
     }
     if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));
@@ -197,12 +181,12 @@ export default class PronunciationAnalysisController {
           self._connection._analysisId);
         self._connection._session.call('nl.itslanguage.pronunciation.write',
           [self._connection._analysisId, encoded, 'base64'])
+          .then(() => {
+            console.debug('Delivered audio successfully');
+          })
           .catch(res => {
             Connection.logRPCError(res);
             reportError(res);
-          })
-          .then(() => {
-            console.debug('Delivered audio successfully');
           });
       }
 
@@ -245,7 +229,7 @@ export default class PronunciationAnalysisController {
           trimEnd: trimAudioEnd
         })
         .then(initAnalysis)
-        .then(() => {
+        .then(() =>
           self.pronunciationAnalysisInitChallenge(challenge)
             .then(() => {
               const p = new Promise(resolve_ => {
@@ -262,12 +246,8 @@ export default class PronunciationAnalysisController {
               });
             })
             .then(() => notify('ReadyToReceive'))
-            .catch(reject);
-        })
-        .catch(res => {
-          Connection.logRPCError(res);
-          reject(res);
-        });
+        )
+        .catch(reject);
     })
       .then(res => {
         self._connection._analysisId = null;
@@ -275,26 +255,23 @@ export default class PronunciationAnalysisController {
       })
       .catch(error => {
         self._connection._analysisId = null;
+        Connection.logRPCError(error);
         return Promise.reject(error);
       });
   }
 
   /**
-   * Get a pronunciation analysis in a pronunciation challenge.
+   * Get a pronunciation analysis in a pronunciation challenge from the current active {@link Organisation} derived
+   * from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
    * @param {PronunciationAnalysis#id} analysisId - Specify a pronunciation analysis identifier.
-   * @returns {Promise} Promise containing a PronunciationAnalysis.
+   * @returns {Promise.<PronunciationAnalysis>} Promise containing a PronunciationAnalysis.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} {@link PronunciationAnalysis#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getPronunciationAnalysis(organisationId, challengeId, analysisId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getPronunciationAnalysis(challengeId, analysisId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -305,8 +282,7 @@ export default class PronunciationAnalysisController {
       challengeId + '/analyses/' + analysisId;
     return this._connection._secureAjaxGet(url)
       .then(datum => {
-        const student = new Student(organisationId, datum.studentId);
-        const analysis = new PronunciationAnalysis(challengeId, student,
+        const analysis = new PronunciationAnalysis(challengeId, datum.studentId,
           datum.id, new Date(datum.created), new Date(datum.updated),
           datum.audioUrl, datum.score, datum.confidenceScore, null);
         // Alignment may not be successful, in which case the analysis
@@ -320,21 +296,17 @@ export default class PronunciationAnalysisController {
   }
 
   /**
-   * List all pronunciation analyses in a specific pronunciation challenge.
+   * List all pronunciation analyses in a specific pronunciation challenge from the current active {@link Organisation}
+   * derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier to list speech recordings for.
    * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier to list
    * speech recordings for.
    * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
-   * @returns {Promise} Promise containing a list of PronunciationAnalyses.
+   * @returns {Promise.<PronunciationAnalysis[]>} Promise containing an array PronunciationAnalyses.
    * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} {@link PronunciationChallenge#organisationId} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  listPronunciationAnalyses(organisationId, challengeId, detailed) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  listPronunciationAnalyses(challengeId, detailed) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -347,8 +319,7 @@ export default class PronunciationAnalysisController {
       .then(data => {
         const analyses = [];
         data.forEach(datum => {
-          const student = new Student(organisationId, datum.studentId);
-          const analysis = new PronunciationAnalysis(challengeId, student,
+          const analysis = new PronunciationAnalysis(challengeId, datum.studentId,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl, datum.score, datum.confidenceScore, null);
           // Alignment may not be successful, in which case the analysis

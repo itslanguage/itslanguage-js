@@ -14,7 +14,7 @@ export default class WebAudioPlayer {
    *
    * This player uses the HTML5 Audio component for playback.
    *
-   * @param {Object} [options] - Override any of the default settings.
+   * @param {?Object} options - Override any of the default settings.
    */
   constructor(options) {
     this._settings = Object.assign({}, options);
@@ -121,7 +121,7 @@ export default class WebAudioPlayer {
    * @param {string} url - The URL that contains the audio.
    * @param {boolean} [preload=true] - Try preloading metadata and possible some audio (default).
    * Set to false to not download anything until playing.
-   * @param {Function} [loadedCb] - The callback that is invoked when the duration of the audio file
+   * @param {?Function} loadedCb - The callback that is invoked when the duration of the audio file
    * is first known.
    */
   load(url, preload, loadedCb) {
@@ -156,7 +156,7 @@ export default class WebAudioPlayer {
   /**
    * Start or continue playback of audio.
    *
-   * @param {number} [position] - When position is given, start playing from this position (seconds).
+   * @param {?number} position - When position is given, start playing from this position (seconds).
    */
   play(position) {
     if (position !== undefined) {

@@ -1,9 +1,10 @@
 import Base64Utils from '../utils/base64-utils';
 import ChoiceRecognition from './choice-recognition';
-import Student from '../student/student';
+import Connection from '../connection/connection-controller';
 import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.
+ * @private
  */
 export default class ChoiceRecognitionController {
   /**
@@ -31,13 +32,7 @@ export default class ChoiceRecognitionController {
         recognitionId => {
           console.log('Challenge initialised for recognitionId: ' + this._connection._recognitionId);
           return recognitionId;
-        },
-        // RPC error callback
-        res => {
-          console.error('RPC error returned:', res.error);
-          return Promise.reject(res);
-        }
-      );
+        });
   }
 
   /**
@@ -60,13 +55,7 @@ export default class ChoiceRecognitionController {
         // Start listening for streaming data.
         recorder.addEventListener('dataavailable', dataavailableCb);
         return recognitionId;
-      },
-      // RPC error callback
-      res => {
-        console.error('RPC error returned:', res.error);
-        return Promise.reject(res);
-      }
-    );
+      });
   }
 
   /**
@@ -75,11 +64,10 @@ export default class ChoiceRecognitionController {
    * @param {ChoiceChallenge} challenge - The choice challenge to perform.
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
    * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
-   * @returns {Promise} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
+   * @returns {Promise.<ChoiceRecognition>} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
    * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} {@link ChoiceChallenge#organisationId} field is required.
    * @throws {Promise} If the connection is not open.
    * @throws {Promise} If the recorder is already recording.
    * @throws {Promise} If a recognition session is already in progress.
@@ -92,9 +80,6 @@ export default class ChoiceRecognitionController {
     }
     if (!challenge.id) {
       return Promise.reject(new Error('challenge.id field is required'));
-    }
-    if (!challenge.organisationId) {
-      return Promise.reject(new Error('challenge.organisationId field is required'));
     }
 
     // Validate environment prerequisites.
@@ -173,7 +158,7 @@ export default class ChoiceRecognitionController {
           trimEnd: trimAudioEnd
         })
         .then(recognitionInitCb)
-        .then(() => {
+        .then(() =>
           self.choiceRecognitionInitChallenge(challenge)
             .then(() => {
               const p = new Promise(resolve_ => {
@@ -189,12 +174,8 @@ export default class ChoiceRecognitionController {
               });
             })
             .then(() => notify('ReadyToReceive'))
+        )
             .catch(reject);
-        })
-        .catch(res => {
-          console.error('RPC error returned:', res.error);
-          reject(res);
-        });
 
       // Stop listening when the audio recorder stopped.
       function recordedCb() {
@@ -228,26 +209,23 @@ export default class ChoiceRecognitionController {
       })
       .catch(error => {
         self._connection._recognitionId = null;
+        Connection.logRPCError(error);
         return Promise.reject(error);
       });
   }
 
   /**
-   * Get a choice recognition in a choice challenge.
+   * Get a choice recognition in a choice challenge from the current active {@link Organisation} derived from
+   * the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
    * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
-   * @returns {Promise} Promise containing a ChoiceRecognition.
+   * @returns {Promise.<ChoiceRecognition>} Promise containing a ChoiceRecognition.
    * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} {@link ChoiceRecognition#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getChoiceRecognition(organisationId, challengeId, recognitionId) {
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
-    }
+  getChoiceRecognition(challengeId, recognitionId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
@@ -258,30 +236,23 @@ export default class ChoiceRecognitionController {
       challengeId + '/recognitions/' + recognitionId;
 
     return this._connection._secureAjaxGet(url)
-      .then(datum => {
-        const student = new Student(organisationId, datum.studentId);
-        return new ChoiceRecognition(challengeId, student,
+      .then(datum => new ChoiceRecognition(challengeId, datum.studentId,
           datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl, datum.recognised);
-      });
+          datum.audioUrl, datum.recognised));
   }
 
   /**
-   * List all choice recognitions in a specific {@link ChoiceChallenge}.
+   * List all choice recognitions in a specific {@link ChoiceChallenge} from the current active {@link Organisation}
+   * derived from the OAuth2 scope.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
    * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
-   * @returns {Promise} Promise containing an array of ChoiceRecognitions.
-   * @throws {Promise} {@link Organisation#id} is required.
+   * @returns {Promise.<ChoiceRecognition[]>} Promise containing an array of ChoiceRecognitions.
    * @throws {Promise} {@link ChoiceChallenge#id} is required.
    * @throws {Promise} If no result could not be found.
    */
-  listChoiceRecognitions(organisationId, challengeId) {
+  listChoiceRecognitions(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
-    }
-    if (!organisationId) {
-      return Promise.reject(new Error('organisationId field is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/choice/' +
       challengeId + '/recognitions';
@@ -289,8 +260,7 @@ export default class ChoiceRecognitionController {
       .then(data => {
         const recognitions = [];
         data.forEach(datum => {
-          const student = new Student(organisationId, datum.studentId);
-          const recognition = new ChoiceRecognition(challengeId, student,
+          const recognition = new ChoiceRecognition(challengeId, datum.studentId,
             datum.id, new Date(datum.created), new Date(datum.updated),
             datum.audioUrl, datum.recognised);
           recognitions.push(recognition);
