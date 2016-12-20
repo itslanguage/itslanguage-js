@@ -1,34 +1,34 @@
 import Connection from '../src/administrative-sdk/connection/connection-controller';
-import Student from '../src/administrative-sdk/student/student';
-import StudentController from '../src/administrative-sdk/student/student-controller';
+import User from '../src/administrative-sdk/user/user';
+import UserController from '../src/administrative-sdk/user/user-controller';
 
-describe('Student object test', () => {
-  it('should not instantiate a Student without an organisationId', () => {
+describe('User object test', () => {
+  it('should not instantiate a User without an organisationId', () => {
     expect(() => {
-      new Student();
+      new User();
     }).toThrowError('organisationId parameter of type "string" is required');
   });
 
-  it('should not instantiate a Student with an organisationId as number', () => {
+  it('should not instantiate a User with an organisationId as number', () => {
     expect(() => {
-      new Student(1);
+      new User(1);
     }).toThrowError('organisationId parameter of type "string" is required');
   });
 
-  it('should not instantiate a Student with an id as number', () => {
+  it('should not instantiate a User with an id as number', () => {
     expect(() => {
-      new Student('1', 1);
+      new User('1', 1);
     }).toThrowError('id parameter of type "string|null" is required');
   });
 
-  it('should not instantiate a Student with a birthYear as string', () => {
+  it('should not instantiate a User with a birthYear as string', () => {
     expect(() => {
-      new Student('fb', 'test', 'Mark', 'Zuckerberg', 'male', '1984');
+      new User('fb', 'test', 'Mark', 'Zuckerberg', 'male', '1984');
     }).toThrowError('birthYear parameter of type "number|null" is required');
   });
 
-  it('should instantiate a Student with id and metadata', () => {
-    const s = new Student('fb', 'test', 'Mark', 'Zuckerberg', 'male', 1984);
+  it('should instantiate a User with id and metadata', () => {
+    const s = new User('fb', 'test', 'Mark', 'Zuckerberg', 'male', 1984);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.organisationId).toBe('fb');
@@ -39,15 +39,15 @@ describe('Student object test', () => {
   });
 });
 
-describe('Student API interaction test', () => {
-  it('should not create when student.organisationId is missing', done => {
-    const student = new Student('fb', '1', 'Mark');
-    student.organisationId = null;
+describe('User API interaction test', () => {
+  it('should not create when user.organisationId is missing', done => {
+    const user = new User('fb', '1', 'Mark');
+    user.organisationId = null;
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const controller = new StudentController(api);
-    controller.createStudent(student)
+    const controller = new UserController(api);
+    controller.createUser(user)
       .then(fail)
       .catch(err => {
         expect(err.message).toEqual('organisationId field is required');
@@ -55,13 +55,13 @@ describe('Student API interaction test', () => {
       .then(done);
   });
 
-  it('should create a new student through API', done => {
-    const student = new Student('fb', '1', 'Mark');
+  it('should create a new user through API', done => {
+    const user = new User('fb', '1', 'Mark');
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const controller = new StudentController(api);
-    const url = 'https://api.itslanguage.nl/organisations/fb/students';
+    const controller = new UserController(api);
+    const url = 'https://api.itslanguage.nl/organisations/fb/users';
     const content = {
       id: '1',
       organisationId: 'fb',
@@ -76,7 +76,7 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.createStudent(student)
+    controller.createUser(user)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -90,9 +90,9 @@ describe('Student API interaction test', () => {
         };
         expect(request[1].body).toEqual(JSON.stringify(expected));
         const stringDate = '2014-12-31T23:59:59Z';
-        student.created = new Date(stringDate);
-        student.updated = new Date(stringDate);
-        expect(result).toEqual(student);
+        user.created = new Date(stringDate);
+        user.updated = new Date(stringDate);
+        expect(result).toEqual(user);
         expect(result.id).toBe('1');
         expect(result.created).toEqual(new Date(stringDate));
         expect(result.updated).toEqual(new Date(stringDate));
@@ -104,18 +104,18 @@ describe('Student API interaction test', () => {
       .then(done);
   });
 
-  it('should handle errors while creating a new student', done => {
+  it('should handle errors while creating a new user', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const controller = new StudentController(api);
-    const student = new Student('fb', '1', 'Mark');
-    const url = 'https://api.itslanguage.nl/organisations/fb/students';
+    const controller = new UserController(api);
+    const user = new User('fb', '1', 'Mark');
+    const url = 'https://api.itslanguage.nl/organisations/fb/users';
     const content = {
       message: 'Validation failed',
       errors: [
         {
-          resource: 'Student',
+          resource: 'User',
           field: 'lastName',
           code: 'missing'
         }
@@ -128,7 +128,7 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.createStudent(student)
+    controller.createUser(user)
       .then(() => {
         fail('An error should be thrown!');
       })
@@ -145,7 +145,7 @@ describe('Student API interaction test', () => {
         };
         expect(request[1].body).toEqual(JSON.stringify(expected));
         const errors = [{
-          resource: 'Student',
+          resource: 'User',
           field: 'lastName',
           code: 'missing'
         }];
@@ -158,8 +158,8 @@ describe('Student API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const controller = new StudentController(api);
-    controller.getStudent()
+    const controller = new UserController(api);
+    controller.getUser()
       .then(fail)
       .catch(err => {
         expect(err.message).toEqual('organisationId field is required');
@@ -167,24 +167,24 @@ describe('Student API interaction test', () => {
       .then(done);
   });
 
-  it('should not get when student id is missing', done => {
+  it('should not get when user id is missing', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const controller = new StudentController(api);
-    controller.getStudent('fb')
+    const controller = new UserController(api);
+    controller.getUser('fb')
       .then(fail)
       .catch(err => {
-        expect(err.message).toEqual('studentId field is required');
+        expect(err.message).toEqual('userId field is required');
       })
       .then(done);
   });
 
-  it('should get an existing student through API', done => {
+  it('should get an existing user through API', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const url = 'https://api.itslanguage.nl/organisations/fb/students/4';
+    const url = 'https://api.itslanguage.nl/organisations/fb/users/4';
     const content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',
@@ -197,18 +197,18 @@ describe('Student API interaction test', () => {
         'Content-type': 'application/json; charset=utf-8'
       }
     });
-    const controller = new StudentController(api);
+    const controller = new UserController(api);
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.getStudent('fb', '4')
+    controller.getUser('fb', '4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '4', 'Mark');
-        student.created = new Date(stringDate);
-        student.updated = new Date(stringDate);
-        expect(result).toEqual(student);
+        const user = new User('fb', '4', 'Mark');
+        user.created = new Date(stringDate);
+        user.updated = new Date(stringDate);
+        expect(result).toEqual(user);
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
@@ -220,8 +220,8 @@ describe('Student API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const controller = new StudentController(api);
-    controller.listStudents()
+    const controller = new UserController(api);
+    controller.listUsers()
       .then(fail)
       .catch(err => {
         expect(err.message).toEqual('organisationId field is required');
@@ -229,11 +229,11 @@ describe('Student API interaction test', () => {
       .then(done);
   });
 
-  it('should get a list of existing students through API', done => {
+  it('should get a list of existing users through API', done => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const url = 'https://api.itslanguage.nl/organisations/fb/students';
+    const url = 'https://api.itslanguage.nl/organisations/fb/users';
     const content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
@@ -247,17 +247,17 @@ describe('Student API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const controller = new StudentController(api);
-    controller.listStudents('fb')
+    const controller = new UserController(api);
+    controller.listUsers('fb')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const student = new Student('fb', '4', 'Mark');
-        student.created = new Date(stringDate);
-        student.updated = new Date(stringDate);
-        expect(result[0]).toEqual(student);
+        const user = new User('fb', '4', 'Mark');
+        user.created = new Date(stringDate);
+        user.updated = new Date(stringDate);
+        expect(result[0]).toEqual(user);
         expect(result.length).toBe(1);
       })
       .catch(error => {

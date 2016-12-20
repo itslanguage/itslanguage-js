@@ -6,7 +6,7 @@ import * as ProAnalaControl from '../src/administrative-sdk/pronunciation-analys
 import * as ProChalControl from '../src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller';
 import * as SpeechChallengeController from '../src/administrative-sdk/speech-challenge/speech-challenge-controller';
 import * as SpeechRecordingController from '../src/administrative-sdk/speech-recording/speech-recording-controller';
-import * as StudentController from '../src/administrative-sdk/student/student-controller';
+import * as UserController from '../src/administrative-sdk/user/user-controller';
 import AdministrativeSDK from '../src/administrative-sdk/administrative-sdk';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 
@@ -33,8 +33,8 @@ describe('Administrative SDK', () => {
     ['createSpeechChallenge', 'getSpeechChallenge', 'listSpeechChallenges']);
   const fakeSpeechRecordingController = jasmine.createSpyObj('SpeechRecordingController',
     ['startStreamingSpeechRecording', 'getSpeechRecording', 'listSpeechRecordings']);
-  const fakeStudentController = jasmine.createSpyObj('StudentController',
-    ['createStudent', 'getStudent', 'listStudents']);
+  const fakeUserController = jasmine.createSpyObj('UserController',
+    ['createUser', 'getUser', 'listUsers']);
   beforeEach(() => {
     spyOn(ChoiceChallengeController, 'default').and.returnValue(fakeChoiceChallengeController);
     spyOn(ChoiceRecogController, 'default').and.returnValue(fakeChoiceRecognitionController);
@@ -44,7 +44,7 @@ describe('Administrative SDK', () => {
     spyOn(ProChalControl, 'default').and.returnValue(fakePronunciationChallengeController);
     spyOn(SpeechChallengeController, 'default').and.returnValue(fakeSpeechChallengeController);
     spyOn(SpeechRecordingController, 'default').and.returnValue(fakeSpeechRecordingController);
-    spyOn(StudentController, 'default').and.returnValue(fakeStudentController);
+    spyOn(UserController, 'default').and.returnValue(fakeUserController);
     sdk = new AdministrativeSDK(connection);
   });
 
@@ -71,9 +71,9 @@ describe('Administrative SDK', () => {
     sdk.startStreamingSpeechRecording(1, 2);
     sdk.getSpeechRecording(1, 2, 3);
     sdk.listSpeechRecordings(1, 2);
-    sdk.createStudent(1);
-    sdk.getStudent(1, 2);
-    sdk.listStudents(1);
+    sdk.createUser(1);
+    sdk.getUser(1, 2);
+    sdk.listUsers(1);
     sdk.createEmailCredentials(1, 2);
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);
@@ -107,8 +107,8 @@ describe('Administrative SDK', () => {
     expect(fakeSpeechRecordingController.getSpeechRecording).toHaveBeenCalledWith(1, 2);
     expect(fakeSpeechRecordingController.listSpeechRecordings).toHaveBeenCalledWith(1);
 
-    expect(fakeStudentController.createStudent).toHaveBeenCalledWith(1);
-    expect(fakeStudentController.getStudent).toHaveBeenCalledWith(1, 2);
-    expect(fakeStudentController.listStudents).toHaveBeenCalledWith(1);
+    expect(fakeUserController.createUser).toHaveBeenCalledWith(1);
+    expect(fakeUserController.getUser).toHaveBeenCalledWith(1, 2);
+    expect(fakeUserController.listUsers).toHaveBeenCalledWith(1);
   });
 });

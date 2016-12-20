@@ -1,10 +1,10 @@
-import Student from './student';
+import User from './user';
 
 /**
- * Controller class for the Student model.
+ * Controller class for the User model.
  * @private
  */
-export default class StudentController {
+export default class UserController {
   /**
    * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
    */
@@ -17,24 +17,24 @@ export default class StudentController {
   }
 
   /**
-   * Create a student.
+   * Create a user.
    *
-   * @param {Student} student - Object to create.
-   * @returns {Promise.<Student>} Promise containing the newly created Student.
-   * @throws {Promise} {@link Student#organisationId} field is required.
+   * @param {User} user - User to create.
+   * @returns {Promise.<User>} Promise containing the newly created User.
+   * @throws {Promise} {@link User#organisationId} field is required.
    * @throws {Promise} If the server returned an error.
    */
-  createStudent(student) {
-    if (!student.organisationId) {
+  createUser(user) {
+    if (!user.organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
     const url = this._connection._settings.apiUrl + '/organisations/' +
-      student.organisationId + '/students';
-    const fd = JSON.stringify(student);
+      user.organisationId + '/users';
+    const fd = JSON.stringify(user);
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new Student(student.organisationId, data.id, data.firstName, data.lastName, data.gender,
+        const result = new User(user.organisationId, data.id, data.firstName, data.lastName, data.gender,
           data.birthYear);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
@@ -43,59 +43,59 @@ export default class StudentController {
   }
 
   /**
-   * Get a student.
+   * Get a user in the given {@link Organisation}.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @param {Student#id} studentId - Specify a student identifier.
-   * @returns {Promise.<Student>} Promise containing a Student.
+   * @param {User#id} userId - Specify a user identifier.
+   * @returns {Promise.<User>} Promise containing a User.
    * @throws {Promise} {@link Organisation#id} field is required.
-   * @throws {Promise} {@link Student#id} field is required.
+   * @throws {Promise} {@link User#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  getStudent(organisationId, studentId) {
+  getUser(organisationId, userId) {
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
-    if (!studentId) {
-      return Promise.reject(new Error('studentId field is required'));
+    if (!userId) {
+      return Promise.reject(new Error('userId field is required'));
     }
     const url = this._connection._settings.apiUrl + '/organisations/' +
-      organisationId + '/students/' + studentId;
+      organisationId + '/users/' + userId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const student = new Student(organisationId, data.id, data.firstName,
+        const user = new User(organisationId, data.id, data.firstName,
           data.lastName, data.gender, data.birthYear);
-        student.created = new Date(data.created);
-        student.updated = new Date(data.updated);
-        return student;
+        user.created = new Date(data.created);
+        user.updated = new Date(data.updated);
+        return user;
       });
   }
 
   /**
-   * List all students in the organisation.
+   * List all users in the organisation.
    *
    * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @returns {Promise.<Student[]>} Promise containing an array of Students.
+   * @returns {Promise.<User[]>} Promise containing an array of Users.
    * @throws {Promise} {@link Organisation#id} field is required.
    * @throws {Promise} If no result could not be found.
    */
-  listStudents(organisationId) {
+  listUsers(organisationId) {
     if (!organisationId) {
       return Promise.reject(new Error('organisationId field is required'));
     }
     const url = this._connection._settings.apiUrl + '/organisations/' +
-      organisationId + '/students';
+      organisationId + '/users';
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const students = [];
+        const users = [];
         data.forEach(datum => {
-          const student = new Student(organisationId, datum.id,
+          const user = new User(organisationId, datum.id,
             datum.firstName, datum.lastName, datum.gender, datum.birthYear);
-          student.created = new Date(datum.created);
-          student.updated = new Date(datum.updated);
-          students.push(student);
+          user.created = new Date(datum.created);
+          user.updated = new Date(datum.updated);
+          users.push(user);
         });
-        return students;
+        return users;
       });
   }
 }

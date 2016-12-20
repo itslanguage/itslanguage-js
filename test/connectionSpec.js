@@ -384,7 +384,7 @@ describe('Connection', () => {
         expect(request[0]).toBe(url);
         expect(request[1].body).toEqual('grant_type=password&' +
           'scope=tenant/' + basicAuth.tenantId +
-          '/organisation/fb/student/dummy&username=' + basicAuth.principal +
+          '/organisation/fb/user/dummy&username=' + basicAuth.principal +
           '&password=' + basicAuth.credentials);
         expect(result.token_type).toEqual('Bearer');
         expect(result.access_token).toEqual('2b198b6bc87db1bdb');
@@ -397,7 +397,7 @@ describe('Connection', () => {
       .then(done);
     });
 
-    it('should get a token without student id', done => {
+    it('should get a token without user id', done => {
       const content = {
         access_token: '2b198b6bc87db1bdb',
         token_type: 'Bearer',
@@ -429,7 +429,7 @@ describe('Connection', () => {
         .then(done);
     });
 
-    it('should get a token without organisation and student', done => {
+    it('should get a token without organisation and user', done => {
       const content = {
         access_token: '2b198b6bc87db1bdb',
         token_type: 'Bearer',
@@ -461,7 +461,7 @@ describe('Connection', () => {
         .then(done);
     });
 
-    it('should get a token without organisation and with student', done => {
+    it('should get a token without organisation and with user', done => {
       const content = {
         error: 'invalid_scope'
       };

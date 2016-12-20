@@ -92,7 +92,7 @@ export default class SpeechRecordingController {
 
       function _cb(data) {
         const recording = new SpeechRecording(
-          challenge.id, data.studentId, data.id, new Date(data.created), new Date(data.updated),
+          challenge.id, data.userId, data.id, new Date(data.created), new Date(data.updated),
           self._connection.addAccessToken(data.audioUrl));
         resolve({recordingId: self._connection._recordingId, recording});
       }
@@ -194,7 +194,7 @@ export default class SpeechRecordingController {
     }
     const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings/' + recordingId;
     return this._connection._secureAjaxGet(url)
-      .then(data => new SpeechRecording(challengeId, data.studentId, data.id, new Date(data.created),
+      .then(data => new SpeechRecording(challengeId, data.userId, data.id, new Date(data.created),
           new Date(data.updated), this._connection.addAccessToken(data.audioUrl)));
   }
 
@@ -216,7 +216,7 @@ export default class SpeechRecordingController {
       .then(data => {
         const recordings = [];
         data.forEach(datum => {
-          const recording = new SpeechRecording(challengeId, datum.studentId, datum.id, new Date(datum.created),
+          const recording = new SpeechRecording(challengeId, datum.userId, datum.id, new Date(datum.created),
             new Date(datum.updated), this._connection.addAccessToken(datum.audioUrl));
           recordings.push(recording);
         });

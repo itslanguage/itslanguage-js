@@ -297,18 +297,18 @@ export default class Connection {
    *
    * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
    * @param {Organisation#id} organisationId - Id of the organisation to request a token for.
-   * @param {Student#id} studentId - Id of the student to request a token for.
+   * @param {User#id} userId - Id of the user to request a token for.
    * @returns {Promise} Promise containing a access_token, token_type and scope.
    * @throws {Promise} If the server returned an error.
    */
-  getOauth2Token(basicAuth, organisationId, studentId) {
+  getOauth2Token(basicAuth, organisationId, userId) {
     const url = this._settings.apiUrl + '/tokens';
     let scopes = 'tenant/' + basicAuth.tenantId;
     if (organisationId) {
       scopes += '/organisation/' + organisationId;
     }
-    if (organisationId && studentId) {
-      scopes += '/student/' + studentId;
+    if (organisationId && userId) {
+      scopes += '/user/' + userId;
     }
     const headers = new Headers();
     headers.append('Content-Type',

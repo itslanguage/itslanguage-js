@@ -47,7 +47,7 @@ describe('SpeechRecording API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6'
+      userId: '6'
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -95,7 +95,7 @@ describe('SpeechRecording API interaction test', () => {
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
       audioUrl,
-      studentId: '6'
+      userId: '6'
     }];
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -143,7 +143,7 @@ describe('Speech Recording Websocket API interaction test', () => {
     });
     fakeResponse = {
       id: '4',
-      studentId: '1',
+      userId: '1',
       created: new Date(stringDate),
       updated: new Date(stringDate),
       audioFormat: 'audio/wave',
@@ -598,7 +598,7 @@ describe('Speech Recording Websocket API interaction test', () => {
       .then(result => {
         expect(result.recording.id).toEqual('4');
         expect(result.recording.challengeId).toEqual(challenge.id);
-        expect(result.recording.studentId).toBe('1');
+        expect(result.recording.userId).toBe('1');
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
           'nl.itslanguage.recording.init_recording', []);

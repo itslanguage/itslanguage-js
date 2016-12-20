@@ -1,16 +1,16 @@
 /**
- * @class Student domain model
+ * @class User domain model
  */
-export default class Student {
+export default class User {
   /**
-   * Create a Student domain model.
+   * Create a User domain model.
    *
-   * @param {string} organisationId - The organisation identifier this student is a member of.
-   * @param {?string} id - The student identifier. If none is given, one is generated.
-   * @param {?string} firstName - First name of the student.
-   * @param {?string} lastName - Last name of the student.
-   * @param {?string} gender - Gender of the student (either `male` or `female`).
-   * @param {?number} birthYear - Birth year of the student.
+   * @param {string} organisationId - The organisation identifier this user is a member of.
+   * @param {?string} id - The user identifier. If none is given, one is generated.
+   * @param {?string} firstName - First name of the user.
+   * @param {?string} lastName - Last name of the user.
+   * @param {?string} gender - Gender of the user (either `male` or `female`).
+   * @param {?number} birthYear - Birth year of the user.
    */
   constructor(organisationId, id, firstName, lastName, gender, birthYear) {
     if (id && typeof id !== 'string') {
@@ -18,7 +18,7 @@ export default class Student {
         'id parameter of type "string|null" is required');
     }
     /**
-     * The student identifier.
+     * The user identifier.
      * @type {string}
      */
     this.id = id;
@@ -27,25 +27,25 @@ export default class Student {
         'organisationId parameter of type "string" is required');
     }
     /**
-     * The organisation identifier this student is a member of.
+     * The organisation identifier this user is a member of.
      * @type {string}
      */
     this.organisationId = organisationId;
 
     /**
-     * First name of the student.
+     * First name of the user.
      * @type {string}
      */
     this.firstName = firstName;
 
     /**
-     * Last name of the student.
+     * Last name of the user.
      * @type {string}
      */
     this.lastName = lastName;
 
     /**
-     Gender of the student (either `male` or `female`).
+     Gender of the user (either `male` or `female`).
      * @type {string}
      */
     this.gender = gender;
@@ -55,7 +55,7 @@ export default class Student {
     }
 
     /**
-     * Birth year of the student.
+     * Birth year of the user.
      * @type {number}
      */
     this.birthYear = birthYear;
