@@ -3,6 +3,7 @@ import AdministrativeSDK from './administrative-sdk/administrative-sdk';
 import AudioPlayer from './audio/audio-player';
 import AudioRecorder from './audio/audio-recorder';
 import BasicAuth from './administrative-sdk/basic-auth/basic-auth';
+import Category from './administrative-sdk/category/category';
 import ChoiceChallenge from './administrative-sdk/choice-challenge/choice-challenge';
 import Connection from './administrative-sdk/connection/connection-controller';
 import CordovaMediaPlayer from './audio/cordova-media-player';
@@ -27,6 +28,7 @@ import WordChunk from './administrative-sdk/word-chunk/word-chunk';
 export {
   AdministrativeSDK,
   BasicAuth,
+  Category,
   ChoiceChallenge,
   Connection,
   EmailCredentials,
