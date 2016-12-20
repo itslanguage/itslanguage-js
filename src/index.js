@@ -11,6 +11,7 @@ import Group from './administrative-sdk/group/group';
 import MediaRecorder from './audio/media-recorder';
 import Organisation from './administrative-sdk/organisation/organisation';
 import Phoneme from './administrative-sdk/phoneme/phoneme';
+import Profile from './administrative-sdk/profile/profile';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
 import Role from './administrative-sdk/role/role';
 import SpeechChallenge from './administrative-sdk/speech-challenge/speech-challenge';
@@ -30,6 +31,7 @@ export {
   Group,
   Organisation,
   Phoneme,
+  Profile,
   PronunciationChallenge,
   Role,
   SpeechChallenge,
