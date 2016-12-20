@@ -7,6 +7,7 @@ import ChoiceChallenge from './administrative-sdk/choice-challenge/choice-challe
 import Connection from './administrative-sdk/connection/connection-controller';
 import CordovaMediaPlayer from './audio/cordova-media-player';
 import CordovaMediaRecorder from './audio/cordova-media-recorder';
+import Group from './administrative-sdk/group/group';
 import MediaRecorder from './audio/media-recorder';
 import Organisation from './administrative-sdk/organisation/organisation';
 import Phoneme from './administrative-sdk/phoneme/phoneme';
@@ -26,6 +27,7 @@ export {
   BasicAuth,
   ChoiceChallenge,
   Connection,
+  Group,
   Organisation,
   Phoneme,
   PronunciationChallenge,
