@@ -13,23 +13,23 @@ describe('BasicAuth object test', () => {
       expect(() => {
         new BasicAuth('tenantId', v);
       }).toThrowError(
-        'principal parameter of type "string|null|undefined" is required');
+        'principal parameter of type "string|null" is required');
     });
 
     [0, 4, false].map(v => {
       expect(() => {
         new BasicAuth('tenantId', 'principal', v);
       }).toThrowError(
-        'credentials parameter of type "string|null|undefined" is required');
+        'credentials parameter of type "string|null" is required');
     });
   });
 
   it('should instantiate an BasicAuth with tenantId', () => {
-    const o = new BasicAuth('tenantId');
+    const o = new BasicAuth('tenantId', null, null);
     expect(o).toBeDefined();
     expect(o.tenantId).toBe('tenantId');
-    expect(o.principal).toBeUndefined();
-    expect(o.credentials).toBeUndefined();
+    expect(o.principal).toBeNull();
+    expect(o.credentials).toBeNull();
   });
 
   it('should instantiate a full BasicAuth', () => {
