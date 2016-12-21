@@ -382,6 +382,18 @@ export default class AdministrativeSDK {
   listRoles() {
     return this._roleController.listRoles();
   }
+
+  /**
+   * Get a single role.
+   *
+   * @param {string} roleId - Identifier of the role.
+   * @returns {Promise.<Role>} Promise containing a Role.
+   * @throws {Promise.<Error>} roleId parameter of type "string" is required.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getRole(roleId) {
+    return this._roleController.getRole(roleId);
+  }
 }
 
 
