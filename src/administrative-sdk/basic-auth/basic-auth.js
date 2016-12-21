@@ -3,9 +3,9 @@
  */
 export default class BasicAuth {
   /**
-   * @param {string} tenantId - The Tenant identifier - to create this BasicAuth for.
+   * @param {string} tenantId - The Tenant identifier to create this BasicAuth for.
    * @param {?string} principal - The principal. If none is given, one is generated.
-   * @param {?string} credentials - The credentials. If none is given, one is generated.
+   * @param {?string} credentials - The credentials. If none are given, one is generated.
    * @throws {Error} tenantId parameter of type "string" is required.
    * @throws {Error} principal parameter of type "string|null" is required.
    * @throws {Error} credentials parameter of type "string|null" is required.
@@ -27,17 +27,17 @@ export default class BasicAuth {
     }
 
     /**
-     * @type {string}
+     * @type {string} The Tenant identifier to create this BasicAuth for.
      */
     this.tenantId = tenantId;
 
     /**
-     * @type {string}
+     * @type {string} The principal. If none is given, one is generated.
      */
     this.principal = principal;
 
     /**
-     * @type {string}
+     * @type {string} The credentials. If none are given, one is generated.
      */
     this.credentials = credentials;
   }
