@@ -27,15 +27,7 @@ export default class ChoiceChallengeController {
    */
   createChoiceChallenge(choiceChallenge) {
     const url = this._connection._settings.apiUrl + '/challenges/choice';
-    const fd = new FormData();
-    if (choiceChallenge.id !== undefined &&
-      choiceChallenge.id !== null) {
-      fd.append('id', choiceChallenge.id);
-    }
-    fd.append('question', choiceChallenge.question);
-    choiceChallenge.choices.forEach(choice => {
-      fd.append('choices', choice);
-    });
+    const fd = JSON.stringify(choiceChallenge);
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new ChoiceChallenge(data.id, data.question, data.choices);

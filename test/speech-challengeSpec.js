@@ -66,8 +66,7 @@ describe('SpeechChallenge API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
-        expect(FormData.prototype.append.calls.count()).toEqual(1);
+        expect(request[1].body).toEqual(JSON.stringify(challenge));
         const stringDate = '2014-12-31T23:59:59Z';
         const outChallenge = new SpeechChallenge('1', 'Hi');
         outChallenge.created = new Date(stringDate);
@@ -101,9 +100,7 @@ describe('SpeechChallenge API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
-        expect(FormData.prototype.append.calls.count()).toEqual(2);
+        expect(request[1].body).toEqual(JSON.stringify(challenge));
         const stringDate = '2014-12-31T23:59:59Z';
         const outChallenge = new SpeechChallenge('1', 'Hi');
         outChallenge.created = new Date(stringDate);
@@ -140,11 +137,7 @@ describe('SpeechChallenge API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-        expect(FormData.prototype.append).toHaveBeenCalledWith(
-          'referenceAudio', blob);
-        expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
-        expect(FormData.prototype.append.calls.count()).toEqual(3);
+        expect(request[1].body).toEqual(JSON.stringify(challenge));
         const stringDate = '2014-12-31T23:59:59Z';
         const outChallenge = new SpeechChallenge('1', 'Hi', blob);
         outChallenge.created = new Date(stringDate);
@@ -186,9 +179,7 @@ describe('SpeechChallenge API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('topic', 'Hi');
-        expect(FormData.prototype.append.calls.count()).toEqual(2);
+        expect(request[1].body).toEqual(JSON.stringify(challenge));
         const errors = [{
           resource: 'SpeechChallenge',
           field: 'topic',

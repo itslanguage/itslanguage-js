@@ -31,14 +31,7 @@ export default class PronunciationChallengeController {
         'referenceAudio parameter of type "Blob" is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
-    const fd = new FormData();
-    if (typeof challenge.id !== 'undefined' &&
-      challenge.id !== null) {
-      fd.append('id', challenge.id);
-    }
-    fd.append('transcription', challenge.transcription);
-    fd.append('referenceAudio', challenge.referenceAudio);
-
+    const fd = JSON.stringify(challenge);
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
         const result = new PronunciationChallenge(data.id, data.transcription,
