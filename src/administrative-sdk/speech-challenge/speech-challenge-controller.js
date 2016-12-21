@@ -24,15 +24,7 @@ export default class SpeechChallengeController {
    * @throws {Promise} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge) {
-    const fd = new FormData();
-    if (typeof speechChallenge.id !== 'undefined' &&
-      speechChallenge.id !== null) {
-      fd.append('id', speechChallenge.id);
-    }
-    fd.append('topic', speechChallenge.topic);
-    if (speechChallenge.referenceAudio) {
-      fd.append('referenceAudio', speechChallenge.referenceAudio);
-    }
+    const fd = JSON.stringify(speechChallenge);
     const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxPost(url, fd)

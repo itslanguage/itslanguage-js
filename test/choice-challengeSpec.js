@@ -80,11 +80,7 @@ describe('ChoiceChallenge API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'b');
-        expect(FormData.prototype.append.calls.count()).toEqual(4);
+        expect(request[1].body).toEqual(JSON.stringify(challenge));
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
@@ -130,10 +126,7 @@ describe('ChoiceChallenge API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'b');
-        expect(FormData.prototype.append.calls.count()).toEqual(3);
+        expect(request[1].body).toEqual(JSON.stringify(challenge));
       })
       .catch(error => {
         fail('No error should be thrown: ' + error);
@@ -170,10 +163,8 @@ describe('ChoiceChallenge API interaction test', () => {
       .then(() => {
         fail('No result should be returned');
       }).catch(error => {
-        expect(FormData.prototype.append).toHaveBeenCalledWith('id', '1');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('question', 'q');
-        expect(FormData.prototype.append).toHaveBeenCalledWith('choices', 'a');
-        expect(FormData.prototype.append.calls.count()).toEqual(3);
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[1].body).toEqual(JSON.stringify(challenge));
         const errors = [{
           resource: 'ChoiceChallenge',
           field: 'question',
