@@ -12,6 +12,9 @@ import UserController from './user/user-controller';
  * Facade for all methods used in the ITSLanguage Administrative SDK.
  */
 export default class AdministrativeSDK {
+  /**
+   * @param {Connection} connection - Object to use for making a connection to the REST API and Websocket server.
+   */
   constructor(connection) {
     this._connection = connection;
     this._choiceChallengeController = new ChoiceChallengeController(this._connection);
