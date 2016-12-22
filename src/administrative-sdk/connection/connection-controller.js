@@ -72,7 +72,7 @@ export default class Connection {
    * Assemble a HTTP Authentication header.
    *
    * @returns {Promise.<string>} Promise containing an authorization header string.
-   * @throws {Promise} If the oAuth2Token in {@link Connection#settings} is not set.
+   * @throws {Promise.<Error>} If the oAuth2Token in {@link Connection#settings} is not set.
    */
   _getAuthHeaders() {
     if (!this._settings.oAuth2Token) {
@@ -148,7 +148,7 @@ export default class Connection {
    *
    * @param {string} url - Url to retrieve.
    * @returns {Promise} Promise containing a result.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   _secureAjaxGet(url) {
     return this._getAuthHeaders()
@@ -170,7 +170,7 @@ export default class Connection {
    * @param {string} url - Url to submit to.
    * @param {FormData} formdata - The form to POST.
    * @returns {Promise} Promise containing a result.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   _secureAjaxPost(url, formdata) {
     return this._getAuthHeaders()
@@ -196,7 +196,7 @@ export default class Connection {
    *
    * @param {string} url - Url to submit to.
    * @returns {Promise} Promise containing a result.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   _secureAjaxDelete(url) {
     return this._getAuthHeaders()
@@ -296,10 +296,10 @@ export default class Connection {
    * Ask the server for an OAuth2 token.
    *
    * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
-   * @param {Organisation#id} organisationId - Id of the organisation to request a token for.
-   * @param {User#id} userId - Id of the user to request a token for.
+   * @param {string} organisationId - Id of the organisation to request a token for.
+   * @param {string} userId - Id of the user to request a token for.
    * @returns {Promise} Promise containing a access_token, token_type and scope.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   getOauth2Token(basicAuth, organisationId, userId) {
     const url = this._settings.apiUrl + '/tokens';

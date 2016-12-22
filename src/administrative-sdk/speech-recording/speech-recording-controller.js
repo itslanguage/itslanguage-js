@@ -60,12 +60,12 @@ export default class SpeechRecordingController {
    * @param {AudioRecorder} recorder - The audio recorder to extract audio from.
    * @returns {Promise.<SpeechRecording>} A {@link https://github.com/cujojs/when} Promise containing a {@link SpeechRecording}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
-   * @throws {Promise} If challenge is not an object or not defined.
-   * @throws {Promise} If challenge has no id.
-   * @throws {Promise} If the connection is not open.
-   * @throws {Promise} If the recorder is already recording.
-   * @throws {Promise} If a session is already in progress.
-   * @throws {Promise} If something went wrong during recording.
+   * @throws {Promise.<Error>} If challenge is not an object or not defined.
+   * @throws {Promise.<Error>} If challenge has no id.
+   * @throws {Promise.<Error>} If the connection is not open.
+   * @throws {Promise.<Error>} If the recorder is already recording.
+   * @throws {Promise.<Error>} If a session is already in progress.
+   * @throws {Promise.<Error>} If something went wrong during recording.
    */
   startStreamingSpeechRecording(challenge, recorder) {
     // Validate required domain model.
@@ -178,12 +178,12 @@ export default class SpeechRecordingController {
    * Get a speech recording in a speech challenge from the current active {@link Organisation} derived from the OAuth2
    * scope.
    *
-   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
-   * @param {SpeechRecording#id} recordingId - Specify a speech recording identifier.
+   * @param {string} challengeId - Specify a speech challenge identifier.
+   * @param {string} recordingId - Specify a speech recording identifier.
    * @returns {Promise.<SpeechRecording>} Promise containing a SpeechRecording.
-   * @throws {Promise} {@link SpeechChallenge#id} field is required.
-   * @throws {Promise} {@link SpeechRecording#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise.<Error>} {@link SpeechRecording#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   getSpeechRecording(challengeId, recordingId) {
     if (!challengeId) {
@@ -202,10 +202,10 @@ export default class SpeechRecordingController {
    * List all speech recordings in a specific speech challenge from the current active {@link Organisation} derived
    * from the OAuth2 scope.
    *
-   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier to list speech recordings for.
+   * @param {string} challengeId - Specify a speech challenge identifier to list speech recordings for.
    * @returns {Promise.<SpeechRecording[]>} Promise containing an array of SpeechRecording.
-   * @throws {Promise} {@link SpeechChallenge#id} is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link SpeechChallenge#id} is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   listSpeechRecordings(challengeId) {
     if (!challengeId) {

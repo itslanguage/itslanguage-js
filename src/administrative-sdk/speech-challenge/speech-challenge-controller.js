@@ -21,7 +21,7 @@ export default class SpeechChallengeController {
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge) {
     const fd = JSON.stringify(speechChallenge);
@@ -41,10 +41,10 @@ export default class SpeechChallengeController {
   /**
    * Get a speech challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {SpeechChallenge#id} challengeId - Specify a speech challenge identifier.
+   * @param {string} challengeId - Specify a speech challenge identifier.
    * @returns {Promise.<PronunciationChallenge>} Promise containing a SpeechChallenge.
-   * @throws {Promise} {@link SpeechChallenge#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   getSpeechChallenge(challengeId) {
     if (!challengeId) {
@@ -65,7 +65,7 @@ export default class SpeechChallengeController {
    * List all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<SpeechChallenge[]>} Promise containing an array of SpeechChallenges.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   listSpeechChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/speech';

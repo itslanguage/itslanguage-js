@@ -22,8 +22,8 @@ export default class PronunciationChallengeController {
    *
    * @param {PronunciationChallenge} challenge - Object to create..
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created PronunciationChallenge.
-   * @throws {Promise} {@link PronunciationChallenge#referenceAudio} of type "Blob" is required.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} {@link PronunciationChallenge#referenceAudio} of type "Blob" is required.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   createPronunciationChallenge(challenge) {
     if (typeof challenge.referenceAudio !== 'object' || !challenge.referenceAudio) {
@@ -48,10 +48,10 @@ export default class PronunciationChallengeController {
   /**
    * Get a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
+   * @param {string} challengeId - Specify a pronunciation challenge identifier.
    * @returns {Promise.<PronunciationChallenge>} Promise containing a PronunciationChallenge.
-   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   getPronunciationChallenge(challengeId) {
     if (!challengeId) {
@@ -73,7 +73,7 @@ export default class PronunciationChallengeController {
    * List all pronunciation challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<PronunciationChallenge[]>} Promise containing a list of PronunciationChallenges.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   listPronunciationChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
@@ -95,10 +95,10 @@ export default class PronunciationChallengeController {
   /**
    * Delete a pronunciation challenge from the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {PronunciationChallenge#id} challengeId - A pronunciation challenge identifier.
+   * @param {string} challengeId - A pronunciation challenge identifier.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the given challenge ID.
-   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   deletePronunciationChallenge(challengeId) {
     if (!challengeId) {
