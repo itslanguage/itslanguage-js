@@ -12,7 +12,7 @@ import Profile from './administrative-sdk/profile/profile';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
 import Role from './administrative-sdk/role/role';
 import SpeechChallenge from './administrative-sdk/speech-challenge/speech-challenge';
-import Tools from './audio/tools';
+import Stopwatch from './audio/tools';
 import User from './administrative-sdk/user/user';
 
 export {
@@ -34,7 +34,7 @@ export {
 
   generateWaveSample,
 
-  Tools,
+  Stopwatch,
 
   VolumeMeter
 };
