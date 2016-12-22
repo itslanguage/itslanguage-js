@@ -81,4 +81,21 @@ export default class UserController {
         return users;
       });
   }
+
+  /**
+   * Get the current authenticated user.
+   *
+   * @returns {Promise.<User>} The current authenticated user.
+   * @throws {Promise.<Error>} If something went wrong in the server.
+   */
+  getCurrentUser() {
+    const url = this._connection._settings.apiUrl + '/user';
+    return this._connection._secureAjaxGet(url)
+      .then(data => {
+        const user = new User(data.id, data.profile, data.groups, data.roles);
+        user.created = new Date(data.created);
+        user.updated = new Date(data.updated);
+        return user;
+      });
+  }
 }

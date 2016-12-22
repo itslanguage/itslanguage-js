@@ -198,5 +198,43 @@ describe('User API interaction test', () => {
       })
       .then(done);
   });
+
+  it('should get the current user', done => {
+    const stringDate = '2014-12-31T23:59:59Z';
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const url = 'https://api.itslanguage.nl/user';
+    const content = {
+      id: '4',
+      created: stringDate,
+      updated: stringDate,
+      profile: null,
+      roles: ['STUDENT'],
+      groups: ['GROUP1']
+    };
+    const fakeResponse = new Response(JSON.stringify(content), {
+      status: 200,
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
+      }
+    });
+    const controller = new UserController(api);
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    controller.getCurrentUser()
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
+        const user = new User('4', null, ['GROUP1'], ['STUDENT']);
+        user.created = new Date(stringDate);
+        user.updated = new Date(stringDate);
+        expect(result).toEqual(user);
+      })
+      .catch(error => {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
+  });
 });
 

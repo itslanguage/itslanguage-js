@@ -351,6 +351,16 @@ export default class AdministrativeSDK {
   }
 
   /**
+   * Get the current authenticated user.
+   *
+   * @returns {Promise.<User>} The current authenticated user.
+   * @throws {Promise.<Error>} If something went wrong in the server.
+   */
+  getCurrentUser() {
+    return this._userController.getCurrentUser();
+  }
+
+  /**
    * List all users in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<User[]>} Promise containing an array of Users.
