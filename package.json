@@ -9,7 +9,10 @@
     "babelify": "babel src --out-dir build --source-maps inline && cp package.json README.md build/",
     "clearbuild": "rm -rf build/"
   },
-  "author": "ITSLanguage",
+  "author": "ITSLanguage (https://www.itslanguage.nl) <support@d-centralize.nl>",
+  "contributors": [
+    "Loek Ehren <loek-ehren@hotmail.com>"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
