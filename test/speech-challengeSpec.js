@@ -8,29 +8,31 @@ describe('SpeechChallenge object test', () => {
       new SpeechChallenge(4);
     }).toThrowError('id parameter of type "string|null" is required');
 
-    expect(() => {
-      new SpeechChallenge('hi', '1', '1');
-    }).toThrowError('referenceAudio parameter of type "Blob" is required');
+    [0,{},[],true,false,undefined].map(v =>{
+      expect(() => {
+        new SpeechChallenge('hi', '1', v);
+      }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
+    });
 
     expect(() => {
       new SpeechChallenge('1', 66);
     }).toThrowError('topic parameter of type "string" is required');
   });
-  it('should instantiate a SpeechChallenge with referenceAudio', () => {
-    const blob = new Blob(['1234567890']);
+  it('should instantiate a SpeechChallenge with referenceAudioUrl', () => {
+    const url = 'www.downloadaudiohere.exe.com';
 
-    const s = new SpeechChallenge('test', 'hi', blob);
+    const s = new SpeechChallenge('test', 'hi', url);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.topic).toBe('hi');
-    expect(s.referenceAudio).toBe(blob);
+    expect(s.referenceAudioUrl).toBe(url);
   });
   it('should instantiate a SpeechChallenge', () => {
-    const s = new SpeechChallenge('test', 'hi');
+    const s = new SpeechChallenge('test', 'hi', null);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
     expect(s.topic).toBe('hi');
-    expect(s.referenceAudio).toBe(null);
+    expect(s.referenceAudioUrl).toBe(null);
   });
 });
 
@@ -46,12 +48,13 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should create a challenge without an id', done => {
-    const challenge = new SpeechChallenge(null, 'Hi');
+    const challenge = new SpeechChallenge(null, 'Hi', null);
     const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi'
+      topic: 'Hi',
+      referenceAudioUrl: null
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
@@ -68,7 +71,7 @@ describe('SpeechChallenge API interaction test', () => {
         expect(request[1].method).toBe('POST');
         expect(request[1].body).toEqual(JSON.stringify(challenge));
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new SpeechChallenge('1', 'Hi');
+        const outChallenge = new SpeechChallenge('1', 'Hi', null);
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         expect(result).toEqual(outChallenge);
@@ -85,7 +88,8 @@ describe('SpeechChallenge API interaction test', () => {
       id: '1',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi'
+      topic: 'Hi',
+      referenceAudioUrl: null
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 201,

@@ -20,20 +20,20 @@ export default class SpeechChallengeController {
    * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
+   * @param {?Blob} audioBlob - Audio fragment to link to the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise} If the server returned an error.
    */
-  createSpeechChallenge(speechChallenge) {
+  createSpeechChallenge(speechChallenge, audioBlob) {
+    speechChallenge.referenceAudio = audioBlob;
     const fd = JSON.stringify(speechChallenge);
     const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new SpeechChallenge(data.id, data.topic);
+        const result = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
-        result.referenceAudio = speechChallenge.referenceAudio;
-        result.referenceAudioUrl = data.referenceAudioUrl || null;
         return result;
       });
   }
@@ -54,7 +54,7 @@ export default class SpeechChallengeController {
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const challenge = new SpeechChallenge(data.id, data.topic);
+        const challenge = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         return challenge;
@@ -75,7 +75,7 @@ export default class SpeechChallengeController {
         const challenges = [];
         data.forEach(datum => {
           const challenge = new SpeechChallenge(datum.id,
-            datum.topic);
+            datum.topic, datum.referenceAudioUrl);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenges.push(challenge);

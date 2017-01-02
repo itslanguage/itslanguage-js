@@ -245,11 +245,12 @@ export default class AdministrativeSDK {
    * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
+   * @param {?Blob} audioBlob - Audio fragment to link to the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise} If the server returned an error.
    */
-  createSpeechChallenge(speechChallenge) {
-    return this._speechChallengeController.createSpeechChallenge(speechChallenge);
+  createSpeechChallenge(speechChallenge, audioBlob) {
+    return this._speechChallengeController.createSpeechChallenge(speechChallenge, audioBlob);
   }
 
   /**
