@@ -8,7 +8,7 @@ describe('SpeechChallenge object test', () => {
       new SpeechChallenge(4);
     }).toThrowError('id parameter of type "string|null" is required');
 
-    [0,{},[],true,false,undefined].map(v =>{
+    [0, {}, [], true, false, undefined].map(v => {
       expect(() => {
         new SpeechChallenge('hi', '1', v);
       }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
@@ -83,7 +83,7 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should create a new challenge', done => {
-    const challenge = new SpeechChallenge('1', 'Hi');
+    const challenge = new SpeechChallenge('1', 'Hi', null);
     const content = {
       id: '1',
       created: '2014-12-31T23:59:59Z',
@@ -106,7 +106,7 @@ describe('SpeechChallenge API interaction test', () => {
         expect(request[1].method).toBe('POST');
         expect(request[1].body).toEqual(JSON.stringify(challenge));
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new SpeechChallenge('1', 'Hi');
+        const outChallenge = new SpeechChallenge('1', 'Hi', null);
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
         expect(result).toEqual(outChallenge);
@@ -119,7 +119,7 @@ describe('SpeechChallenge API interaction test', () => {
 
   it('should create a new challenge with referenceAudio', done => {
     const blob = new Blob(['1234567890']);
-    const challenge = new SpeechChallenge('1', 'Hi', blob);
+    const challenge = new SpeechChallenge('1', 'Hi', null);
     const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
       '/YsjdG37bUGseu8-bsJ';
     const content = {
@@ -136,17 +136,16 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.createSpeechChallenge(challenge)
+    controller.createSpeechChallenge(challenge, blob)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('POST');
         expect(request[1].body).toEqual(JSON.stringify(challenge));
         const stringDate = '2014-12-31T23:59:59Z';
-        const outChallenge = new SpeechChallenge('1', 'Hi', blob);
+        const outChallenge = new SpeechChallenge('1', 'Hi', referenceAudioUrl);
         outChallenge.created = new Date(stringDate);
         outChallenge.updated = new Date(stringDate);
-        outChallenge.referenceAudio = challenge.referenceAudio;
         outChallenge.referenceAudioUrl = referenceAudioUrl;
         expect(result).toEqual(outChallenge);
       })
@@ -157,7 +156,7 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should handle errors while creating a new challenge', done => {
-    const challenge = new SpeechChallenge('1', 'Hi');
+    const challenge = new SpeechChallenge('1', 'Hi', null);
     const content = {
       message: 'Validation failed',
       errors: [
@@ -211,7 +210,8 @@ describe('SpeechChallenge API interaction test', () => {
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi'
+      topic: 'Hi',
+      referenceAudioUrl: null
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -226,7 +226,7 @@ describe('SpeechChallenge API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new SpeechChallenge('4', 'Hi');
+        const challenge = new SpeechChallenge('4', 'Hi', null);
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         expect(result).toEqual(challenge);
@@ -242,7 +242,8 @@ describe('SpeechChallenge API interaction test', () => {
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi'
+      topic: 'Hi',
+      referenceAudioUrl: null
     }];
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -257,7 +258,7 @@ describe('SpeechChallenge API interaction test', () => {
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
         const stringDate = '2014-12-31T23:59:59Z';
-        const challenge = new SpeechChallenge('4', 'Hi');
+        const challenge = new SpeechChallenge('4', 'Hi', null);
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
         expect(result[0]).toEqual(challenge);
