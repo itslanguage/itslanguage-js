@@ -383,6 +383,20 @@ describe('WebAudioPlayer', () => {
     expect(result).toEqual(10);
   });
 
+  it('should change playback rate', () => {
+    audioMock.playbackRate = 1;
+    webAudioPlayer = new WebAudioPlayer();
+    webAudioPlayer.setPlaybackRate(2);
+    expect(audioMock.playbackRate).toEqual(2);
+  });
+
+  it('should get the playback rate', () => {
+    audioMock.playbackRate = 2;
+    webAudioPlayer = new WebAudioPlayer();
+    const result = webAudioPlayer.getPlaybackRate(2);
+    expect(result).toEqual(2);
+  });
+
   it('should get playing state', () => {
     audioMock.paused = true;
     webAudioPlayer = new WebAudioPlayer();

@@ -314,6 +314,11 @@ describe('Audio player', () => {
 
   it('should bind and return stopwatch', () => {
     const player = new AudioPlayer();
+    player._player = {
+      sound: {
+        playbackRate: 1
+      }
+    };
     const cb = jasmine.createSpy();
     const fakeWatch = jasmine.createSpy();
     spyOn(Stopwatch, 'default').and.callFake(callback => {
@@ -332,6 +337,9 @@ describe('Audio player', () => {
     spyOn(Stopwatch, 'default').and.callFake(callback => callback(15));
     spyOn(player, 'getDuration').and.returnValue(1);
     player._player = jasmine.createSpyObj('player', ['bindStopwatch']);
+    player._player.sound = {
+      playbackRate: 1
+    };
     player.bindStopwatch(cb);
     expect(cb).toHaveBeenCalledWith(10);
   });
@@ -389,6 +397,21 @@ describe('Audio player', () => {
     player._player = jasmine.createSpyObj('player', ['reset']);
     player.reset();
     expect(player.stop).toHaveBeenCalledTimes(1);
+  });
+
+  it('should change the playbackrate of the audio', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setPlaybackRate']);
+    player.setPlaybackRate(2);
+    expect(player._player.setPlaybackRate).toHaveBeenCalledTimes(1);
+    expect(player._player.setPlaybackRate).toHaveBeenCalledWith(2);
+  });
+
+  it('should get the playbackrate of the audio', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['getPlaybackRate']);
+    player.getPlaybackRate();
+    expect(player._player.getPlaybackRate).toHaveBeenCalledTimes(1);
   });
 });
 
