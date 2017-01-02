@@ -35,6 +35,7 @@ export default class Connection {
     this._recordingId = null;
     this._recognitionId = null;
     this._emitter = ee({});
+    this._connection = null;
   }
 
   /**
@@ -140,7 +141,12 @@ export default class Connection {
       self._session = null;
       self.fireEvent('websocketClosed');
     };
-    connection.open();
+    this._connection = connection;
+    this._connection.open();
+  }
+
+  webSocketDisconnect() {
+    this._connection.close(null, 'Requested formal disconnect');
   }
 
   /**

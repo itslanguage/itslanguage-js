@@ -88,15 +88,15 @@ describe('Events', () => {
 });
 
 describe('Connection', () => {
+  beforeEach(() => {
+    api = new Connection({
+      oAuth2Token: 'token'
+    });
+  });
+
   let fakeResponse;
   let url;
   describe('POST, GET and DELETE', () => {
-    beforeEach(() => {
-      api = new Connection({
-        oAuth2Token: 'token'
-      });
-    });
-
     it('should throw error on required auth credentials on GET', done => {
       api._settings.oAuth2Token = null;
       api._secureAjaxGet()
@@ -336,11 +336,11 @@ describe('Connection', () => {
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       const basicAuth = new BasicAuth('', 'principal', 'credentials');
       api.getOauth2Token(basicAuth, 'fb', 'dummy')
-      .then(fail)
-      .catch(error => {
-        expect(error).toEqual(content);
-      })
-      .then(done);
+        .then(fail)
+        .catch(error => {
+          expect(error).toEqual(content);
+        })
+        .then(done);
     });
 
     it('should handle server errors on invalid credentials', done => {
@@ -356,11 +356,11 @@ describe('Connection', () => {
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       const basicAuth = new BasicAuth('', 'invalid', 'invalid');
       api.getOauth2Token(basicAuth, 'fb', 'dummy')
-      .then(fail)
-      .catch(error => {
-        expect(error).toEqual(content);
-      })
-      .then(done);
+        .then(fail)
+        .catch(error => {
+          expect(error).toEqual(content);
+        })
+        .then(done);
     });
 
     it('should get a token', done => {
@@ -379,22 +379,22 @@ describe('Connection', () => {
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       url += '/tokens';
       api.getOauth2Token(basicAuth, 'fb', 'dummy')
-      .then(result => {
-        const request = window.fetch.calls.mostRecent().args;
-        expect(request[0]).toBe(url);
-        expect(request[1].body).toEqual('grant_type=password&' +
-          'scope=tenant/' + basicAuth.tenantId +
-          '/organisation/fb/user/dummy&username=' + basicAuth.principal +
-          '&password=' + basicAuth.credentials);
-        expect(result.token_type).toEqual('Bearer');
-        expect(result.access_token).toEqual('2b198b6bc87db1bdb');
-        expect(result.scope).toEqual('tenant/4');
-        expect(api._settings.oAuth2Token).toEqual('2b198b6bc87db1bdb');
-      })
-      .catch(error => {
-        fail('No error should be thrown ' + error);
-      })
-      .then(done);
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].body).toEqual('grant_type=password&' +
+            'scope=tenant/' + basicAuth.tenantId +
+            '/organisation/fb/user/dummy&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials);
+          expect(result.token_type).toEqual('Bearer');
+          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
+          expect(result.scope).toEqual('tenant/4');
+          expect(api._settings.oAuth2Token).toEqual('2b198b6bc87db1bdb');
+        })
+        .catch(error => {
+          fail('No error should be thrown ' + error);
+        })
+        .then(done);
     });
 
     it('should get a token without user id', done => {
@@ -584,76 +584,124 @@ describe('Connection', () => {
       expect(api._analysisId).toBeNull();
     });
   });
-});
 
-describe('Autobahn', () => {
-  it('should try to create an autobahn connection and handle an error', () => {
-    spyOn(console, 'log');
-    spyOn(Autobahn, 'Connection').and.callFake(() => {
-      throw new Error('Cannot construct');
-    });
-    api.webSocketConnect('token');
-    expect(console.log).toHaveBeenCalledTimes(1);
-    expect(console.log).toHaveBeenCalledWith('WebSocket creation error: Error: Cannot construct');
-  });
-
-  it('should create an autobahn connection', () => {
-    const mockSession = {
-      call: (url, ...args) => {
-        console.log('Called mock session at ' + url + ' with ' + args);
-      }
-    };
-    let constructedToken;
-    function mockBahn(options) {
-      constructedToken = options.details.ticket;
-      mockBahn.onchallenge = options.onchallenge;
-      mockBahn.onerror = null;
-      mockBahn.onopen = null;
-      mockBahn.onclose = null;
-      mockBahn.open = () => {
-        mockBahn.onerror('error');
-        mockBahn.onopen(mockSession);
-        mockBahn.onclose();
-        mockBahn.onchallenge(mockSession, 'ticket');
-      };
-      return mockBahn;
-    }
-    spyOn(api, 'fireEvent');
-    spyOn(console, 'log');
-    spyOn(console, 'debug');
-    spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
-    api._settings.oAuth2Token = 'token';
-    api.webSocketConnect();
-    mockSession.call('apiUrl', 'extra argument');
-    expect(api.fireEvent).toHaveBeenCalledWith('websocketError', ['error']);
-    expect(console.log).toHaveBeenCalledWith('WebSocket error: error');
-
-    expect(api.fireEvent).toHaveBeenCalledWith('websocketOpened');
-    expect(console.log).toHaveBeenCalledWith('WebSocket connection opened');
-
-    expect(api.fireEvent).toHaveBeenCalledWith('websocketClosed');
-    expect(console.log).toHaveBeenCalledWith('WebSocket disconnected');
-
-    expect(console.debug).toHaveBeenCalledTimes(1);
-    expect(console.debug).toHaveBeenCalledWith('Calling RPC: apiUrl');
-    expect(console.log).toHaveBeenCalledWith('Called mock session at apiUrl with extra argument');
-
-    expect(console.log).toHaveBeenCalledTimes(4);
-
-    expect(constructedToken).toEqual('token');
-  });
-
-  it('should create an autobahn connection and throw on invalid challenge method', () => {
-    function mockBahn(options) {
-      mockBahn.onchallenge = options.onchallenge;
-      mockBahn.open = () => {
-        mockBahn.onchallenge(null, 'cra');
-      };
-      return mockBahn;
-    }
-    spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
-    expect(() => {
+  describe('Autobahn', () => {
+    it('should try to create an autobahn connection and handle an error', () => {
+      spyOn(console, 'log');
+      spyOn(Autobahn, 'Connection').and.callFake(() => {
+        throw new Error('Cannot construct');
+      });
       api.webSocketConnect('token');
-    }).toThrowError('don\'t know how to authenticate using \'cra\'');
+      expect(console.log).toHaveBeenCalledTimes(1);
+      expect(console.log).toHaveBeenCalledWith('WebSocket creation error: Error: Cannot construct');
+    });
+
+    it('should create an autobahn connection', () => {
+      const mockSession = {
+        call: (url_, ...args) => {
+          console.log('Called mock session at ' + url_ + ' with ' + args);
+        }
+      };
+      let constructedToken;
+
+      function mockBahn(options) {
+        constructedToken = options.details.ticket;
+        mockBahn.onchallenge = options.onchallenge;
+        mockBahn.onerror = null;
+        mockBahn.onopen = null;
+        mockBahn.onclose = null;
+        mockBahn.open = () => {
+          mockBahn.onerror('error');
+          mockBahn.onopen(mockSession);
+          mockBahn.onclose();
+          mockBahn.onchallenge(mockSession, 'ticket');
+        };
+        return mockBahn;
+      }
+
+      spyOn(api, 'fireEvent');
+      spyOn(console, 'log');
+      spyOn(console, 'debug');
+      spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
+      api._settings.oAuth2Token = 'token';
+      api.webSocketConnect();
+      mockSession.call('apiUrl', 'extra argument');
+      expect(api.fireEvent).toHaveBeenCalledWith('websocketError', ['error']);
+      expect(console.log).toHaveBeenCalledWith('WebSocket error: error');
+
+      expect(api.fireEvent).toHaveBeenCalledWith('websocketOpened');
+      expect(console.log).toHaveBeenCalledWith('WebSocket connection opened');
+
+      expect(api.fireEvent).toHaveBeenCalledWith('websocketClosed');
+      expect(console.log).toHaveBeenCalledWith('WebSocket disconnected');
+
+      expect(console.debug).toHaveBeenCalledTimes(1);
+      expect(console.debug).toHaveBeenCalledWith('Calling RPC: apiUrl');
+      expect(console.log).toHaveBeenCalledWith('Called mock session at apiUrl with extra argument');
+
+      expect(console.log).toHaveBeenCalledTimes(4);
+
+      expect(constructedToken).toEqual('token');
+    });
+
+    it('should create an autobahn connection and throw on invalid challenge method', () => {
+      function mockBahn(options) {
+        mockBahn.onchallenge = options.onchallenge;
+        mockBahn.open = () => {
+          mockBahn.onchallenge(null, 'cra');
+        };
+        return mockBahn;
+      }
+
+      spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
+      expect(() => {
+        api.webSocketConnect('token');
+      }).toThrowError('don\'t know how to authenticate using \'cra\'');
+    });
+
+    it('should create an autobahn connection and disconnect', () => {
+      let isDisconnected = false;
+
+      function mockBahn(options) {
+        mockBahn.onchallenge = options.onchallenge;
+        mockBahn.open = () => {
+          mockBahn.onchallenge(null, 'ticket');
+        };
+        mockBahn.close = jasmine.createSpy().and.callFake(() => {
+          isDisconnected = true;
+        });
+        return mockBahn;
+      }
+
+      spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
+      api.webSocketConnect();
+      api.webSocketDisconnect();
+      expect(isDisconnected).toBeTruthy();
+      expect(mockBahn.close).toHaveBeenCalledWith(null, 'Requested formal disconnect');
+    });
+
+    it('should create an autobahn connection and disconnect and reconnect', () => {
+      let isDisconnected = false;
+
+      function mockBahn(options) {
+        mockBahn.onchallenge = options.onchallenge;
+        mockBahn.open = jasmine.createSpy().and.callFake(() => {
+          mockBahn.onchallenge(null, 'ticket');
+          isDisconnected = false;
+        });
+        mockBahn.close = jasmine.createSpy().and.callFake(() => {
+          isDisconnected = true;
+        });
+        return mockBahn;
+      }
+
+      spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
+      api.webSocketConnect();
+      api.webSocketDisconnect();
+      expect(mockBahn.close).toHaveBeenCalledWith(null, 'Requested formal disconnect');
+      api.webSocketConnect();
+      expect(isDisconnected).toBeFalsy();
+      expect(Autobahn.Connection).toHaveBeenCalledTimes(2);
+    });
   });
 });
