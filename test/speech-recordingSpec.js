@@ -16,7 +16,7 @@ describe('SpeechRecording API interaction test', () => {
   });
 
   it('should reject to get a recording if challenge id is not present', done => {
-    const challenge = new SpeechChallenge('');
+    const challenge = new SpeechChallenge('', null, null);
     controller.getSpeechRecording(challenge.id, null)
       .then(() => {
         fail('An error should be thrown');
@@ -28,7 +28,7 @@ describe('SpeechRecording API interaction test', () => {
   });
 
   it('should reject to get a recording if recording id is not present', done => {
-    const challenge = new SpeechChallenge('1');
+    const challenge = new SpeechChallenge('1', null, null);
     controller.getSpeechRecording(challenge.id)
       .then(() => {
         fail('An error should be thrown');
@@ -57,7 +57,7 @@ describe('SpeechRecording API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
 
-    const challenge = new SpeechChallenge('4');
+    const challenge = new SpeechChallenge('4', null, null);
     controller.getSpeechRecording(challenge.id, '5')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
@@ -104,7 +104,7 @@ describe('SpeechRecording API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    const challenge = new SpeechChallenge('4');
+    const challenge = new SpeechChallenge('4', null, null);
     controller.listSpeechRecordings(challenge.id)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
@@ -197,7 +197,7 @@ describe('Speech Recording Websocket API interaction test', () => {
         return d.promise;
       };
     };
-    challenge = new SpeechChallenge('4');
+    challenge = new SpeechChallenge('4', null, null);
     recorder = new RecorderMock();
     session = new SessionMock();
     stringDate = '2014-12-31T23:59:59Z';
