@@ -7,7 +7,7 @@ export default class EmailCredentials {
    * Create an EmailCredentials object.
    *
    * @param {string} email - A unique email address.
-   * @param {?string} [password] - A secure password, if none is given, one will be generated.
+   * @param {?string} password - A secure password, if none is given, one will be generated.
    */
   constructor(email, password) {
     if (typeof email !== 'string') {
