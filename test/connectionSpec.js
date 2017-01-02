@@ -655,5 +655,50 @@ describe('Autobahn', () => {
     expect(() => {
       api.webSocketConnect('token');
     }).toThrowError('don\'t know how to authenticate using \'cra\'');
+
+    it('should create an autobahn connection and disconnect', () => {
+      let isDisconnected = false;
+
+      function mockBahn(options) {
+        mockBahn.onchallenge = options.onchallenge;
+        mockBahn.open = () => {
+          mockBahn.onchallenge(null, 'ticket');
+        };
+        mockBahn.close = jasmine.createSpy().and.callFake(() => {
+          isDisconnected = true;
+        });
+        return mockBahn;
+      }
+
+      spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
+      api.webSocketConnect();
+      api.webSocketDisconnect();
+      expect(isDisconnected).toBeTruthy();
+      expect(mockBahn.close).toHaveBeenCalledWith(null, 'Requested formal disconnect');
+    });
+
+    it('should create an autobahn connection and disconnect and reconnect', () => {
+      let isDisconnected = false;
+
+      function mockBahn(options) {
+        mockBahn.onchallenge = options.onchallenge;
+        mockBahn.open = jasmine.createSpy().and.callFake(() => {
+          mockBahn.onchallenge(null, 'ticket');
+          isDisconnected = false;
+        });
+        mockBahn.close = jasmine.createSpy().and.callFake(() => {
+          isDisconnected = true;
+        });
+        return mockBahn;
+      }
+
+      spyOn(Autobahn, 'Connection').and.callFake(mockBahn);
+      api.webSocketConnect();
+      api.webSocketDisconnect();
+      expect(mockBahn.close).toHaveBeenCalledWith(null, 'Requested formal disconnect');
+      api.webSocketConnect();
+      expect(isDisconnected).toBeFalsy();
+      expect(Autobahn.Connection).toHaveBeenCalledTimes(2);
+    });
   });
 });
