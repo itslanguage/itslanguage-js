@@ -23,7 +23,7 @@ export default class ChoiceChallengeController {
    *
    * @param {ChoiceChallenge} choiceChallenge - Object to create.
    * @returns {Promise.<ChoiceChallenge>} Containing the newly created ChoiceChallenge.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   createChoiceChallenge(choiceChallenge) {
     const url = this._connection._settings.apiUrl + '/challenges/choice';
@@ -45,10 +45,10 @@ export default class ChoiceChallengeController {
    * Get a choice challenge. A choice challenge is identified by its identifier and the current active
    * {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
+   * @param {string} challengeId - Specify a choice challenge identifier.
    * @returns {Promise.<ChoiceChallenge>} Containing a ChoiceChallenge.
-   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   getChoiceChallenge(challengeId) {
     if (!challengeId) {
@@ -73,7 +73,7 @@ export default class ChoiceChallengeController {
    * List all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<ChoiceChallenge[]>} Containing an array of ChoiceChallenges.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   listChoiceChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/choice';

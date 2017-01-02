@@ -113,12 +113,12 @@ export default class PronunciationAnalysisController {
    * to spoken words and determining when what is said. An object is sent containing a property 'progress',
    * which is the sent audio alignment, and a property 'referenceAlignment' which is the alignment of the
    * reference audio.
-   * @throws {Promise} If challenge is not an object or not defined.
-   * @throws {Promise} If challenge has no id.
-   * @throws {Promise} If the connection is not open.
-   * @throws {Promise} If the recorder is already recording.
-   * @throws {Promise} If a session is already in progress.
-   * @throws {Promise} If something went wrong during analysis.
+   * @throws {Promise.<Error>} If challenge is not an object or not defined.
+   * @throws {Promise.<Error>} If challenge has no id.
+   * @throws {Promise.<Error>} If the connection is not open.
+   * @throws {Promise.<Error>} If the recorder is already recording.
+   * @throws {Promise.<Error>} If a session is already in progress.
+   * @throws {Promise.<Error>} If something went wrong during analysis.
    */
   startStreamingPronunciationAnalysis(challenge, recorder, trim) {
     if (typeof challenge !== 'object' || !challenge) {
@@ -264,12 +264,12 @@ export default class PronunciationAnalysisController {
    * Get a pronunciation analysis in a pronunciation challenge from the current active {@link Organisation} derived
    * from the OAuth2 scope.
    *
-   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier.
-   * @param {PronunciationAnalysis#id} analysisId - Specify a pronunciation analysis identifier.
+   * @param {string} challengeId - Specify a pronunciation challenge identifier.
+   * @param {string} analysisId - Specify a pronunciation analysis identifier.
    * @returns {Promise.<PronunciationAnalysis>} Promise containing a PronunciationAnalysis.
-   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} {@link PronunciationAnalysis#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise.<Error>} {@link PronunciationAnalysis#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   getPronunciationAnalysis(challengeId, analysisId) {
     if (!challengeId) {
@@ -299,12 +299,12 @@ export default class PronunciationAnalysisController {
    * List all pronunciation analyses in a specific pronunciation challenge from the current active {@link Organisation}
    * derived from the OAuth2 scope.
    *
-   * @param {PronunciationChallenge#id} challengeId - Specify a pronunciation challenge identifier to list
+   * @param {string} challengeId - Specify a pronunciation challenge identifier to list
    * speech recordings for.
    * @param {boolean} [detailed=false] - Returns extra analysis metadata when true.
    * @returns {Promise.<PronunciationAnalysis[]>} Promise containing an array PronunciationAnalyses.
-   * @throws {Promise} {@link PronunciationChallenge#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link PronunciationChallenge#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   listPronunciationAnalyses(challengeId, detailed) {
     if (!challengeId) {

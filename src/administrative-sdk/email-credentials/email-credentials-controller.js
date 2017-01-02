@@ -22,9 +22,9 @@ export default class EmailCredentialsController {
    * @param {string} userId - The identifier of the user to register credentials to.
    * @param {EmailCredentials} emailCredentials - The credentials to register to the user.
    * @returns {Promise.<EmailCredentials>} A promise containing the created EmailCredentials.
-   * @throws {Promise} UserId field is required.
-   * @throws {Promise} EmailCredentials field is required.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} UserId field is required.
+   * @throws {Promise.<Error>} EmailCredentials field is required.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   createEmailCredentials(userId, emailCredentials) {
     if (typeof userId !== 'string') {

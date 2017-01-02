@@ -21,8 +21,8 @@ export default class UserController {
    *
    * @param {User} user - User to create.
    * @returns {Promise.<User>} Promise containing the newly created User.
-   * @throws {Promise} {@link User#organisationId} field is required.
-   * @throws {Promise} If the server returned an error.
+   * @throws {Promise.<Error>} {@link User#organisationId} field is required.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   createUser(user) {
     if (!user.organisationId) {
@@ -45,12 +45,12 @@ export default class UserController {
   /**
    * Get a user in the given {@link Organisation}.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
-   * @param {User#id} userId - Specify a user identifier.
+   * @param {string} organisationId - Specify an organisation identifier.
+   * @param {string} userId - Specify a user identifier.
    * @returns {Promise.<User>} Promise containing a User.
-   * @throws {Promise} {@link Organisation#id} field is required.
-   * @throws {Promise} {@link User#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link Organisation#id} field is required.
+   * @throws {Promise.<Error>} {@link User#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   getUser(organisationId, userId) {
     if (!organisationId) {
@@ -74,10 +74,10 @@ export default class UserController {
   /**
    * List all users in the organisation.
    *
-   * @param {Organisation#id} organisationId - Specify an organisation identifier.
+   * @param {string} organisationId - Specify an organisation identifier.
    * @returns {Promise.<User[]>} Promise containing an array of Users.
-   * @throws {Promise} {@link Organisation#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link Organisation#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   listUsers(organisationId) {
     if (!organisationId) {

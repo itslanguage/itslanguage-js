@@ -66,12 +66,12 @@ export default class ChoiceRecognitionController {
    * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
    * @returns {Promise.<ChoiceRecognition>} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
-   * @throws {Promise} {@link ChoiceChallenge} parameter is required or invalid.
-   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} If the connection is not open.
-   * @throws {Promise} If the recorder is already recording.
-   * @throws {Promise} If a recognition session is already in progress.
-   * @throws {Promise} If something went wrong during analysis.
+   * @throws {Promise.<Error>} {@link ChoiceChallenge} parameter is required or invalid.
+   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise.<Error>} If the connection is not open.
+   * @throws {Promise.<Error>} If the recorder is already recording.
+   * @throws {Promise.<Error>} If a recognition session is already in progress.
+   * @throws {Promise.<Error>} If something went wrong during analysis.
    */
   startStreamingChoiceRecognition(challenge, recorder, trim) {
     if (typeof challenge !== 'object' || !challenge) {
@@ -218,12 +218,12 @@ export default class ChoiceRecognitionController {
    * Get a choice recognition in a choice challenge from the current active {@link Organisation} derived from
    * the OAuth2 scope.
    *
-   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge identifier.
-   * @param {ChoiceRecognition#id} recognitionId - Specify a choice recognition identifier.
+   * @param {string} challengeId - Specify a choice challenge identifier.
+   * @param {string} recognitionId - Specify a choice recognition identifier.
    * @returns {Promise.<ChoiceRecognition>} Promise containing a ChoiceRecognition.
-   * @throws {Promise} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise} {@link ChoiceRecognition#id} field is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise.<Error>} {@link ChoiceRecognition#id} field is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   getChoiceRecognition(challengeId, recognitionId) {
     if (!challengeId) {
@@ -245,10 +245,10 @@ export default class ChoiceRecognitionController {
    * List all choice recognitions in a specific {@link ChoiceChallenge} from the current active {@link Organisation}
    * derived from the OAuth2 scope.
    *
-   * @param {ChoiceChallenge#id} challengeId - Specify a choice challenge to list speech recognitions for.
+   * @param {string} challengeId - Specify a choice challenge to list speech recognitions for.
    * @returns {Promise.<ChoiceRecognition[]>} Promise containing an array of ChoiceRecognitions.
-   * @throws {Promise} {@link ChoiceChallenge#id} is required.
-   * @throws {Promise} If no result could not be found.
+   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} is required.
+   * @throws {Promise.<Error>} If no result could not be found.
    */
   listChoiceRecognitions(challengeId) {
     if (!challengeId) {
