@@ -7,9 +7,10 @@ export default class SpeechChallenge {
    *
    * @param {?string} id - The speech challenge identifier. If none is given, one is generated.
    * @param {?string} topic - A question or topic serving as guidance.
-   * @param {?Blob} referenceAudio - The reference audio fragment.
+   * @param {?string} referenceAudioUrl - The reference audio fragment URL. If one is not yet available or audio is
+   * not yet registered to the challenge it can be set to 'null'.
    */
-  constructor(id, topic, referenceAudio) {
+  constructor(id, topic, referenceAudioUrl) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
@@ -29,21 +30,17 @@ export default class SpeechChallenge {
      * @type {string}
      */
     this.topic = topic;
-    // Field is optional, but if given, then it's validated.
-    if (typeof referenceAudio !== 'object' && referenceAudio) {
+
+    if (referenceAudioUrl !== null && typeof referenceAudioUrl !== 'string') {
       throw new Error(
-        'referenceAudio parameter of type "Blob" is required');
+        'referenceAudioUrl parameter of type "string|null" is required');
     }
-    /**
-     * The reference audio fragment.
-     * @type {Blob}
-     */
-    this.referenceAudio = referenceAudio || null;
+
     /**
      * The reference audio fragment as streaming audio link.
      * @type {string}
      */
-    this.referenceAudioUrl = null;
+    this.referenceAudioUrl = referenceAudioUrl;
 
     /**
      * The creation date of the entity.

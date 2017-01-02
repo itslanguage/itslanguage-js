@@ -65,7 +65,7 @@ describe('Administrative SDK', () => {
     sdk.getPronunciationChallenge(1, 2);
     sdk.listPronunciationChallenges(1);
     sdk.deletePronunciationChallenge(1);
-    sdk.createSpeechChallenge(1);
+    sdk.createSpeechChallenge(1, 2);
     sdk.getSpeechChallenge(1, 2);
     sdk.listSpeechChallenges(1);
     sdk.startStreamingSpeechRecording(1, 2);
@@ -99,7 +99,7 @@ describe('Administrative SDK', () => {
     expect(fakePronunciationChallengeController.listPronunciationChallenges).toHaveBeenCalledWith();
     expect(fakePronunciationChallengeController.deletePronunciationChallenge).toHaveBeenCalledWith(1);
 
-    expect(fakeSpeechChallengeController.createSpeechChallenge).toHaveBeenCalledWith(1);
+    expect(fakeSpeechChallengeController.createSpeechChallenge).toHaveBeenCalledWith(1, 2);
     expect(fakeSpeechChallengeController.getSpeechChallenge).toHaveBeenCalledWith(1);
     expect(fakeSpeechChallengeController.listSpeechChallenges).toHaveBeenCalledWith();
 
