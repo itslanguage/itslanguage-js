@@ -290,4 +290,9 @@ describe('Cordova Media Player', () => {
   it('should call the preload method', () => {
     player.preload();
   });
+
+  it('should call the get and set playbackRate methods', () => {
+    player.getPlaybackRate();
+    player.setPlaybackRate(1);
+  });
 });

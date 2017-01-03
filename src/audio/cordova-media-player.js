@@ -211,6 +211,15 @@ export default class CordovaMediaPlayer {
     // This is a noop.
   }
 
+  getPlaybackRate() {
+    // This is a noop.
+  }
+
+  setPlaybackRate(rate) {
+    // XXX: Not implemented yet.
+    return rate;
+  }
+
 
   /**
    * Start playing audio at the given offset.

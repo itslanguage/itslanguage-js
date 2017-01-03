@@ -304,6 +304,14 @@ export default class WebAudioPlayer {
     return !this.sound.paused;
   }
 
+  setPlaybackRate(rate) {
+    this.sound.playbackRate = rate;
+  }
+
+  getPlaybackRate() {
+    return this.sound.playbackRate;
+  }
+
   /**
    * Returns ready state of the player.
    *

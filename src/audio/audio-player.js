@@ -335,6 +335,30 @@ export default class AudioPlayer {
   }
 
   /**
+   * Set the playback rate of the audio. Values are used according to HTML5 Audio.
+   * Example values:
+   * *1.0 is normal speed.
+   * *0.5 is half speed (slower).
+   * *2.0 is double speed (faster).
+   * *-1.0 is backwards, normal speed.
+   * *-0.5 is backwards, half speed.
+   *
+   * @param {number} rate - Rate at which to change the audio playback.
+   */
+  setPlaybackRate(rate) {
+    this._player.setPlaybackRate(rate);
+  }
+
+  /**
+   * Get the playback rate of the current loaded audio.
+   *
+   * @returns {number} Playback rate of the audio.
+   */
+  getPlaybackRate() {
+    return this._player.getPlaybackRate();
+  }
+
+  /**
    * Bind a stopwatch to sync with the playing and stopping functionality of the player.
    *
    * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
@@ -343,7 +367,7 @@ export default class AudioPlayer {
    */
   bindStopwatch(tickCb) {
     this._stopwatch = new Stopwatch(time => {
-      const duration = this.getDuration() * 10;
+      const duration = this.getDuration() * 10 / this._player.sound.playbackRate;
       if (time > duration) {
         tickCb(duration);
       } else {
