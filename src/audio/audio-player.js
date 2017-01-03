@@ -343,7 +343,7 @@ export default class AudioPlayer {
    * *-1.0 is backwards, normal speed.
    * *-0.5 is backwards, half speed.
    *
-   * @param {number} rate - Rate at which the change the audio playback.
+   * @param {number} rate - Rate at which to change the audio playback.
    */
   setPlaybackRate(rate) {
     this._player.setPlaybackRate(rate);
