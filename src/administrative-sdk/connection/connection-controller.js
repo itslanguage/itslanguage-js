@@ -339,4 +339,14 @@ export default class Connection {
           })
       );
   }
+
+  /**
+   * Request authentication for a {@link User}. The basicAuth now contains the user's username and password.
+   *
+   * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
+   * @param {string} organisationId - Id of the organisation this user is part of.
+   */
+  getStudentAuth(basicAuth, organisationId) {
+    return this.getOauth2Token(basicAuth, organisationId, basicAuth.principal);
+  }
 }
