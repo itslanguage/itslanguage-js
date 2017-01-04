@@ -486,6 +486,14 @@ describe('Connection', () => {
         })
         .then(done);
     });
+
+    it('should call the oauth2 method with the right parameters when requesting a userauth', () => {
+      spyOn(api, 'getOauth2Token');
+      const basicAuth = new BasicAuth('4', 'principes', 'credentials');
+      api.getStudentAuth(basicAuth, 'org123');
+      expect(api.getOauth2Token).toHaveBeenCalledTimes(1);
+      expect(api.getOauth2Token).toHaveBeenCalledWith(basicAuth, 'org123', basicAuth.principal);
+    });
   });
 
   describe('Add access token', () => {
