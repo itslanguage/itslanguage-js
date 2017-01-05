@@ -346,7 +346,7 @@ export default class Connection {
    * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
    * @param {string} organisationId - Id of the organisation this user is part of.
    */
-  getStudentAuth(basicAuth, organisationId) {
+  getUserAuth(basicAuth, organisationId) {
     return this.getOauth2Token(basicAuth, organisationId, basicAuth.principal);
   }
 }
