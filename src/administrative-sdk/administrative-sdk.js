@@ -4,6 +4,7 @@ import EmailCredentialsController from './email-credentials/email-credentials-co
 import OrganisationController from './organisation/organisation-controller';
 import PronAnalaController from './pronunciation-analysis/pronunciation-analysis-controller';
 import PronChallController from './pronunciation-challenge/pronunciation-challenge-controller';
+import RoleController from './role/role-controller';
 import SpeechChallengeController from './speech-challenge/speech-challenge-controller';
 import SpeechRecordingController from './speech-recording/speech-recording-controller';
 import UserController from './user/user-controller';
@@ -23,6 +24,7 @@ export default class AdministrativeSDK {
     this._organisationController = new OrganisationController(this._connection);
     this._pronAnalaController = new PronAnalaController(this._connection);
     this._pronChallController = new PronChallController(this._connection);
+    this._roleController = new RoleController(this._connection);
     this._speechChallengeController = new SpeechChallengeController(this._connection);
     this._speechRecordingController = new SpeechRecordingController(this._connection);
     this._userController = new UserController(this._connection);
@@ -374,6 +376,15 @@ export default class AdministrativeSDK {
    */
   createEmailCredentials(userId, emailCredentials) {
     return this._emailCredentialsController.createEmailCredentials(userId, emailCredentials);
+  }
+
+  /**
+   * List all roles available in the API.
+   *
+   * @returns {Promise.<Role[]>} Promise containing an array of Roles.
+   */
+  listRoles() {
+    return this._roleController.listRoles();
   }
 }
 
