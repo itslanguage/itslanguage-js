@@ -32,7 +32,7 @@ export default class SpeechChallengeController {
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge, audioBlob, srtFile, image) {
-    if(!(speechChallenge instanceof SpeechChallenge)){
+    if (!(speechChallenge instanceof SpeechChallenge)) {
       return Promise.reject(new Error('speechChallenge field of type "SpeechChallenge" is required'));
     }
     speechChallenge.referenceAudio = audioBlob;
