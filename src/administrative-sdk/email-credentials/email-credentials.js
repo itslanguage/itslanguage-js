@@ -9,7 +9,7 @@ export default class EmailCredentials {
    * @param {string} email - A unique email address.
    * @param {?string} password - A secure password, if none is given, one will be generated.
    */
-  constructor(email, password) {
+  constructor(email, password = null) {
     if (typeof email !== 'string') {
       throw new Error('email parameter of type "string" is required');
     }

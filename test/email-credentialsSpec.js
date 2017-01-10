@@ -12,7 +12,7 @@ describe('Email credentials', () => {
   });
 
   it('should not construct with an invalid password', () => {
-    [0, {}, [], true, false, undefined].map(v => {
+    [0, {}, [], true, false].map(v => {
       expect(() => {
         new EmailCredentials('email', v);
       }).toThrowError('password parameter of type "string|null" is required');
@@ -50,7 +50,7 @@ describe('Email credentials', () => {
   });
 
   it('should create an emailcredentials without password in API', done => {
-    const creds = new EmailCredentials('email', null);
+    const creds = new EmailCredentials('email');
     const api = new Connection({
       oAuth2Token: 'token'
     });
