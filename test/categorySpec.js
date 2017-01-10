@@ -3,7 +3,7 @@ import Progress from '../src/administrative-sdk/progress/progress';
 
 describe('Category', () => {
   it('should not construct with invalid id', () => {
-    [1, {}, [], true, false, undefined].map(v => {
+    [1, {}, [], true, false].map(v => {
       expect(() => {
         new Category(v);
       }).toThrowError('id parameter of type "string|null" is required');
@@ -19,41 +19,41 @@ describe('Category', () => {
   });
 
   it('should not construct with invalid description', () => {
-    [1, {}, [], true, false, null, undefined].map(v => {
+    [1, {}, [], true, false].map(v => {
       expect(() => {
-        new Category('0', 'cat', v);
-      }).toThrowError('description parameter of type "string" is required');
+        new Category(undefined, 'cat', v);
+      }).toThrowError('description parameter of type "string|null" is required');
     });
   });
 
   it('should not construct with invalid color', () => {
-    [1, {}, [], true, false, null, undefined].map(v => {
+    [1, {}, [], true, false].map(v => {
       expect(() => {
-        new Category('0', 'cat', 'desc', v);
-      }).toThrowError('color parameter of type "string" is required');
+        new Category(undefined, 'cat', undefined, v);
+      }).toThrowError('color parameter of type "string|null" is required');
     });
   });
 
   it('should not construct with invalid image', () => {
-    [1, {}, [], true, false, null, undefined].map(v => {
+    [1, {}, [], true, false].map(v => {
       expect(() => {
-        new Category('0', 'cat', 'desc', 'col', v);
-      }).toThrowError('image parameter of type "string" is required');
+        new Category(undefined, 'cat', undefined, undefined, v);
+      }).toThrowError('image parameter of type "string|null" is required');
     });
   });
 
   it('should not construct with invalid icon', () => {
-    [1, {}, [], true, false, null, undefined].map(v => {
+    [1, {}, [], true, false].map(v => {
       expect(() => {
-        new Category('0', 'cat', 'desc', 'col', 'img', v);
-      }).toThrowError('icon parameter of type "string" is required');
+        new Category(undefined, 'cat', undefined, undefined, undefined, v);
+      }).toThrowError('icon parameter of type "string|null" is required');
     });
   });
 
   it('should not construct with invalid categories', () => {
     [1, '0', {}, [], true, false, undefined].map(v => {
       expect(() => {
-        new Category('0', 'cat', 'desc', 'col', 'img', 'icon', v);
+        new Category(undefined, 'cat', undefined, undefined, undefined, undefined, v);
       }).toThrowError('categories parameter of type "Array.<Category>|null" is required');
     });
   });
@@ -61,16 +61,16 @@ describe('Category', () => {
   it('should not construct with invalid speechChallenges', () => {
     [1, '0', {}, [], true, false, undefined].map(v => {
       expect(() => {
-        new Category('0', 'cat', 'desc', 'col', 'img', 'icon', null, v);
+        new Category(undefined, 'cat', undefined, undefined, undefined, undefined, null, v);
       }).toThrowError('speechChallenges parameter of type "Array.<SpeechChallenge>|null" is required');
     });
   });
 
   it('should not construct with invalid progress', () => {
-    [1, '0', {}, [], true, false, null, undefined].map(v => {
+    [1, '0', {}, [], true, false].map(v => {
       expect(() => {
-        new Category('0', 'cat', 'desc', 'col', 'img', 'icon', null, null, v);
-      }).toThrowError('progress parameter of type "Progress" is required');
+        new Category(undefined, 'cat', undefined, undefined, undefined, undefined, null, null, v);
+      }).toThrowError('progress parameter of type "Progress|null" is required');
     });
   });
 

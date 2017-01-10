@@ -10,9 +10,9 @@ export default class Category {
    *
    * @param {?string} id - Identifier of this category. If none is given one is generated upon creation in the API.
    * @param {string} name - Name associated with this category.
-   * @param {string} description - Description associated with this category.
-   * @param {string} color - Color associated with this category.
-   * @param {string} image - Image associated with this category.
+   * @param {?string} description - Description associated with this category.
+   * @param {?string} color - Color associated with this category.
+   * @param {?string} image - Image associated with this category.
    * @param {string} icon - Icon associated with this category.
    * @param {?Array.<Category>} categories - Other categories this category contains. A category can only contain
    * either more categories or challenges.
@@ -29,7 +29,8 @@ export default class Category {
    * @throws {Error} speechChallenges parameter of type "Array.<SpeechChallenge>|null" is required.
    * @throws {Error} progress parameter of type "Progress" is required.
    */
-  constructor(id, name, description, color, image, icon, categories, speechChallenges, progress) {
+  constructor(id = null, name, description = null, color = null, image = null, icon = null, categories,
+              speechChallenges, progress = null) {
     if (id !== null && typeof id !== 'string') {
       throw new Error('id parameter of type "string|null" is required');
     }
@@ -38,20 +39,20 @@ export default class Category {
       throw new Error('name parameter of type "string" is required');
     }
 
-    if (typeof description !== 'string') {
-      throw new Error('description parameter of type "string" is required');
+    if (description !== null && typeof description !== 'string') {
+      throw new Error('description parameter of type "string|null" is required');
     }
 
-    if (typeof color !== 'string') {
-      throw new Error('color parameter of type "string" is required');
+    if (color !== null && typeof color !== 'string') {
+      throw new Error('color parameter of type "string|null" is required');
     }
 
-    if (typeof image !== 'string') {
-      throw new Error('image parameter of type "string" is required');
+    if (image !== null && typeof image !== 'string') {
+      throw new Error('image parameter of type "string|null" is required');
     }
 
-    if (typeof icon !== 'string') {
-      throw new Error('icon parameter of type "string" is required');
+    if (icon !== null && typeof icon !== 'string') {
+      throw new Error('icon parameter of type "string|null" is required');
     }
 
     if (categories !== null && (!Array.isArray(categories) || categories.length === 0)) {
@@ -62,8 +63,8 @@ export default class Category {
       throw new Error('speechChallenges parameter of type "Array.<SpeechChallenge>|null" is required');
     }
 
-    if (!(progress instanceof Progress)) {
-      throw new Error('progress parameter of type "Progress" is required');
+    if (progress !== null && !(progress instanceof Progress)) {
+      throw new Error('progress parameter of type "Progress|null" is required');
     }
 
     /**
