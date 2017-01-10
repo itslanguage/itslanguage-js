@@ -4,7 +4,7 @@ import SpeechChallengeController from '../src/administrative-sdk/speech-challeng
 
 describe('SpeechChallenge object test', () => {
   it('should not construct with an invalid id', () => {
-    [0, {}, [], true, false, undefined].map(v => {
+    [0, {}, [], true, false].map(v => {
       expect(() => {
         new SpeechChallenge(v);
       }).toThrowError('id parameter of type "string|null" is required');
@@ -12,9 +12,9 @@ describe('SpeechChallenge object test', () => {
   });
 
   it('should not construct with an invalid topic', () => {
-    [0, {}, [], true, false, undefined].map(v => {
+    [0, {}, [], true, false].map(v => {
       expect(() => {
-        new SpeechChallenge('0', v);
+        new SpeechChallenge(undefined, v);
       }).toThrowError('topic parameter of type "string|null" is required');
     });
   });

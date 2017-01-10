@@ -14,8 +14,8 @@ export default class SpeechChallenge {
    * @throws {Error} srtUrl parameter of type "string|null" is required.
    * @throws {Error} imageUrl parameter of type "string|null" is required.
    */
-  constructor(id, topic, referenceAudioUrl, srtUrl = null, imageUrl = null) {
-    if (id && typeof id !== 'string') {
+  constructor(id = null, topic = null, referenceAudioUrl = null, srtUrl = null, imageUrl = null) {
+    if (id !== null && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
     }
