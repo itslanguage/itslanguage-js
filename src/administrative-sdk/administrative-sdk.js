@@ -370,8 +370,8 @@ export default class AdministrativeSDK {
    * @param {string} userId - The identifier of the user to register credentials to.
    * @param {EmailCredentials} emailCredentials - The credentials to register to the user.
    * @returns {Promise.<EmailCredentials>} A promise containing the created EmailCredentials.
-   * @throws {Promise.<Error>} UserId field is required.
-   * @throws {Promise.<Error>} EmailCredentials field is required.
+   * @throws {Promise.<Error>} UserId parameter of type "string" is required.
+   * @throws {Promise.<Error>} EmailCredentials parameter of type "EmailCredentials" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createEmailCredentials(userId, emailCredentials) {
