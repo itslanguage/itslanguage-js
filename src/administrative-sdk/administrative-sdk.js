@@ -327,11 +327,11 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * Create a user. The user will be created in the {@Organisation} that is linked by the User.
+   * Create a user. The user will be created in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {User} user - User to create.
    * @returns {Promise.<User>} Promise containing the newly created User.
-   * @throws {Promise.<Error>} {@link User#organisationId} field is required.
+   * @throws {Promise.<Error>} user parameter of type "User" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createUser(user) {
@@ -339,29 +339,35 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * Get a user in the given {@link Organisation}.
+   * Get a user in the current active {@link Organisation} derived from the OAuth2 scope.
    *
-   * @param {string} organisationId - Specify an organisation identifier.
    * @param {string} userId - Specify a user identifier.
    * @returns {Promise.<User>} Promise containing a User.
-   * @throws {Promise.<Error>} {@link Organisation#id} field is required.
-   * @throws {Promise.<Error>} {@link User#id} field is required.
+   * @throws {Promise.<Error>} userId parameter of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  getUser(organisationId, userId) {
-    return this._userController.getUser(organisationId, userId);
+  getUser(userId) {
+    return this._userController.getUser(userId);
   }
 
   /**
-   * List all users in the organisation.
+   * Get the current authenticated user.
    *
-   * @param {string} organisationId - Specify an organisation identifier.
+   * @returns {Promise.<User>} The current authenticated user.
+   * @throws {Promise.<Error>} If something went wrong in the server.
+   */
+  getCurrentUser() {
+    return this._userController.getCurrentUser();
+  }
+
+  /**
+   * List all users in the current active {@link Organisation} derived from the OAuth2 scope.
+   *
    * @returns {Promise.<User[]>} Promise containing an array of Users.
-   * @throws {Promise.<Error>} {@link Organisation#id} field is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listUsers(organisationId) {
-    return this._userController.listUsers(organisationId);
+  listUsers() {
+    return this._userController.listUsers();
   }
 
   /**

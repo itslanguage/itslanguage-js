@@ -1,3 +1,5 @@
+import Profile from '../profile/profile';
+
 /**
  * @class User domain model
  */
@@ -5,60 +7,55 @@ export default class User {
   /**
    * Create a User domain model.
    *
-   * @param {string} organisationId - The organisation identifier this user is a member of.
    * @param {?string} id - The user identifier. If none is given, one is generated.
-   * @param {?string} firstName - First name of the user.
-   * @param {?string} lastName - Last name of the user.
-   * @param {?string} gender - Gender of the user (either `male` or `female`).
-   * @param {?number} birthYear - Birth year of the user.
+   * @param {?Profile} profile - Profile of the User.
+   * @param {?Array.<Group>} groups - Groups this User is part of.
+   * @param {Array<.string>} roles - Names of the {@link Role}s this user can take on.
+   * @throws {Error} id parameter of type "string|null" is required.
+   * @throws {Error} profile parameter of type "Profile|null" is required.
+   * @throws {Error} groups parameter of type "Array.<Groups>|null" is required.
+   * @throws {Error} non-empty roles parameter of type "Array.<String>" is required.
    */
-  constructor(organisationId, id, firstName, lastName, gender, birthYear) {
-    if (id && typeof id !== 'string') {
-      throw new Error(
-        'id parameter of type "string|null" is required');
+  constructor(id, profile, groups, roles) {
+    if (id !== null && typeof id !== 'string') {
+      throw new Error('id parameter of type "string|null" is required');
     }
+
+    if (profile !== null && !(profile instanceof Profile)) {
+      throw new Error('profile parameter of type "Profile|null" is required');
+    }
+
+    if (groups !== null && !Array.isArray(groups)) {
+      throw new Error('groups parameter of type "Array.<Groups>|null" is required');
+    }
+
+    if (!Array.isArray(roles) || roles.length === 0) {
+      throw new Error('non-empty roles parameter of type "Array.<string>" is required');
+    }
+
     /**
-     * The user identifier.
+     * The user identifier. If none is given, one is generated.
      * @type {string}
      */
     this.id = id;
-    if (!organisationId || typeof organisationId !== 'string') {
-      throw new Error(
-        'organisationId parameter of type "string" is required');
-    }
-    /**
-     * The organisation identifier this user is a member of.
-     * @type {string}
-     */
-    this.organisationId = organisationId;
 
     /**
-     * First name of the user.
-     * @type {string}
+     * Profile of the User.
+     * @type {Profile}
      */
-    this.firstName = firstName;
+    this.profile = profile;
 
     /**
-     * Last name of the user.
-     * @type {string}
+     * Groups this User is part of.
+     * @type {Array.<Group>}
      */
-    this.lastName = lastName;
+    this.groups = groups;
 
     /**
-     Gender of the user (either `male` or `female`).
-     * @type {string}
+     * Names of the {@link Role}s this user can take on.
+     * @type {Array.<.Role>}
      */
-    this.gender = gender;
-    if (birthYear && typeof birthYear !== 'number') {
-      throw new Error(
-        'birthYear parameter of type "number|null" is required');
-    }
-
-    /**
-     * Birth year of the user.
-     * @type {number}
-     */
-    this.birthYear = birthYear;
+    this.roles = roles;
 
     /**
      * The creation date of the entity.
