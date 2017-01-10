@@ -4,7 +4,7 @@ import OrganisationController from '../src/administrative-sdk/organisation/organ
 
 describe('Organisation object test', () => {
   it('should not instantiate an Organisation with an invalid id', () => {
-    [0, {}, [], true, false, undefined].map(v => {
+    [0, {}, [], true, false].map(v => {
       expect(() => {
         new Organisation(v);
       }).toThrowError('id parameter of type "string|null" is required');
@@ -14,7 +14,7 @@ describe('Organisation object test', () => {
   it('should not instantiate an Organisation with an invalid name', () => {
     [0, {}, [], true, false, null, undefined].map(v => {
       expect(() => {
-        new Organisation('0', v);
+        new Organisation(undefined, v);
       }).toThrowError('name parameter of type "string" is required');
     });
   });

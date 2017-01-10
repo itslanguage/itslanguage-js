@@ -5,7 +5,7 @@ export default class Organisation {
    * @param {?string} id - The organisation identifier. If none is given, one is generated.
    * @param {string} name - Name of the organisation.
    */
-  constructor(id, name) {
+  constructor(id = null, name) {
     if (id !== null && typeof id !== 'string') {
       throw new Error('id parameter of type "string|null" is required');
     }
