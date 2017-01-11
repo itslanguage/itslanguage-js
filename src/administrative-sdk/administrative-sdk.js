@@ -388,9 +388,22 @@ export default class AdministrativeSDK {
    * List all roles available in the API.
    *
    * @returns {Promise.<Role[]>} Promise containing an array of Roles.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   listRoles() {
     return this._roleController.listRoles();
+  }
+
+  /**
+   * Get a single role.
+   *
+   * @param {string} roleId - Identifier of the role.
+   * @returns {Promise.<Role>} Promise containing a Role.
+   * @throws {Promise.<Error>} roleId parameter of type "string" is required.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getRole(roleId) {
+    return this._roleController.getRole(roleId);
   }
 }
 

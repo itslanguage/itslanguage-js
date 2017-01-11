@@ -30,7 +30,7 @@ describe('Administrative SDK', () => {
     'PronunciationChallengeController',
     ['createPronunciationChallenge', 'getPronunciationChallenge',
       'listPronunciationChallenges', 'deletePronunciationChallenge']);
-  const fakeRoleController = jasmine.createSpyObj('RoleController', ['listRoles']);
+  const fakeRoleController = jasmine.createSpyObj('RoleController', ['listRoles', 'getRole']);
   const fakeSpeechChallengeController = jasmine.createSpyObj('SpeechChallengeController',
     ['createSpeechChallenge', 'getSpeechChallenge', 'listSpeechChallenges']);
   const fakeSpeechRecordingController = jasmine.createSpyObj('SpeechRecordingController',
@@ -80,6 +80,7 @@ describe('Administrative SDK', () => {
     sdk.listUsers();
     sdk.createEmailCredentials(1, 2);
     sdk.listRoles();
+    sdk.getRole(1);
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);
     expect(fakeChoiceChallengeController.getChoiceChallenge).toHaveBeenCalledWith(1);
@@ -118,5 +119,6 @@ describe('Administrative SDK', () => {
     expect(fakeUserController.listUsers).toHaveBeenCalledWith();
 
     expect(fakeRoleController.listRoles).toHaveBeenCalledWith();
+    expect(fakeRoleController.getRole).toHaveBeenCalledWith(1);
   });
 });

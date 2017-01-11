@@ -74,4 +74,51 @@ describe('Role', () => {
       })
       .then(done);
   });
+
+  it('should not get a role on invalid id', done => {
+    const controller = new RoleController();
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getRole(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('roleId parameter of type "string" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should get a role', done => {
+    const api = new Connection({
+      oAuth2Token: 'token'
+    });
+    const url = 'https://api.itslanguage.nl/roles/4';
+    const content = {
+      name: 'Student',
+      permissions: [
+        'CHOICE_CHALLENGE_LIST'
+      ]
+    };
+    const fakeResponse = new Response(JSON.stringify(content), {
+      status: 200,
+      headers: {
+        'Content-type': 'application/json; charset=utf-8'
+      }
+    });
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    const controller = new RoleController(api);
+    controller.getRole('4')
+      .then(result => {
+        const request = window.fetch.calls.mostRecent().args;
+        expect(request[0]).toBe(url);
+        expect(request[1].method).toBe('GET');
+        const role = new Role('Student', [
+          'CHOICE_CHALLENGE_LIST'
+        ]);
+        expect(result).toEqual(role);
+      })
+      .catch(error => {
+        fail('No error should be thrown: ' + error);
+      })
+      .then(done);
+  });
 });
