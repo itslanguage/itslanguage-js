@@ -9,8 +9,12 @@ export default class SpeechChallenge {
    * @param {?string} topic - A question or topic serving as guidance.
    * @param {?string} referenceAudioUrl - The reference audio fragment URL. If one is not yet available or audio is
    * not yet registered to the challenge it can be set to 'null'.
+   * @param {?string} srtUrl - URL of a possible .srt file to accompany this challenge.
+   * @param {?string} imageUrl - URL of a possible image file to accompany this challenge.
+   * @throws {Error} srtUrl parameter of type "string|null" is required.
+   * @throws {Error} imageUrl parameter of type "string|null" is required.
    */
-  constructor(id, topic, referenceAudioUrl) {
+  constructor(id, topic, referenceAudioUrl, srtUrl = null, imageUrl = null) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
@@ -41,6 +45,26 @@ export default class SpeechChallenge {
      * @type {string}
      */
     this.referenceAudioUrl = referenceAudioUrl;
+
+    if (srtUrl !== null && typeof srtUrl !== 'string') {
+      throw new Error('srtUrl parameter of type "string|null" is required');
+    }
+
+    /**
+     * URL of a possible .srt file to accompany this challenge.
+     * @type {string}
+     */
+    this.srtUrl = srtUrl;
+
+    if (imageUrl !== null && typeof imageUrl !== 'string') {
+      throw new Error('imageUrl parameter of type "string|null" is required');
+    }
+
+    /**
+     * URL of a possible image file to accompany this challenge.
+     * @type {string}
+     */
+    this.imageUrl = imageUrl;
 
     /**
      * The creation date of the entity.

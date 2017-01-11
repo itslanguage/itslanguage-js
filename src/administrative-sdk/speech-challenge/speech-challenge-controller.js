@@ -18,20 +18,26 @@ export default class SpeechChallengeController {
 
   /**
    * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Additional information like audio, .srt files or images can be added in HTML5 Blob format.
+   * The returned SpeechChallenge will contain links to download the given files.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
    * @param {?Blob} audioBlob - Audio fragment to link to the challenge.
+   * @param {?Blob} srtFile - SRT file in HTML5 Blob format to accompany the challenge.
+   * @param {?Blob} image - Image file in HTML5 Blob format to accompany the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  createSpeechChallenge(speechChallenge, audioBlob) {
+  createSpeechChallenge(speechChallenge, audioBlob, srtFile, image) {
     speechChallenge.referenceAudio = audioBlob;
+    speechChallenge.srt = srtFile;
+    speechChallenge.image = image;
     const fd = JSON.stringify(speechChallenge);
     const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl);
+        const result = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl, data.srtUrl, data.imageUrl);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         return result;
@@ -54,7 +60,7 @@ export default class SpeechChallengeController {
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const challenge = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl);
+        const challenge = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl, data.srtUrl, data.imageUrl);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         return challenge;
@@ -75,7 +81,7 @@ export default class SpeechChallengeController {
         const challenges = [];
         data.forEach(datum => {
           const challenge = new SpeechChallenge(datum.id,
-            datum.topic, datum.referenceAudioUrl);
+            datum.topic, datum.referenceAudioUrl, data.srtUrl, data.imageUrl);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
           challenges.push(challenge);
