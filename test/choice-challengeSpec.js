@@ -267,7 +267,7 @@ describe('ChoiceChallenge API interaction test', () => {
     challenge.updated = new Date(stringDate);
     challenge.status = 'prepared';
     const controller = new ChoiceChallengeController(api);
-    controller.listChoiceChallenges('4')
+    controller.getChoiceChallenges('4')
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

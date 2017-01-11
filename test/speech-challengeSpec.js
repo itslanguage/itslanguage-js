@@ -283,7 +283,7 @@ describe('SpeechChallenge API interaction test', () => {
       }
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-    controller.listSpeechChallenges()
+    controller.getSpeechChallenges()
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

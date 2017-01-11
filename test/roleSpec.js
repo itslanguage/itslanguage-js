@@ -53,7 +53,7 @@ describe('Role', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new RoleController(api);
-    controller.listRoles()
+    controller.getRoles()
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

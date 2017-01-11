@@ -18,27 +18,27 @@ describe('Administrative SDK', () => {
   });
   let sdk;
   const fakeChoiceChallengeController = jasmine.createSpyObj('ChoiceChallengeController',
-    ['createChoiceChallenge', 'getChoiceChallenge', 'listChoiceChallenges']);
+    ['createChoiceChallenge', 'getChoiceChallenge', 'getChoiceChallenges']);
   const fakeChoiceRecognitionController = jasmine.createSpyObj('ChoiceRecogController',
-    ['startStreamingChoiceRecognition', 'getChoiceRecognition', 'listChoiceRecognitions']);
+    ['startStreamingChoiceRecognition', 'getChoiceRecognition', 'getChoiceRecognitions']);
   const fakeEmailCredentialsController = jasmine.createSpyObj('EmailCredentialsController',
   ['createEmailCredentials']);
   const fakeOrganisationController = jasmine.createSpyObj('OrganisationController',
-    ['createOrganisation', 'getOrganisation', 'listOrganisations']);
-  const fakeProfileController = jasmine.createSpyObj('ProfileController', ['getProfile', 'listProfiles']);
+    ['createOrganisation', 'getOrganisation', 'getOrganisations']);
+  const fakeProfileController = jasmine.createSpyObj('ProfileController', ['getProfile', 'getProfiles']);
   const fakePronunciationAnalysisController = jasmine.createSpyObj('PronunciationAnalysisController',
-    ['startStreamingPronunciationAnalysis', 'getPronunciationAnalysis', 'listPronunciationAnalyses']);
+    ['startStreamingPronunciationAnalysis', 'getPronunciationAnalysis', 'getPronunciationAnalyses']);
   const fakePronunciationChallengeController = jasmine.createSpyObj(
     'PronunciationChallengeController',
     ['createPronunciationChallenge', 'getPronunciationChallenge',
-      'listPronunciationChallenges', 'deletePronunciationChallenge']);
-  const fakeRoleController = jasmine.createSpyObj('RoleController', ['listRoles', 'getRole']);
+      'getPronunciationChallenges', 'deletePronunciationChallenge']);
+  const fakeRoleController = jasmine.createSpyObj('RoleController', ['getRoles', 'getRole']);
   const fakeSpeechChallengeController = jasmine.createSpyObj('SpeechChallengeController',
-    ['createSpeechChallenge', 'getSpeechChallenge', 'listSpeechChallenges']);
+    ['createSpeechChallenge', 'getSpeechChallenge', 'getSpeechChallenges']);
   const fakeSpeechRecordingController = jasmine.createSpyObj('SpeechRecordingController',
-    ['startStreamingSpeechRecording', 'getSpeechRecording', 'listSpeechRecordings']);
+    ['startStreamingSpeechRecording', 'getSpeechRecording', 'getSpeechRecordings']);
   const fakeUserController = jasmine.createSpyObj('UserController',
-    ['createUser', 'getUser', 'getCurrentUser', 'listUsers']);
+    ['createUser', 'getUser', 'getCurrentUser', 'getUsers']);
   beforeEach(() => {
     spyOn(ChoiceChallengeController, 'default').and.returnValue(fakeChoiceChallengeController);
     spyOn(ChoiceRecogController, 'default').and.returnValue(fakeChoiceRecognitionController);
@@ -57,76 +57,76 @@ describe('Administrative SDK', () => {
   it('should call all the methods', () => {
     sdk.createChoiceChallenge(1);
     sdk.getChoiceChallenge(1, 2);
-    sdk.listChoiceChallenges(1);
+    sdk.getChoiceChallenges(1);
     sdk.startStreamingChoiceRecognition(1, 2, 3);
     sdk.getChoiceRecognition(1, 2, 3);
-    sdk.listChoiceRecognitions(1, 2);
+    sdk.getChoiceRecognitions(1, 2);
     sdk.createOrganisation(1);
     sdk.getOrganisation(1);
-    sdk.listOrganisations();
+    sdk.getOrganisations();
     sdk.startStreamingPronunciationAnalysis(1, 2, 3);
     sdk.getPronunciationAnalysis(1, 2, 3);
-    sdk.listPronunciationAnalyses(1, 2, 3);
+    sdk.getPronunciationAnalyses(1, 2, 3);
     sdk.createPronunciationChallenge(1);
     sdk.getPronunciationChallenge(1, 2);
-    sdk.listPronunciationChallenges(1);
+    sdk.getPronunciationChallenges(1);
     sdk.deletePronunciationChallenge(1);
     sdk.createSpeechChallenge(1, 2);
     sdk.getSpeechChallenge(1, 2);
-    sdk.listSpeechChallenges(1);
+    sdk.getSpeechChallenges(1);
     sdk.startStreamingSpeechRecording(1, 2);
     sdk.getSpeechRecording(1, 2, 3);
-    sdk.listSpeechRecordings(1, 2);
+    sdk.getSpeechRecordings(1, 2);
     sdk.createUser(1);
     sdk.getUser(1);
     sdk.getCurrentUser();
-    sdk.listUsers();
+    sdk.getUsers();
     sdk.createEmailCredentials(1, 2);
-    sdk.listRoles();
+    sdk.getRoles();
     sdk.getRole(1);
     sdk.getProfile(1);
-    sdk.listProfiles();
+    sdk.getProfiles();
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);
     expect(fakeChoiceChallengeController.getChoiceChallenge).toHaveBeenCalledWith(1);
-    expect(fakeChoiceChallengeController.listChoiceChallenges).toHaveBeenCalledWith();
+    expect(fakeChoiceChallengeController.getChoiceChallenges).toHaveBeenCalledWith();
 
     expect(fakeChoiceRecognitionController.startStreamingChoiceRecognition).toHaveBeenCalledWith(1, 2, 3);
     expect(fakeChoiceRecognitionController.getChoiceRecognition).toHaveBeenCalledWith(1, 2);
-    expect(fakeChoiceRecognitionController.listChoiceRecognitions).toHaveBeenCalledWith(1);
+    expect(fakeChoiceRecognitionController.getChoiceRecognitions).toHaveBeenCalledWith(1);
 
     expect(fakeEmailCredentialsController.createEmailCredentials).toHaveBeenCalledWith(1, 2);
 
     expect(fakeOrganisationController.createOrganisation).toHaveBeenCalledWith(1);
     expect(fakeOrganisationController.getOrganisation).toHaveBeenCalledWith(1);
-    expect(fakeOrganisationController.listOrganisations).toHaveBeenCalledWith();
+    expect(fakeOrganisationController.getOrganisations).toHaveBeenCalledWith();
 
     expect(fakePronunciationAnalysisController.startStreamingPronunciationAnalysis).toHaveBeenCalledWith(1, 2, 3);
     expect(fakePronunciationAnalysisController.getPronunciationAnalysis).toHaveBeenCalledWith(1, 2);
-    expect(fakePronunciationAnalysisController.listPronunciationAnalyses).toHaveBeenCalledWith(1, 2);
+    expect(fakePronunciationAnalysisController.getPronunciationAnalyses).toHaveBeenCalledWith(1, 2);
 
     expect(fakePronunciationChallengeController.createPronunciationChallenge).toHaveBeenCalledWith(1);
     expect(fakePronunciationChallengeController.getPronunciationChallenge).toHaveBeenCalledWith(1);
-    expect(fakePronunciationChallengeController.listPronunciationChallenges).toHaveBeenCalledWith();
+    expect(fakePronunciationChallengeController.getPronunciationChallenges).toHaveBeenCalledWith();
     expect(fakePronunciationChallengeController.deletePronunciationChallenge).toHaveBeenCalledWith(1);
 
     expect(fakeSpeechChallengeController.createSpeechChallenge).toHaveBeenCalledWith(1, 2);
     expect(fakeSpeechChallengeController.getSpeechChallenge).toHaveBeenCalledWith(1);
-    expect(fakeSpeechChallengeController.listSpeechChallenges).toHaveBeenCalledWith();
+    expect(fakeSpeechChallengeController.getSpeechChallenges).toHaveBeenCalledWith();
 
     expect(fakeSpeechRecordingController.startStreamingSpeechRecording).toHaveBeenCalledWith(1, 2);
     expect(fakeSpeechRecordingController.getSpeechRecording).toHaveBeenCalledWith(1, 2);
-    expect(fakeSpeechRecordingController.listSpeechRecordings).toHaveBeenCalledWith(1);
+    expect(fakeSpeechRecordingController.getSpeechRecordings).toHaveBeenCalledWith(1);
 
     expect(fakeUserController.createUser).toHaveBeenCalledWith(1);
     expect(fakeUserController.getUser).toHaveBeenCalledWith(1);
     expect(fakeUserController.getCurrentUser).toHaveBeenCalledWith();
-    expect(fakeUserController.listUsers).toHaveBeenCalledWith();
+    expect(fakeUserController.getUsers).toHaveBeenCalledWith();
 
-    expect(fakeRoleController.listRoles).toHaveBeenCalledWith();
+    expect(fakeRoleController.getRoles).toHaveBeenCalledWith();
     expect(fakeRoleController.getRole).toHaveBeenCalledWith(1);
 
     expect(fakeProfileController.getProfile).toHaveBeenCalledWith(1);
-    expect(fakeProfileController.listProfiles).toHaveBeenCalledWith();
+    expect(fakeProfileController.getProfiles).toHaveBeenCalledWith();
   });
 });

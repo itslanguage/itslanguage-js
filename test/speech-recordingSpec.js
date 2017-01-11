@@ -77,7 +77,7 @@ describe('SpeechRecording API interaction test', () => {
   });
 
   it('should reject to get a list of recordings if challenge id is not present', done => {
-    controller.listSpeechRecordings()
+    controller.getSpeechRecordings()
       .then(() => {
         fail('An error should be thrown');
       })
@@ -105,7 +105,7 @@ describe('SpeechRecording API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const challenge = new SpeechChallenge('4', null, null);
-    controller.listSpeechRecordings(challenge.id)
+    controller.getSpeechRecordings(challenge.id)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

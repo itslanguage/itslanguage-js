@@ -964,7 +964,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses';
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge.id, false)
+    controller.getPronunciationAnalyses(challenge.id, false)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -1000,7 +1000,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     const challenge = new PronunciationChallenge('', 'test', new Blob());
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge.id, null)
+    controller.getPronunciationAnalyses(challenge.id, null)
       .then(() => {
         fail('An error should be thrown');
       })
@@ -1091,7 +1091,7 @@ describe('PronunciationAnalyses API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new Controller(api);
-    controller.listPronunciationAnalyses(challenge.id, true)
+    controller.getPronunciationAnalyses(challenge.id, true)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);

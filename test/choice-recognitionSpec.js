@@ -718,7 +718,7 @@ describe('API interaction', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new ChoiceRecognitionController(api);
-    controller.listChoiceRecognitions(challengeId)
+    controller.getChoiceRecognitions(challengeId)
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
@@ -747,7 +747,7 @@ describe('API interaction', () => {
 
   it('should reject to get a list when challenge does not exist', done => {
     const controller = new ChoiceRecognitionController(api);
-    controller.listChoiceRecognitions(null)
+    controller.getChoiceRecognitions(null)
         .then(() => {
           fail('An error should be thrown');
         })

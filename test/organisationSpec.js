@@ -221,7 +221,7 @@ describe('Organisation API interaction test', () => {
     });
     spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
     const controller = new OrganisationController(api);
-    controller.listOrganisations()
+    controller.getOrganisations()
       .then(result => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
