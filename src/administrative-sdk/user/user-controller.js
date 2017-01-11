@@ -67,7 +67,7 @@ export default class UserController {
    * @returns {Promise.<User[]>} Promise containing an array of Users.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listUsers() {
+  getUsers() {
     const url = this._connection._settings.apiUrl + '/users';
     return this._connection._secureAjaxGet(url)
       .then(data => {

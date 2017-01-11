@@ -242,15 +242,15 @@ export default class ChoiceRecognitionController {
   }
 
   /**
-   * List all choice recognitions in a specific {@link ChoiceChallenge} from the current active {@link Organisation}
-   * derived from the OAuth2 scope.
+   * Get and return all choice recognitions in a specific {@link ChoiceChallenge} from the current active
+   * {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {string} challengeId - Specify a choice challenge to list speech recognitions for.
    * @returns {Promise.<ChoiceRecognition[]>} Promise containing an array of ChoiceRecognitions.
    * @throws {Promise.<Error>} {@link ChoiceChallenge#id} is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listChoiceRecognitions(challengeId) {
+  getChoiceRecognitions(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }

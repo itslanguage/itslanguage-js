@@ -40,12 +40,12 @@ export default class ProfileController {
   }
 
   /**
-   * List all profiles of all users in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all profiles of all users in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<Profile[]>} Array of Profiles.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  listProfiles() {
+  getProfiles() {
     const url = this._connection._settings.apiUrl + '/profiles';
     return this._connection._secureAjaxGet(url)
       .then(data => {

@@ -136,7 +136,7 @@ describe('Profile', () => {
       });
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       const controller = new ProfileController(api);
-      controller.listProfiles()
+      controller.getProfiles()
         .then(result => {
           const request = window.fetch.calls.mostRecent().args;
           expect(request[0]).toBe(url);

@@ -59,13 +59,13 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<ChoiceChallenge[]>} Containing an array of ChoiceChallenges.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listChoiceChallenges() {
-    return this._choiceChallengeController.listChoiceChallenges();
+  getChoiceChallenges() {
+    return this._choiceChallengeController.getChoiceChallenges();
   }
 
   /**
@@ -103,16 +103,16 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all choice recognitions in a specific {@link ChoiceChallenge} from the current active {@link Organisation}
-   * derived from the OAuth2 scope.
+   * Get and return all choice recognitions in a specific {@link ChoiceChallenge} from the current active
+   * {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {string} challengeId - Specify a choice challenge to list speech recognitions for.
    * @returns {Promise.<ChoiceRecognition[]>} Promise containing an array of ChoiceRecognitions.
    * @throws {Promise.<Error>} {@link ChoiceChallenge#id} is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listChoiceRecognitions(challengeId) {
-    return this._choiceRecognitionController.listChoiceRecognitions(challengeId);
+  getChoiceRecognitions(challengeId) {
+    return this._choiceRecognitionController.getChoiceRecognitions(challengeId);
   }
 
   /**
@@ -139,13 +139,13 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all organisations the current tenant is the owner of.
+   * Get and return all organisations the current tenant is the owner of.
    *
    * @returns {Promise.<Organisation[]>} Promise containing an array of Organisations.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listOrganisations() {
-    return this._organisationController.listOrganisations();
+  getOrganisations() {
+    return this._organisationController.getOrganisations();
   }
 
   /**
@@ -187,8 +187,8 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all pronunciation analyses in a specific pronunciation challenge from the current active {@link Organisation}
-   * derived from the OAuth2 scope.
+   * Get and return all pronunciation analyses in a specific pronunciation challenge from the current active
+   * {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {string} challengeId - Specify a pronunciation challenge identifier to list
    * speech recordings for.
@@ -197,8 +197,8 @@ export default class AdministrativeSDK {
    * @throws {Promise.<Error>} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listPronunciationAnalyses(challengeId, detailed) {
-    return this._pronAnalaController.listPronunciationAnalyses(challengeId, detailed);
+  getPronunciationAnalyses(challengeId, detailed) {
+    return this._pronAnalaController.getPronunciationAnalyses(challengeId, detailed);
   }
 
   /**
@@ -227,13 +227,14 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all pronunciation challenges in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all pronunciation challenges in the current active {@link Organisation} derived from
+   * the OAuth2 scope.
    *
    * @returns {Promise.<PronunciationChallenge[]>} Promise containing an array of PronunciationChallenges.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listPronunciationChallenges() {
-    return this._pronChallController.listPronunciationChallenges();
+  getPronunciationChallenges() {
+    return this._pronChallController.getPronunciationChallenges();
   }
 
   /**
@@ -273,13 +274,13 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<SpeechChallenge[]>} Promise containing an array of SpeechChallenges.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listSpeechChallenges() {
-    return this._speechChallengeController.listSpeechChallenges();
+  getSpeechChallenges() {
+    return this._speechChallengeController.getSpeechChallenges();
   }
 
   /**
@@ -316,16 +317,16 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all speech recordings in a specific speech challenge from the current active {@link Organisation} derived
-   * from the OAuth2 scope.
+   * Get and return all speech recordings in a specific speech challenge from the current active {@link Organisation}
+   * derived from the OAuth2 scope.
    *
    * @param {string} challengeId - Specify a speech challenge identifier to list speech recordings for.
    * @returns {Promise.<SpeechRecording[]>} Promise containing an array of SpeechRecordings.
    * @throws {Promise.<Error>} {@link SpeechChallenge#id} is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listSpeechRecordings(challengeId) {
-    return this._speechRecordingController.listSpeechRecordings(challengeId);
+  getSpeechRecordings(challengeId) {
+    return this._speechRecordingController.getSpeechRecordings(challengeId);
   }
 
   /**
@@ -363,13 +364,13 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all users in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all users in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<User[]>} Promise containing an array of Users.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listUsers() {
-    return this._userController.listUsers();
+  getUsers() {
+    return this._userController.getUsers();
   }
 
   /**
@@ -387,13 +388,13 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all roles available in the API.
+   * Get and return all roles available in the API.
    *
    * @returns {Promise.<Role[]>} Promise containing an array of Roles.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  listRoles() {
-    return this._roleController.listRoles();
+  getRoles() {
+    return this._roleController.getRoles();
   }
 
   /**
@@ -421,13 +422,13 @@ export default class AdministrativeSDK {
   }
 
   /**
-   * List all profiles of all users in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all profiles of all users in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<Profile[]>} Array of Profiles.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  listProfiles() {
-    return this._profileController.listProfiles();
+  getProfiles() {
+    return this._profileController.getProfiles();
   }
 }
 

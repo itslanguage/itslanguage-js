@@ -68,12 +68,12 @@ export default class SpeechChallengeController {
   }
 
   /**
-   * List all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all speech challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<SpeechChallenge[]>} Promise containing an array of SpeechChallenges.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listSpeechChallenges() {
+  getSpeechChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxGet(url)
