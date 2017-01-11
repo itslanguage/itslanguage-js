@@ -56,7 +56,7 @@ export default class Profile {
     this.gender = gender;
 
     if (!(birthDate instanceof Date)) {
-      throw new Error('birthDate parameter of type "string" is required');
+      throw new Error('birthDate parameter of type "Date" is required');
     }
 
     /**
