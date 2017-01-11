@@ -20,6 +20,7 @@ export default class RoleController {
    * List all roles available in the API.
    *
    * @returns {Promise.<Role[]>} Promise containing an array of Roles.
+   * @throws {Promise.<Error>} If the server returned an error.
    */
   listRoles() {
     const url = this._connection._settings.apiUrl + '/roles';
