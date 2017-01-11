@@ -4,6 +4,7 @@ import * as EmailCredentialsController from '../src/administrative-sdk/email-cre
 import * as OrganisationController from '../src/administrative-sdk/organisation/organisation-controller';
 import * as ProAnalaControl from '../src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller';
 import * as ProChalControl from '../src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller';
+import * as ProfileController from '../src/administrative-sdk/profile/profile-controller';
 import * as RoleController from '../src/administrative-sdk/role/role-controller';
 import * as SpeechChallengeController from '../src/administrative-sdk/speech-challenge/speech-challenge-controller';
 import * as SpeechRecordingController from '../src/administrative-sdk/speech-recording/speech-recording-controller';
@@ -24,6 +25,7 @@ describe('Administrative SDK', () => {
   ['createEmailCredentials']);
   const fakeOrganisationController = jasmine.createSpyObj('OrganisationController',
     ['createOrganisation', 'getOrganisation', 'listOrganisations']);
+  const fakeProfileController = jasmine.createSpyObj('ProfileController', ['getProfile', 'listProfiles']);
   const fakePronunciationAnalysisController = jasmine.createSpyObj('PronunciationAnalysisController',
     ['startStreamingPronunciationAnalysis', 'getPronunciationAnalysis', 'listPronunciationAnalyses']);
   const fakePronunciationChallengeController = jasmine.createSpyObj(
@@ -42,6 +44,7 @@ describe('Administrative SDK', () => {
     spyOn(ChoiceRecogController, 'default').and.returnValue(fakeChoiceRecognitionController);
     spyOn(EmailCredentialsController, 'default').and.returnValue(fakeEmailCredentialsController);
     spyOn(OrganisationController, 'default').and.returnValue(fakeOrganisationController);
+    spyOn(ProfileController, 'default').and.returnValue(fakeProfileController);
     spyOn(ProAnalaControl, 'default').and.returnValue(fakePronunciationAnalysisController);
     spyOn(ProChalControl, 'default').and.returnValue(fakePronunciationChallengeController);
     spyOn(RoleController, 'default').and.returnValue(fakeRoleController);
@@ -81,6 +84,8 @@ describe('Administrative SDK', () => {
     sdk.createEmailCredentials(1, 2);
     sdk.listRoles();
     sdk.getRole(1);
+    sdk.getProfile(1);
+    sdk.listProfiles();
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);
     expect(fakeChoiceChallengeController.getChoiceChallenge).toHaveBeenCalledWith(1);
@@ -120,5 +125,8 @@ describe('Administrative SDK', () => {
 
     expect(fakeRoleController.listRoles).toHaveBeenCalledWith();
     expect(fakeRoleController.getRole).toHaveBeenCalledWith(1);
+
+    expect(fakeProfileController.getProfile).toHaveBeenCalledWith(1);
+    expect(fakeProfileController.listProfiles).toHaveBeenCalledWith();
   });
 });

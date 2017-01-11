@@ -2,6 +2,7 @@ import ChoiceChallengeController from './choice-challenge/choice-challenge-contr
 import ChoiceRecognitionController from './choice-recognition/choice-recognition-controller';
 import EmailCredentialsController from './email-credentials/email-credentials-controller';
 import OrganisationController from './organisation/organisation-controller';
+import ProfileController from './profile/profile-controller';
 import PronAnalaController from './pronunciation-analysis/pronunciation-analysis-controller';
 import PronChallController from './pronunciation-challenge/pronunciation-challenge-controller';
 import RoleController from './role/role-controller';
@@ -22,6 +23,7 @@ export default class AdministrativeSDK {
     this._choiceRecognitionController = new ChoiceRecognitionController(this._connection);
     this._emailCredentialsController = new EmailCredentialsController(this._connection);
     this._organisationController = new OrganisationController(this._connection);
+    this._profileController = new ProfileController(this._connection);
     this._pronAnalaController = new PronAnalaController(this._connection);
     this._pronChallController = new PronChallController(this._connection);
     this._roleController = new RoleController(this._connection);
@@ -404,6 +406,28 @@ export default class AdministrativeSDK {
    */
   getRole(roleId) {
     return this._roleController.getRole(roleId);
+  }
+
+  /**
+   * Get the profile of the given user active in the current active {@link Organisation} derived from the OAuth2 scope.
+   *
+   * @param {string} userId - Specify a User identifier.
+   * @returns {Promise.<Profile>} Promise containing a Profile.
+   * @throws {Promise.<Error>} userId parameter of type "string" is required.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getProfile(userId) {
+    return this._profileController.getProfile(userId);
+  }
+
+  /**
+   * List all profiles of all users in the current active {@link Organisation} derived from the OAuth2 scope.
+   *
+   * @returns {Promise.<Profile[]>} Array of Profiles.
+   * @throws {Promise.<Error>} If the server returned an error.
+   */
+  listProfiles() {
+    return this._profileController.listProfiles();
   }
 }
 
