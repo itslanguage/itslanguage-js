@@ -70,12 +70,12 @@ export default class ChoiceChallengeController {
   }
 
   /**
-   * List all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all choice challenges in the current active {@link Organisation} derived from the OAuth2 scope.
    *
    * @returns {Promise.<ChoiceChallenge[]>} Containing an array of ChoiceChallenges.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listChoiceChallenges() {
+  getChoiceChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/choice';
     return this._connection._secureAjaxGet(url)
       .then(data => {

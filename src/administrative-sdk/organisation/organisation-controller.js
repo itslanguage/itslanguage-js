@@ -60,12 +60,12 @@ export default class OrganisationController {
   }
 
   /**
-   * List all organisations the current tenant is the owner of.
+   * Get and return all organisations the current tenant is the owner of.
    *
    * @returns {Promise.<Organisation[]>} Promise containing an array of Organisations.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listOrganisations() {
+  getOrganisations() {
     const url = this._connection._settings.apiUrl + '/organisations';
 
     return this._connection._secureAjaxGet(url)

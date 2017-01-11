@@ -17,12 +17,12 @@ export default class RoleController {
   }
 
   /**
-   * List all roles available in the API.
+   * Get and return all roles available in the API.
    *
    * @returns {Promise.<Role[]>} Promise containing an array of Roles.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  listRoles() {
+  getRoles() {
     const url = this._connection._settings.apiUrl + '/roles';
     return this._connection._secureAjaxGet(url)
       .then(data => {

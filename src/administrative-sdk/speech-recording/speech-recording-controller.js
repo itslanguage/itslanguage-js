@@ -199,15 +199,15 @@ export default class SpeechRecordingController {
   }
 
   /**
-   * List all speech recordings in a specific speech challenge from the current active {@link Organisation} derived
-   * from the OAuth2 scope.
+   * Get and return all speech recordings in a specific speech challenge from the current active {@link Organisation}
+   * derived from the OAuth2 scope.
    *
    * @param {string} challengeId - Specify a speech challenge identifier to list speech recordings for.
    * @returns {Promise.<SpeechRecording[]>} Promise containing an array of SpeechRecording.
    * @throws {Promise.<Error>} {@link SpeechChallenge#id} is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listSpeechRecordings(challengeId) {
+  getSpeechRecordings(challengeId) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }

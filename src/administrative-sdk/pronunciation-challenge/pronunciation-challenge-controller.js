@@ -70,12 +70,13 @@ export default class PronunciationChallengeController {
   }
 
   /**
-   * List all pronunciation challenges in the current active {@link Organisation} derived from the OAuth2 scope.
+   * Get and return all pronunciation challenges in the current active {@link Organisation} derived from
+   * the OAuth2 scope.
    *
    * @returns {Promise.<PronunciationChallenge[]>} Promise containing a list of PronunciationChallenges.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listPronunciationChallenges() {
+  getPronunciationChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
     return this._connection._secureAjaxGet(url)
       .then(data => {

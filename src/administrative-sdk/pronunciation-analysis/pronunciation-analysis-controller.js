@@ -296,8 +296,8 @@ export default class PronunciationAnalysisController {
   }
 
   /**
-   * List all pronunciation analyses in a specific pronunciation challenge from the current active {@link Organisation}
-   * derived from the OAuth2 scope.
+   * Get and return all pronunciation analyses in a specific pronunciation challenge from the current active
+   * {@link Organisation} derived from the OAuth2 scope.
    *
    * @param {string} challengeId - Specify a pronunciation challenge identifier to list
    * speech recordings for.
@@ -306,7 +306,7 @@ export default class PronunciationAnalysisController {
    * @throws {Promise.<Error>} {@link PronunciationChallenge#id} field is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  listPronunciationAnalyses(challengeId, detailed) {
+  getPronunciationAnalyses(challengeId, detailed) {
     if (!challengeId) {
       return Promise.reject(new Error('challengeId field is required'));
     }
