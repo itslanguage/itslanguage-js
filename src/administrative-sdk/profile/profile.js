@@ -15,7 +15,7 @@ export default class Profile {
    * @throws {Error} gender parameter of type "string" is required.
    * @throws {Error} birthDate parameter of type "Date" is required.
    */
-  constructor(firstName, lastName, infix, gender, birthDate) {
+  constructor(firstName, lastName, infix = null, gender, birthDate) {
     if (typeof firstName !== 'string') {
       throw new Error('firstName parameter of type "string" is required');
     }
