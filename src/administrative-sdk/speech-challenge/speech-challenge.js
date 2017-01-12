@@ -67,17 +67,5 @@ export default class SpeechChallenge {
      * @type {string}
      */
     this.imageUrl = imageUrl;
-
-    /**
-     * The creation date of the entity.
-     * @type {Date}
-     */
-    this.created = null;
-
-    /**
-     * The most recent update date of the entity.
-     * @type {Date}
-     */
-    this.updated = null;
   }
 }
