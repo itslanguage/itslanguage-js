@@ -79,6 +79,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
         sampleWidth: 16,
         sampleRate: 48000
       },
+      question: 'question',
       audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
     };
     api._session = new SessionMock();
@@ -111,7 +112,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           fail('No result should be returned');
         })
         .catch(error => {
-          expect(error.message).toEqual('"challenge" parameter is required or invalid');
+          expect(error.message).toEqual('challenge parameter of type "ChoiceChallenge" is required');
         })
         .then(done);
   });
@@ -122,7 +123,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           fail('No result should be returned');
         })
         .catch(error => {
-          expect(error.message).toEqual('"challenge" parameter is required or invalid');
+          expect(error.message).toEqual('challenge parameter of type "ChoiceChallenge" is required');
         })
         .then(done);
   });
@@ -134,7 +135,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
           fail('No result should be returned');
         })
         .catch(error => {
-          expect(error.message).toEqual('challenge.id field is required');
+          expect(error.message).toEqual('challenge.id field of type "string" is required');
         })
         .then(done);
   });
@@ -601,28 +602,32 @@ describe('API interaction', () => {
   });
   const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
 
-  it('should reject when there is no challenge id', done => {
-    const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition()
+  it('should reject to get on invalid challengeId', done => {
+    const controller = new ChoiceRecognitionController();
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getChoiceRecognition(v)
       .then(() => {
         fail('An error should be thrown');
       })
       .catch(error => {
-        expect(error.message).toEqual('challengeId field is required');
+        expect(error.message).toEqual('challengeId parameter of type "string" is required');
       })
       .then(done);
+    });
   });
 
-  it('should reject when there is no recognition id', done => {
-    const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognition('1')
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('recognitionId field is required');
-      })
-      .then(done);
+  it('should reject to get on invalid recognitionId', done => {
+    const controller = new ChoiceRecognitionController();
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getChoiceRecognition('0', v)
+        .then(() => {
+          fail('An error should be thrown');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('recognitionId parameter of type "string" is required');
+        })
+        .then(done);
+    });
   });
 
   it('should get a choicechallenge and update the recognised attribute', done => {
@@ -693,6 +698,20 @@ describe('API interaction', () => {
       }).then(done);
   });
 
+  it('should reject to get a list on invalid challengeId', done => {
+    const controller = new ChoiceRecognitionController();
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getChoiceRecognitions(v)
+        .then(() => {
+          fail('An error should be thrown');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('challengeId parameter of type "string" is required');
+        })
+        .then(done);
+    });
+  });
+
   it('should get a list of existing choice recognitions', done => {
     const challengeId = '4';
     const url = 'https://api.itslanguage.nl/challenges/choice/4/recognitions';
@@ -743,17 +762,5 @@ describe('API interaction', () => {
         fail('No error should be thrown: ' + error);
       })
       .then(done);
-  });
-
-  it('should reject to get a list when challenge does not exist', done => {
-    const controller = new ChoiceRecognitionController(api);
-    controller.getChoiceRecognitions(null)
-        .then(() => {
-          fail('An error should be thrown');
-        })
-        .catch(error => {
-          expect(error.message).toEqual('challengeId field is required');
-        })
-        .then(done);
   });
 });
