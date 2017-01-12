@@ -134,47 +134,6 @@ describe('ChoiceChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should handle errors while creating a new challenge', done => {
-    const challenge = new ChoiceChallenge('1', 'q', ['a']);
-
-    const api = new Connection({
-      oAuth2Token: 'token'
-    });
-    const controller = new ChoiceChallengeController(api);
-    const content = {
-      message: 'Validation failed',
-      errors: [
-        {
-          resource: 'ChoiceChallenge',
-          field: 'question',
-          code: 'missing'
-        }
-      ]
-    };
-    const fakeResponse = new Response(JSON.stringify(content), {
-      status: 422,
-      headers: {
-        'Content-type': 'application/json; charset=utf-8'
-      }
-    });
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    controller.createChoiceChallenge(challenge)
-      .then(() => {
-        fail('No result should be returned');
-      }).catch(error => {
-        const request = window.fetch.calls.mostRecent().args;
-        expect(request[1].body).toEqual(JSON.stringify(challenge));
-        const errors = [{
-          resource: 'ChoiceChallenge',
-          field: 'question',
-          code: 'missing'
-        }];
-        expect(error.errors).toEqual(errors);
-      })
-      .then(done);
-  });
-
   it('should fail to get when challenge id is missing', done => {
     const api = new Connection({
       oAuth2Token: 'token'

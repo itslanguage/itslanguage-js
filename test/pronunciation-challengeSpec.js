@@ -54,22 +54,6 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should check for required referenceAudio field', done => {
-    // Because referenceAudio is not available when fetching existing
-    // PronunciationChallenges from the server, the domain model doesn't
-    // require the field, but the createPronunciationChallenge() should.
-    const challenge = new PronunciationChallenge('1', 'test', blob);
-    challenge.referenceAudio = null;
-    controller.createPronunciationChallenge(challenge)
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('referenceAudio parameter of type "Blob" is required');
-      })
-      .then(done);
-  });
-
-  it('should check for required referenceAudio field', done => {
     const challenge = new PronunciationChallenge('1', 'test', blob);
     challenge.referenceAudio = null;
     controller.createPronunciationChallenge(challenge)
@@ -167,45 +151,6 @@ describe('PronunciationChallenge API interaction test', () => {
       })
       .catch(error => {
         expect(error.message).toEqual('challengeId field is required');
-      })
-      .then(done);
-  });
-
-  it('should handle errors while creating a new challenge', done => {
-    const challenge = new PronunciationChallenge('test', 'hi', blob);
-    const content = {
-      message: 'Validation failed',
-      errors: [
-        {
-          resource: 'PronunciationChallenge',
-          field: 'transcription',
-          code: 'missing'
-        }
-      ]
-    };
-    const fakeResponse = new Response(JSON.stringify(content), {
-      status: 422,
-      headers: {
-        'Content-type': 'application/json; charset=utf-8'
-      }
-    });
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    controller.createPronunciationChallenge(challenge)
-      .then(() => {
-        fail('An error should be thrown!');
-      })
-      .catch(error => {
-        const request = window.fetch.calls.mostRecent().args;
-        expect(request[0]).toBe(url);
-        expect(request[1].method).toBe('POST');
-        expect(request[1].body).toEqual(JSON.stringify(challenge));
-        const errors = [{
-          resource: 'PronunciationChallenge',
-          field: 'transcription',
-          code: 'missing'
-        }];
-        expect(error.errors).toEqual(errors);
       })
       .then(done);
   });
