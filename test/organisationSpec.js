@@ -115,44 +115,6 @@ describe('Organisation API interaction test', () => {
       }).then(done);
   });
 
-  it('should handle errors while creating a new organisation', done => {
-    const api = new Connection({
-      oAuth2Token: 'token'
-    });
-    const controller = new OrganisationController(api);
-    const organisation = new Organisation('1', 'a');
-    const url = 'https://api.itslanguage.nl/organisations';
-    const content = {
-      message: 'Validation failed',
-      errors: [
-        {
-          resource: 'Organisation',
-          field: 'name',
-          code: 'missing'
-        }
-      ]
-    };
-    const fakeResponse = new Response(JSON.stringify(content), {
-      status: 422,
-      headers: {
-        'Content-type': 'application/json; charset=utf-8'
-      }
-    });
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    controller.createOrganisation(organisation)
-      .then(result => {
-        fail('An error should be thrown! Instead got result ' + result);
-      })
-      .catch(error => {
-        const request = window.fetch.calls.mostRecent().args;
-        expect(request[0]).toBe(url);
-        expect(request[1].method).toBe('POST');
-        expect(error).toEqual(content);
-      })
-      .then(done);
-  });
-
   it('should not get when there is no organisation id', done => {
     const api = new Connection({
       oAuth2Token: 'token'

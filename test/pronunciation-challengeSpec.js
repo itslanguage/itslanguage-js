@@ -155,45 +155,6 @@ describe('PronunciationChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should handle errors while creating a new challenge', done => {
-    const challenge = new PronunciationChallenge('test', 'hi', blob);
-    const content = {
-      message: 'Validation failed',
-      errors: [
-        {
-          resource: 'PronunciationChallenge',
-          field: 'transcription',
-          code: 'missing'
-        }
-      ]
-    };
-    const fakeResponse = new Response(JSON.stringify(content), {
-      status: 422,
-      headers: {
-        'Content-type': 'application/json; charset=utf-8'
-      }
-    });
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-
-    controller.createPronunciationChallenge(challenge)
-      .then(() => {
-        fail('An error should be thrown!');
-      })
-      .catch(error => {
-        const request = window.fetch.calls.mostRecent().args;
-        expect(request[0]).toBe(url);
-        expect(request[1].method).toBe('POST');
-        expect(request[1].body).toEqual(JSON.stringify(challenge));
-        const errors = [{
-          resource: 'PronunciationChallenge',
-          field: 'transcription',
-          code: 'missing'
-        }];
-        expect(error.errors).toEqual(errors);
-      })
-      .then(done);
-  });
-
   it('should get an existing pronunciation challenge', done => {
     url = 'https://api.itslanguage.nl/challenges/pronunciation/4';
     const content = {
