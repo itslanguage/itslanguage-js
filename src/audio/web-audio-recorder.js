@@ -1,5 +1,6 @@
 /**
  * WebAudioRecorder.
+ * @private
  */
 export default class WebAudioRecorder {
   /**
