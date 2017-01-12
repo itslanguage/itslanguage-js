@@ -4,21 +4,19 @@ import OrganisationController from '../src/administrative-sdk/organisation/organ
 
 describe('Organisation object test', () => {
   it('should not instantiate an Organisation with an invalid id', () => {
-    expect(() => {
-      new Organisation(5);
-    }).toThrowError('id parameter of type "string|null" is required');
-  });
-
-  it('should not instantiate an Organisation without name', () => {
-    expect(() => {
-      new Organisation('2');
-    }).toThrowError('name parameter of type "string" is required');
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new Organisation(v);
+      }).toThrowError('id parameter of type "string|null" is required');
+    });
   });
 
   it('should not instantiate an Organisation with an invalid name', () => {
-    expect(() => {
-      new Organisation('2', 2);
-    }).toThrowError('name parameter of type "string" is required');
+    [0, {}, [], true, false, null, undefined].map(v => {
+      expect(() => {
+        new Organisation(undefined, v);
+      }).toThrowError('name parameter of type "string" is required');
+    });
   });
 
   it('should instantiate an Organisation with id and metadata', () => {
@@ -30,6 +28,18 @@ describe('Organisation object test', () => {
 });
 
 describe('Organisation API interaction test', () => {
+  it('should not create an organisation with invalid organisation', done => {
+    const controller = new OrganisationController();
+    [0, '0', {}, [], true, false, null, undefined].map(v => {
+      controller.createOrganisation(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('organisation field of type "Organisation" is required');
+        })
+        .then(done);
+    });
+  });
+
   it('should create a new organisation through API', done => {
     const organisation = new Organisation('1', 'School of silly walks');
     const api = new Connection({
@@ -115,17 +125,16 @@ describe('Organisation API interaction test', () => {
       }).then(done);
   });
 
-  it('should not get when there is no organisation id', done => {
-    const api = new Connection({
-      oAuth2Token: 'token'
+  it('should not get on an invalid organisation id', done => {
+    const controller = new OrganisationController();
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getOrganisation(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('organisationId field of type "string" is required');
+        })
+        .then(done);
     });
-    const controller = new OrganisationController(api);
-    controller.getOrganisation()
-      .then(fail)
-      .catch(err => {
-        expect(err.message).toEqual('organisationId field is required');
-      })
-      .then(done);
   });
 
   it('should get an existing organisation through API', done => {

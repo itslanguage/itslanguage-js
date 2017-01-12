@@ -14,8 +14,8 @@ export default class SpeechChallenge {
    * @throws {Error} srtUrl parameter of type "string|null" is required.
    * @throws {Error} imageUrl parameter of type "string|null" is required.
    */
-  constructor(id, topic, referenceAudioUrl, srtUrl = null, imageUrl = null) {
-    if (id && typeof id !== 'string') {
+  constructor(id = null, topic = null, referenceAudioUrl = null, srtUrl = null, imageUrl = null) {
+    if (id !== null && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
     }
@@ -25,9 +25,9 @@ export default class SpeechChallenge {
      */
     this.id = id;
 
-    if (topic && typeof topic !== 'string') {
+    if (topic !== null && typeof topic !== 'string') {
       throw new Error(
-        'topic parameter of type "string" is required');
+        'topic parameter of type "string|null" is required');
     }
     /**
      * A question or topic serving as guidance.

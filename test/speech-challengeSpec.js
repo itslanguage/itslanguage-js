@@ -3,41 +3,44 @@ import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-c
 import SpeechChallengeController from '../src/administrative-sdk/speech-challenge/speech-challenge-controller';
 
 describe('SpeechChallenge object test', () => {
-  it('should require all required fields in constructor', () => {
-    expect(() => {
-      new SpeechChallenge(4);
-    }).toThrowError('id parameter of type "string|null" is required');
-
-    [0, {}, [], true, false, undefined].map(v => {
-      expect(() => {
-        new SpeechChallenge('hi', '1', v);
-      }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
-    });
-
-    expect(() => {
-      new SpeechChallenge('1', 66);
-    }).toThrowError('topic parameter of type "string" is required');
-
+  it('should not construct with an invalid id', () => {
     [0, {}, [], true, false].map(v => {
       expect(() => {
-        new SpeechChallenge('hi', '1', null, v);
-      }).toThrowError('srtUrl parameter of type "string|null" is required');
-    });
-
-    [0, {}, [], true, false].map(v => {
-      expect(() => {
-        new SpeechChallenge('hi', '1', null, null, v);
-      }).toThrowError('imageUrl parameter of type "string|null" is required');
+        new SpeechChallenge(v);
+      }).toThrowError('id parameter of type "string|null" is required');
     });
   });
-  it('should instantiate a SpeechChallenge with referenceAudioUrl', () => {
-    const url = 'www.downloadaudiohere.exe.com';
 
-    const s = new SpeechChallenge('test', 'hi', url);
-    expect(s).toBeDefined();
-    expect(s.id).toBe('test');
-    expect(s.topic).toBe('hi');
-    expect(s.referenceAudioUrl).toBe(url);
+  it('should not construct with an invalid topic', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new SpeechChallenge(undefined, v);
+      }).toThrowError('topic parameter of type "string|null" is required');
+    });
+  });
+
+  it('should not construct with an invalid referenceAudioUrl', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new SpeechChallenge(undefined, undefined, v);
+      }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
+    });
+  });
+
+  it('should not construct with an invalid srtUrl', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new SpeechChallenge(undefined, undefined, undefined, v);
+      }).toThrowError('srtUrl parameter of type "string|null" is required');
+    });
+  });
+
+  it('should not construct with an invalid imageUrl', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new SpeechChallenge(undefined, undefined, undefined, undefined, v);
+      }).toThrowError('imageUrl parameter of type "string|null" is required');
+    });
   });
 
   it('should instantiate a SpeechChallenge with all URLs', () => {
@@ -54,12 +57,20 @@ describe('SpeechChallenge object test', () => {
     expect(s.imageUrl).toBe(imageUrl);
   });
 
-  it('should instantiate a SpeechChallenge', () => {
-    const s = new SpeechChallenge('test', 'hi', null);
+  it('should instantiate a SpeechChallenge without topic', () => {
+    const s = new SpeechChallenge('test', null, null);
     expect(s).toBeDefined();
     expect(s.id).toBe('test');
-    expect(s.topic).toBe('hi');
-    expect(s.referenceAudioUrl).toBe(null);
+    expect(s.topic).toBeNull();
+    expect(s.referenceAudioUrl).toBeNull();
+  });
+
+  it('should instantiate a SpeechChallenge without id', () => {
+    const s = new SpeechChallenge(null, null, null);
+    expect(s).toBeDefined();
+    expect(s.id).toBeNull();
+    expect(s.topic).toBeNull();
+    expect(s.referenceAudioUrl).toBeNull();
   });
 });
 
@@ -72,6 +83,50 @@ describe('SpeechChallenge API interaction test', () => {
   beforeEach(() => {
     spyOn(FormData.prototype, 'append');
     url = 'https://api.itslanguage.nl/challenges/speech';
+  });
+
+  it('should not create a challenge with an invalid speechChallenge', done => {
+    [0, '0', {}, [], true, false, null, undefined].map(v => {
+      controller.createSpeechChallenge(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('speechChallenge field of type "SpeechChallenge" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should not create a challenge with an invalid audioBlob', done => {
+    [0, '0', {}, [], true, false].map(v => {
+      controller.createSpeechChallenge(new SpeechChallenge(), v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('audioBlob parameter of type "Blob|null" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should not create a challenge with an invalid srtFile', done => {
+    [0, '0', {}, [], true, false].map(v => {
+      controller.createSpeechChallenge(new SpeechChallenge(), new Blob(['1234567890']), v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('srtFile parameter of type "Blob|null" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should not create a challenge with an invalid image', done => {
+    [0, '0', {}, [], true, false].map(v => {
+      controller.createSpeechChallenge(new SpeechChallenge(), new Blob(['1234567890']), new Blob(['1234567890']), v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('image parameter of type "Blob|null" is required');
+        })
+        .then(done);
+    });
   });
 
   it('should create a challenge without an id', done => {
@@ -186,25 +241,27 @@ describe('SpeechChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should not get when challenge id is missing', done => {
-    controller.getSpeechChallenge()
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('challengeId field is required');
-      })
-      .then(done);
+  it('should not get on invalid challenge id', done => {
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getSpeechChallenge(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('challengeId field of type "string" is required');
+        })
+        .then(done);
+    });
   });
 
   it('should get an existing speech challenge', done => {
     url = 'https://api.itslanguage.nl/challenges/speech/4';
+    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+      '/YsjdG37bUGseu8-bsJ';
     const content = {
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi',
-      referenceAudioUrl: null
+      referenceAudioUrl,
+      topic: 'Hi'
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -222,6 +279,7 @@ describe('SpeechChallenge API interaction test', () => {
         const challenge = new SpeechChallenge('4', 'Hi', null);
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
+        challenge.referenceAudioUrl = referenceAudioUrl;
         expect(result).toEqual(challenge);
       })
       .catch(error => {
@@ -231,12 +289,14 @@ describe('SpeechChallenge API interaction test', () => {
   });
 
   it('should get a list of existing challenges', done => {
+    const referenceAudioUrl = 'https://api.itslanguage.nl/download' +
+      '/YsjdG37bUGseu8-bsJ';
     const content = [{
       id: '4',
       created: '2014-12-31T23:59:59Z',
       updated: '2014-12-31T23:59:59Z',
-      topic: 'Hi',
-      referenceAudioUrl: null
+      referenceAudioUrl,
+      topic: 'Hi'
     }];
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -254,6 +314,7 @@ describe('SpeechChallenge API interaction test', () => {
         const challenge = new SpeechChallenge('4', 'Hi', null);
         challenge.created = new Date(stringDate);
         challenge.updated = new Date(stringDate);
+        challenge.referenceAudioUrl = referenceAudioUrl;
         expect(result[0]).toEqual(challenge);
         expect(result.length).toBe(1);
       })

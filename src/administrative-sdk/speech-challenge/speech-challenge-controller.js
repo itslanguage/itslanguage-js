@@ -18,7 +18,9 @@ export default class SpeechChallengeController {
 
   /**
    * Create a speech challenge in the current active {@link Organisation} derived from the OAuth2 scope.
-   * Additional information like audio, .srt files or images can be added in HTML5 Blob format.
+   * The created speech challenge will not contain the submitted audio file, but instead a property
+   * `referenceAudioUrl` which is the URL to download the submitted audio file.
+   * Additional information like .srt files or images can also be added in HTML5 Blob format.
    * The returned SpeechChallenge will contain links to download the given files.
    *
    * @param {SpeechChallenge} speechChallenge - Object to create.
@@ -26,9 +28,25 @@ export default class SpeechChallengeController {
    * @param {?Blob} srtFile - SRT file in HTML5 Blob format to accompany the challenge.
    * @param {?Blob} image - Image file in HTML5 Blob format to accompany the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
+   * @throws {Promise.<Error>} speechChallenge field of type "SpeechChallenge" is required
+   * @throws {Promise.<Error>} audioBlob parameter of type "Blob" is required.
+   * @throws {Promise.<Error>} srtFile parameter of type "Blob" is required.
+   * @throws {Promise.<Error>} image parameter of type "Blob" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  createSpeechChallenge(speechChallenge, audioBlob, srtFile, image) {
+  createSpeechChallenge(speechChallenge, audioBlob = null, srtFile = null, image = null) {
+    if (!(speechChallenge instanceof SpeechChallenge)) {
+      return Promise.reject(new Error('speechChallenge field of type "SpeechChallenge" is required'));
+    }
+    if (audioBlob !== null && !(audioBlob instanceof Blob)) {
+      return Promise.reject(new Error('audioBlob parameter of type "Blob|null" is required'));
+    }
+    if (srtFile !== null && !(srtFile instanceof Blob)) {
+      return Promise.reject(new Error('srtFile parameter of type "Blob|null" is required'));
+    }
+    if (image !== null && !(image instanceof Blob)) {
+      return Promise.reject(new Error('image parameter of type "Blob|null" is required'));
+    }
     speechChallenge.referenceAudio = audioBlob;
     speechChallenge.srt = srtFile;
     speechChallenge.image = image;
@@ -46,15 +64,17 @@ export default class SpeechChallengeController {
 
   /**
    * Get a speech challenge from the current active {@link Organisation} derived from the OAuth2 scope.
+   * The returned speech challenge will not contain an audio file, but instead a property
+   * `referenceAudioUrl` which is the URL to download the submitted audio file.
    *
    * @param {string} challengeId - Specify a speech challenge identifier.
    * @returns {Promise.<PronunciationChallenge>} Promise containing a SpeechChallenge.
-   * @throws {Promise.<Error>} {@link SpeechChallenge#id} field is required.
+   * @throws {Promise.<Error>} {@link SpeechChallenge#id} field of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
   getSpeechChallenge(challengeId) {
-    if (!challengeId) {
-      return Promise.reject(new Error('challengeId field is required'));
+    if (typeof challengeId !== 'string') {
+      return Promise.reject(new Error('challengeId field of type "string" is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId;
 
