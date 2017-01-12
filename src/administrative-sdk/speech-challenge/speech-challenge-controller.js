@@ -29,11 +29,23 @@ export default class SpeechChallengeController {
    * @param {?Blob} image - Image file in HTML5 Blob format to accompany the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise.<Error>} speechChallenge field of type "SpeechChallenge" is required
+   * @throws {Promise.<Error>} audioBlob parameter of type "Blob" is required.
+   * @throws {Promise.<Error>} srtFile parameter of type "Blob" is required.
+   * @throws {Promise.<Error>} image parameter of type "Blob" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createSpeechChallenge(speechChallenge, audioBlob, srtFile, image) {
     if (!(speechChallenge instanceof SpeechChallenge)) {
       return Promise.reject(new Error('speechChallenge field of type "SpeechChallenge" is required'));
+    }
+    if (audioBlob !== null && !(audioBlob instanceof Blob)) {
+      return Promise.reject(new Error('audioBlob parameter of type "Blob|null" is required'));
+    }
+    if (srtFile !== null && !(srtFile instanceof Blob)) {
+      return Promise.reject(new Error('srtFile parameter of type "Blob|null" is required'));
+    }
+    if (image !== null && !(image instanceof Blob)) {
+      return Promise.reject(new Error('image parameter of type "Blob|null" is required'));
     }
     speechChallenge.referenceAudio = audioBlob;
     speechChallenge.srt = srtFile;

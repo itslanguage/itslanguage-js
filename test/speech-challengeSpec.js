@@ -31,7 +31,7 @@ describe('SpeechChallenge object test', () => {
     [0, {}, [], true, false].map(v => {
       expect(() => {
         new SpeechChallenge(undefined, undefined, undefined, v);
-      }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
+      }).toThrowError('srtUrl parameter of type "string|null" is required');
     });
   });
 
@@ -39,7 +39,7 @@ describe('SpeechChallenge object test', () => {
     [0, {}, [], true, false].map(v => {
       expect(() => {
         new SpeechChallenge(undefined, undefined, undefined, undefined, v);
-      }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
+      }).toThrowError('imageUrl parameter of type "string|null" is required');
     });
   });
 
@@ -85,12 +85,45 @@ describe('SpeechChallenge API interaction test', () => {
     url = 'https://api.itslanguage.nl/challenges/speech';
   });
 
-  it('should not create a challenge with invalid input', done => {
+  it('should not create a challenge with an invalid speechChallenge', done => {
     [0, '0', {}, [], true, false, null, undefined].map(v => {
       controller.createSpeechChallenge(v)
         .then(fail)
         .catch(error => {
           expect(error.message).toEqual('speechChallenge field of type "SpeechChallenge" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should not create a challenge with an invalid audioBlob', done => {
+    [0, '0', {}, [], true, false].map(v => {
+      controller.createSpeechChallenge(new SpeechChallenge(), v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('audioBlob parameter of type "Blob|null" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should not create a challenge with an invalid srtFile', done => {
+    [0, '0', {}, [], true, false].map(v => {
+      controller.createSpeechChallenge(new SpeechChallenge(), new Blob(['1234567890']), v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('srtFile parameter of type "Blob|null" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should not create a challenge with an invalid image', done => {
+    [0, '0', {}, [], true, false].map(v => {
+      controller.createSpeechChallenge(new SpeechChallenge(), new Blob(['1234567890']), new Blob(['1234567890']), v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('image parameter of type "Blob|null" is required');
         })
         .then(done);
     });
