@@ -25,35 +25,32 @@ export default class ChoiceChallenge {
         'question parameter of type "string" is required');
     }
 
-    /**
-     *
-     * @type {string} [question] A hint or question related to the choices.
-     */
-    this.question = question;
-
     if (!Array.isArray(choices)) {
       throw new Error(
         'choices parameter of type "Array" is required');
     }
 
     /**
-     * @type {string[]} choices The sentences of which at most one may be recognised.
+     * The choice challenge identifier.
+     * @type {string}
+     */
+    this.id = id;
+
+    /**
+     * A hint or question related to the choices.
+     * @type {string}
+     */
+    this.question = question;
+
+    /**
+     * The sentences of which at most one may be recognised.
+     * @type {string[]}
      */
     this.choices = choices;
 
     /**
-     * @type {Date} created The creation date of the challenge entity.
-     */
-    this.created = null;
-
-    /**
-     * @type {Date} updated The most recent update date of the challenge entity.
-     */
-    this.updated = null;
-
-    /**
-     * @type {string} [status] The status of the challenge's preparation. Either 'unprepared', 'preparing' or
-     * 'prepared'.
+     * The status of the challenge's preparation. Either 'unprepared', 'preparing' or 'prepared'.
+     * @type {string}
      */
     this.status = null;
   }
