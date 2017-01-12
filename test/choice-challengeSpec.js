@@ -34,6 +34,12 @@ describe('ChoiceChallenge object test', () => {
     expect(s.id).toBe('test');
     expect(s.question).toBe('q');
     expect(s.choices).toEqual(['a', 'aa']);
+
+    const s2 = new ChoiceChallenge(undefined, undefined, ['a', 'aa']);
+    expect(s2).toBeDefined();
+    expect(s2.id).toBeNull();
+    expect(s2.question).toBeNull();
+    expect(s2.choices).toEqual(['a', 'aa']);
   });
 });
 
