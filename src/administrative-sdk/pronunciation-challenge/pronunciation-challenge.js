@@ -9,7 +9,9 @@ export default class PronunciationChallenge {
    * @param {string} transcription - The spoken word or sentence as plain text.
    * @param {?string} referenceAudioUrl - The reference audio fragment URL. If one is not yet available or audio is
    * not yet registered to the challenge it can be set to 'null'.
-   * @throws {Error} referenceAudioUrl parameter of type "string|null" is required
+   * @throws {Error} id parameter of type "string|null" is required.
+   * @throws {Error} transcription parameter of type "string" is required.
+   * @throws {Error} referenceAudioUrl parameter of type "string|null" is required.
    */
   constructor(id, transcription, referenceAudioUrl = null) {
     if (id && typeof id !== 'string') {
