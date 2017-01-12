@@ -16,15 +16,16 @@ export default class PronunciationChallenge {
       throw new Error(
         'id parameter of type "string|null" is required');
     }
-    /**
-     * The pronunciation challenge identifier.
-     * @type {string}
-     */
-    this.id = id;
+
     if (typeof transcription !== 'string') {
       throw new Error(
         'transcription parameter of type "string" is required');
     }
+
+    if (referenceAudioUrl !== null && typeof referenceAudioUrl !== 'string') {
+      throw new Error('referenceAudioUrl parameter of type "string|null" is required');
+    }
+
     /**
      * The spoken word or sentence as plain text.
      * @type {string}
@@ -32,26 +33,10 @@ export default class PronunciationChallenge {
     this.transcription = transcription;
 
     /**
-     * The creation date of the challenge entity.
-     * @type {Date}
-     */
-    this.created = null;
-
-    /**
-     * The most recent update date of the challenge entity.
-     * @type {Date}
-     */
-    this.updated = null;
-
-    /**
      * The status of the challenge's preparation. Either 'unprepared', 'preparing' or 'prepared'.
      * @type {string}
      */
     this.status = null;
-
-    if (referenceAudioUrl !== null && typeof referenceAudioUrl !== 'string') {
-      throw new Error('referenceAudioUrl parameter of type "string|null" is required');
-    }
 
     /**
      * The reference audio fragment as streaming audio link.
