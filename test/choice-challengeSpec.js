@@ -3,31 +3,30 @@ import ChoiceChallengeController from '../src/administrative-sdk/choice-challeng
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 
 describe('ChoiceChallenge object test', () => {
-  it('should require all required fields in constructor', () => {
-    [0, 4, false].map(v => {
+  it('should not construct with an invalid id', () => {
+    [0, {}, [], true, false].map(v => {
       expect(() => {
         new ChoiceChallenge(v);
-      }).toThrowError(
-        'id parameter of type "string|null|undefined" is required');
-    });
-    expect(() => {
-      new ChoiceChallenge('');
-    }).toThrowError(
-      'id parameter should not be an empty string');
-
-    [0, 4, false].map(v => {
-      expect(() => {
-        new ChoiceChallenge(null, v);
-      }).toThrowError(
-        'question parameter of type "string|null|undefined" is required');
-    });
-
-    [0, 4, undefined, false].map(v => {
-      expect(() => {
-        new ChoiceChallenge(null, 'question', v);
-      }).toThrowError('choices parameter of type "Array" is required');
+      }).toThrowError('id parameter of type "string|null" is required');
     });
   });
+
+  it('should not construct with an invalid question', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new ChoiceChallenge('0', v);
+      }).toThrowError('question parameter of type "string|null" is required');
+    });
+  });
+
+  it('should not construct with invalid choices', () => {
+    [0, '0', {}, true, false, null, undefined].map(v => {
+      expect(() => {
+        new ChoiceChallenge('0', 'question', v);
+      }).toThrowError('choices parameter of type "Array.<string>" is required');
+    });
+  });
+
   it('should instantiate a ChoiceChallenge', () => {
     const s = new ChoiceChallenge('test', 'q', ['a', 'aa']);
     expect(s).toBeDefined();

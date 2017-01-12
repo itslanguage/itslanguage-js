@@ -10,9 +10,7 @@ export default class ChoiceChallenge {
    * @param {string[]} choices - The sentences of which at most one may be recognised.
    * @throws {Error} id parameter of type "string|null" is required.
    * @throws {Error} question parameter of type "string|null|undefined" is required.
-   * @throws {Error} non-empty choices parameter is required.
-   * @throws {Error} choices parameter of type "string|object Array" is required.
-   * @throws {Error} no numbers allowed in choices.
+   * @throws {Error} choices parameter of type "Array.<string>" is required.
    */
   constructor(id = null, question = null, choices) {
     if (id !== null && typeof id !== 'string') {
@@ -20,14 +18,14 @@ export default class ChoiceChallenge {
         'id parameter of type "string|null" is required');
     }
 
-    if (typeof question !== 'string') {
+    if (question !== null && typeof question !== 'string') {
       throw new Error(
-        'question parameter of type "string" is required');
+        'question parameter of type "string|null" is required');
     }
 
     if (!Array.isArray(choices)) {
       throw new Error(
-        'choices parameter of type "Array" is required');
+        'choices parameter of type "Array.<string>" is required');
     }
 
     /**
