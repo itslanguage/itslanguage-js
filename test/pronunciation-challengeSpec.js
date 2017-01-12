@@ -53,6 +53,19 @@ describe('PronunciationChallenge API interaction test', () => {
     url = 'https://api.itslanguage.nl/challenges/pronunciation';
   });
 
+  it('should not create on invalid challenge', done => {
+    [0, '0', {}, [], true, false, null, undefined].map(v => {
+      controller.createPronunciationChallenge(v)
+        .then(() => {
+          fail('An error should be thrown');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('challenge parameter of type "PronunciationChallenge" is required');
+        })
+        .then(done);
+    });
+  });
+
   it('should check for required referenceAudio field', done => {
     const challenge = new PronunciationChallenge('1', 'test', referenceAudioUrl);
     controller.createPronunciationChallenge(challenge, null)
