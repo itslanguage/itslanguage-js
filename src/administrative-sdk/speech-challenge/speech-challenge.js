@@ -19,26 +19,36 @@ export default class SpeechChallenge {
       throw new Error(
         'id parameter of type "string|null" is required');
     }
+
+    if (topic !== null && typeof topic !== 'string') {
+      throw new Error(
+        'topic parameter of type "string|null" is required');
+    }
+
+    if (referenceAudioUrl !== null && typeof referenceAudioUrl !== 'string') {
+      throw new Error(
+        'referenceAudioUrl parameter of type "string|null" is required');
+    }
+
+    if (srtUrl !== null && typeof srtUrl !== 'string') {
+      throw new Error('srtUrl parameter of type "string|null" is required');
+    }
+
+    if (imageUrl !== null && typeof imageUrl !== 'string') {
+      throw new Error('imageUrl parameter of type "string|null" is required');
+    }
+
     /**
      * The speech challenge identifier. If none is given, one is generated.
      * @type {string}
      */
     this.id = id;
 
-    if (topic !== null && typeof topic !== 'string') {
-      throw new Error(
-        'topic parameter of type "string|null" is required');
-    }
     /**
      * A question or topic serving as guidance.
      * @type {string}
      */
     this.topic = topic;
-
-    if (referenceAudioUrl !== null && typeof referenceAudioUrl !== 'string') {
-      throw new Error(
-        'referenceAudioUrl parameter of type "string|null" is required');
-    }
 
     /**
      * The reference audio fragment as streaming audio link.
@@ -46,19 +56,11 @@ export default class SpeechChallenge {
      */
     this.referenceAudioUrl = referenceAudioUrl;
 
-    if (srtUrl !== null && typeof srtUrl !== 'string') {
-      throw new Error('srtUrl parameter of type "string|null" is required');
-    }
-
     /**
      * URL of a possible .srt file to accompany this challenge.
      * @type {string}
      */
     this.srtUrl = srtUrl;
-
-    if (imageUrl !== null && typeof imageUrl !== 'string') {
-      throw new Error('imageUrl parameter of type "string|null" is required');
-    }
 
     /**
      * URL of a possible image file to accompany this challenge.
