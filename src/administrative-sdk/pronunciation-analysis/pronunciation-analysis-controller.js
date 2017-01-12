@@ -5,6 +5,7 @@ import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import Phoneme from '../phoneme/phoneme';
 import PronunciationAnalysis from './pronunciation-analysis';
+import PronunciationChallenge from '../pronunciation-challenge/pronunciation-challenge';
 import Word from '../word/word';
 import WordChunk from '../word-chunk/word-chunk';
 import when from 'when';
@@ -113,20 +114,19 @@ export default class PronunciationAnalysisController {
    * to spoken words and determining when what is said. An object is sent containing a property 'progress',
    * which is the sent audio alignment, and a property 'referenceAlignment' which is the alignment of the
    * reference audio.
-   * @throws {Promise.<Error>} If challenge is not an object or not defined.
-   * @throws {Promise.<Error>} If challenge has no id.
+   * @throws {Promise.<Error>} challenge parameter of type "PronunciationChallenge" is required.
+   * @throws {Promise.<Error>} challenge.id field of type "string" is required.
    * @throws {Promise.<Error>} If the connection is not open.
    * @throws {Promise.<Error>} If the recorder is already recording.
    * @throws {Promise.<Error>} If a session is already in progress.
    * @throws {Promise.<Error>} If something went wrong during analysis.
    */
   startStreamingPronunciationAnalysis(challenge, recorder, trim) {
-    if (typeof challenge !== 'object' || !challenge) {
-      return Promise.reject(new Error(
-        '"challenge" parameter is required or invalid'));
+    if (!(challenge instanceof PronunciationChallenge)) {
+      return Promise.reject(new Error('challenge parameter of type "PronunciationChallenge" is required'));
     }
-    if (!challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+    if (typeof challenge.id !== 'string') {
+      return Promise.reject(new Error('challenge.id field of type "string" is required'));
     }
     if (!this._connection._session) {
       return Promise.reject(new Error('WebSocket connection was not open.'));

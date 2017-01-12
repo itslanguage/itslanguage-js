@@ -124,7 +124,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         fail('No result should be returned');
       })
       .catch(error => {
-        expect(error.message).toEqual('"challenge" parameter is required or invalid');
+        expect(error.message).toEqual('challenge parameter of type "PronunciationChallenge" is required');
       })
       .then(done);
   });
@@ -135,19 +135,19 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         fail('No result should be returned');
       })
       .catch(error => {
-        expect(error.message).toEqual('"challenge" parameter is required or invalid');
+        expect(error.message).toEqual('challenge parameter of type "PronunciationChallenge" is required');
       })
       .then(done);
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new PronunciationChallenge('', '', audioUrl);
-    controller.startStreamingPronunciationAnalysis(challenge, null)
+    challenge = new PronunciationChallenge(null, '', audioUrl);
+    controller.startStreamingPronunciationAnalysis(challenge)
       .then(() => {
         fail('No result should be returned');
       })
       .catch(error => {
-        expect(error.message).toEqual('challenge.id field is required');
+        expect(error.message).toEqual('challenge.id field of type "string" is required');
       })
       .then(done);
   });
