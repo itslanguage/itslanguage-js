@@ -48,6 +48,18 @@ describe('ChoiceChallenge API interaction test', () => {
     spyOn(FormData.prototype, 'append');
   });
 
+  it('should not create a choice challenge with invalid input', done => {
+    const controller = new ChoiceChallengeController();
+    [0, '0', {}, [], true, false, null, undefined].map(v => {
+      controller.createChoiceChallenge(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('choiceChallenge parameter of type "ChoiceChallenge" is required');
+        })
+        .then(done);
+    });
+  });
+
   it('should create a new choice challenge through API', done => {
     const challenge = new ChoiceChallenge('1', 'q', ['a', 'b']);
     const stringDate = '2014-12-31T23:59:59Z';
@@ -140,15 +152,16 @@ describe('ChoiceChallenge API interaction test', () => {
       .then(done);
   });
 
-  it('should fail to get when challenge id is missing', done => {
-    const api = new Connection({
-      oAuth2Token: 'token'
+  it('should fail to get when challenge id is invalid', done => {
+    const controller = new ChoiceChallengeController();
+    [0, {}, [], true, false, null, undefined].map(v => {
+      controller.getChoiceChallenge(v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('challengeId parameter of type "string" is required');
+        })
+        .then(done);
     });
-    const controller = new ChoiceChallengeController(api);
-    controller.getChoiceChallenge()
-      .then(() => fail('No result should be returned'))
-      .catch(error => expect(error.message).toEqual('challengeId field is required'))
-      .then(done);
   });
 
   it('should get an existing choice challenge', done => {
