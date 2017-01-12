@@ -54,22 +54,6 @@ describe('PronunciationChallenge API interaction test', () => {
   });
 
   it('should check for required referenceAudio field', done => {
-    // Because referenceAudio is not available when fetching existing
-    // PronunciationChallenges from the server, the domain model doesn't
-    // require the field, but the createPronunciationChallenge() should.
-    const challenge = new PronunciationChallenge('1', 'test', blob);
-    challenge.referenceAudio = null;
-    controller.createPronunciationChallenge(challenge)
-      .then(() => {
-        fail('An error should be thrown');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('referenceAudio parameter of type "Blob" is required');
-      })
-      .then(done);
-  });
-
-  it('should check for required referenceAudio field', done => {
     const challenge = new PronunciationChallenge('1', 'test', blob);
     challenge.referenceAudio = null;
     controller.createPronunciationChallenge(challenge)
