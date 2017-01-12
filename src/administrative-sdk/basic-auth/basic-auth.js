@@ -10,7 +10,7 @@ export default class BasicAuth {
    * @throws {Error} principal parameter of type "string|null" is required.
    * @throws {Error} credentials parameter of type "string|null" is required.
    */
-  constructor(tenantId, principal, credentials) {
+  constructor(tenantId, principal = null, credentials = null) {
     if (typeof tenantId !== 'string') {
       throw new Error(
         'tenantId parameter of type "string" is required');
