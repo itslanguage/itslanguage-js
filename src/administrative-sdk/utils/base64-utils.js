@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 export default class Base64Utils {
 
   /**

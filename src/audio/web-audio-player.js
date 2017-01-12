@@ -6,6 +6,7 @@
  * @author d-centralize
  *
  * This class fires the same events as the HTML5 Audio does. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
+ * @private
  */
 
 export default class WebAudioPlayer {

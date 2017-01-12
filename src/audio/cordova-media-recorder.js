@@ -11,6 +11,7 @@ Media
  *
  * More information on:
  * https://github.com/apache/cordova-plugin-media/blob/master/doc/index.md
+ * @private
  */
 export default class CordovaMediaRecorder {
   /**

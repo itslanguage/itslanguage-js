@@ -11,7 +11,9 @@ device
  * @author d-centralize
  */
 
-
+/**
+ * @private
+ */
 export default class CordovaMediaPlayer {
   /**
    * ITSLanguage CordovaMediaPlayer non-graphical component.

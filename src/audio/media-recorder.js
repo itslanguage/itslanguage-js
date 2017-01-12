@@ -13,6 +13,9 @@
  * https://wiki.mozilla.org/Gecko:MediaRecorder
  *
  */
+/**
+ * @private
+ */
 export default class MediaRecorder {
   /**
    * MediaRecorder.
