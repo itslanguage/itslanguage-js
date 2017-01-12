@@ -13,8 +13,8 @@ export default class PronunciationChallenge {
    * @throws {Error} transcription parameter of type "string" is required.
    * @throws {Error} referenceAudioUrl parameter of type "string|null" is required.
    */
-  constructor(id, transcription, referenceAudioUrl = null) {
-    if (id && typeof id !== 'string') {
+  constructor(id = null, transcription, referenceAudioUrl = null) {
+    if (id !== null && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
     }
@@ -27,6 +27,12 @@ export default class PronunciationChallenge {
     if (referenceAudioUrl !== null && typeof referenceAudioUrl !== 'string') {
       throw new Error('referenceAudioUrl parameter of type "string|null" is required');
     }
+
+    /**
+     * The pronunciation challenge identifier. If none is given, one is generated.
+     * @type {string}
+     */
+    this.id = id;
 
     /**
      * The spoken word or sentence as plain text.
