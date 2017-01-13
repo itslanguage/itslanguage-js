@@ -60,6 +60,8 @@ export default class AudioPlayer {
     this._player = this._getBestPlayer(callbacks);
     this._emitter = ee({});
     this._stopwatch = null;
+    this._audioLevel = 1;
+    this._audioMuted = false;
   }
 
   /**
@@ -195,6 +197,7 @@ export default class AudioPlayer {
   load(url, preload, loadedCb) {
     this.reset();
     this._player.load(url, preload, loadedCb);
+    this._audioLevel = 1;
 
     // If preloading is disabled, the 'canplay' event won't be triggered.
     // In that case, fire it manually.
@@ -376,4 +379,61 @@ export default class AudioPlayer {
     });
     return this._stopwatch;
   }
+
+  /**
+   * Sets the audio level of the current loaded audio. Valid values are from 0 (0%) to 1 (100%).
+   *
+   * @param {number} volume - Volume value from 0 to 1.
+   */
+  setAudioVolume(volume) {
+    if (volume !== 0) {
+      this._audioMuted = false;
+    }
+    if (volume === 0) {
+      this._audioMuted = true;
+    }
+    this._player.setAudioVolume(volume);
+  }
+
+  /**
+   * Gets the audio level of the current loaded audio. Valid values are from 0 (0%) to 1 (100%).
+   *
+   * @returns {number} Volume level of the current loaded audio.
+   */
+  getAudioVolume() {
+    return this._player.getAudioVolume();
+  }
+
+  /**
+   * Toggle the current playing audio to be muted or not. If the audio will be muted, the current audio level
+   * is remembered and can be unmuted to continue at this same audio level.
+   */
+  toggleAudioMute() {
+    this.setAudioMute(!this._audioMuted);
+  }
+
+  /**
+   * Manually set the muted state of the current loaded audio.
+   *
+   * @param {boolean} shouldMute - Whether the audio should be muted or unmuted.
+   */
+  setAudioMute(shouldMute) {
+    if (shouldMute) {
+      this._audioLevel = this.getAudioVolume();
+      this.setAudioVolume(0);
+    } else {
+      this.setAudioVolume(this._audioLevel);
+    }
+  }
+
+  /**
+   * Return the muted state of the current loaded audio.
+   *
+   * @returns {boolean} The muted state of the current loaded audio.
+   */
+  isAudioMuted() {
+    return this._audioMuted;
+  }
 }
+
+

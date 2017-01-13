@@ -295,4 +295,22 @@ describe('Cordova Media Player', () => {
     player.getPlaybackRate();
     player.setPlaybackRate(1);
   });
+
+  it('should set the audio volume', () => {
+    player.sound = {
+      setVolume: jasmine.createSpy()
+    };
+    player.setAudioVolume(0.5);
+    expect(player.sound.setVolume).toHaveBeenCalledWith(0.5);
+
+    player.setAudioVolume(0);
+    expect(player.sound.setVolume).toHaveBeenCalledWith(0);
+
+    player.setAudioVolume(1);
+    expect(player.sound.setVolume).toHaveBeenCalledWith(1);
+  });
+
+  it('should call the get audio volume', () => {
+    player.getAudioVolume();
+  });
 });

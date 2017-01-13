@@ -413,5 +413,99 @@ describe('Audio player', () => {
     player.getPlaybackRate();
     expect(player._player.getPlaybackRate).toHaveBeenCalledTimes(1);
   });
+
+  it('should set the volume of the audio', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player.setAudioVolume(0.2);
+    expect(player._player.setAudioVolume).toHaveBeenCalledTimes(1);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(0.2);
+    expect(player._audioMuted).toBeFalsy();
+  });
+
+  it('should set the volume of the audio to zero and mute', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player.setAudioVolume(0);
+    expect(player._player.setAudioVolume).toHaveBeenCalledTimes(1);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(0);
+    expect(player._audioMuted).toBeTruthy();
+  });
+
+  it('should get the volume of the audio', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player._player.getAudioVolume.and.returnValue(0.5);
+    const result = player.getAudioVolume(0.2);
+    expect(player._player.getAudioVolume).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(0.5);
+  });
+
+  it('should set the mute of the audio true', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player.setAudioMute(true);
+    expect(player._player.setAudioVolume).toHaveBeenCalledTimes(1);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(0);
+    expect(player._audioMuted).toBeTruthy();
+  });
+
+  it('should unmute the audio after muting', () => {
+    const player = new AudioPlayer();
+    spyOn(player, 'toggleAudioMute').and.callThrough();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player._player.getAudioVolume.and.returnValue(0.5);
+    player.setAudioMute(true);
+    expect(player._audioMuted).toBeTruthy();
+
+    player._player.getAudioVolume.and.returnValue(0);
+    player.setAudioMute(false);
+    expect(player._audioMuted).toBeFalsy();
+
+    expect(player._player.setAudioVolume).toHaveBeenCalledTimes(2);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(0);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(0.5);
+  });
+
+  it('should unmute the audio with a previous changed audiolevel', () => {
+    const audioLevel = 0.5;
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player._player.getAudioVolume.and.returnValue(audioLevel);
+    player.setAudioVolume(audioLevel);
+    player.setAudioMute(true);
+    player.setAudioMute(false);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(0);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(audioLevel);
+    expect(player._player.setAudioVolume).toHaveBeenCalledTimes(3);
+  });
+
+  it('should get the _audioMuted property', () => {
+    const player = new AudioPlayer();
+    const result = player.isAudioMuted();
+    expect(result).toBeFalsy();
+  });
+
+  it('should get the _audioMuted property after muting', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player._player.getAudioVolume.and.returnValue(0.5);
+    player.setAudioMute(true);
+    const result = player.isAudioMuted();
+    expect(result).toBeTruthy();
+  });
+
+  it('should toggle the mute state on and off', () => {
+    const player = new AudioPlayer();
+    player._player = jasmine.createSpyObj('player', ['setAudioVolume', 'getAudioVolume']);
+    player._player.getAudioVolume.and.returnValue(1);
+    player.toggleAudioMute();
+    player._player.getAudioVolume.and.returnValue(0);
+    expect(player._player.setAudioVolume).toHaveBeenCalledTimes(1);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(0);
+    player.toggleAudioMute();
+    expect(player._player.setAudioVolume).toHaveBeenCalledTimes(2);
+    expect(player._player.setAudioVolume).toHaveBeenCalledWith(1);
+  });
 });
 
