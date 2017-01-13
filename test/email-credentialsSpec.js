@@ -31,7 +31,7 @@ describe('Email credentials', () => {
       controller.createEmailCredentials(v)
         .then(fail)
         .catch(error => {
-          expect(error.message).toEqual('userId field is required');
+          expect(error.message).toEqual('userId parameter of type "string" is required');
         })
         .then(done);
     });
@@ -43,7 +43,7 @@ describe('Email credentials', () => {
       controller.createEmailCredentials('0', v)
         .then(fail)
         .catch(error => {
-          expect(error.message).toEqual('emailCredentials field is required');
+          expect(error.message).toEqual('emailCredentials parameter of type "EmailCredentials" is required');
         })
         .then(done);
     });

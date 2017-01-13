@@ -68,49 +68,56 @@ export default class Category {
     }
 
     /**
-     * @type {string} Identifier of this category. If none is given one is generated upon creation in the API.
+     * Identifier of this category. If none is given one is generated upon creation in the API.
+     * @type {string}
      */
     this.id = id;
 
     /**
-     * @type {string} Name associated with this category.
+     * Name associated with this category.
+     * @type {string}
      */
     this.name = name;
 
     /**
-     * @type {string} Description associated with this category.
+     * Description associated with this category.
+     * @type {string}
      */
     this.description = description;
 
     /**
-     * @type {string} Color associated with this category.
+     * Color associated with this category.
+     * @type {string}
      */
     this.color = color;
 
     /**
-     * @type {string} Image associated with this category.
+     * Image associated with this category.
+     * @type {string}
      */
     this.image = image;
 
     /**
-     * @type {string} Icon associated with this category.
+     * Icon associated with this category.
+     * @type {string}
      */
     this.icon = icon;
 
     /**
-     * @type {Array.<Category>} Other categories this category contains. A category can only contain
-     * either more categories or challenges.
+     * Other categories this category contains. A category can only contain either more categories or challenges.
+     * @type {Array.<Category>}
      */
     this.categories = categories;
 
     /**
-     * @type {Array.<SpeechChallenge>} Challenges this category contains. A category can only contain
-     * either more categories or challenges.
+     * Challenges this category contains. A category can only contain either more categories or challenges.
+     * @type {Array.<SpeechChallenge>}
      */
     this.speechChallenges = speechChallenges;
 
     /**
-     * @type {Progress} Progress values of this category.
+     * Progress values of this category.
+     * @type {Progress}
      */
     this.progress = progress;
   }

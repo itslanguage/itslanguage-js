@@ -1,4 +1,5 @@
 import Base64Utils from '../utils/base64-utils';
+import ChoiceChallenge from '../choice-challenge/choice-challenge';
 import ChoiceRecognition from './choice-recognition';
 import Connection from '../connection/connection-controller';
 import when from 'when';
@@ -66,20 +67,20 @@ export default class ChoiceRecognitionController {
    * @param {boolean} [trim=true] - Whether to trim the start and end of recorded audio.
    * @returns {Promise.<ChoiceRecognition>} A {@link https://github.com/cujojs/when} Promise containing a {@link ChoiceRecognition}.
    * @emits {string} 'ReadyToReceive' when the call is made to receive audio. The recorder can now send audio.
-   * @throws {Promise.<Error>} {@link ChoiceChallenge} parameter is required or invalid.
-   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise.<Error>} challenge parameter of type "ChoiceChallenge" is required.
+   * @throws {Promise.<Error>} challenge.id field of type "string" is required.
    * @throws {Promise.<Error>} If the connection is not open.
    * @throws {Promise.<Error>} If the recorder is already recording.
    * @throws {Promise.<Error>} If a recognition session is already in progress.
    * @throws {Promise.<Error>} If something went wrong during analysis.
    */
   startStreamingChoiceRecognition(challenge, recorder, trim) {
-    if (typeof challenge !== 'object' || !challenge) {
-      return Promise.reject(new Error(
-        '"challenge" parameter is required or invalid'));
+    if (!(challenge instanceof ChoiceChallenge)) {
+      return Promise.reject(new Error('challenge parameter of type "ChoiceChallenge" is required'));
     }
-    if (!challenge.id) {
-      return Promise.reject(new Error('challenge.id field is required'));
+
+    if (typeof challenge.id !== 'string') {
+      return Promise.reject(new Error('challenge.id field of type "string" is required'));
     }
 
     // Validate environment prerequisites.
@@ -221,16 +222,17 @@ export default class ChoiceRecognitionController {
    * @param {string} challengeId - Specify a choice challenge identifier.
    * @param {string} recognitionId - Specify a choice recognition identifier.
    * @returns {Promise.<ChoiceRecognition>} Promise containing a ChoiceRecognition.
-   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} field is required.
-   * @throws {Promise.<Error>} {@link ChoiceRecognition#id} field is required.
+   * @throws {Promise.<Error>} challengeId parameter of type "string" is required.
+   * @throws {Promise.<Error>} recognitionId parameter of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
   getChoiceRecognition(challengeId, recognitionId) {
-    if (!challengeId) {
-      return Promise.reject(new Error('challengeId field is required'));
+    if (typeof challengeId !== 'string') {
+      return Promise.reject(new Error('challengeId parameter of type "string" is required'));
     }
-    if (!recognitionId) {
-      return Promise.reject(new Error('recognitionId field is required'));
+
+    if (typeof recognitionId !== 'string') {
+      return Promise.reject(new Error('recognitionId parameter of type "string" is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/choice/' +
       challengeId + '/recognitions/' + recognitionId;
@@ -247,12 +249,12 @@ export default class ChoiceRecognitionController {
    *
    * @param {string} challengeId - Specify a choice challenge to list speech recognitions for.
    * @returns {Promise.<ChoiceRecognition[]>} Promise containing an array of ChoiceRecognitions.
-   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} is required.
+   * @throws {Promise.<Error>} challengeId parameter of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
   getChoiceRecognitions(challengeId) {
-    if (!challengeId) {
-      return Promise.reject(new Error('challengeId field is required'));
+    if (typeof challengeId !== 'string') {
+      return Promise.reject(new Error('challengeId parameter of type "string" is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/choice/' +
       challengeId + '/recognitions';

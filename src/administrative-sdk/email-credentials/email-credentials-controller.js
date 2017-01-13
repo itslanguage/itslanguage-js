@@ -22,17 +22,17 @@ export default class EmailCredentialsController {
    * @param {string} userId - The identifier of the user to register credentials to.
    * @param {EmailCredentials} emailCredentials - The credentials to register to the user.
    * @returns {Promise.<EmailCredentials>} A promise containing the created EmailCredentials.
-   * @throws {Promise.<Error>} UserId parameter of type "string" is required.
-   * @throws {Promise.<Error>} EmailCredentials parameter of type "EmailCredentials" is required.
+   * @throws {Promise.<Error>} userId parameter of type "string" is required.
+   * @throws {Promise.<Error>} emailCredentials parameter of type "EmailCredentials" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createEmailCredentials(userId, emailCredentials) {
     if (typeof userId !== 'string') {
-      return Promise.reject(new Error('userId field is required'));
+      return Promise.reject(new Error('userId parameter of type "string" is required'));
     }
 
     if (!(emailCredentials instanceof EmailCredentials)) {
-      return Promise.reject(new Error('emailCredentials field is required'));
+      return Promise.reject(new Error('emailCredentials parameter of type "EmailCredentials" is required'));
     }
 
     const url = this._connection._settings.apiUrl + '/users/' + userId + '/emailauths';

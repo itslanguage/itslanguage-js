@@ -9,6 +9,7 @@ export default class Organisation {
     if (id !== null && typeof id !== 'string') {
       throw new Error('id parameter of type "string|null" is required');
     }
+
     if (typeof name !== 'string') {
       throw new Error('name parameter of type "string" is required');
     }

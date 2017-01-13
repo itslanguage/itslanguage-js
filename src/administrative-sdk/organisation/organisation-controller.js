@@ -21,12 +21,12 @@ export default class OrganisationController {
    *
    * @param {Organisation} organisation - Object to create.
    * @returns {Promise.<Organisation>} Promise containing the newly created Organisation.
-   * @throws {Promise.<Error>} organisation field of type "Organisation" is required.
+   * @throws {Promise.<Error>} organisation parameter of type "Organisation" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createOrganisation(organisation) {
     if (!(organisation instanceof Organisation)) {
-      return Promise.reject(new Error('organisation field of type "Organisation" is required'));
+      return Promise.reject(new Error('organisation parameter of type "Organisation" is required'));
     }
     const url = this._connection._settings.apiUrl + '/organisations';
     const fd = JSON.stringify(organisation);
@@ -45,12 +45,12 @@ export default class OrganisationController {
    *
    * @param {string} organisationId - Specify an organisation identifier.
    * @returns {Promise.<Organisation>} Promise containing an Organisation.
-   * @throws {Promise.<Error>} {@link Organisation#id} field of type "string" is required.
+   * @throws {Promise.<Error>} organisationId parameter of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
   getOrganisation(organisationId) {
     if (typeof organisationId !== 'string') {
-      return Promise.reject(new Error('organisationId field of type "string" is required'));
+      return Promise.reject(new Error('organisationId parameter of type "string" is required'));
     }
     const url = this._connection._settings.apiUrl + '/organisations/' + organisationId;
 

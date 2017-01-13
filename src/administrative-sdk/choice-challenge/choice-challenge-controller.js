@@ -23,9 +23,13 @@ export default class ChoiceChallengeController {
    *
    * @param {ChoiceChallenge} choiceChallenge - Object to create.
    * @returns {Promise.<ChoiceChallenge>} Containing the newly created ChoiceChallenge.
+   * @throws {Promise.<Error>} choiceChallenge parameter of type "ChoiceChallenge" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
   createChoiceChallenge(choiceChallenge) {
+    if (!(choiceChallenge instanceof ChoiceChallenge)) {
+      return Promise.reject(new Error('choiceChallenge parameter of type "ChoiceChallenge" is required'));
+    }
     const url = this._connection._settings.apiUrl + '/challenges/choice';
     const fd = JSON.stringify(choiceChallenge);
     return this._connection._secureAjaxPost(url, fd)
@@ -47,12 +51,12 @@ export default class ChoiceChallengeController {
    *
    * @param {string} challengeId - Specify a choice challenge identifier.
    * @returns {Promise.<ChoiceChallenge>} Containing a ChoiceChallenge.
-   * @throws {Promise.<Error>} {@link ChoiceChallenge#id} field is required.
+   * @throws {Promise.<Error>} challengeId parameter of type "string" is required.
    * @throws {Promise.<Error>} If no result could not be found.
    */
   getChoiceChallenge(challengeId) {
-    if (!challengeId) {
-      return Promise.reject(new Error('challengeId field is required'));
+    if (typeof challengeId !== 'string') {
+      return Promise.reject(new Error('challengeId parameter of type "string" is required'));
     }
     const url = this._connection._settings.apiUrl + '/challenges/choice/' + challengeId;
     return this._connection._secureAjaxGet(url)

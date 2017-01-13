@@ -34,7 +34,7 @@ describe('Organisation API interaction test', () => {
       controller.createOrganisation(v)
         .then(fail)
         .catch(error => {
-          expect(error.message).toEqual('organisation field of type "Organisation" is required');
+          expect(error.message).toEqual('organisation parameter of type "Organisation" is required');
         })
         .then(done);
     });
@@ -129,11 +129,11 @@ describe('Organisation API interaction test', () => {
     const controller = new OrganisationController();
     [0, {}, [], true, false, null, undefined].map(v => {
       controller.getOrganisation(v)
-        .then(fail)
-        .catch(error => {
-          expect(error.message).toEqual('organisationId field of type "string" is required');
-        })
-        .then(done);
+          .then(fail)
+          .catch(error => {
+            expect(error.message).toEqual('organisationId parameter of type "string" is required');
+          })
+          .then(done);
     });
   });
 

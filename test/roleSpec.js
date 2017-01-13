@@ -15,7 +15,7 @@ describe('Role', () => {
     [0, '0', {}, true, false, null, undefined].map(v => {
       expect(() => {
         new Role('student', v);
-      }).toThrowError('permission parameter of type "Array" is required');
+      }).toThrowError('permission parameter of type "Array.<string>" is required');
     });
   });
 

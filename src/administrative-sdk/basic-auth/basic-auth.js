@@ -10,7 +10,7 @@ export default class BasicAuth {
    * @throws {Error} principal parameter of type "string|null" is required.
    * @throws {Error} credentials parameter of type "string|null" is required.
    */
-  constructor(tenantId, principal, credentials) {
+  constructor(tenantId, principal = null, credentials = null) {
     if (typeof tenantId !== 'string') {
       throw new Error(
         'tenantId parameter of type "string" is required');
@@ -27,17 +27,20 @@ export default class BasicAuth {
     }
 
     /**
-     * @type {string} The Tenant identifier to create this BasicAuth for.
+     * The Tenant identifier to create this BasicAuth for.
+     * @type {string}
      */
     this.tenantId = tenantId;
 
     /**
-     * @type {string} The principal. If none is given, one is generated.
+     * The principal. If none is given, one is generated.
+     * @type {string}
      */
     this.principal = principal;
 
     /**
-     * @type {string} The credentials. If none are given, one is generated.
+     * The credentials. If none are given, one is generated.
+     * @type {string}
      */
     this.credentials = credentials;
   }

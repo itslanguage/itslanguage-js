@@ -3,18 +3,28 @@ import Controller from '../src/administrative-sdk/pronunciation-challenge/pronun
 import PronunciationChallenge from '../src/administrative-sdk/pronunciation-challenge/pronunciation-challenge';
 
 describe('PronunciationChallenge object test', () => {
-  it('should require all required fields in constructor', () => {
-    expect(() => {
-      new PronunciationChallenge(4);
-    }).toThrowError('id parameter of type "string|null" is required');
+  it('should not construct with an invalid id', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new PronunciationChallenge(v);
+      }).toThrowError('id parameter of type "string|null" is required');
+    });
+  });
 
-    expect(() => {
-      new PronunciationChallenge('1', null);
-    }).toThrowError('transcription parameter of type "string" is required');
+  it('should not construct with an invalid transcription', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new PronunciationChallenge('0', v);
+      }).toThrowError('transcription parameter of type "string" is required');
+    });
+  });
 
-    expect(() => {
-      new PronunciationChallenge('hi', '1', 0);
-    }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
+  it('should not construct with an invalid referenceAudioUrl', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new PronunciationChallenge('0', 'tr', v);
+      }).toThrowError('referenceAudioUrl parameter of type "string|null" is required');
+    });
   });
 
   it('should instantiate a PronunciationChallenge', () => {
@@ -25,6 +35,12 @@ describe('PronunciationChallenge object test', () => {
     expect(s.id).toBe('test');
     expect(s.transcription).toBe('hi');
     expect(s.referenceAudioUrl).toBe(audioUrl);
+
+    const s2 = new PronunciationChallenge(undefined, 'hi', undefined);
+    expect(s2).toBeDefined();
+    expect(s2.id).toBeNull();
+    expect(s2.transcription).toBe('hi');
+    expect(s2.referenceAudioUrl).toBeNull();
   });
 
   it('should instantiate a PronunciationChallenge wihtout referenceAudio', () => {
