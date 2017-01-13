@@ -171,8 +171,8 @@ export default class WebAudioPlayer {
         this.sound.currentTime = position;
       }
     }
-    console.debug('Start playing from position: ' + this.sound.currentTime);
     this.sound.play();
+    console.debug('Start playing from position: ' + this.sound.currentTime);
   }
 
   /**
