@@ -289,4 +289,11 @@ export default class CordovaMediaPlayer {
   isPlaying() {
     return this._isPlaying;
   }
+
+  setAudioVolume(volume) {
+    this.sound.setVolume(volume);
+  }
+
+  getAudioVolume() {
+  }
 }

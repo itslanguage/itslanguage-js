@@ -324,4 +324,12 @@ export default class WebAudioPlayer {
     return this.sound.readyState >= this.sound.HAVE_METADATA ||
       this.sound.src && !this.sound.error;
   }
+
+  setAudioVolume(volume) {
+    this.sound.volume = volume;
+  }
+
+  getAudioVolume() {
+    return this.sound.volume;
+  }
 }

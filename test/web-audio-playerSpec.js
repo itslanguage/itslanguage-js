@@ -474,4 +474,28 @@ describe('WebAudioPlayer', () => {
     result = webAudioPlayer.canPlay();
     expect(result).toBeTruthy();
   });
+
+  it('should set the audio volume', () => {
+    webAudioPlayer = new WebAudioPlayer();
+    webAudioPlayer.setAudioVolume(0.5);
+    expect(audioMock.volume).toEqual(0.5);
+
+    webAudioPlayer.setAudioVolume(0);
+    expect(audioMock.volume).toEqual(0);
+
+    webAudioPlayer.setAudioVolume(1);
+    expect(audioMock.volume).toEqual(1);
+  });
+
+  it('should get the audio volume', () => {
+    webAudioPlayer = new WebAudioPlayer();
+    audioMock.volume = 0.5;
+    expect(webAudioPlayer.getAudioVolume()).toEqual(0.5);
+
+    audioMock.volume = 0;
+    expect(webAudioPlayer.getAudioVolume()).toEqual(0);
+
+    audioMock.volume = 1;
+    expect(webAudioPlayer.getAudioVolume()).toEqual(1);
+  });
 });
