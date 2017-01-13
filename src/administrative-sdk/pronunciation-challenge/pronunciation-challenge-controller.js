@@ -20,26 +20,31 @@ export default class PronunciationChallengeController {
    * Create a pronunciation challenge. The created challenge will be part of the current active {@link Organisation}
    * derived from the OAuth2 scope.
    *
-   * @param {PronunciationChallenge} challenge - Object to create..
+   * @param {PronunciationChallenge} challenge - Object to create.
+   * @param {Blob} audioBlob - Audio fragment to link to the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created PronunciationChallenge.
-   * @throws {Promise.<Error>} {@link PronunciationChallenge#referenceAudio} of type "Blob" is required.
+   * @throws {Promise.<Error>} challenge parameter of type "PronunciationChallenge" is required.
+   * @throws {Promise.<Error>} audioBlob parameter of type "Blob" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  createPronunciationChallenge(challenge) {
-    if (typeof challenge.referenceAudio !== 'object' || !challenge.referenceAudio) {
-      return Promise.reject(new Error(
-        'referenceAudio parameter of type "Blob" is required'));
+  createPronunciationChallenge(challenge, audioBlob) {
+    if (!(challenge instanceof PronunciationChallenge)) {
+      return Promise.reject(new Error('challenge parameter of type "PronunciationChallenge" is required'));
     }
+
+    if (!(audioBlob instanceof Blob)) {
+      return Promise.reject(new Error(
+        'audioBlob parameter of type "Blob" is required'));
+    }
+
+    challenge.referenceAudio = audioBlob;
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
     const fd = JSON.stringify(challenge);
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new PronunciationChallenge(data.id, data.transcription,
-          data.referenceAudio);
+        const result = new PronunciationChallenge(data.id, data.transcription, data.referenceAudioUrl);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
-        result.referenceAudio = challenge.referenceAudio;
-        result.referenceAudioUrl = data.referenceAudioUrl;
         result.status = data.status;
         return result;
       });
@@ -60,10 +65,9 @@ export default class PronunciationChallengeController {
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation/' + challengeId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const challenge = new PronunciationChallenge(data.id, data.transcription, data.referenceAudio);
+        const challenge = new PronunciationChallenge(data.id, data.transcription, data.referenceAudioUrl);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
-        challenge.referenceAudioUrl = data.referenceAudioUrl;
         challenge.status = data.status;
         return challenge;
       });
@@ -82,10 +86,9 @@ export default class PronunciationChallengeController {
       .then(data => {
         const challenges = [];
         data.forEach(datum => {
-          const challenge = new PronunciationChallenge(datum.id, datum.transcription, datum.referenceAudio);
+          const challenge = new PronunciationChallenge(datum.id, datum.transcription, datum.referenceAudioUrl);
           challenge.created = new Date(datum.created);
           challenge.updated = new Date(datum.updated);
-          challenge.referenceAudioUrl = datum.referenceAudioUrl;
           challenge.status = datum.status;
           challenges.push(challenge);
         });

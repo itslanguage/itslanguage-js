@@ -17,6 +17,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   let fakeResponse;
   let stringDate;
   let controller;
+  let audioUrl;
 
   beforeEach(() => {
     api = new Connection({
@@ -24,6 +25,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       wsUrl: 'ws://foo.bar',
       oAuth2Token: 'token'
     });
+    audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     let shouldFireRecord = true;
     RecorderMock = function() {
       this.getAudioSpecs = function() {
@@ -34,7 +36,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
             sampleWidth: 16,
             sampleRate: 48000
           },
-          audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+          audioUrl
         };
       };
       this.hasUserMediaApproval = function() {
@@ -76,7 +78,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
     };
 
-    challenge = new PronunciationChallenge('4', 'foo', new Blob(['a']));
+    challenge = new PronunciationChallenge('4', 'foo', audioUrl);
     recorder = new RecorderMock();
     stringDate = '2014-12-31T23:59:59Z';
     fakeResponse = {
@@ -90,7 +92,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         sampleWidth: 16,
         sampleRate: 48000
       },
-      audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+      audioUrl
     };
     api._session = new SessionMock();
     spyOn(api._session, 'call').and.callThrough();
@@ -139,7 +141,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   });
 
   it('should fail streaming when challenge.id is not present', done => {
-    challenge = new PronunciationChallenge('', '', new Blob(['a']));
+    challenge = new PronunciationChallenge('', '', audioUrl);
     controller.startStreamingPronunciationAnalysis(challenge, null)
       .then(() => {
         fail('No result should be returned');
@@ -153,7 +155,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
   it('should fail streaming when recording is already recording', done => {
     recorder.isRecording = () => true;
     api._session = {};
-    challenge = new PronunciationChallenge('1', '4', '', new Blob(['a']));
+    challenge = new PronunciationChallenge('1', '4', '', audioUrl);
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('No result should be returned');
@@ -169,7 +171,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
     api._analysisId = '5';
     api._session = {};
     controller = new Controller(api);
-    challenge = new PronunciationChallenge('1', '4', '', new Blob(['a']));
+    challenge = new PronunciationChallenge('1', '4', '', audioUrl);
     controller.startStreamingPronunciationAnalysis(challenge, recorder)
       .then(() => {
         fail('No result should be returned');
@@ -794,7 +796,8 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('1', 'test', new Blob());
+    const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+    const challenge = new PronunciationChallenge('1', 'test', audioUrl);
     const controller = new Controller(api);
     controller.getPronunciationAnalysis(challenge.id)
       .then(() => {
@@ -810,9 +813,9 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('4', 'test', new Blob());
-    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+    const challenge = new PronunciationChallenge('4', 'test', audioUrl);
+    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const content = {
       id: '5',
       created: '2014-12-31T23:59:59Z',
@@ -848,9 +851,9 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('4', 'test', new Blob());
-    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+    const challenge = new PronunciationChallenge('4', 'test', audioUrl);
+    const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses/5';
     const content = {
       id: '5',
       created: '2014-12-31T23:59:59Z',
@@ -916,9 +919,8 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-
-    const challenge = new PronunciationChallenge('4', 'test', new Blob());
     const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+    const challenge = new PronunciationChallenge('4', 'test', audioUrl);
     const content = [{
       id: '5',
       created: '2014-12-31T23:59:59Z',
@@ -998,7 +1000,8 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-    const challenge = new PronunciationChallenge('', 'test', new Blob());
+    const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+    const challenge = new PronunciationChallenge('', 'test', audioUrl);
     const controller = new Controller(api);
     controller.getPronunciationAnalyses(challenge.id, null)
       .then(() => {
@@ -1014,11 +1017,10 @@ describe('PronunciationAnalyses API interaction test', () => {
     const api = new Connection({
       oAuth2Token: 'token'
     });
-
-    const challenge = new PronunciationChallenge('4', 'test', new Blob());
+    const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
+    const challenge = new PronunciationChallenge('4', 'test', audioUrl);
     const url = 'https://api.itslanguage.nl/challenges/pronunciation/4/analyses?detailed=true';
 
-    const audioUrl = 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ';
     const content = [{
       id: '5',
       created: '2014-12-31T23:59:59Z',

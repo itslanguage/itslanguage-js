@@ -7,9 +7,11 @@ export default class PronunciationChallenge {
    *
    * @param {?string} id - The pronunciation challenge identifier. If none is given, one is generated.
    * @param {string} transcription - The spoken word or sentence as plain text.
-   * @param {Blob} referenceAudio - The reference audio fragment.
+   * @param {?string} referenceAudioUrl - The reference audio fragment URL. If one is not yet available or audio is
+   * not yet registered to the challenge it can be set to 'null'.
+   * @throws {Error} referenceAudioUrl parameter of type "string|null" is required
    */
-  constructor(id, transcription, referenceAudio) {
+  constructor(id, transcription, referenceAudioUrl = null) {
     if (id && typeof id !== 'string') {
       throw new Error(
         'id parameter of type "string|null" is required');
@@ -28,15 +30,6 @@ export default class PronunciationChallenge {
      * @type {string}
      */
     this.transcription = transcription;
-    if (typeof referenceAudio !== 'object' && referenceAudio) {
-      throw new Error(
-        'referenceAudio parameter of type "Blob" is required');
-    }
-    /**
-     * The reference audio fragment.
-     * @type {Blob}
-     */
-    this.referenceAudio = referenceAudio;
 
     /**
      * The creation date of the challenge entity.
@@ -56,10 +49,14 @@ export default class PronunciationChallenge {
      */
     this.status = null;
 
+    if (referenceAudioUrl !== null && typeof referenceAudioUrl !== 'string') {
+      throw new Error('referenceAudioUrl parameter of type "string|null" is required');
+    }
+
     /**
      * The reference audio fragment as streaming audio link.
      * @type {string}
      */
-    this.referenceAudioUrl = null;
+    this.referenceAudioUrl = referenceAudioUrl;
   }
 }
