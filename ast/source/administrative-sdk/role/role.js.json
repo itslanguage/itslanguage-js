@@ -1,0 +1,1110 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "ClassDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "Role",
+          "range": [
+            97,
+            101
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 21
+            },
+            "end": {
+              "line": 4,
+              "column": 25
+            }
+          }
+        },
+        "superClass": null,
+        "body": {
+          "type": "ClassBody",
+          "body": [
+            {
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "constructor",
+                "range": [
+                  413,
+                  424
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 13
+                  }
+                }
+              },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [
+                  {
+                    "type": "Identifier",
+                    "name": "name",
+                    "range": [
+                      425,
+                      429
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 13,
+                        "column": 14
+                      },
+                      "end": {
+                        "line": 13,
+                        "column": 18
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "permissions",
+                    "range": [
+                      431,
+                      442
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 13,
+                        "column": 20
+                      },
+                      "end": {
+                        "line": 13,
+                        "column": 31
+                      }
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "IfStatement",
+                      "test": {
+                        "type": "BinaryExpression",
+                        "operator": "!==",
+                        "left": {
+                          "type": "UnaryExpression",
+                          "operator": "typeof",
+                          "argument": {
+                            "type": "Identifier",
+                            "name": "name",
+                            "range": [
+                              461,
+                              465
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 14,
+                                "column": 15
+                              },
+                              "end": {
+                                "line": 14,
+                                "column": 19
+                              }
+                            }
+                          },
+                          "prefix": true,
+                          "range": [
+                            454,
+                            465
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 14,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 14,
+                              "column": 19
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Literal",
+                          "value": "string",
+                          "raw": "'string'",
+                          "range": [
+                            470,
+                            478
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 14,
+                              "column": 24
+                            },
+                            "end": {
+                              "line": 14,
+                              "column": 32
+                            }
+                          }
+                        },
+                        "range": [
+                          454,
+                          478
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 14,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 14,
+                            "column": 32
+                          }
+                        }
+                      },
+                      "consequent": {
+                        "type": "BlockStatement",
+                        "body": [
+                          {
+                            "type": "ThrowStatement",
+                            "argument": {
+                              "type": "NewExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "Error",
+                                "range": [
+                                  498,
+                                  503
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 15,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 15,
+                                    "column": 21
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Literal",
+                                  "value": "role parameter of type \"string\" is required",
+                                  "raw": "'role parameter of type \"string\" is required'",
+                                  "range": [
+                                    504,
+                                    549
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 15,
+                                      "column": 22
+                                    },
+                                    "end": {
+                                      "line": 15,
+                                      "column": 67
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                494,
+                                550
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 15,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 15,
+                                  "column": 68
+                                }
+                              }
+                            },
+                            "range": [
+                              488,
+                              551
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 15,
+                                "column": 6
+                              },
+                              "end": {
+                                "line": 15,
+                                "column": 69
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          480,
+                          557
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 14,
+                            "column": 34
+                          },
+                          "end": {
+                            "line": 16,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "alternate": null,
+                      "range": [
+                        450,
+                        557
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 14,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 16,
+                          "column": 5
+                        }
+                      }
+                    },
+                    {
+                      "type": "IfStatement",
+                      "test": {
+                        "type": "LogicalExpression",
+                        "operator": "||",
+                        "left": {
+                          "type": "UnaryExpression",
+                          "operator": "!",
+                          "argument": {
+                            "type": "BinaryExpression",
+                            "operator": "instanceof",
+                            "left": {
+                              "type": "Identifier",
+                              "name": "permissions",
+                              "range": [
+                                569,
+                                580
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 18,
+                                  "column": 10
+                                },
+                                "end": {
+                                  "line": 18,
+                                  "column": 21
+                                }
+                              }
+                            },
+                            "right": {
+                              "type": "Identifier",
+                              "name": "Array",
+                              "range": [
+                                592,
+                                597
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 18,
+                                  "column": 33
+                                },
+                                "end": {
+                                  "line": 18,
+                                  "column": 38
+                                }
+                              }
+                            },
+                            "range": [
+                              569,
+                              597
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 18,
+                                "column": 10
+                              },
+                              "end": {
+                                "line": 18,
+                                "column": 38
+                              }
+                            }
+                          },
+                          "prefix": true,
+                          "range": [
+                            567,
+                            598
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 18,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 18,
+                              "column": 39
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "BinaryExpression",
+                          "operator": "===",
+                          "left": {
+                            "type": "MemberExpression",
+                            "computed": false,
+                            "object": {
+                              "type": "Identifier",
+                              "name": "permissions",
+                              "range": [
+                                602,
+                                613
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 18,
+                                  "column": 43
+                                },
+                                "end": {
+                                  "line": 18,
+                                  "column": 54
+                                }
+                              }
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "name": "length",
+                              "range": [
+                                614,
+                                620
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 18,
+                                  "column": 55
+                                },
+                                "end": {
+                                  "line": 18,
+                                  "column": 61
+                                }
+                              }
+                            },
+                            "range": [
+                              602,
+                              620
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 18,
+                                "column": 43
+                              },
+                              "end": {
+                                "line": 18,
+                                "column": 61
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Literal",
+                            "value": 0,
+                            "raw": "0",
+                            "range": [
+                              625,
+                              626
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 18,
+                                "column": 66
+                              },
+                              "end": {
+                                "line": 18,
+                                "column": 67
+                              }
+                            }
+                          },
+                          "range": [
+                            602,
+                            626
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 18,
+                              "column": 43
+                            },
+                            "end": {
+                              "line": 18,
+                              "column": 67
+                            }
+                          }
+                        },
+                        "range": [
+                          567,
+                          626
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 18,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 18,
+                            "column": 67
+                          }
+                        }
+                      },
+                      "consequent": {
+                        "type": "BlockStatement",
+                        "body": [
+                          {
+                            "type": "ThrowStatement",
+                            "argument": {
+                              "type": "NewExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "Error",
+                                "range": [
+                                  646,
+                                  651
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 19,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 19,
+                                    "column": 21
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Literal",
+                                  "value": "permission parameter of type \"Array.<string>\" is required",
+                                  "raw": "'permission parameter of type \"Array.<string>\" is required'",
+                                  "range": [
+                                    652,
+                                    711
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 19,
+                                      "column": 22
+                                    },
+                                    "end": {
+                                      "line": 19,
+                                      "column": 81
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                642,
+                                712
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 19,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 19,
+                                  "column": 82
+                                }
+                              }
+                            },
+                            "range": [
+                              636,
+                              713
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 19,
+                                "column": 6
+                              },
+                              "end": {
+                                "line": 19,
+                                "column": 83
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          628,
+                          719
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 18,
+                            "column": 69
+                          },
+                          "end": {
+                            "line": 20,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "alternate": null,
+                      "range": [
+                        563,
+                        719
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 18,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 20,
+                          "column": 5
+                        }
+                      },
+                      "trailingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * @type {string} Name of the role.\n     ",
+                          "range": [
+                            725,
+                            776
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 24,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              781,
+                              785
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 25,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 25,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "name",
+                            "range": [
+                              786,
+                              790
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 25,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 25,
+                                "column": 13
+                              }
+                            }
+                          },
+                          "range": [
+                            781,
+                            790
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 25,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 25,
+                              "column": 13
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "name",
+                          "range": [
+                            793,
+                            797
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 25,
+                              "column": 16
+                            },
+                            "end": {
+                              "line": 25,
+                              "column": 20
+                            }
+                          }
+                        },
+                        "range": [
+                          781,
+                          797
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 25,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 25,
+                            "column": 20
+                          }
+                        }
+                      },
+                      "range": [
+                        781,
+                        798
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 21
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * @type {string} Name of the role.\n     ",
+                          "range": [
+                            725,
+                            776
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 24,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ],
+                      "trailingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * @type {Array.<string>} Permissions this role can take on.\n     ",
+                          "range": [
+                            804,
+                            880
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 27,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 29,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              885,
+                              889
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 30,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 30,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "permissions",
+                            "range": [
+                              890,
+                              901
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 30,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 30,
+                                "column": 20
+                              }
+                            }
+                          },
+                          "range": [
+                            885,
+                            901
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 30,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 30,
+                              "column": 20
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "permissions",
+                          "range": [
+                            904,
+                            915
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 30,
+                              "column": 23
+                            },
+                            "end": {
+                              "line": 30,
+                              "column": 34
+                            }
+                          }
+                        },
+                        "range": [
+                          885,
+                          915
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 30,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 30,
+                            "column": 34
+                          }
+                        }
+                      },
+                      "range": [
+                        885,
+                        916
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 30,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 30,
+                          "column": 35
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * @type {Array.<string>} Permissions this role can take on.\n     ",
+                          "range": [
+                            804,
+                            880
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 27,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 29,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "range": [
+                    444,
+                    920
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 33
+                    },
+                    "end": {
+                      "line": 31,
+                      "column": 3
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  424,
+                  920
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 13
+                  },
+                  "end": {
+                    "line": 31,
+                    "column": 3
+                  }
+                }
+              },
+              "kind": "constructor",
+              "computed": false,
+              "range": [
+                413,
+                920
+              ],
+              "loc": {
+                "start": {
+                  "line": 13,
+                  "column": 2
+                },
+                "end": {
+                  "line": 31,
+                  "column": 3
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n   * Create a Role.\n   *\n   * @param {string} name - Name of the role.\n   * @param {Array.<string>} permissions - Permissions this role can take on.\n   * @throws {Error} role parameter of type \"string\" is required.\n   * @throws {Error} permission parameter of type \"Array.<string>\" is required.\n   ",
+                  "range": [
+                    106,
+                    410
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 5
+                    }
+                  }
+                }
+              ],
+              "static": false
+            }
+          ],
+          "range": [
+            102,
+            922
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 26
+            },
+            "end": {
+              "line": 32,
+              "column": 1
+            }
+          }
+        },
+        "range": [
+          91,
+          922
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 15
+          },
+          "end": {
+            "line": 32,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * Role domain model. Represents a role a {@link User} can take on.\n ",
+            "range": [
+              0,
+              75
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        76,
+        922
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 32,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Role domain model. Represents a role a {@link User} can take on.\n ",
+          "range": [
+            0,
+            75
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    76,
+    922
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 0
+    },
+    "end": {
+      "line": 32,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * Role domain model. Represents a role a {@link User} can take on.\n ",
+      "range": [
+        0,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n   * Create a Role.\n   *\n   * @param {string} name - Name of the role.\n   * @param {Array.<string>} permissions - Permissions this role can take on.\n   * @throws {Error} role parameter of type \"string\" is required.\n   * @throws {Error} permission parameter of type \"Array.<string>\" is required.\n   ",
+      "range": [
+        106,
+        410
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * @type {string} Name of the role.\n     ",
+      "range": [
+        725,
+        776
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 24,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * @type {Array.<string>} Permissions this role can take on.\n     ",
+      "range": [
+        804,
+        880
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 4
+        },
+        "end": {
+          "line": 29,
+          "column": 7
+        }
+      }
+    }
+  ]
+}

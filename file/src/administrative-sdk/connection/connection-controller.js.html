@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/administrative-sdk/connection/connection-controller.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/itslanguage/itslanguage-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html">AdministrativeSDK</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/basic-auth</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/category</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/category/category.js~Category.html">Category</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-recognition</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/email-credentials</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/group</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/group/group.js~Group.html">Group</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/organisation</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/phoneme</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/phoneme/phoneme.js~Phoneme.html">Phoneme</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/profile</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/progress</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/progress/progress.js~Progress.html">Progress</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-analysis</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/role</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-recording</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/user</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word/word.js~Word.html">Word</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word-chunk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">audio</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/tools.js~Stopwatch.html">Stopwatch</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/administrative-sdk/connection/connection-controller.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* eslint-disable
+camelcase
+ */
+
+import autobahn from &apos;autobahn&apos;;
+import ee from &apos;event-emitter&apos;;
+/**
+ * Controller class for managing connection interaction.
+ */
+export default class Connection {
+
+  /**
+   *
+   * @param {Object} options - Options to configure the connection with.
+   * Valid options include:
+   * * apiUrl - The URL of the REST api.
+   * * wsUrl - The URL of the Websocket server.
+   * * oAuth2Token - An OAuth2 token string.
+   * * adminPrincipal - The username of the admin account.
+   * * adminPassword - The password of the admin account.
+   */
+  constructor(options) {
+    /**
+     * @type {Object}
+     */
+    this._settings = Object.assign({
+      // ITSL connection parameters.
+      apiUrl: &apos;https://api.itslanguage.nl&apos;,
+      oAuth2Token: null,
+      wsUrl: null,
+      wsToken: null
+    }, options);
+    Connection._sdkCompatibility();
+    this._analysisId = null;
+    this._recordingId = null;
+    this._recognitionId = null;
+    this._emitter = ee({});
+    this._connection = null;
+  }
+
+  /**
+   * Add an event listener. Listens to events emitted from the websocket server connection.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to add.
+   */
+  addEventListener(name, handler) {
+    this._emitter.on(name, handler);
+  }
+
+  /**
+   * Remove an event listener of the websocket connection.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to remove.
+   */
+  removeEventListener(name, handler) {
+    this._emitter.off(name, handler);
+  }
+
+  /**
+   * Fire an event.
+   *
+   * @param {string} name - Name of the event.
+   * @param {[]} args - Arguments.
+   * @private
+   */
+  fireEvent(name, args = []) {
+    this._emitter.emit(name, ...args);
+  }
+
+  /**
+   * Assemble a HTTP Authentication header.
+   *
+   * @returns {Promise.&lt;string&gt;} Promise containing an authorization header string.
+   * @throws {Promise.&lt;Error&gt;} If the oAuth2Token in {@link Connection#settings} is not set.
+   */
+  _getAuthHeaders() {
+    if (!this._settings.oAuth2Token) {
+      return Promise.reject(&apos;Please set oAuth2Token&apos;);
+    }
+    const authHeader = &apos;Bearer &apos; + this._settings.oAuth2Token;
+    return Promise.resolve(authHeader);
+  }
+
+  /**
+   * Create a connection to the websocket server.
+   *
+   */
+  webSocketConnect() {
+    const self = this;
+    /**
+     * This callback is fired during Ticket-based authentication.
+     *
+     * @param {Session} session - Session.
+     * @param {string} method - Authentication method.
+     */
+    function onOAuth2Challenge(session, method) {
+      if (method === &apos;ticket&apos;) {
+        return self._settings.oAuth2Token;
+      }
+      throw new Error(`don&apos;t know how to authenticate using &apos;${method}&apos;`);
+    }
+
+    const authUrl = this._settings.wsUrl;
+    let connection = null;
+    // Open a websocket connection for streaming audio
+    try {
+      // Set up WAMP connection to router
+      connection = new autobahn.Connection({
+        url: authUrl,
+        realm: &apos;default&apos;,
+        // the following attributes must be set for Ticket-based authentication
+        authmethods: [&apos;ticket&apos;],
+        authid: &apos;oauth2&apos;,
+        details: {
+          ticket: this._settings.oAuth2Token
+        },
+        onchallenge: onOAuth2Challenge
+      });
+    } catch (e) {
+      console.log(&apos;WebSocket creation error: &apos; + e);
+      return;
+    }
+    connection.onerror = function(e) {
+      console.log(&apos;WebSocket error: &apos; + e);
+      self.fireEvent(&apos;websocketError&apos;, [e]);
+    };
+    connection.onopen = function(session) {
+      console.log(&apos;WebSocket connection opened&apos;);
+      self._session = session;
+      const _call = self._session.call;
+      self._session.call = function(url, ...args) {
+        console.debug(&apos;Calling RPC: &apos; + url);
+        return _call.call(this, url, ...args);
+      };
+      self.fireEvent(&apos;websocketOpened&apos;);
+    };
+    connection.onclose = function() {
+      console.log(&apos;WebSocket disconnected&apos;);
+      self._session = null;
+      self.fireEvent(&apos;websocketClosed&apos;);
+    };
+    this._connection = connection;
+    this._connection.open();
+  }
+
+  webSocketDisconnect() {
+    this._connection.close(null, &apos;Requested formal disconnect&apos;);
+  }
+
+  /**
+   * Perform a HTTP GET to the API using authentication.
+   *
+   * @param {string} url - Url to retrieve.
+   * @returns {Promise} Promise containing a result.
+   * @throws {Promise.&lt;Error&gt;} If the server returned an error.
+   */
+  _secureAjaxGet(url) {
+    return this._getAuthHeaders()
+      .then(auth =&gt; {
+        const headers = new Headers();
+        headers.append(&apos;Authorization&apos;, auth);
+        const options = {
+          method: &apos;GET&apos;,
+          headers
+        };
+        return fetch(url, options)
+          .then(this.handleResponse);
+      });
+  }
+
+  /**
+   * Perform a HTTP POST to the API using authentication.
+   *
+   * @param {string} url - Url to submit to.
+   * @param {FormData} formdata - The form to POST.
+   * @returns {Promise} Promise containing a result.
+   * @throws {Promise.&lt;Error&gt;} If the server returned an error.
+   */
+  _secureAjaxPost(url, formdata) {
+    return this._getAuthHeaders()
+      .then(auth =&gt; {
+        const headers = new Headers();
+        headers.append(&apos;Authorization&apos;, auth);
+        if (typeof formdata === &apos;string&apos;) {
+          headers.append(&apos;Content-Type&apos;,
+            &apos;application/json; charset=utf-8&apos;);
+        }
+        const options = {
+          method: &apos;POST&apos;,
+          headers,
+          body: formdata
+        };
+        return fetch(url, options)
+          .then(this.handleResponse);
+      });
+  }
+
+  /**
+   * Perform a HTTP DELETE to the API using authentication.
+   *
+   * @param {string} url - Url to submit to.
+   * @returns {Promise} Promise containing a result.
+   * @throws {Promise.&lt;Error&gt;} If the server returned an error.
+   */
+  _secureAjaxDelete(url) {
+    return this._getAuthHeaders()
+      .then(auth =&gt; {
+        const headers = new Headers();
+        headers.append(&apos;Authorization&apos;, auth);
+        const options = {
+          method: &apos;DELETE&apos;,
+          headers
+        };
+        return fetch(url, options)
+          .then(this.handleResponse);
+      });
+  }
+
+  handleResponse(response) {
+    return response.text()
+          .then(textResponse =&gt; {
+            if (response.headers.get(&apos;Content-type&apos;).includes(&apos;application/json&apos;)) {
+              const result = JSON.parse(textResponse);
+              if (response.ok) {
+                return result;
+              }
+              return Promise.reject(result);
+            } else if (!response.ok) {
+              return Promise.reject(response.status + &apos;: &apos; + response.statusText);
+            }
+          });
+  }
+
+  /**
+   * Add an access token to the given URL.
+   *
+   * @param {string} url - The URL to add an access token to.
+   * @returns {string} An url with the access token appended.
+   */
+  addAccessToken(url) {
+    if (!this._settings.oAuth2Token) {
+      throw new Error(&apos;Please set oAuth2Token&apos;);
+    }
+    const secureUrl = url + (url.match(/\?/) ? &apos;&amp;&apos; : &apos;?&apos;) + &apos;access_token=&apos; +
+      encodeURIComponent(this._settings.oAuth2Token);
+    return secureUrl;
+  }
+
+  /**
+   * Logs browser compatibility for required and optional SDK capabilities.
+   *
+   * @throws {Error} In case of compatibility issues.
+   */
+  static _sdkCompatibility() {
+    // WebSocket
+    // http://caniuse.com/#feat=websockets
+    const canCreateWebSocket = &apos;WebSocket&apos; in window;
+    console.log(&apos;Native WebSocket capability: &apos; +
+      canCreateWebSocket);
+
+    if (!canCreateWebSocket) {
+      throw new Error(&apos;No WebSocket capabilities&apos;);
+    }
+  }
+
+  /**
+   * Cancel any current streaming audio recording.
+   *
+   * @param {AudioRecorder} recorder - The audio recorder currently recording.
+   */
+  cancelStreaming(recorder) {
+    const self = this;
+
+    if (this._recordingId === null &amp;&amp; this._analysisId === null &amp;&amp; this._recognitionId === null) {
+      console.info(&apos;No session in progress, nothing to cancel.&apos;);
+      return;
+    }
+
+    recorder.removeAllEventListeners();
+    if (recorder.isRecording()) {
+      recorder.stop();
+    }
+
+    // This session is over.
+    self._recordingId = null;
+    self._analysisId = null;
+    self._recognitionId = null;
+  }
+
+  /**
+   * Log an error caught from an RPC call.
+   *
+   * @param {Object} result - Error object.
+   */
+  static logRPCError(result) {
+    console.error(&apos;RPC error returned:&apos;, result.error);
+  }
+
+  /**
+   * Ask the server for an OAuth2 token.
+   *
+   * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
+   * @param {string} organisationId - Id of the organisation to request a token for.
+   * @param {string} userId - Id of the user to request a token for.
+   * @returns {Promise} Promise containing a access_token, token_type and scope.
+   * @throws {Promise.&lt;Error&gt;} If the server returned an error.
+   */
+  getOauth2Token(basicAuth, organisationId, userId) {
+    const url = this._settings.apiUrl + &apos;/tokens&apos;;
+    let scopes = &apos;tenant/&apos; + basicAuth.tenantId;
+    if (organisationId) {
+      scopes += &apos;/organisation/&apos; + organisationId;
+    }
+    if (organisationId &amp;&amp; userId) {
+      scopes += &apos;/user/&apos; + userId;
+    }
+    const headers = new Headers();
+    headers.append(&apos;Content-Type&apos;,
+      &apos;application/x-www-form-urlencoded; charset=utf8&apos;);
+    const formData = &apos;grant_type=password&amp;scope=&apos; + scopes +
+      &apos;&amp;username=&apos; + basicAuth.principal +
+      &apos;&amp;password=&apos; + basicAuth.credentials;
+    const options = {
+      method: &apos;POST&apos;,
+      headers,
+      body: formData
+    };
+    return fetch(url, options)
+      .then(response =&gt;
+        response.json()
+          .then(data =&gt; {
+            if (response.ok) {
+              this._settings.oAuth2Token = data.access_token;
+              return data;
+            }
+            throw data;
+          })
+      );
+  }
+
+  /**
+   * Request authentication for a {@link User}. The basicAuth now contains the user&apos;s username and password.
+   *
+   * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
+   * @param {string} organisationId - Id of the organisation this user is part of.
+   */
+  getUserAuth(basicAuth, organisationId) {
+    return this.getOauth2Token(basicAuth, organisationId, basicAuth.principal);
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

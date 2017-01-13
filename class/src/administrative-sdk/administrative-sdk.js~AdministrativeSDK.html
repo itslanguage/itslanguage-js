@@ -1,0 +1,3736 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">AdministrativeSDK | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="https://github.com/itslanguage/itslanguage-js" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html">AdministrativeSDK</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/basic-auth</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/category</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/category/category.js~Category.html">Category</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/choice-recognition</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/connection</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/email-credentials</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/group</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/group/group.js~Group.html">Group</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/organisation</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/phoneme</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/phoneme/phoneme.js~Phoneme.html">Phoneme</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/profile</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/progress</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/progress/progress.js~Progress.html">Progress</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-analysis</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/pronunciation-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/role</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-challenge</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/speech-recording</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/user</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word/word.js~Word.html">Word</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">administrative-sdk/word-chunk</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">audio</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/tools.js~Stopwatch.html">Stopwatch</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import AdministrativeSDK from &apos;<span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber16">itslanguage/src/administrative-sdk/administrative-sdk.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber16">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">AdministrativeSDK</h1>
+
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>Facade for all methods used in the ITSLanguage Administrative SDK.</p>
+</div>
+
+  
+
+  
+
+  
+
+  
+</div>
+
+
+
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(connection: <span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-createChoiceChallenge">createChoiceChallenge</a></span></span><span data-ice="signature">(choiceChallenge: <span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create a choice challenge.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-createEmailCredentials">createEmailCredentials</a></span></span><span data-ice="signature">(userId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, emailCredentials: <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Register credentials to the given user.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-createOrganisation">createOrganisation</a></span></span><span data-ice="signature">(organisation: <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create an organisation.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-createPronunciationChallenge">createPronunciationChallenge</a></span></span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create a pronunciation challenge.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-createSpeechChallenge">createSpeechChallenge</a></span></span><span data-ice="signature">(speechChallenge: <span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span>, audioBlob: <span>Blob</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create a speech challenge in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-createUser">createUser</a></span></span><span data-ice="signature">(user: <span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create a user.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-deletePronunciationChallenge">deletePronunciationChallenge</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Delete a pronunciation challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getChoiceChallenge">getChoiceChallenge</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a choice challenge.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getChoiceChallenges">getChoiceChallenges</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all choice challenges in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getChoiceRecognition">getChoiceRecognition</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, recognitionId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a choice recognition in a choice challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from
+the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getChoiceRecognitions">getChoiceRecognitions</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all choice recognitions in a specific <span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span> from the current active
+<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getCurrentUser">getCurrentUser</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get the current authenticated user.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getOrganisation">getOrganisation</a></span></span><span data-ice="signature">(organisationId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get an organisation.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getOrganisations">getOrganisations</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all organisations the current tenant is the owner of.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getProfile">getProfile</a></span></span><span data-ice="signature">(userId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get the profile of the given user active in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getProfiles">getProfiles</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all profiles of all users in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getPronunciationAnalyses">getPronunciationAnalyses</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, detailed: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all pronunciation analyses in a specific pronunciation challenge from the current active
+<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getPronunciationAnalysis">getPronunciationAnalysis</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, analysisId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a pronunciation analysis in a pronunciation challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived
+from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getPronunciationChallenge">getPronunciationChallenge</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a pronunciation challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getPronunciationChallenges">getPronunciationChallenges</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all pronunciation challenges in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from
+the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getRole">getRole</a></span></span><span data-ice="signature">(roleId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a single role.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getRoles">getRoles</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all roles available in the API.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getSpeechChallenge">getSpeechChallenge</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a speech challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getSpeechChallenges">getSpeechChallenges</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all speech challenges in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getSpeechRecording">getSpeechRecording</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, recordingId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a speech recording in a speech challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2
+scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getSpeechRecordings">getSpeechRecordings</a></span></span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all speech recordings in a specific speech challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>
+derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getUser">getUser</a></span></span><span data-ice="signature">(userId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get a user in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-getUsers">getUsers</a></span></span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span><span>[]</span></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Get and return all users in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-startStreamingChoiceRecognition">startStreamingChoiceRecognition</a></span></span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>, recorder: <span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span>, trim: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Start a choice recognition from streaming audio.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-startStreamingPronunciationAnalysis">startStreamingPronunciationAnalysis</a></span></span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>, recorder: <span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span>, trim: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Start a pronunciation analysis from streaming audio.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+           <span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html#instance-method-startStreamingSpeechRecording">startStreamingSpeechRecording</a></span></span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span>, recorder: <span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Start a speech recording from streaming audio.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">constructor</span><span data-ice="signature">(connection: <span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber20">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">connection</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Object to use for making a connection to the REST API and Websocket server.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createChoiceChallenge">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">createChoiceChallenge</span><span data-ice="signature">(choiceChallenge: <span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber44">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Create a choice challenge. The choice challenge will be created in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived
+from the OAuth2 scope.
+It is necessary for a choice challenge to exist for a recording to be valid.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">choiceChallenge</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Object to create.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Containing the newly created ChoiceChallenge.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createEmailCredentials">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">createEmailCredentials</span><span data-ice="signature">(userId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, emailCredentials: <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber387">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Register credentials to the given user. Multiple credentials can be registered to one user.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">userId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The identifier of the user to register credentials to.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">emailCredentials</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The credentials to register to the user.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>A promise containing the created EmailCredentials.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>UserId parameter of type &quot;string&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>EmailCredentials parameter of type &quot;EmailCredentials&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createOrganisation">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">createOrganisation</span><span data-ice="signature">(organisation: <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber126">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Create an organisation. The organisation will be owned by the current active tenant.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">organisation</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Object to create.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing the newly created Organisation.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>organisation field of type &quot;Organisation&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createPronunciationChallenge">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">createPronunciationChallenge</span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber214">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Create a pronunciation challenge. The created challenge will be part of the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>
+derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challenge</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Object to create..</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing the newly created PronunciationChallenge.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span>PronunciationChallenge#referenceAudio</span> of type &quot;Blob&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createSpeechChallenge">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">createSpeechChallenge</span><span data-ice="signature">(speechChallenge: <span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span>, audioBlob: <span>Blob</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber261">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Create a speech challenge in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">speechChallenge</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Object to create.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">audioBlob</td>
+      <td data-ice="type"><span>Blob</span></td>
+      <td data-ice="appendix"><ul><li>nullable: true</li></ul></td>
+      <td data-ice="description"><p>Audio fragment to link to the challenge.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing the newly created SpeechChallenge.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-createUser">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">createUser</span><span data-ice="signature">(user: <span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber341">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Create a user. The user will be created in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">user</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>User to create.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing the newly created User.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>user parameter of type &quot;User&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-deletePronunciationChallenge">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">deletePronunciationChallenge</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber249">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Delete a pronunciation challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>A pronunciation challenge identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing the given challenge ID.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html#instance-member-id">PronunciationChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getChoiceChallenge">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getChoiceChallenge</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber57">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a choice challenge. A choice challenge is identified by its identifier and the current active
+<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a choice challenge identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Containing a ChoiceChallenge.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html#instance-member-id">ChoiceChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getChoiceChallenges">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getChoiceChallenges</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber67">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all choice challenges in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Containing an array of ChoiceChallenges.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getChoiceRecognition">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getChoiceRecognition</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, recognitionId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber101">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a choice recognition in a choice challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from
+the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a choice challenge identifier.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">recognitionId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a choice recognition identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a ChoiceRecognition.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html#instance-member-id">ChoiceChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html#instance-member-id">ChoiceRecognition#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getChoiceRecognitions">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getChoiceRecognitions</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber114">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all choice recognitions in a specific <span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span> from the current active
+<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a choice challenge to list speech recognitions for.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array of ChoiceRecognitions.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html#instance-member-id">ChoiceChallenge#id</a></span> is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getCurrentUser">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getCurrentUser</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber363">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get the current authenticated user.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>The current authenticated user.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If something went wrong in the server.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getOrganisation">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getOrganisation</span><span data-ice="signature">(organisationId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber138">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get an organisation. You can only get an organisation the current tenant is the owner of.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">organisationId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify an organisation identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an Organisation.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html#instance-member-id">Organisation#id</a></span> field of type &quot;string&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getOrganisations">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getOrganisations</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber148">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all organisations the current tenant is the owner of.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array of Organisations.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getProfile">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getProfile</span><span data-ice="signature">(userId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber421">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get the profile of the given user active in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">userId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a User identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a Profile.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>userId parameter of type &quot;string&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getProfiles">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getProfiles</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber431">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all profiles of all users in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Array of Profiles.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getPronunciationAnalyses">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getPronunciationAnalyses</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, detailed: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber201">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all pronunciation analyses in a specific pronunciation challenge from the current active
+<span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a pronunciation challenge identifier to list
+speech recordings for.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">detailed</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: false</li></ul></td>
+      <td data-ice="description"><p>Returns extra analysis metadata when true.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array PronunciationAnalyses.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html#instance-member-id">PronunciationChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getPronunciationAnalysis">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getPronunciationAnalysis</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, analysisId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber186">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a pronunciation analysis in a pronunciation challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived
+from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a pronunciation challenge identifier.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">analysisId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a pronunciation analysis identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a PronunciationAnalysis.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html#instance-member-id">PronunciationChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html#instance-member-id">PronunciationAnalysis#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getPronunciationChallenge">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getPronunciationChallenge</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber226">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a pronunciation challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a pronunciation challenge identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a PronunciationChallenge.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html#instance-member-id">PronunciationChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getPronunciationChallenges">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getPronunciationChallenges</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber237">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all pronunciation challenges in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from
+the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array of PronunciationChallenges.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getRole">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getRole</span><span data-ice="signature">(roleId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber409">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a single role.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">roleId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Identifier of the role.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a Role.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>roleId parameter of type &quot;string&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getRoles">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getRoles</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber397">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all roles available in the API.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array of Roles.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the server returned an error.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getSpeechChallenge">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getSpeechChallenge</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber273">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a speech challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a speech challenge identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a SpeechChallenge.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html#instance-member-id">SpeechChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getSpeechChallenges">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getSpeechChallenges</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber283">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all speech challenges in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array of SpeechChallenges.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getSpeechRecording">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getSpeechRecording</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, recordingId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber316">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a speech recording in a speech challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2
+scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a speech challenge identifier.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">recordingId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a speech recording identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a SpeechRecording.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html#instance-member-id">SpeechChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html#instance-member-id">SpeechRecording#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getSpeechRecordings">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getSpeechRecordings</span><span data-ice="signature">(challengeId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber329">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all speech recordings in a specific speech challenge from the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span>
+derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challengeId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a speech challenge identifier to list speech recordings for.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array of SpeechRecordings.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html#instance-member-id">SpeechChallenge#id</a></span> is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getUser">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getUser</span><span data-ice="signature">(userId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber353">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get a user in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">userId</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>Specify a user identifier.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing a User.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>userId parameter of type &quot;string&quot; is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getUsers">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">getUsers</span><span data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span><span>[]</span></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber373">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Get and return all users in the current active <span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span> derived from the OAuth2 scope.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span><span>[]</span></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>Promise containing an array of Users.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If no result could not be found.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-startStreamingChoiceRecognition">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">startStreamingChoiceRecognition</span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span>, recorder: <span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span>, trim: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber86">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Start a choice recognition from streaming audio.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challenge</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The choice challenge to perform.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">recorder</td>
+      <td data-ice="type"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The audio recorder to extract audio from.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">trim</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: true</li></ul></td>
+      <td data-ice="description"><p>Whether to trim the start and end of recorded audio.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>A <span><a href="https://github.com/cujojs/when">https://github.com/cujojs/when</a></span> Promise containing a <span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span>.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  <div data-ice="emitWrap">
+    <h4>Emit:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="emit" data-ice="emit">
+        <td><p data-ice="emitName"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></p></td>
+        <td data-ice="emitDesc"><p>&apos;ReadyToReceive&apos; when the call is made to receive audio. The recorder can now send audio.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span> parameter is required or invalid.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html#instance-member-id">ChoiceChallenge#id</a></span> field is required.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the connection is not open.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the recorder is already recording.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If a recognition session is already in progress.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If something went wrong during analysis.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-startStreamingPronunciationAnalysis">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">startStreamingPronunciationAnalysis</span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span>, recorder: <span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span>, trim: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber171">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Start a pronunciation analysis from streaming audio.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challenge</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The pronunciation challenge to perform.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">recorder</td>
+      <td data-ice="type"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The audio recorder to extract audio from.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">trim</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>Whether to trim the start and end of recorded audio (default: true).</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>A <span><a href="https://github.com/cujojs/when">https://github.com/cujojs/when</a></span> Promise containing a <span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span>.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  <div data-ice="emitWrap">
+    <h4>Emit:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="emit" data-ice="emit">
+        <td><p data-ice="emitName"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></p></td>
+        <td data-ice="emitDesc"><p>&apos;ReadyToReceive&apos; when the call is made to receive audio. The recorder can now send audio.</p>
+</td>
+      </tr>
+<tr class="emit" data-ice="emit">
+        <td><p data-ice="emitName"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></p></td>
+        <td data-ice="emitDesc"><p>When the sent audio has finished alignment. Aligning audio is the process of mapping the audio
+to spoken words and determining when what is said. An object is sent containing a property &apos;progress&apos;,
+which is the sent audio alignment, and a property &apos;referenceAlignment&apos; which is the alignment of the
+reference audio.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If challenge is not an object or not defined.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If challenge has no id.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the connection is not open.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the recorder is already recording.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If a session is already in progress.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If something went wrong during analysis.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-startStreamingSpeechRecording">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">startStreamingSpeechRecording</span><span data-ice="signature">(challenge: <span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span>, recorder: <span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span>&gt;</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#lineNumber301">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Start a speech recording from streaming audio.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">challenge</td>
+      <td data-ice="type"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The speech challenge to perform.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">recorder</td>
+      <td data-ice="type"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The audio recorder to extract audio from.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span>&gt;</td>
+        <td class="return-desc" data-ice="returnDescription"><p>A <span><a href="https://github.com/cujojs/when">https://github.com/cujojs/when</a></span> Promise containing a <span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span>.</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  <div data-ice="emitWrap">
+    <h4>Emit:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="emit" data-ice="emit">
+        <td><p data-ice="emitName"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></p></td>
+        <td data-ice="emitDesc"><p>&apos;ReadyToReceive&apos; when the call is made to receive audio. The recorder can now send audio.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  <div data-ice="throwWrap">
+    <h4>Throw:</h4>
+    <table>
+      <tbody>
+      
+      <tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If challenge is not an object or not defined.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If challenge has no id.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the connection is not open.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If the recorder is already recording.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If a session is already in progress.</p>
+</td>
+      </tr>
+<tr class="throw" data-ice="throw">
+        <td><p data-ice="throwName"><span>Promise.&lt;Error&gt;</span></p></td>
+        <td data-ice="throwDesc"><p>If something went wrong during recording.</p>
+</td>
+      </tr>
+</tbody>
+    </table>
+  </div>
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.8)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

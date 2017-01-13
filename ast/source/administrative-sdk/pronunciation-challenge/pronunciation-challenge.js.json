@@ -1,0 +1,1751 @@
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ExportDefaultDeclaration",
+      "declaration": {
+        "type": "ClassDeclaration",
+        "id": {
+          "type": "Identifier",
+          "name": "PronunciationChallenge",
+          "range": [
+            75,
+            97
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 21
+            },
+            "end": {
+              "line": 4,
+              "column": 43
+            }
+          }
+        },
+        "superClass": null,
+        "body": {
+          "type": "ClassBody",
+          "body": [
+            {
+              "type": "MethodDefinition",
+              "key": {
+                "type": "Identifier",
+                "name": "constructor",
+                "range": [
+                  764,
+                  775
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 13
+                  }
+                }
+              },
+              "value": {
+                "type": "FunctionExpression",
+                "id": null,
+                "params": [
+                  {
+                    "type": "AssignmentPattern",
+                    "left": {
+                      "type": "Identifier",
+                      "name": "id",
+                      "range": [
+                        776,
+                        778
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 14
+                        },
+                        "end": {
+                          "line": 16,
+                          "column": 16
+                        }
+                      }
+                    },
+                    "right": {
+                      "type": "Literal",
+                      "value": null,
+                      "raw": "null",
+                      "range": [
+                        781,
+                        785
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 19
+                        },
+                        "end": {
+                          "line": 16,
+                          "column": 23
+                        }
+                      }
+                    },
+                    "range": [
+                      776,
+                      785
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 16,
+                        "column": 14
+                      },
+                      "end": {
+                        "line": 16,
+                        "column": 23
+                      }
+                    }
+                  },
+                  {
+                    "type": "Identifier",
+                    "name": "transcription",
+                    "range": [
+                      787,
+                      800
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 16,
+                        "column": 25
+                      },
+                      "end": {
+                        "line": 16,
+                        "column": 38
+                      }
+                    }
+                  },
+                  {
+                    "type": "AssignmentPattern",
+                    "left": {
+                      "type": "Identifier",
+                      "name": "referenceAudioUrl",
+                      "range": [
+                        802,
+                        819
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 40
+                        },
+                        "end": {
+                          "line": 16,
+                          "column": 57
+                        }
+                      }
+                    },
+                    "right": {
+                      "type": "Literal",
+                      "value": null,
+                      "raw": "null",
+                      "range": [
+                        822,
+                        826
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 16,
+                          "column": 60
+                        },
+                        "end": {
+                          "line": 16,
+                          "column": 64
+                        }
+                      }
+                    },
+                    "range": [
+                      802,
+                      826
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 16,
+                        "column": 40
+                      },
+                      "end": {
+                        "line": 16,
+                        "column": 64
+                      }
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "IfStatement",
+                      "test": {
+                        "type": "LogicalExpression",
+                        "operator": "&&",
+                        "left": {
+                          "type": "BinaryExpression",
+                          "operator": "!==",
+                          "left": {
+                            "type": "Identifier",
+                            "name": "id",
+                            "range": [
+                              838,
+                              840
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 17,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 17,
+                                "column": 10
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Literal",
+                            "value": null,
+                            "raw": "null",
+                            "range": [
+                              845,
+                              849
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 17,
+                                "column": 15
+                              },
+                              "end": {
+                                "line": 17,
+                                "column": 19
+                              }
+                            }
+                          },
+                          "range": [
+                            838,
+                            849
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 17,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 17,
+                              "column": 19
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "BinaryExpression",
+                          "operator": "!==",
+                          "left": {
+                            "type": "UnaryExpression",
+                            "operator": "typeof",
+                            "argument": {
+                              "type": "Identifier",
+                              "name": "id",
+                              "range": [
+                                860,
+                                862
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 17,
+                                  "column": 30
+                                },
+                                "end": {
+                                  "line": 17,
+                                  "column": 32
+                                }
+                              }
+                            },
+                            "prefix": true,
+                            "range": [
+                              853,
+                              862
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 17,
+                                "column": 23
+                              },
+                              "end": {
+                                "line": 17,
+                                "column": 32
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Literal",
+                            "value": "string",
+                            "raw": "'string'",
+                            "range": [
+                              867,
+                              875
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 17,
+                                "column": 37
+                              },
+                              "end": {
+                                "line": 17,
+                                "column": 45
+                              }
+                            }
+                          },
+                          "range": [
+                            853,
+                            875
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 17,
+                              "column": 23
+                            },
+                            "end": {
+                              "line": 17,
+                              "column": 45
+                            }
+                          }
+                        },
+                        "range": [
+                          838,
+                          875
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 17,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 17,
+                            "column": 45
+                          }
+                        }
+                      },
+                      "consequent": {
+                        "type": "BlockStatement",
+                        "body": [
+                          {
+                            "type": "ThrowStatement",
+                            "argument": {
+                              "type": "NewExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "Error",
+                                "range": [
+                                  895,
+                                  900
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 18,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 18,
+                                    "column": 21
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Literal",
+                                  "value": "id parameter of type \"string|null\" is required",
+                                  "raw": "'id parameter of type \"string|null\" is required'",
+                                  "range": [
+                                    910,
+                                    958
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 19,
+                                      "column": 8
+                                    },
+                                    "end": {
+                                      "line": 19,
+                                      "column": 56
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                891,
+                                959
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 18,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 19,
+                                  "column": 57
+                                }
+                              }
+                            },
+                            "range": [
+                              885,
+                              960
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 18,
+                                "column": 6
+                              },
+                              "end": {
+                                "line": 19,
+                                "column": 58
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          877,
+                          966
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 17,
+                            "column": 47
+                          },
+                          "end": {
+                            "line": 20,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "alternate": null,
+                      "range": [
+                        834,
+                        966
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 17,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 20,
+                          "column": 5
+                        }
+                      }
+                    },
+                    {
+                      "type": "IfStatement",
+                      "test": {
+                        "type": "BinaryExpression",
+                        "operator": "!==",
+                        "left": {
+                          "type": "UnaryExpression",
+                          "operator": "typeof",
+                          "argument": {
+                            "type": "Identifier",
+                            "name": "transcription",
+                            "range": [
+                              983,
+                              996
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 22,
+                                "column": 15
+                              },
+                              "end": {
+                                "line": 22,
+                                "column": 28
+                              }
+                            }
+                          },
+                          "prefix": true,
+                          "range": [
+                            976,
+                            996
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 22,
+                              "column": 28
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Literal",
+                          "value": "string",
+                          "raw": "'string'",
+                          "range": [
+                            1001,
+                            1009
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 22,
+                              "column": 33
+                            },
+                            "end": {
+                              "line": 22,
+                              "column": 41
+                            }
+                          }
+                        },
+                        "range": [
+                          976,
+                          1009
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 22,
+                            "column": 41
+                          }
+                        }
+                      },
+                      "consequent": {
+                        "type": "BlockStatement",
+                        "body": [
+                          {
+                            "type": "ThrowStatement",
+                            "argument": {
+                              "type": "NewExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "Error",
+                                "range": [
+                                  1029,
+                                  1034
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 23,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 23,
+                                    "column": 21
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Literal",
+                                  "value": "transcription parameter of type \"string\" is required",
+                                  "raw": "'transcription parameter of type \"string\" is required'",
+                                  "range": [
+                                    1044,
+                                    1098
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 24,
+                                      "column": 8
+                                    },
+                                    "end": {
+                                      "line": 24,
+                                      "column": 62
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                1025,
+                                1099
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 23,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 24,
+                                  "column": 63
+                                }
+                              }
+                            },
+                            "range": [
+                              1019,
+                              1100
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 23,
+                                "column": 6
+                              },
+                              "end": {
+                                "line": 24,
+                                "column": 64
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          1011,
+                          1106
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 22,
+                            "column": 43
+                          },
+                          "end": {
+                            "line": 25,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "alternate": null,
+                      "range": [
+                        972,
+                        1106
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 22,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 5
+                        }
+                      }
+                    },
+                    {
+                      "type": "IfStatement",
+                      "test": {
+                        "type": "LogicalExpression",
+                        "operator": "&&",
+                        "left": {
+                          "type": "BinaryExpression",
+                          "operator": "!==",
+                          "left": {
+                            "type": "Identifier",
+                            "name": "referenceAudioUrl",
+                            "range": [
+                              1116,
+                              1133
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 25
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Literal",
+                            "value": null,
+                            "raw": "null",
+                            "range": [
+                              1138,
+                              1142
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 30
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 34
+                              }
+                            }
+                          },
+                          "range": [
+                            1116,
+                            1142
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 27,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 27,
+                              "column": 34
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "BinaryExpression",
+                          "operator": "!==",
+                          "left": {
+                            "type": "UnaryExpression",
+                            "operator": "typeof",
+                            "argument": {
+                              "type": "Identifier",
+                              "name": "referenceAudioUrl",
+                              "range": [
+                                1153,
+                                1170
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 27,
+                                  "column": 45
+                                },
+                                "end": {
+                                  "line": 27,
+                                  "column": 62
+                                }
+                              }
+                            },
+                            "prefix": true,
+                            "range": [
+                              1146,
+                              1170
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 38
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 62
+                              }
+                            }
+                          },
+                          "right": {
+                            "type": "Literal",
+                            "value": "string",
+                            "raw": "'string'",
+                            "range": [
+                              1175,
+                              1183
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 27,
+                                "column": 67
+                              },
+                              "end": {
+                                "line": 27,
+                                "column": 75
+                              }
+                            }
+                          },
+                          "range": [
+                            1146,
+                            1183
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 27,
+                              "column": 38
+                            },
+                            "end": {
+                              "line": 27,
+                              "column": 75
+                            }
+                          }
+                        },
+                        "range": [
+                          1116,
+                          1183
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 27,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 27,
+                            "column": 75
+                          }
+                        }
+                      },
+                      "consequent": {
+                        "type": "BlockStatement",
+                        "body": [
+                          {
+                            "type": "ThrowStatement",
+                            "argument": {
+                              "type": "NewExpression",
+                              "callee": {
+                                "type": "Identifier",
+                                "name": "Error",
+                                "range": [
+                                  1203,
+                                  1208
+                                ],
+                                "loc": {
+                                  "start": {
+                                    "line": 28,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 28,
+                                    "column": 21
+                                  }
+                                }
+                              },
+                              "arguments": [
+                                {
+                                  "type": "Literal",
+                                  "value": "referenceAudioUrl parameter of type \"string|null\" is required",
+                                  "raw": "'referenceAudioUrl parameter of type \"string|null\" is required'",
+                                  "range": [
+                                    1209,
+                                    1272
+                                  ],
+                                  "loc": {
+                                    "start": {
+                                      "line": 28,
+                                      "column": 22
+                                    },
+                                    "end": {
+                                      "line": 28,
+                                      "column": 85
+                                    }
+                                  }
+                                }
+                              ],
+                              "range": [
+                                1199,
+                                1273
+                              ],
+                              "loc": {
+                                "start": {
+                                  "line": 28,
+                                  "column": 12
+                                },
+                                "end": {
+                                  "line": 28,
+                                  "column": 86
+                                }
+                              }
+                            },
+                            "range": [
+                              1193,
+                              1274
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 28,
+                                "column": 6
+                              },
+                              "end": {
+                                "line": 28,
+                                "column": 87
+                              }
+                            }
+                          }
+                        ],
+                        "range": [
+                          1185,
+                          1280
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 27,
+                            "column": 77
+                          },
+                          "end": {
+                            "line": 29,
+                            "column": 5
+                          }
+                        }
+                      },
+                      "alternate": null,
+                      "range": [
+                        1112,
+                        1280
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 27,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 29,
+                          "column": 5
+                        }
+                      },
+                      "trailingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The pronunciation challenge identifier. If none is given, one is generated.\n     * @type {string}\n     ",
+                          "range": [
+                            1286,
+                            1402
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 31,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 34,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              1407,
+                              1411
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 35,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 35,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "id",
+                            "range": [
+                              1412,
+                              1414
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 35,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 35,
+                                "column": 11
+                              }
+                            }
+                          },
+                          "range": [
+                            1407,
+                            1414
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 35,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 35,
+                              "column": 11
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "id",
+                          "range": [
+                            1417,
+                            1419
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 35,
+                              "column": 14
+                            },
+                            "end": {
+                              "line": 35,
+                              "column": 16
+                            }
+                          }
+                        },
+                        "range": [
+                          1407,
+                          1419
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 35,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 35,
+                            "column": 16
+                          }
+                        }
+                      },
+                      "range": [
+                        1407,
+                        1420
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 35,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 35,
+                          "column": 17
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The pronunciation challenge identifier. If none is given, one is generated.\n     * @type {string}\n     ",
+                          "range": [
+                            1286,
+                            1402
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 31,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 34,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ],
+                      "trailingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The spoken word or sentence as plain text.\n     * @type {string}\n     ",
+                          "range": [
+                            1426,
+                            1509
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 37,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              1514,
+                              1518
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 41,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 41,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "transcription",
+                            "range": [
+                              1519,
+                              1532
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 41,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 41,
+                                "column": 22
+                              }
+                            }
+                          },
+                          "range": [
+                            1514,
+                            1532
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 41,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 41,
+                              "column": 22
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "transcription",
+                          "range": [
+                            1535,
+                            1548
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 41,
+                              "column": 25
+                            },
+                            "end": {
+                              "line": 41,
+                              "column": 38
+                            }
+                          }
+                        },
+                        "range": [
+                          1514,
+                          1548
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 41,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 41,
+                            "column": 38
+                          }
+                        }
+                      },
+                      "range": [
+                        1514,
+                        1549
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 41,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 41,
+                          "column": 39
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The spoken word or sentence as plain text.\n     * @type {string}\n     ",
+                          "range": [
+                            1426,
+                            1509
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 37,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 40,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ],
+                      "trailingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The status of the challenge's preparation. Either 'unprepared', 'preparing' or 'prepared'.\n     * @type {string}\n     ",
+                          "range": [
+                            1555,
+                            1686
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 43,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              1691,
+                              1695
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "status",
+                            "range": [
+                              1696,
+                              1702
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 15
+                              }
+                            }
+                          },
+                          "range": [
+                            1691,
+                            1702
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 47,
+                              "column": 15
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Literal",
+                          "value": null,
+                          "raw": "null",
+                          "range": [
+                            1705,
+                            1709
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 18
+                            },
+                            "end": {
+                              "line": 47,
+                              "column": 22
+                            }
+                          }
+                        },
+                        "range": [
+                          1691,
+                          1709
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 47,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 47,
+                            "column": 22
+                          }
+                        }
+                      },
+                      "range": [
+                        1691,
+                        1710
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 47,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 47,
+                          "column": 23
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The status of the challenge's preparation. Either 'unprepared', 'preparing' or 'prepared'.\n     * @type {string}\n     ",
+                          "range": [
+                            1555,
+                            1686
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 43,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ],
+                      "trailingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The reference audio fragment as streaming audio link.\n     * @type {string}\n     ",
+                          "range": [
+                            1716,
+                            1810
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 49,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 52,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": {
+                            "type": "ThisExpression",
+                            "range": [
+                              1815,
+                              1819
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 53,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 53,
+                                "column": 8
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "name": "referenceAudioUrl",
+                            "range": [
+                              1820,
+                              1837
+                            ],
+                            "loc": {
+                              "start": {
+                                "line": 53,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 53,
+                                "column": 26
+                              }
+                            }
+                          },
+                          "range": [
+                            1815,
+                            1837
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 53,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 53,
+                              "column": 26
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "name": "referenceAudioUrl",
+                          "range": [
+                            1840,
+                            1857
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 53,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 53,
+                              "column": 46
+                            }
+                          }
+                        },
+                        "range": [
+                          1815,
+                          1857
+                        ],
+                        "loc": {
+                          "start": {
+                            "line": 53,
+                            "column": 4
+                          },
+                          "end": {
+                            "line": 53,
+                            "column": 46
+                          }
+                        }
+                      },
+                      "range": [
+                        1815,
+                        1858
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 53,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 53,
+                          "column": 47
+                        }
+                      },
+                      "leadingComments": [
+                        {
+                          "type": "Block",
+                          "value": "*\n     * The reference audio fragment as streaming audio link.\n     * @type {string}\n     ",
+                          "range": [
+                            1716,
+                            1810
+                          ],
+                          "loc": {
+                            "start": {
+                              "line": 49,
+                              "column": 4
+                            },
+                            "end": {
+                              "line": 52,
+                              "column": 7
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "range": [
+                    828,
+                    1862
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 16,
+                      "column": 66
+                    },
+                    "end": {
+                      "line": 54,
+                      "column": 3
+                    }
+                  }
+                },
+                "generator": false,
+                "expression": false,
+                "range": [
+                  775,
+                  1862
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 13
+                  },
+                  "end": {
+                    "line": 54,
+                    "column": 3
+                  }
+                }
+              },
+              "kind": "constructor",
+              "computed": false,
+              "range": [
+                764,
+                1862
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 2
+                },
+                "end": {
+                  "line": 54,
+                  "column": 3
+                }
+              },
+              "leadingComments": [
+                {
+                  "type": "Block",
+                  "value": "*\n   * Create a pronunciation challenge domain model.\n   *\n   * @param {?string} id - The pronunciation challenge identifier. If none is given, one is generated.\n   * @param {string} transcription - The spoken word or sentence as plain text.\n   * @param {?string} referenceAudioUrl - The reference audio fragment URL. If one is not yet available or audio is\n   * not yet registered to the challenge it can be set to 'null'.\n   * @throws {Error} id parameter of type \"string|null\" is required.\n   * @throws {Error} transcription parameter of type \"string\" is required.\n   * @throws {Error} referenceAudioUrl parameter of type \"string|null\" is required.\n   ",
+                  "range": [
+                    102,
+                    761
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 5
+                    }
+                  }
+                }
+              ],
+              "static": false
+            }
+          ],
+          "range": [
+            98,
+            1864
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 44
+            },
+            "end": {
+              "line": 55,
+              "column": 1
+            }
+          }
+        },
+        "range": [
+          69,
+          1864
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 15
+          },
+          "end": {
+            "line": 55,
+            "column": 1
+          }
+        },
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @class PronunciationChallenge domain model\n ",
+            "range": [
+              0,
+              53
+            ],
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": []
+      },
+      "range": [
+        54,
+        1864
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 55,
+          "column": 1
+        }
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @class PronunciationChallenge domain model\n ",
+          "range": [
+            0,
+            53
+          ],
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 3
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sourceType": "module",
+  "range": [
+    54,
+    1864
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 0
+    },
+    "end": {
+      "line": 55,
+      "column": 1
+    }
+  },
+  "comments": [
+    {
+      "type": "Block",
+      "value": "*\n * @class PronunciationChallenge domain model\n ",
+      "range": [
+        0,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n   * Create a pronunciation challenge domain model.\n   *\n   * @param {?string} id - The pronunciation challenge identifier. If none is given, one is generated.\n   * @param {string} transcription - The spoken word or sentence as plain text.\n   * @param {?string} referenceAudioUrl - The reference audio fragment URL. If one is not yet available or audio is\n   * not yet registered to the challenge it can be set to 'null'.\n   * @throws {Error} id parameter of type \"string|null\" is required.\n   * @throws {Error} transcription parameter of type \"string\" is required.\n   * @throws {Error} referenceAudioUrl parameter of type \"string|null\" is required.\n   ",
+      "range": [
+        102,
+        761
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 15,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * The pronunciation challenge identifier. If none is given, one is generated.\n     * @type {string}\n     ",
+      "range": [
+        1286,
+        1402
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 4
+        },
+        "end": {
+          "line": 34,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * The spoken word or sentence as plain text.\n     * @type {string}\n     ",
+      "range": [
+        1426,
+        1509
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 4
+        },
+        "end": {
+          "line": 40,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * The status of the challenge's preparation. Either 'unprepared', 'preparing' or 'prepared'.\n     * @type {string}\n     ",
+      "range": [
+        1555,
+        1686
+      ],
+      "loc": {
+        "start": {
+          "line": 43,
+          "column": 4
+        },
+        "end": {
+          "line": 46,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Block",
+      "value": "*\n     * The reference audio fragment as streaming audio link.\n     * @type {string}\n     ",
+      "range": [
+        1716,
+        1810
+      ],
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 4
+        },
+        "end": {
+          "line": 52,
+          "column": 7
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "coverage": "89.03%",
+  "expectCount": 228,
+  "actualCount": 203,
+  "files": {
+    "src/administrative-sdk/administrative-sdk.js": {
+      "expectCount": 33,
+      "actualCount": 33,
+      "undocumentLines": []
+    },
+    "src/audio/audio-player.js": {
+      "expectCount": 28,
+      "actualCount": 26,
+      "undocumentLines": [
+        105,
+        112
+      ]
+    },
+    "src/audio/audio-recorder.js": {
+      "expectCount": 23,
+      "actualCount": 15,
+      "undocumentLines": [
+        308,
+        213,
+        107,
+        112,
+        144,
+        126,
+        227,
+        26
+      ]
+    },
+    "src/administrative-sdk/basic-auth/basic-auth.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/category/category.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-challenge/choice-challenge.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-recognition/choice-recognition.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/connection/connection-controller.js": {
+      "expectCount": 12,
+      "actualCount": 10,
+      "undocumentLines": [
+        221,
+        148
+      ]
+    },
+    "src/administrative-sdk/email-credentials/email-credentials.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/group/group.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/organisation/organisation.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/administrative-sdk/phoneme/phoneme.js": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/administrative-sdk/profile/profile.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/progress/progress.js": {
+      "expectCount": 4,
+      "actualCount": 1,
+      "undocumentLines": [
+        6,
+        7,
+        8
+      ]
+    },
+    "src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/role/role.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/speech-challenge/speech-challenge.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/speech-recording/speech-recording.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/audio/tools.js": {
+      "expectCount": 9,
+      "actualCount": 7,
+      "undocumentLines": [
+        86,
+        90
+      ]
+    },
+    "src/administrative-sdk/user/user.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/audio/audio-tools.js": {
+      "expectCount": 10,
+      "actualCount": 4,
+      "undocumentLines": [
+        41,
+        74,
+        49,
+        50,
+        71,
+        72
+      ]
+    },
+    "src/administrative-sdk/word/word.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/word-chunk/word-chunk.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    }
+  }
+}
