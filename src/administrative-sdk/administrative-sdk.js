@@ -2,6 +2,7 @@ import CategoryController from './category/category-controller';
 import ChoiceChallengeController from './choice-challenge/choice-challenge-controller';
 import ChoiceRecognitionController from './choice-recognition/choice-recognition-controller';
 import EmailCredentialsController from './email-credentials/email-credentials-controller';
+import GroupController from './group/group-controller';
 import OrganisationController from './organisation/organisation-controller';
 import ProfileController from './profile/profile-controller';
 import PronAnalaController from './pronunciation-analysis/pronunciation-analysis-controller';
@@ -24,6 +25,7 @@ export default class AdministrativeSDK {
     this._choiceChallengeController = new ChoiceChallengeController(this._connection);
     this._choiceRecognitionController = new ChoiceRecognitionController(this._connection);
     this._emailCredentialsController = new EmailCredentialsController(this._connection);
+    this._groupController = new GroupController(this._connection);
     this._organisationController = new OrganisationController(this._connection);
     this._profileController = new ProfileController(this._connection);
     this._pronAnalaController = new PronAnalaController(this._connection);
@@ -478,6 +480,40 @@ export default class AdministrativeSDK {
    */
   getProfiles() {
     return this._profileController.getProfiles();
+  }
+
+  /**
+   * Create a group. The group will be part of the current active {@link Organisation} derived from the OAuth2 scope.
+   *
+   * @param {Organisation} group - Object to create.
+   * @returns {Promise.<Group>} Promise containing the newly created Group.
+   * @throws {Promise.<Error>} organisation parameter of type "Group" is required.
+   * @throws {Promise.<Error>} If the server returned an error.
+   */
+  createGroup(group) {
+    return this._groupController.createGroup(group);
+  }
+
+  /**
+   * Get a group which is part of the current active {@link Organisation} derived from the OAuth2 scope.
+   *
+   * @param {string} groupId - Specify a group identifier.
+   * @returns {Promise.<Group>} Promise containing an Group.
+   * @throws {Promise.<Error>} groupId parameter of type "string" is required.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getGroup(groupId) {
+    return this._groupController.getGroup(groupId);
+  }
+
+  /**
+   * Get and return all groups in the current active {@link Organisation} derived from the OAuth2 scope.
+   *
+   * @returns {Promise.<Group[]>} Promise containing an array of Groups.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getGroups() {
+    return this._groupController.getGroups();
   }
 }
 
