@@ -10,11 +10,13 @@ git fetch upstream --tags
 git reset --hard upstream/master
 ```
 
-To release a new version, run:
+To release a new version login first with `npm login` run:
 
 ```sh
+npm run babelify
+cd build
 npm version minor
-git push upstream master --tags
+npm publish
 ```
-
-Travis will deploy it to the npm registry and publish the docs to gh-pages.
+This will upload the build artifacts to NPM. Be sure to also update the version number in the master branch and,
+if neccessary, flag a release version.
