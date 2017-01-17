@@ -1,3 +1,4 @@
+import * as CategoryController from '../src/administrative-sdk/category/category-controller';
 import * as ChoiceChallengeController from '../src/administrative-sdk/choice-challenge/choice-challenge-controller';
 import * as ChoiceRecogController from '../src/administrative-sdk/choice-recognition/choice-recognition-controller';
 import * as EmailCredentialsController from '../src/administrative-sdk/email-credentials/email-credentials-controller';
@@ -17,6 +18,8 @@ describe('Administrative SDK', () => {
     oAuth2Token: 'token'
   });
   let sdk;
+  const fakeCategoryController = jasmine.createSpyObj('CategoryController',
+  ['createCategory', 'getCategory', 'getTopLevelCategories', 'getCategoriesWithParent', 'getCategories']);
   const fakeChoiceChallengeController = jasmine.createSpyObj('ChoiceChallengeController',
     ['createChoiceChallenge', 'getChoiceChallenge', 'getChoiceChallenges']);
   const fakeChoiceRecognitionController = jasmine.createSpyObj('ChoiceRecogController',
@@ -40,6 +43,7 @@ describe('Administrative SDK', () => {
   const fakeUserController = jasmine.createSpyObj('UserController',
     ['createUser', 'getUser', 'getCurrentUser', 'getUsers']);
   beforeEach(() => {
+    spyOn(CategoryController, 'default').and.returnValue(fakeCategoryController);
     spyOn(ChoiceChallengeController, 'default').and.returnValue(fakeChoiceChallengeController);
     spyOn(ChoiceRecogController, 'default').and.returnValue(fakeChoiceRecognitionController);
     spyOn(EmailCredentialsController, 'default').and.returnValue(fakeEmailCredentialsController);
@@ -86,6 +90,15 @@ describe('Administrative SDK', () => {
     sdk.getRole(1);
     sdk.getProfile(1);
     sdk.getProfiles();
+    sdk.createCategory(1);
+    sdk.getCategory(1);
+    sdk.getCategoriesWithParent(1);
+    sdk.getTopLevelCategories();
+
+    expect(fakeCategoryController.createCategory).toHaveBeenCalledWith(1);
+    expect(fakeCategoryController.getCategory).toHaveBeenCalledWith(1);
+    expect(fakeCategoryController.getTopLevelCategories).toHaveBeenCalledWith();
+    expect(fakeCategoryController.getCategoriesWithParent).toHaveBeenCalledWith(1);
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);
     expect(fakeChoiceChallengeController.getChoiceChallenge).toHaveBeenCalledWith(1);

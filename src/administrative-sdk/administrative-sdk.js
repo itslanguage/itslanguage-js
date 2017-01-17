@@ -1,3 +1,4 @@
+import CategoryController from './category/category-controller';
 import ChoiceChallengeController from './choice-challenge/choice-challenge-controller';
 import ChoiceRecognitionController from './choice-recognition/choice-recognition-controller';
 import EmailCredentialsController from './email-credentials/email-credentials-controller';
@@ -19,6 +20,7 @@ export default class AdministrativeSDK {
    */
   constructor(connection) {
     this._connection = connection;
+    this._categoryController = new CategoryController(this._connection);
     this._choiceChallengeController = new ChoiceChallengeController(this._connection);
     this._choiceRecognitionController = new ChoiceRecognitionController(this._connection);
     this._emailCredentialsController = new EmailCredentialsController(this._connection);
@@ -30,6 +32,52 @@ export default class AdministrativeSDK {
     this._speechChallengeController = new SpeechChallengeController(this._connection);
     this._speechRecordingController = new SpeechRecordingController(this._connection);
     this._userController = new UserController(this._connection);
+  }
+
+  /**
+   * Create a category.
+   *
+   * @param {Category} category - Object to create.
+   * @returns {Promise.<Category>} Promise containing the newly created Category.
+   * @throws {Promise.<Error>} category parameter of type "Category" is required.
+   * @throws {Promise.<Error>} If the server returned an error.
+   */
+  createCategory(category) {
+    return this._categoryController.createCategory(category);
+  }
+
+  /**
+   * Get a category.
+   *
+   * @param {string} categoryId - Specify a category identifier.
+   * @returns {Promise.<Category>} Promise containing an Category.
+   * @throws {Promise.<Error>} categoryId parameter of type "string" is required.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getCategory(categoryId) {
+    return this._categoryController.getCategory(categoryId);
+  }
+
+  /**
+   * Get and return all top level categories which do not have a parent Category.
+   *
+   * @returns {Promise.<Category[]>} Promise containing an array of Categories.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getTopLevelCategories() {
+    return this._categoryController.getTopLevelCategories();
+  }
+
+  /**
+   * Get and return all categories which have a specific category as parent.
+   *
+   * @param {string} parentId - Specify a category parent identifier.
+   * @returns {Promise.<Category[]>} Promise containing an array of Categories.
+   * @throws {Promise.<Error>} parentId parameter of type "string" is required.
+   * @throws {Promise.<Error>} If no result could not be found.
+   */
+  getCategoriesWithParent(parentId) {
+    return this._categoryController.getCategoriesWithParent(parentId);
   }
 
   /**

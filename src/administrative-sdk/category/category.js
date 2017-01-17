@@ -1,5 +1,3 @@
-import Progress from '../progress/progress';
-
 /**
  * A category for a challenge.
  * It is used to give a challenge front end attributes such as an icon, a color palette etc.
@@ -9,34 +7,29 @@ export default class Category {
    * Create a category.
    *
    * @param {?string} id - Identifier of this category. If none is given one is generated upon creation in the API.
-   * @param {string} name - Name associated with this category.
+   * @param {?string} parent - Identifier of the parent category.
+   * @param {?string} name - Name associated with this category.
    * @param {?string} description - Description associated with this category.
-   * @param {?string} color - Color associated with this category.
-   * @param {?string} image - Image associated with this category.
-   * @param {string} icon - Icon associated with this category.
-   * @param {?Array.<Category>} categories - Other categories this category contains. A category can only contain
-   * either more categories or challenges.
-   * @param {?Array.<SpeechChallenge>} speechChallenges - Challenges this category contains. A category can only contain
-   * either more categories or challenges.
-   * @param {?Progress} progress - Progress values of this category.
+   * @param {?string} color - Color code in hexadecimal format associated with this category.
+   * @param {?Array.<string>} speechChallenges - Identifiers of the challenges this category contains.
+   * A category can only contain either more categories or challenges.
    * @throws {Error} id parameter of type "string|null" is required.
-   * @throws {Error} name parameter of type "string" is required.
-   * @throws {Error} description parameter of type "string" is required.
-   * @throws {Error} color parameter of type "string" is required.
-   * @throws {Error} image parameter of type "string" is required.
-   * @throws {Error} icon parameter of type "string" is required.
-   * @throws {Error} categories parameter of type "Array.<Category>|null" is required.
-   * @throws {Error} speechChallenges parameter of type "Array.<SpeechChallenge>|null" is required.
-   * @throws {Error} progress parameter of type "Progress" is required.
+   * @throws {Error} name parameter of type "string|null" is required.
+   * @throws {Error} description parameter of type "string|null" is required.
+   * @throws {Error} color parameter of type "string|null" is required.
+   * @throws {Error} speechChallenges parameter of type "Array.<string>|null" is required.
    */
-  constructor(id = null, name, description = null, color = null, image = null, icon = null, categories,
-              speechChallenges, progress = null) {
+  constructor(id = null, parent = null, name = null, description = null, color = null, speechChallenges = null) {
     if (id !== null && typeof id !== 'string') {
       throw new Error('id parameter of type "string|null" is required');
     }
 
+    if (parent !== null && typeof parent !== 'string') {
+      throw new Error('parent parameter of type "string|null" is required');
+    }
+
     if (typeof name !== 'string') {
-      throw new Error('name parameter of type "string" is required');
+      throw new Error('name parameter of type "string|null" is required');
     }
 
     if (description !== null && typeof description !== 'string') {
@@ -47,24 +40,8 @@ export default class Category {
       throw new Error('color parameter of type "string|null" is required');
     }
 
-    if (image !== null && typeof image !== 'string') {
-      throw new Error('image parameter of type "string|null" is required');
-    }
-
-    if (icon !== null && typeof icon !== 'string') {
-      throw new Error('icon parameter of type "string|null" is required');
-    }
-
-    if (categories !== null && (!Array.isArray(categories) || categories.length === 0)) {
-      throw new Error('categories parameter of type "Array.<Category>|null" is required');
-    }
-
-    if (speechChallenges !== null && (!Array.isArray(speechChallenges) || speechChallenges.length === 0)) {
-      throw new Error('speechChallenges parameter of type "Array.<SpeechChallenge>|null" is required');
-    }
-
-    if (progress !== null && !(progress instanceof Progress)) {
-      throw new Error('progress parameter of type "Progress|null" is required');
+    if (speechChallenges !== null && !Array.isArray(speechChallenges)) {
+      throw new Error('speechChallenges parameter of type "Array.<string>|null" is required');
     }
 
     /**
@@ -72,6 +49,12 @@ export default class Category {
      * @type {string}
      */
     this.id = id;
+
+    /**
+     * Identifier of the parent category.
+     * @type {string}
+     */
+    this.parent = parent;
 
     /**
      * Name associated with this category.
@@ -86,39 +69,27 @@ export default class Category {
     this.description = description;
 
     /**
-     * Color associated with this category.
+     * Color code in hexadecimal format associated with this category.
      * @type {string}
      */
     this.color = color;
 
     /**
-     * Image associated with this category.
+     * Download URL of the image associated with this category. This URL is only generated from the backend.
      * @type {string}
      */
-    this.image = image;
+    this.imageUrl = null;
 
     /**
-     * Icon associated with this category.
+     * Download URL of the icon associated with this category. This URL is only generated from the backend.
      * @type {string}
      */
-    this.icon = icon;
-
-    /**
-     * Other categories this category contains. A category can only contain either more categories or challenges.
-     * @type {Array.<Category>}
-     */
-    this.categories = categories;
+    this.iconUrl = null;
 
     /**
      * Challenges this category contains. A category can only contain either more categories or challenges.
-     * @type {Array.<SpeechChallenge>}
+     * @type {Array.<string>}
      */
     this.speechChallenges = speechChallenges;
-
-    /**
-     * Progress values of this category.
-     * @type {Progress}
-     */
-    this.progress = progress;
   }
 }
