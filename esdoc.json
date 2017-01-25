@@ -1,4 +1,7 @@
 {
   "source": "./src",
-  "destination": "./esdoc"
+  "destination": "./esdoc",
+  "manual": {
+    "faq": ["./manual/troubleshooting.md"]
+  }
 }
