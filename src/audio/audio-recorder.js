@@ -5,7 +5,7 @@ import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
-import uuid from 'node-uuid';
+import uuid from 'uuid';
 
 /**
  * Audio recording component.
