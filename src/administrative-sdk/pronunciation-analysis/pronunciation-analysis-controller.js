@@ -209,24 +209,16 @@ export default class PronunciationAnalysisController {
           trimEnd: trimAudioEnd
         })
         .then(initAnalysis)
-        .then(() =>
-          self.pronunciationAnalysisInitChallenge(challenge)
-            .then(() => {
-              const p = new Promise(resolve_ => {
-                if (recorder.hasUserMediaApproval()) {
-                  resolve_();
-                } else {
-                  recorder.addEventListener('ready', resolve_);
-                }
-              });
-
-              p.then(() => {
-                self.pronunciationAnalysisInitAudio(recorder, startStreaming)
-                  .catch(reject);
-              });
-            })
-            .then(() => notify('ReadyToReceive'))
-        )
+        .then(() => self.pronunciationAnalysisInitChallenge(challenge))
+        .then(() => notify('ReadyToReceive'))
+        .then(() => new Promise(resolve_ => {
+          if (recorder.hasUserMediaApproval()) {
+            resolve_();
+          } else {
+            recorder.addEventListener('ready', resolve_);
+          }
+        }))
+        .then(() => self.pronunciationAnalysisInitAudio(recorder, startStreaming))
         .catch(reject);
     })
       .then(res => {
