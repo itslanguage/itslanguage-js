@@ -3,7 +3,7 @@ import * as MediaRecorder from '../src/audio/media-recorder';
 import * as WebAudioRecorder from '../src/audio/web-audio-recorder';
 import AudioRecorder from '../src/audio/audio-recorder';
 import Stopwatch from '../src/audio/tools';
-import uuid from 'node-uuid';
+import uuid from 'uuid';
 
 describe('Audio recorder', () => {
   beforeEach(() => {
