@@ -100,18 +100,14 @@ export default class CategoryController {
       url += urlModification;
     }
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const categories = [];
-        data.forEach(datum => {
-          const category = new Category(datum.id, datum.parent, datum.name, datum.description, datum.color,
-            datum.speechChallenges);
-          category.imageUrl = datum.imageUrl;
-          category.iconUrl = datum.iconUrl;
-          category.created = new Date(datum.created);
-          category.updated = new Date(datum.updated);
-          categories.push(category);
-        });
-        return categories;
-      });
+      .then(data => data.map(datum => {
+        const category = new Category(datum.id, datum.parent, datum.name, datum.description, datum.color,
+          datum.speechChallenges);
+        category.imageUrl = datum.imageUrl;
+        category.iconUrl = datum.iconUrl;
+        category.created = new Date(datum.created);
+        category.updated = new Date(datum.updated);
+        return category;
+      }));
   }
 }

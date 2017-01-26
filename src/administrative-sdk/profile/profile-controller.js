@@ -48,16 +48,12 @@ export default class ProfileController {
   getProfiles() {
     const url = this._connection._settings.apiUrl + '/profiles';
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const profiles = [];
-        data.forEach(datum => {
-          const profile = new Profile(datum.firstName, datum.lastName, datum.infix, datum.gender,
-            new Date(datum.birthDate));
-          profile.created = new Date(datum.created);
-          profile.updated = new Date(datum.updated);
-          profiles.push(profile);
-        });
-        return profiles;
-      });
+      .then(data => data.map(datum => {
+        const profile = new Profile(datum.firstName, datum.lastName, datum.infix, datum.gender,
+          new Date(datum.birthDate));
+        profile.created = new Date(datum.created);
+        profile.updated = new Date(datum.updated);
+        return profile;
+      }));
   }
 }

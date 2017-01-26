@@ -97,16 +97,12 @@ export default class SpeechChallengeController {
     const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const challenges = [];
-        data.forEach(datum => {
-          const challenge = new SpeechChallenge(datum.id,
-            datum.topic, datum.referenceAudioUrl, data.srtUrl, data.imageUrl);
-          challenge.created = new Date(datum.created);
-          challenge.updated = new Date(datum.updated);
-          challenges.push(challenge);
-        });
-        return challenges;
-      });
+      .then(data => data.map(datum => {
+        const challenge = new SpeechChallenge(datum.id,
+          datum.topic, datum.referenceAudioUrl, data.srtUrl, data.imageUrl);
+        challenge.created = new Date(datum.created);
+        challenge.updated = new Date(datum.updated);
+        return challenge;
+      }));
   }
 }

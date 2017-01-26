@@ -73,15 +73,11 @@ export default class OrganisationController {
     const url = this._connection._settings.apiUrl + '/organisations';
 
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const organisations = [];
-        data.forEach(datum => {
-          const organisation = new Organisation(datum.id, datum.name);
-          organisation.created = new Date(datum.created);
-          organisation.updated = new Date(datum.updated);
-          organisations.push(organisation);
-        });
-        return organisations;
-      });
+      .then(data => data.map(datum => {
+        const organisation = new Organisation(datum.id, datum.name);
+        organisation.created = new Date(datum.created);
+        organisation.updated = new Date(datum.updated);
+        return organisation;
+      }));
   }
 }

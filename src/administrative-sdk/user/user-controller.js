@@ -70,16 +70,12 @@ export default class UserController {
   getUsers() {
     const url = this._connection._settings.apiUrl + '/users';
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const users = [];
-        data.forEach(datum => {
-          const user = new User(datum.id, datum.profile, datum.groups, datum.roles);
-          user.created = new Date(datum.created);
-          user.updated = new Date(datum.updated);
-          users.push(user);
-        });
-        return users;
-      });
+      .then(data => data.map(datum => {
+        const user = new User(datum.id, datum.profile, datum.groups, datum.roles);
+        user.created = new Date(datum.created);
+        user.updated = new Date(datum.updated);
+        return user;
+      }));
   }
 
   /**

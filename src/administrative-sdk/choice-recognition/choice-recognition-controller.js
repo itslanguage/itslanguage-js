@@ -259,15 +259,11 @@ export default class ChoiceRecognitionController {
     const url = this._connection._settings.apiUrl + '/challenges/choice/' +
       challengeId + '/recognitions';
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const recognitions = [];
-        data.forEach(datum => {
-          const recognition = new ChoiceRecognition(challengeId, datum.userId,
-            datum.id, new Date(datum.created), new Date(datum.updated),
-            datum.audioUrl, datum.recognised);
-          recognitions.push(recognition);
-        });
-        return recognitions;
-      });
+      .then(data => data.map(datum => {
+        const recognition = new ChoiceRecognition(challengeId, datum.userId,
+          datum.id, new Date(datum.created), new Date(datum.updated),
+          datum.audioUrl, datum.recognised);
+        return recognition;
+      }));
   }
 }
