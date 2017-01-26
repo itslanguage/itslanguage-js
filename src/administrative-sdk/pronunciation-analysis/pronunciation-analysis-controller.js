@@ -67,17 +67,7 @@ export default class PronunciationAnalysisController {
    */
   pronunciationAnalysisInitChallenge(challenge) {
     return this._connection.call('pronunciation.init_challenge',
-      [this._connection._analysisId, challenge.id])
-      .then(analysisId => {
-        console.log('Challenge initialised for analysisId: ' + this._connection._analysisId);
-        return analysisId;
-      })
-      .then(() => this._connection.call('pronunciation.alignment',
-        [this._connection._analysisId]))
-      .then(alignment => {
-        this._referenceAlignment = alignment;
-        console.log('Reference alignment retrieved', alignment);
-      });
+      [this._connection._analysisId, challenge.id]);
   }
 
   /**
