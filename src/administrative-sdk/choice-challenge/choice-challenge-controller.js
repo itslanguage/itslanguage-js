@@ -38,9 +38,7 @@ export default class ChoiceChallengeController {
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         result.status = data.status;
-        data.choices.forEach(pair => {
-          result.choices.push(pair.choice);
-        });
+        result.choices = data.choices.map(pair => pair.choice);
         return result;
       });
   }
@@ -65,10 +63,7 @@ export default class ChoiceChallengeController {
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         challenge.status = data.status;
-        challenge.choices = [];
-        data.choices.forEach(pair => {
-          challenge.choices.push(pair.choice);
-        });
+        challenge.choices = data.choices.map(pair => pair.choice);
         return challenge;
       });
   }
@@ -82,20 +77,13 @@ export default class ChoiceChallengeController {
   getChoiceChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/choice';
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const challenges = [];
-        data.forEach(datum => {
-          const challenge = new ChoiceChallenge(datum.id, datum.question, datum.choices);
-          challenge.created = new Date(datum.created);
-          challenge.updated = new Date(datum.updated);
-          challenge.status = datum.status;
-          challenge.choices = [];
-          datum.choices.forEach(pair => {
-            challenge.choices.push(pair.choice);
-          });
-          challenges.push(challenge);
-        });
-        return challenges;
-      });
+      .then(data => data.map(datum => {
+        const challenge = new ChoiceChallenge(datum.id, datum.question, datum.choices);
+        challenge.created = new Date(datum.created);
+        challenge.updated = new Date(datum.updated);
+        challenge.status = datum.status;
+        challenge.choices = datum.choices.map(pair => pair.choice);
+        return challenge;
+      }));
   }
 }

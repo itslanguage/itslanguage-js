@@ -33,30 +33,20 @@ export default class PronunciationAnalysisController {
    * @returns {Word[]} An array of {@link Word} domain models.
    */
   static _wordsToModels(inWords) {
-    const words = [];
-    inWords.forEach(word => {
-      const chunks = [];
-      word.chunks.forEach(chunk => {
-        const phonemes = [];
-        // Phonemes are only provided on detailed analysis.
-        chunk.phonemes = chunk.phonemes || [];
-        chunk.phonemes.forEach(phoneme => {
+    return inWords.map(word => {
+      const chunks = word.chunks.map(chunk => {
+        const phonemes = (chunk.phonemes || []).map(phoneme => {
           const newPhoneme = new Phoneme(
             phoneme.ipa, phoneme.score, phoneme.confidenceScore,
             phoneme.verdict);
           // Copy all properties as API docs indicate there may be a
           // variable amount of phoneme properties.
-          Object.assign(newPhoneme, phoneme);
-          phonemes.push(newPhoneme);
+          return Object.assign(newPhoneme, phoneme);
         });
-        const wordChunk = new WordChunk(chunk.graphemes, chunk.score,
-          chunk.verdict, phonemes);
-        chunks.push(wordChunk);
+        return new WordChunk(chunk.graphemes, chunk.score, chunk.verdict, phonemes);
       });
-      const newWord = new Word(chunks);
-      words.push(newWord);
+      return new Word(chunks);
     });
-    return words;
   }
 
   /**
@@ -316,21 +306,17 @@ export default class PronunciationAnalysisController {
       url += '?detailed=true';
     }
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const analyses = [];
-        data.forEach(datum => {
-          const analysis = new PronunciationAnalysis(challengeId, datum.userId,
-            datum.id, new Date(datum.created), new Date(datum.updated),
-            datum.audioUrl, datum.score, datum.confidenceScore, null);
-          // Alignment may not be successful, in which case the analysis
-          // is not available, but it's still an attempt that is available,
-          // albeit without extended attributes like score and phonemes.
-          if (datum.words) {
-            analysis.words = PronunciationAnalysisController._wordsToModels(datum.words);
-          }
-          analyses.push(analysis);
-        });
-        return analyses;
-      });
+      .then(data => data.map(datum => {
+        const analysis = new PronunciationAnalysis(challengeId, datum.userId,
+          datum.id, new Date(datum.created), new Date(datum.updated),
+          datum.audioUrl, datum.score, datum.confidenceScore, null);
+        // Alignment may not be successful, in which case the analysis
+        // is not available, but it's still an attempt that is available,
+        // albeit without extended attributes like score and phonemes.
+        if (datum.words) {
+          analysis.words = PronunciationAnalysisController._wordsToModels(datum.words);
+        }
+        return analysis;
+      }));
   }
 }

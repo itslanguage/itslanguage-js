@@ -213,14 +213,7 @@ export default class SpeechRecordingController {
     }
     const url = this._connection._settings.apiUrl + '/challenges/speech/' + challengeId + '/recordings';
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const recordings = [];
-        data.forEach(datum => {
-          const recording = new SpeechRecording(challengeId, datum.userId, datum.id, new Date(datum.created),
-            new Date(datum.updated), this._connection.addAccessToken(datum.audioUrl));
-          recordings.push(recording);
-        });
-        return recordings;
-      });
+      .then(data => data.map(datum => new SpeechRecording(challengeId, datum.userId, datum.id, new Date(datum.created),
+          new Date(datum.updated), this._connection.addAccessToken(datum.audioUrl))));
   }
 }

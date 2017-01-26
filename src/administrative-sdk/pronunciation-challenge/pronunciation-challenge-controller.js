@@ -83,17 +83,13 @@ export default class PronunciationChallengeController {
   getPronunciationChallenges() {
     const url = this._connection._settings.apiUrl + '/challenges/pronunciation';
     return this._connection._secureAjaxGet(url)
-      .then(data => {
-        const challenges = [];
-        data.forEach(datum => {
-          const challenge = new PronunciationChallenge(datum.id, datum.transcription, datum.referenceAudioUrl);
-          challenge.created = new Date(datum.created);
-          challenge.updated = new Date(datum.updated);
-          challenge.status = datum.status;
-          challenges.push(challenge);
-        });
-        return challenges;
-      });
+      .then(data => data.map(datum => {
+        const challenge = new PronunciationChallenge(datum.id, datum.transcription, datum.referenceAudioUrl);
+        challenge.created = new Date(datum.created);
+        challenge.updated = new Date(datum.updated);
+        challenge.status = datum.status;
+        return challenge;
+      }));
   }
 
   /**
