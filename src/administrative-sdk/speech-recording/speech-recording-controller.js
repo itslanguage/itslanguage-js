@@ -1,6 +1,6 @@
-import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import SpeechRecording from './speech-recording';
+import base64 from 'base64-js';
 import when from 'when';
 
 /**
@@ -117,7 +117,7 @@ export default class SpeechRecordingController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = base64.fromByteArray(chunk);
         console.log('Sending audio chunk to websocket for recordingId: ' +
           self._connection._recordingId);
         self._connection.call('recording.write',

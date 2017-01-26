@@ -1,13 +1,13 @@
 /* eslint-disable
  camelcase
  */
-import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import Phoneme from '../phoneme/phoneme';
 import PronunciationAnalysis from './pronunciation-analysis';
 import PronunciationChallenge from '../pronunciation-challenge/pronunciation-challenge';
 import Word from '../word/word';
 import WordChunk from '../word-chunk/word-chunk';
+import base64 from 'base64-js';
 import when from 'when';
 
 /**
@@ -176,7 +176,7 @@ export default class PronunciationAnalysisController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = base64.fromByteArray(chunk);
         console.log('Sending audio chunk to websocket for analysisId: ' +
           self._connection._analysisId);
         self._connection.call('pronunciation.write',

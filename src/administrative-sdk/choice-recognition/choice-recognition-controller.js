@@ -1,7 +1,7 @@
-import Base64Utils from '../utils/base64-utils';
 import ChoiceChallenge from '../choice-challenge/choice-challenge';
 import ChoiceRecognition from './choice-recognition';
 import Connection from '../connection/connection-controller';
+import base64 from 'base64-js';
 import when from 'when';
 /**
  * Controller class for the ChoiceRecognition model.
@@ -131,7 +131,7 @@ export default class ChoiceRecognitionController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function dataavailableCb(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = base64.fromByteArray(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
           self._connection._recognitionId);
         self._connection.call('choice.write',
