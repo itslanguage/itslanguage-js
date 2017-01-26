@@ -129,11 +129,6 @@ export default class Connection {
     connection.onopen = function(session) {
       console.log('WebSocket connection opened');
       self._session = session;
-      const _call = self._session.call;
-      self._session.call = function(url, ...args) {
-        console.debug('Calling RPC: ' + url);
-        return _call.call(this, url, ...args);
-      };
       self.fireEvent('websocketOpened');
     };
     connection.onclose = function() {
@@ -143,6 +138,19 @@ export default class Connection {
     };
     this._connection = connection;
     this._connection.open();
+  }
+
+  /**
+   * Make an RPC to active current session.
+   *
+   * @param {string} rpc - The RPC to call. It will be prefixed with `'nl.itslanguage.'`.
+   * @param {...any} args - Any arguments to pass to the RPC.
+   * @return {Promise} The result of the call.
+   */
+  call(rpc, ...args) {
+    const url = 'nl.itslanguage.' + rpc;
+    console.debug('Calling RPC:', url);
+    return this._session.call(url, ...args);
   }
 
   webSocketDisconnect() {
