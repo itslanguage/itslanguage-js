@@ -1,6 +1,6 @@
-import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import SpeechRecording from './speech-recording';
+import base64 from 'base64-js';
 import when from 'when';
 
 /**
@@ -22,7 +22,7 @@ export default class SpeechRecordingController {
    * @private
    */
   speechRecordingInitChallenge(challenge) {
-    return this._connection._session.call('nl.itslanguage.recording.init_challenge',
+    return this._connection.call('recording.init_challenge',
       [this._connection._recordingId, challenge.id]).then(
       // RPC success callback
       recordingId => {
@@ -43,7 +43,7 @@ export default class SpeechRecordingController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the recording when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    return this._connection._session.call('nl.itslanguage.recording.init_audio',
+    return this._connection.call('recording.init_audio',
       [this._connection._recordingId, specs.audioFormat], specs.audioParameters)
       .then(recordingId => {
         console.log('Accepted audio parameters for recordingId after init_audio: ' + this._connection._recordingId);
@@ -98,7 +98,7 @@ export default class SpeechRecordingController {
       }
 
       function recordedCb(activeRecordingId, audioBlob, forcedStop) {
-        self._connection._session.call('nl.itslanguage.recording.close',
+        self._connection.call('recording.close',
           [self._connection._recordingId]).then(
           // RPC success callback
           res => {
@@ -117,10 +117,10 @@ export default class SpeechRecordingController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = base64.fromByteArray(chunk);
         console.log('Sending audio chunk to websocket for recordingId: ' +
           self._connection._recordingId);
-        self._connection._session.call('nl.itslanguage.recording.write',
+        self._connection.call('recording.write',
           [self._connection._recordingId, encoded, 'base64']).then(
           // RPC success callback
           res => {
@@ -142,7 +142,7 @@ export default class SpeechRecordingController {
       }
 
       recorder.addEventListener('recorded', recordedCb);
-      self._connection._session.call('nl.itslanguage.recording.init_recording', [])
+      self._connection.call('recording.init_recording', [])
         .then(startRecording)
         .then(() =>
           self.speechRecordingInitChallenge(challenge)

@@ -1,13 +1,13 @@
 /* eslint-disable
  camelcase
  */
-import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import Phoneme from '../phoneme/phoneme';
 import PronunciationAnalysis from './pronunciation-analysis';
 import PronunciationChallenge from '../pronunciation-challenge/pronunciation-challenge';
 import Word from '../word/word';
 import WordChunk from '../word-chunk/word-chunk';
+import base64 from 'base64-js';
 import when from 'when';
 
 /**
@@ -66,7 +66,7 @@ export default class PronunciationAnalysisController {
    * @private
    */
   pronunciationAnalysisInitChallenge(challenge) {
-    return this._connection._session.call('nl.itslanguage.pronunciation.init_challenge',
+    return this._connection.call('pronunciation.init_challenge',
       [this._connection._analysisId, challenge.id]);
   }
 
@@ -82,7 +82,7 @@ export default class PronunciationAnalysisController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    return this._connection._session.call('nl.itslanguage.pronunciation.init_audio',
+    return this._connection.call('pronunciation.init_audio',
       [this._connection._analysisId, specs.audioFormat], specs.audioParameters)
       .then(analysisId => {
         console.log('Accepted audio parameters for analysisId after init_audio: ' + this._connection._analysisId);
@@ -166,10 +166,10 @@ export default class PronunciationAnalysisController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        const encoded = base64.fromByteArray(chunk);
         console.log('Sending audio chunk to websocket for analysisId: ' +
           self._connection._analysisId);
-        self._connection._session.call('nl.itslanguage.pronunciation.write',
+        self._connection.call('pronunciation.write',
           [self._connection._analysisId, encoded, 'base64'])
           .then(() => {
             console.debug('Delivered audio successfully');
@@ -191,7 +191,7 @@ export default class PronunciationAnalysisController {
         recorder.removeEventListener('dataavailable', startStreaming);
 
         // When done, submit any plain text (non-JSON) to start analysing.
-        self._connection._session.call('nl.itslanguage.pronunciation.analyse',
+        self._connection.call('pronunciation.analyse',
           [self._connection._analysisId], {}, {receive_progress: true})
           .progress(progress => {
             reportProgress(progress);
@@ -213,7 +213,7 @@ export default class PronunciationAnalysisController {
       }
 
       recorder.addEventListener('recorded', stopListening);
-      self._connection._session.call('nl.itslanguage.pronunciation.init_analysis', [],
+      self._connection.call('pronunciation.init_analysis', [],
         {
           trimStart: trimAudioStart,
           trimEnd: trimAudioEnd

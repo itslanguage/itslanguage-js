@@ -643,8 +643,6 @@ describe('Connection', () => {
       expect(api.fireEvent).toHaveBeenCalledWith('websocketClosed');
       expect(console.log).toHaveBeenCalledWith('WebSocket disconnected');
 
-      expect(console.debug).toHaveBeenCalledTimes(1);
-      expect(console.debug).toHaveBeenCalledWith('Calling RPC: apiUrl');
       expect(console.log).toHaveBeenCalledWith('Called mock session at apiUrl with extra argument');
 
       expect(console.log).toHaveBeenCalledTimes(4);
