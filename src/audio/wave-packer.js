@@ -40,7 +40,6 @@ export default class WavePacker {
   }
 
   record(left, right) {
-    console.debug('Recording bytes: ' + left.length);
     this.recBuffersL.push(left);
     this.recBuffersR.push(right);
     this.recLength += left.length;
@@ -61,7 +60,6 @@ export default class WavePacker {
     // The audio to export are 16 bit PCM samples that are wrapped in
     // a WAVE file at the server. Therefore convert from float here.
     const converted = convertFloat32ToInt16(left);
-    console.debug('Streaming bytes: ' + converted.byteLength);
     callback(converted);
   }
 

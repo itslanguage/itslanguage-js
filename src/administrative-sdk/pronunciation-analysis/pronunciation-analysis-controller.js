@@ -161,9 +161,6 @@ export default class PronunciationAnalysisController {
           self._connection._analysisId);
         self._connection.call('pronunciation.write',
           [self._connection._analysisId, encoded, 'base64'])
-          .then(() => {
-            console.debug('Delivered audio successfully');
-          })
           .catch(res => {
             Connection.logRPCError(res);
             reportError(res);
