@@ -26,7 +26,7 @@ export default class ChoiceRecognitionController {
    * @private
    */
   choiceRecognitionInitChallenge(challenge) {
-    return this._connection._session.call('nl.itslanguage.choice.init_challenge',
+    return this._connection.call('choice.init_challenge',
       [this._connection._recognitionId, challenge.id])
       .then(
         // RPC success callback
@@ -48,7 +48,7 @@ export default class ChoiceRecognitionController {
     // challenge. This allows the socket server some time to fetch the metadata
     // and reference audio to start the analysis when audio is actually submitted.
     const specs = recorder.getAudioSpecs();
-    return this._connection._session.call('nl.itslanguage.choice.init_audio',
+    return this._connection.call('choice.init_audio',
       [this._connection._recognitionId, specs.audioFormat], specs.audioParameters).then(
       // RPC success callback
       recognitionId => {
@@ -134,7 +134,7 @@ export default class ChoiceRecognitionController {
         const encoded = Base64Utils._arrayBufferToBase64(chunk);
         console.log('Sending audio chunk to websocket for recognitionId: ' +
           self._connection._recognitionId);
-        self._connection._session.call('nl.itslanguage.choice.write',
+        self._connection.call('choice.write',
           [self._connection._recognitionId, encoded, 'base64']).then(
           // RPC success callback
           res => {
@@ -153,7 +153,7 @@ export default class ChoiceRecognitionController {
         self._connection._recognitionId = recognitionId;
         console.log('Got recognitionId after initialisation: ' + self._connection._recognitionId);
       }
-      self._connection._session.call('nl.itslanguage.choice.init_recognition', [],
+      self._connection.call('choice.init_recognition', [],
         {
           trimStart: trimAudioStart,
           trimEnd: trimAudioEnd
@@ -181,7 +181,7 @@ export default class ChoiceRecognitionController {
       // Stop listening when the audio recorder stopped.
       function recordedCb() {
         // When done, submit any plain text (non-JSON) to start analysing.
-        self._connection._session.call('nl.itslanguage.choice.recognise',
+        self._connection.call('choice.recognise',
           [self._connection._recognitionId]).then(
           // RPC success callback
           res => {
