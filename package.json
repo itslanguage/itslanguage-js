@@ -24,6 +24,7 @@
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
   "dependencies": {
     "autobahn": "0.10.1",
+    "base64-js": "^1.2.0",
     "client-oauth2": "2.2.0",
     "event-emitter": "^0.3.4",
     "pcmjs": "^0.0.2",
