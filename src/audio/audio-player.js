@@ -427,5 +427,3 @@ export default class AudioPlayer {
     return this._audioMuted;
   }
 }
-
-
