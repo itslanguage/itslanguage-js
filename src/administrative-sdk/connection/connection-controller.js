@@ -264,11 +264,7 @@ export default class Connection {
   static _sdkCompatibility() {
     // WebSocket
     // http://caniuse.com/#feat=websockets
-    const canCreateWebSocket = 'WebSocket' in window;
-    console.log('Native WebSocket capability: ' +
-      canCreateWebSocket);
-
-    if (!canCreateWebSocket) {
+    if (!('WebSocket' in window)) {
       throw new Error('No WebSocket capabilities');
     }
   }
