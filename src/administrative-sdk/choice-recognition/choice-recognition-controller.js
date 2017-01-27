@@ -135,18 +135,11 @@ export default class ChoiceRecognitionController {
         console.log('Sending audio chunk to websocket for recognitionId: ' +
           self._connection._recognitionId);
         self._connection.call('choice.write',
-          [self._connection._recognitionId, encoded, 'base64']).then(
-          // RPC success callback
-          res => {
-            console.debug('Delivered audio successfully');
-            return res;
-          },
-          // RPC error callback
-          res => {
+          [self._connection._recognitionId, encoded, 'base64'])
+          .catch(res => {
             console.error('RPC error returned:', res.error);
             _ecb(res);
-          }
-        );
+          });
       }
 
       function recognitionInitCb(recognitionId) {
