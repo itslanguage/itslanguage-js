@@ -1,13 +1,13 @@
 /* eslint-disable
  camelcase
  */
+import Base64Utils from '../utils/base64-utils';
 import Connection from '../connection/connection-controller';
 import Phoneme from '../phoneme/phoneme';
 import PronunciationAnalysis from './pronunciation-analysis';
 import PronunciationChallenge from '../pronunciation-challenge/pronunciation-challenge';
 import Word from '../word/word';
 import WordChunk from '../word-chunk/word-chunk';
-import base64 from 'base64-js';
 import when from 'when';
 
 /**
@@ -156,7 +156,9 @@ export default class PronunciationAnalysisController {
       // Start streaming the binary audio when the user instructs
       // the audio recorder to start recording.
       function startStreaming(chunk) {
-        const encoded = base64.fromByteArray(chunk);
+        const encoded = Base64Utils._arrayBufferToBase64(chunk);
+        console.log('Sending audio chunk to websocket for analysisId: ' +
+          self._connection._analysisId);
         self._connection.call('pronunciation.write',
           [self._connection._analysisId, encoded, 'base64'])
           .catch(res => {
@@ -204,24 +206,16 @@ export default class PronunciationAnalysisController {
           trimEnd: trimAudioEnd
         })
         .then(initAnalysis)
-        .then(() =>
-          self.pronunciationAnalysisInitChallenge(challenge)
-            .then(() => {
-              const p = new Promise(resolve_ => {
-                if (recorder.hasUserMediaApproval()) {
-                  resolve_();
-                } else {
-                  recorder.addEventListener('ready', resolve_);
-                }
-              });
-
-              p.then(() => {
-                self.pronunciationAnalysisInitAudio(recorder, startStreaming)
-                  .catch(reject);
-              });
-            })
-            .then(() => notify('ReadyToReceive'))
-        )
+        .then(() => self.pronunciationAnalysisInitChallenge(challenge))
+        .then(() => notify('ReadyToReceive'))
+        .then(() => new Promise(resolve_ => {
+          if (recorder.hasUserMediaApproval()) {
+            resolve_();
+          } else {
+            recorder.addEventListener('ready', resolve_);
+          }
+        }))
+        .then(() => self.pronunciationAnalysisInitAudio(recorder, startStreaming))
         .catch(reject);
     })
       .then(res => {
