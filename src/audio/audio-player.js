@@ -103,15 +103,13 @@ export default class AudioPlayer {
     // Detect HTML5 Audio playback.
     // http://caniuse.com/#feat=audio
     this.canUseAudio = Boolean(Audio);
-    console.log('Native HTML5 Audio playback capability: ' +
-      this.canUseAudio);
+    console.log('Native HTML5 Audio playback capability:', this.canUseAudio);
 
     // Detect Cordova Media Playback
     // It allows playing audio using the native bridge inside WebView Apps.
     // https://github.com/apache/cordova-plugin-media/blob/master/doc/index.md
     this.canUseCordovaMedia = Boolean(window.Media);
-    console.log('Cordova Media playback capability: ' +
-      this.canUseCordovaMedia);
+    console.log('Cordova Media playback capability:', this.canUseCordovaMedia);
 
     if (!this.canUseAudio && !this.canUseCordovaMedia) {
       throw new Error(
@@ -134,18 +132,12 @@ export default class AudioPlayer {
       const canPlay3GPP = _audio.canPlayType(
           'audio/3gpp; codecs="samr"') !== '';
 
-      console.log('Native Vorbis audio in Ogg container playback capability: ' +
-        canPlayOggVorbis);
-      console.log('Native Opus audio in Ogg container playback capability: ' +
-        canPlayOggOpus);
-      console.log('Native PCM audio in Waveform Audio File Format (WAVE) ' +
-        'playback capability: ' + canPlayWave);
-      console.log('Native MPEG Audio Layer 3 (MP3) playback capability: ' +
-        canPlayMP3);
-      console.log('Native Low-Complexity AAC audio in MP4 container playback ' +
-        'capability: ' + canPlayAAC);
-      console.log('Native AMR audio in 3GPP container playback capability: ' +
-        canPlay3GPP);
+      console.log('Native Vorbis audio in Ogg container playback capability:', canPlayOggVorbis);
+      console.log('Native Opus audio in Ogg container playback capability:', canPlayOggOpus);
+      console.log('Native PCM audio in Waveform Audio File Format (WAVE) playback capability:', canPlayWave);
+      console.log('Native MPEG Audio Layer 3 (MP3) playback capability:', canPlayMP3);
+      console.log('Native Low-Complexity AAC audio in MP4 container playback capability:', canPlayAAC);
+      console.log('Native AMR audio in 3GPP container playback capability:', canPlay3GPP);
 
       if (!(canPlayWave || canPlayMP3)) {
         throw new Error(
