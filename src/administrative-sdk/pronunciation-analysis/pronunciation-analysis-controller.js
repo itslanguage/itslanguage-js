@@ -157,8 +157,6 @@ export default class PronunciationAnalysisController {
       // the audio recorder to start recording.
       function startStreaming(chunk) {
         const encoded = base64.fromByteArray(chunk);
-        console.log('Sending audio chunk to websocket for analysisId: ' +
-          self._connection._analysisId);
         self._connection.call('pronunciation.write',
           [self._connection._analysisId, encoded, 'base64'])
           .catch(res => {
