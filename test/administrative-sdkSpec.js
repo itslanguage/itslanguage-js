@@ -2,6 +2,7 @@ import * as CategoryController from '../src/administrative-sdk/category/category
 import * as ChoiceChallengeController from '../src/administrative-sdk/choice-challenge/choice-challenge-controller';
 import * as ChoiceRecogController from '../src/administrative-sdk/choice-recognition/choice-recognition-controller';
 import * as EmailCredentialsController from '../src/administrative-sdk/email-credentials/email-credentials-controller';
+import * as GroupController from '../src/administrative-sdk/group/group-controller';
 import * as OrganisationController from '../src/administrative-sdk/organisation/organisation-controller';
 import * as ProAnalaControl from '../src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller';
 import * as ProChalControl from '../src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller';
@@ -26,6 +27,8 @@ describe('Administrative SDK', () => {
     ['startStreamingChoiceRecognition', 'getChoiceRecognition', 'getChoiceRecognitions']);
   const fakeEmailCredentialsController = jasmine.createSpyObj('EmailCredentialsController',
   ['createEmailCredentials']);
+  const fakeGroupController = jasmine.createSpyObj('GroupController',
+  ['createGroup', 'getGroup', 'getGroups']);
   const fakeOrganisationController = jasmine.createSpyObj('OrganisationController',
     ['createOrganisation', 'getOrganisation', 'getOrganisations']);
   const fakeProfileController = jasmine.createSpyObj('ProfileController', ['getProfile', 'getProfiles']);
@@ -47,6 +50,7 @@ describe('Administrative SDK', () => {
     spyOn(ChoiceChallengeController, 'default').and.returnValue(fakeChoiceChallengeController);
     spyOn(ChoiceRecogController, 'default').and.returnValue(fakeChoiceRecognitionController);
     spyOn(EmailCredentialsController, 'default').and.returnValue(fakeEmailCredentialsController);
+    spyOn(GroupController, 'default').and.returnValue(fakeGroupController);
     spyOn(OrganisationController, 'default').and.returnValue(fakeOrganisationController);
     spyOn(ProfileController, 'default').and.returnValue(fakeProfileController);
     spyOn(ProAnalaControl, 'default').and.returnValue(fakePronunciationAnalysisController);
@@ -94,6 +98,9 @@ describe('Administrative SDK', () => {
     sdk.getCategory(1);
     sdk.getCategoriesWithParent(1);
     sdk.getTopLevelCategories();
+    sdk.createGroup(1);
+    sdk.getGroup(1);
+    sdk.getGroups();
 
     expect(fakeCategoryController.createCategory).toHaveBeenCalledWith(1);
     expect(fakeCategoryController.getCategory).toHaveBeenCalledWith(1);
@@ -109,6 +116,10 @@ describe('Administrative SDK', () => {
     expect(fakeChoiceRecognitionController.getChoiceRecognitions).toHaveBeenCalledWith(1);
 
     expect(fakeEmailCredentialsController.createEmailCredentials).toHaveBeenCalledWith(1, 2);
+
+    expect(fakeGroupController.createGroup).toHaveBeenCalledWith(1);
+    expect(fakeGroupController.getGroup).toHaveBeenCalledWith(1);
+    expect(fakeGroupController.getGroups).toHaveBeenCalledWith();
 
     expect(fakeOrganisationController.createOrganisation).toHaveBeenCalledWith(1);
     expect(fakeOrganisationController.getOrganisation).toHaveBeenCalledWith(1);
