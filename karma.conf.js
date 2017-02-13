@@ -13,6 +13,7 @@ module.exports = config => {
     browsers: [
       'Chrome'
     ],
+    transports: ['polling'],
     customLaunchers: {
       ChromeTravisCi: {
         base: 'Chrome',
