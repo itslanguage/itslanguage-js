@@ -169,7 +169,7 @@ export default class ChoiceRecognitionController {
             })
             .then(() => notify('ReadyToReceive'))
         )
-            .catch(reject);
+        .catch(reject);
 
       // Stop listening when the audio recorder stopped.
       function recordedCb() {

@@ -49,11 +49,11 @@ describe('User API interaction test', () => {
     const controller = new UserController();
     [0, '4', {}, [], true, false, null, undefined].map(v => {
       controller.createUser(v)
-          .then(fail)
-          .catch(error => {
-            expect(error.message).toEqual('user parameter of type "User" is required');
-          })
-          .then(done);
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('user parameter of type "User" is required');
+        })
+        .then(done);
     });
   });
 

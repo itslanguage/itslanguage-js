@@ -77,9 +77,9 @@ describe('Organisation API interaction test', () => {
         expect(result.updated).toEqual(new Date(stringDate));
         expect(result.name).toBe('School of silly walks');
       })
-       .catch(error => {
-         fail('No error should be thrown : ' + error);
-       }).then(done);
+      .catch(error => {
+        fail('No error should be thrown : ' + error);
+      }).then(done);
   });
 
   it('should create a new organisation without id through API', done => {
@@ -129,11 +129,11 @@ describe('Organisation API interaction test', () => {
     const controller = new OrganisationController();
     [0, {}, [], true, false, null, undefined].map(v => {
       controller.getOrganisation(v)
-          .then(fail)
-          .catch(error => {
-            expect(error.message).toEqual('organisationId parameter of type "string" is required');
-          })
-          .then(done);
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('organisationId parameter of type "string" is required');
+        })
+        .then(done);
     });
   });
 

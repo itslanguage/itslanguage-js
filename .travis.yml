@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - node
+  - 6
 env:
   global:
   - ENCRYPTION_LABEL: "72243f7e1ca1"

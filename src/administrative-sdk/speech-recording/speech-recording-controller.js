@@ -146,22 +146,22 @@ export default class SpeechRecordingController {
         .then(startRecording)
         .then(() =>
           self.speechRecordingInitChallenge(challenge)
-              .then(() => {
-                const p = new Promise(resolve_ => {
-                  if (recorder.hasUserMediaApproval()) {
-                    resolve_();
-                  } else {
-                    recorder.addEventListener('ready', resolve_);
-                  }
-                });
-                p.then(() => {
-                  self.speechRecordingInitAudio(recorder, startStreaming)
-                    .catch(reject);
-                });
-              })
+            .then(() => {
+              const p = new Promise(resolve_ => {
+                if (recorder.hasUserMediaApproval()) {
+                  resolve_();
+                } else {
+                  recorder.addEventListener('ready', resolve_);
+                }
+              });
+              p.then(() => {
+                self.speechRecordingInitAudio(recorder, startStreaming)
+                  .catch(reject);
+              });
+            })
             .then(() => notify('ReadyToReceive'))
         )
-            .catch(reject);
+        .catch(reject);
     })
       .then(res => {
         self._connection._recordingId = null;

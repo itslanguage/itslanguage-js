@@ -486,19 +486,19 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
 
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
-      .then(() => {
-        fail('An error should be returned');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('Reference alignment failed');
-        expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.userId).toEqual('1');
-        expect(error.analysis.created).toEqual(new Date(stringDate));
-        expect(error.analysis.updated).toEqual(new Date(stringDate));
-        expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
-        expect(controller._connection._analysisId).toBeNull();
-      })
-      .then(done);
+        .then(() => {
+          fail('An error should be returned');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('Reference alignment failed');
+          expect(error.analysis.id).toEqual('2');
+          expect(error.analysis.userId).toEqual('1');
+          expect(error.analysis.created).toEqual(new Date(stringDate));
+          expect(error.analysis.updated).toEqual(new Date(stringDate));
+          expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._analysisId).toBeNull();
+        })
+        .then(done);
     });
 
     it('should handle errors while initializing recognition with a failed alignment', done => {
@@ -559,19 +559,19 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
 
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
-      .then(() => {
-        fail('An error should be returned');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('Alignment failed');
-        expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.userId).toEqual('1');
-        expect(error.analysis.created).toEqual(new Date(stringDate));
-        expect(error.analysis.updated).toEqual(new Date(stringDate));
-        expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
-        expect(controller._connection._analysisId).toBeNull();
-      })
-      .then(done);
+        .then(() => {
+          fail('An error should be returned');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('Alignment failed');
+          expect(error.analysis.id).toEqual('2');
+          expect(error.analysis.userId).toEqual('1');
+          expect(error.analysis.created).toEqual(new Date(stringDate));
+          expect(error.analysis.updated).toEqual(new Date(stringDate));
+          expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._analysisId).toBeNull();
+        })
+        .then(done);
     });
 
     it('should handle errors while initializing recognition with a failed analysis', done => {
@@ -632,19 +632,19 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
 
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
-      .then(() => {
-        fail('An error should be returned');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('Analysis failed');
-        expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.userId).toEqual('1');
-        expect(error.analysis.created).toEqual(new Date(stringDate));
-        expect(error.analysis.updated).toEqual(new Date(stringDate));
-        expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
-        expect(controller._connection._analysisId).toBeNull();
-      })
-      .then(done);
+        .then(() => {
+          fail('An error should be returned');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('Analysis failed');
+          expect(error.analysis.id).toEqual('2');
+          expect(error.analysis.userId).toEqual('1');
+          expect(error.analysis.created).toEqual(new Date(stringDate));
+          expect(error.analysis.updated).toEqual(new Date(stringDate));
+          expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._analysisId).toBeNull();
+        })
+        .then(done);
     });
 
     it('should handle errors while initializing recognition with an unhandled error', done => {
@@ -705,19 +705,19 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       };
 
       controller.startStreamingPronunciationAnalysis(challenge, recorder)
-      .then(() => {
-        fail('An error should be returned');
-      })
-      .catch(error => {
-        expect(error.message).toEqual('Unhandled error');
-        expect(error.analysis.id).toEqual('2');
-        expect(error.analysis.userId).toEqual('1');
-        expect(error.analysis.created).toEqual(new Date(stringDate));
-        expect(error.analysis.updated).toEqual(new Date(stringDate));
-        expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
-        expect(controller._connection._analysisId).toBeNull();
-      })
-      .then(done);
+        .then(() => {
+          fail('An error should be returned');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('Unhandled error');
+          expect(error.analysis.id).toEqual('2');
+          expect(error.analysis.userId).toEqual('1');
+          expect(error.analysis.created).toEqual(new Date(stringDate));
+          expect(error.analysis.updated).toEqual(new Date(stringDate));
+          expect(error.analysis.audioUrl).toEqual(fakeResponse.audioUrl + 'token');
+          expect(controller._connection._analysisId).toBeNull();
+        })
+        .then(done);
     });
   });
   it('should start streaming a new pronunciation analysis', done => {
