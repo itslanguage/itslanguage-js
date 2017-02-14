@@ -321,7 +321,6 @@ export default class AudioRecorder {
    */
   stop(forced) {
     if (!this.recorder.isRecording()) {
-      console.error('Recorder was already stopped.');
       return;
     }
     this.recorder.stop();
