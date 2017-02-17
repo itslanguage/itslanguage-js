@@ -24,8 +24,8 @@ export default class ProgressController {
     const url = `${this._connection._settings.apiUrl}/categories/${categoryId}/progress`;
 
     return this._connection._secureAjaxGet(url)
-      .then(data => data.map(({user, category, percentage, challenges}) => {
-        return new Progress(user, category, String(percentage), challenges);
-      }));
+      .then(data => data.map(({user, category, percentage, challenges}) =>
+        new Progress(user, category, String(percentage), challenges)
+      ));
   }
 }
