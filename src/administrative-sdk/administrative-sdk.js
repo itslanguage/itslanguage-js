@@ -5,6 +5,7 @@ import EmailCredentialsController from './email-credentials/email-credentials-co
 import GroupController from './group/group-controller';
 import OrganisationController from './organisation/organisation-controller';
 import ProfileController from './profile/profile-controller';
+import ProgressController from './progress/progress-controller';
 import PronAnalaController from './pronunciation-analysis/pronunciation-analysis-controller';
 import PronChallController from './pronunciation-challenge/pronunciation-challenge-controller';
 import RoleController from './role/role-controller';
@@ -28,6 +29,7 @@ export default class AdministrativeSDK {
     this._groupController = new GroupController(this._connection);
     this._organisationController = new OrganisationController(this._connection);
     this._profileController = new ProfileController(this._connection);
+    this._progressController = new ProgressController(this._connection);
     this._pronAnalaController = new PronAnalaController(this._connection);
     this._pronChallController = new PronChallController(this._connection);
     this._roleController = new RoleController(this._connection);
@@ -514,6 +516,10 @@ export default class AdministrativeSDK {
    */
   getGroups() {
     return this._groupController.getGroups();
+  }
+
+  getProgress(categoryId) {
+    return this._progressController.getProgress(categoryId);
   }
 }
 
