@@ -43,6 +43,14 @@ describe('SpeechChallenge object test', () => {
     });
   });
 
+  it('should not construct with an invalid metadata', () => {
+    [0, {}, [], true, false].map(v => {
+      expect(() => {
+        new SpeechChallenge(undefined, undefined, undefined, undefined, undefined, v);
+      }).toThrowError('metadata parameter of type "string|null" is required');
+    });
+  });
+
   it('should instantiate a SpeechChallenge with all URLs', () => {
     const url = 'www.downloadaudiohere.exe.com';
     const srtUrl = 'www.downloadsrtfilehere.scr.com';
@@ -124,6 +132,18 @@ describe('SpeechChallenge API interaction test', () => {
         .then(fail)
         .catch(error => {
           expect(error.message).toEqual('image parameter of type "Blob|null" is required');
+        })
+        .then(done);
+    });
+  });
+
+  it('should not create a challenge with invalid metadata', done => {
+    [0, {}, [], true, false].map(v => {
+      controller.createSpeechChallenge(new SpeechChallenge(),
+        new Blob(['1234567890']), new Blob(['1234567890']), null, v)
+        .then(fail)
+        .catch(error => {
+          expect(error.message).toEqual('metadata parameter of type "string|null" is required');
         })
         .then(done);
     });

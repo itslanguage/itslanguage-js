@@ -27,14 +27,16 @@ export default class SpeechChallengeController {
    * @param {?Blob} audioBlob - Audio fragment to link to the challenge.
    * @param {?Blob} srtFile - SRT file in HTML5 Blob format to accompany the challenge.
    * @param {?Blob} image - Image file in HTML5 Blob format to accompany the challenge.
+   * @param {?string} metadata - Metadata in String format to accompany the challenge.
    * @returns {Promise.<PronunciationChallenge>} Promise containing the newly created SpeechChallenge.
    * @throws {Promise.<Error>} speechChallenge field of type "SpeechChallenge" is required
    * @throws {Promise.<Error>} audioBlob parameter of type "Blob" is required.
    * @throws {Promise.<Error>} srtFile parameter of type "Blob" is required.
    * @throws {Promise.<Error>} image parameter of type "Blob" is required.
+   * @throws {Promise.<Error>} metadata parameter of type "String" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  createSpeechChallenge(speechChallenge, audioBlob = null, srtFile = null, image = null) {
+  createSpeechChallenge(speechChallenge, audioBlob = null, srtFile = null, image = null, metadata = null) {
     if (!(speechChallenge instanceof SpeechChallenge)) {
       return Promise.reject(new Error('speechChallenge field of type "SpeechChallenge" is required'));
     }
@@ -47,15 +49,20 @@ export default class SpeechChallengeController {
     if (image !== null && !(image instanceof Blob)) {
       return Promise.reject(new Error('image parameter of type "Blob|null" is required'));
     }
+    if (metadata !== null && typeof metadata !== 'string') {
+      return Promise.reject(new Error('metadata parameter of type "string|null" is required'));
+    }
     speechChallenge.referenceAudio = audioBlob;
     speechChallenge.srt = srtFile;
     speechChallenge.image = image;
+    speechChallenge.metadata = metadata;
     const fd = JSON.stringify(speechChallenge);
     const url = this._connection._settings.apiUrl + '/challenges/speech';
 
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl, data.srtUrl, data.imageUrl);
+        const result = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl,
+          data.srtUrl, data.imageUrl, data.metadata);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         return result;
@@ -80,7 +87,8 @@ export default class SpeechChallengeController {
 
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const challenge = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl, data.srtUrl, data.imageUrl);
+        const challenge = new SpeechChallenge(data.id, data.topic, data.referenceAudioUrl,
+          data.srtUrl, data.imageUrl, data.metadata);
         challenge.created = new Date(data.created);
         challenge.updated = new Date(data.updated);
         return challenge;
@@ -99,7 +107,7 @@ export default class SpeechChallengeController {
     return this._connection._secureAjaxGet(url)
       .then(data => data.map(datum => {
         const challenge = new SpeechChallenge(datum.id,
-          datum.topic, datum.referenceAudioUrl, data.srtUrl, data.imageUrl);
+          datum.topic, datum.referenceAudioUrl, data.srtUrl, data.imageUrl, data.metadata);
         challenge.created = new Date(datum.created);
         challenge.updated = new Date(datum.updated);
         return challenge;
