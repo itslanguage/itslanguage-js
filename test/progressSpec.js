@@ -1,4 +1,6 @@
+import Connection from '../src/administrative-sdk/connection/connection-controller';
 import Progress from '../src/administrative-sdk/progress/progress';
+import ProgressController from '../src/administrative-sdk/progress/progress-controller';
 
 describe('Progress', () => {
   describe('Constructor', () => {
@@ -41,34 +43,77 @@ describe('Progress', () => {
       expect(progress.category).toEqual('category_x');
       expect(progress.percentage).toEqual('100');
       expect(progress.challenges).toEqual([]);
+    });
+  });
+  describe('API', () => {
+    it('should not get progress with invalid parameters', done => {
+      const controller = new ProgressController();
+      [0, {}, [], true, false, null, undefined].map(v => {
+        controller.getProgress(v)
+          .then(fail)
+          .catch(error => {
+            expect(error.message).toEqual('categoryId parameter of type "string" is required');
+          })
+          .then(done);
+      });
+    });
 
-      const progress1 = new Progress({}, 'category_x');
-      expect(progress1).toBeDefined();
-      expect(progress1.user).toEqual({});
-      expect(progress1.category).toEqual('category_x');
-      expect(progress1.percentage).toBeNull();
-      expect(progress1.challenges).toBeNull();
-
-      const progress2 = new Progress({}, 'category_x', null);
-      expect(progress2).toBeDefined();
-      expect(progress2.user).toEqual({});
-      expect(progress2.category).toEqual('category_x');
-      expect(progress2.percentage).toBeNull();
-      expect(progress2.challenges).toBeNull();
-
-      const progress3 = new Progress({}, 'category_x', '100', null);
-      expect(progress3).toBeDefined();
-      expect(progress3.user).toEqual({});
-      expect(progress3.category).toEqual('category_x');
-      expect(progress3.percentage).toEqual('100');
-      expect(progress3.challenges).toBeNull();
-
-      const progress4 = new Progress({}, 'category_x', null, []);
-      expect(progress4).toBeDefined();
-      expect(progress4.user).toEqual({});
-      expect(progress4.category).toEqual('category_x');
-      expect(progress4.percentage).toBeNull();
-      expect(progress4.challenges).toEqual([]);
+    it('should get progress through the api', done => {
+      const api = new Connection({
+        oAuth2Token: 'token'
+      });
+      const url = 'https://api.itslanguage.nl/categories/category_x/progress';
+      const content = [
+        {
+          percentage: 100,
+          category: 'category_x',
+          challenges: [
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/4efde4469b7f4d5f9d2fcafefaf993f1',
+              id: 'assignment_a',
+              recording: {
+                id: '5066549580791808',
+                audioUrl: 'https://api.itslanguage.nl/download/746f95e09334440ca186b1b387959037'
+              }
+            },
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/5c1c2066b1384b8dacce9ea2328b576c',
+              id: 'assignment_b',
+              recording: null
+            },
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/ee07b91a14d64e3f9d750c3e6716ed84',
+              id: 'assignment_c',
+              recording: null
+            }
+          ],
+          user: {
+            infix: '',
+            id: 'user1',
+            firstName: 'Usert',
+            lastName: 'Rules'
+          }
+        }
+      ];
+      const fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
+        }
+      });
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      const controller = new ProgressController(api);
+      controller.getProgress('category_x')
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].method).toBe('GET');
+          expect(result.length).toBe(1);
+        })
+        .catch(error => {
+          fail('No error should be thrown: ' + error);
+        })
+        .then(done);
     });
   });
 });
