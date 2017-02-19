@@ -520,8 +520,8 @@ export default class AdministrativeSDK {
 
   /**
    * Get and return progress on the requested {@Link Category} for the current {@Link User} derived
-   * from the OAuth2 scope.provided categoryId. The progress wil be returned for the current user.
-   * If a user is eligible to see the progress of more user, that that progress is returned as well.
+   * from the OAuth2 scope. The progress wil be returned for the current user. If a user is eligible
+   * to see the progress of more user, that progress is returned as well.
    *
    * @param {string} categoryId - Specify a Category identifier.
    * @returns {Promise.<Progress[]>} Array of Progress.
