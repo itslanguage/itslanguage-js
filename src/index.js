@@ -10,6 +10,7 @@ import EmailCredentials from './administrative-sdk/email-credentials/email-crede
 import Group from './administrative-sdk/group/group';
 import Organisation from './administrative-sdk/organisation/organisation';
 import Profile from './administrative-sdk/profile/profile';
+import Progress from './administrative-sdk/progress/progress';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
 import Role from './administrative-sdk/role/role';
 import SpeechChallenge from './administrative-sdk/speech-challenge/speech-challenge';
@@ -26,6 +27,7 @@ export {
   Group,
   Organisation,
   Profile,
+  Progress,
   PronunciationChallenge,
   Role,
   SpeechChallenge,

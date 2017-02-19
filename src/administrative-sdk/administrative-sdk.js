@@ -5,6 +5,7 @@ import EmailCredentialsController from './email-credentials/email-credentials-co
 import GroupController from './group/group-controller';
 import OrganisationController from './organisation/organisation-controller';
 import ProfileController from './profile/profile-controller';
+import ProgressController from './progress/progress-controller';
 import PronAnalaController from './pronunciation-analysis/pronunciation-analysis-controller';
 import PronChallController from './pronunciation-challenge/pronunciation-challenge-controller';
 import RoleController from './role/role-controller';
@@ -28,6 +29,7 @@ export default class AdministrativeSDK {
     this._groupController = new GroupController(this._connection);
     this._organisationController = new OrganisationController(this._connection);
     this._profileController = new ProfileController(this._connection);
+    this._progressController = new ProgressController(this._connection);
     this._pronAnalaController = new PronAnalaController(this._connection);
     this._pronChallController = new PronChallController(this._connection);
     this._roleController = new RoleController(this._connection);
@@ -514,6 +516,20 @@ export default class AdministrativeSDK {
    */
   getGroups() {
     return this._groupController.getGroups();
+  }
+
+  /**
+   * Get and return progress on the requested {@Link Category} for the current {@Link User} derived
+   * from the OAuth2 scope.provided categoryId. The progress wil be returned for the current user.
+   * If a user is eligible to see the progress of more user, that that progress is returned as well.
+   *
+   * @param {string} categoryId - Specify a Category identifier.
+   * @returns {Promise.<Progress[]>} Array of Progress.
+   * @throws {Promise.<Error>} categoryId parameter of type "string" is required.
+   * @throws {Promise.<Error>} If the server returned an error.
+   */
+  getProgress(categoryId) {
+    return this._progressController.getProgress(categoryId);
   }
 }
 
