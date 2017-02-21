@@ -321,7 +321,7 @@ export default class Connection {
       '&password=' + basicAuth.credentials;
 
     if (scopes) {
-      formData += '&scopes=' + scopes;
+      formData += '&scope=' + scopes;
     }
 
     const options = {

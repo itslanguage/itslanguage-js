@@ -386,7 +386,7 @@ describe('Connection', () => {
             'grant_type=password' +
             '&username=' + basicAuth.principal +
             '&password=' + basicAuth.credentials +
-            '&scopes=tenant/' + basicAuth.tenantId);
+            '&scope=tenant/' + basicAuth.tenantId);
           expect(result.token_type).toEqual('Bearer');
           expect(result.access_token).toEqual('2b198b6bc87db1bdb');
           expect(result.scope).toEqual('tenant/4');
@@ -419,7 +419,7 @@ describe('Connection', () => {
           expect(request[1].body).toEqual('grant_type=password' +
             '&username=' + basicAuth.principal +
             '&password=' + basicAuth.credentials +
-            '&scopes=tenant/' + basicAuth.tenantId + '/organisation/fb');
+            '&scope=tenant/' + basicAuth.tenantId + '/organisation/fb');
           expect(result.token_type).toEqual('Bearer');
           expect(result.access_token).toEqual('2b198b6bc87db1bdb');
           expect(result.scope).toEqual('tenant/4');
