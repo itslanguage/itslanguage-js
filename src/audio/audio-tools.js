@@ -48,6 +48,7 @@ export default class VolumeMeter {
   constructor(audioContext, inputStream) {
     this.audioContext = audioContext;
     this.stream = inputStream;
+    this.willAnimate = true;
   }
 
 
@@ -100,9 +101,7 @@ export default class VolumeMeter {
     const volumeIndicationCallback = this.volumeIndicationCallback;
     const volumeIndicationCallbackArgs = this.volumeIndicationCallbackArgs;
     const analyserNode = this.analyserNode;
-    const willAnimate = this.willAnimate = {
-      anim: true
-    };
+    const volumeMeter = this;
     let skippedCallbacks = 0;
     let lastVolume = -1;
 
@@ -126,7 +125,7 @@ export default class VolumeMeter {
       analyserNode.getByteFrequencyData(freqByteData);
       let averageVolume = VolumeMeter._getAverageVolume(freqByteData);
 
-      if (willAnimate.anim) {
+      if (volumeMeter.willAnimate) {
         requestAnimationFrame(animloop);
       } else {
         // Stop animating, provide callback with zero volume so the
@@ -164,6 +163,13 @@ export default class VolumeMeter {
    * Stop calculating the volume.
    */
   stopAnalyser() {
-    this.willAnimate.anim = false;
+    this.willAnimate = false;
+  }
+
+  /**
+   * Start calculating the volume.
+   */
+  resumeAnalyser() {
+    this.willAnimate = true;
   }
 }
