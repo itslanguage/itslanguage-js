@@ -378,14 +378,15 @@ describe('Connection', () => {
       const basicAuth = new BasicAuth('4', 'principal', 'credentials');
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       url += '/tokens';
-      api.getOauth2Token(basicAuth, 'fb', 'dummy')
+      api.getOauth2Token(basicAuth, 'tenant/' + basicAuth.tenantId)
         .then(result => {
           const request = window.fetch.calls.mostRecent().args;
           expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual('grant_type=password&' +
-            'scope=tenant/' + basicAuth.tenantId +
-            '/organisation/fb/user/dummy&username=' + basicAuth.principal +
-            '&password=' + basicAuth.credentials);
+          expect(request[1].body).toEqual(
+            'grant_type=password' +
+            '&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials +
+            '&scope=tenant/' + basicAuth.tenantId);
           expect(result.token_type).toEqual('Bearer');
           expect(result.access_token).toEqual('2b198b6bc87db1bdb');
           expect(result.scope).toEqual('tenant/4');
@@ -411,14 +412,14 @@ describe('Connection', () => {
       });
       const basicAuth = new BasicAuth('4', 'principal', 'credentials');
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-      api.getOauth2Token(basicAuth, 'fb')
+      api.getOauth2Token(basicAuth, 'tenant/' + basicAuth.tenantId + '/organisation/fb')
         .then(result => {
           const request = window.fetch.calls.mostRecent().args;
           expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual('grant_type=password&' +
-            'scope=tenant/' + basicAuth.tenantId +
-            '/organisation/fb&username=' + basicAuth.principal +
-            '&password=' + basicAuth.credentials);
+          expect(request[1].body).toEqual('grant_type=password' +
+            '&username=' + basicAuth.principal +
+            '&password=' + basicAuth.credentials +
+            '&scope=tenant/' + basicAuth.tenantId + '/organisation/fb');
           expect(result.token_type).toEqual('Bearer');
           expect(result.access_token).toEqual('2b198b6bc87db1bdb');
           expect(result.scope).toEqual('tenant/4');
@@ -447,8 +448,7 @@ describe('Connection', () => {
         .then(result => {
           const request = window.fetch.calls.mostRecent().args;
           expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual('grant_type=password&' +
-            'scope=tenant/' + basicAuth.tenantId +
+          expect(request[1].body).toEqual('grant_type=password' +
             '&username=' + basicAuth.principal +
             '&password=' + basicAuth.credentials);
           expect(result.token_type).toEqual('Bearer');
@@ -479,8 +479,7 @@ describe('Connection', () => {
           expect(error.error).toEqual('invalid_scope');
           const request = window.fetch.calls.mostRecent().args;
           expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual('grant_type=password&' +
-            'scope=tenant/' + basicAuth.tenantId +
+          expect(request[1].body).toEqual('grant_type=password' +
             '&username=' + basicAuth.principal +
             '&password=' + basicAuth.credentials);
         })
@@ -489,10 +488,23 @@ describe('Connection', () => {
 
     it('should call the oauth2 method with the right parameters when requesting a userauth', () => {
       spyOn(api, 'getOauth2Token');
-      const basicAuth = new BasicAuth('4', 'principes', 'credentials');
+      const basicAuth = new BasicAuth('tenantID', 'username', 'credentials');
       api.getUserAuth(basicAuth, 'org123');
       expect(api.getOauth2Token).toHaveBeenCalledTimes(1);
-      expect(api.getOauth2Token).toHaveBeenCalledWith(basicAuth, 'org123', basicAuth.principal);
+      expect(api.getOauth2Token).toHaveBeenCalledWith(basicAuth, 'tenant/tenantID/organisation/org123/user/username');
+    });
+
+    it('should call the oauth2 method with the appropriate scope', () => {
+      spyOn(api, 'getOauth2Token');
+      const basicAuth = new BasicAuth('tenantID', 'username', 'credentials');
+      const userlessBasicAuth = new BasicAuth('tenantID', undefined, 'credentials');
+
+      api.getUserAuth(userlessBasicAuth, 'org123');
+      api.getUserAuth(basicAuth);
+
+      expect(api.getOauth2Token).toHaveBeenCalledTimes(2);
+      expect(api.getOauth2Token).toHaveBeenCalledWith(basicAuth, 'tenant/tenantID');
+      expect(api.getOauth2Token).toHaveBeenCalledWith(userlessBasicAuth, 'tenant/tenantID/organisation/org123');
     });
   });
 

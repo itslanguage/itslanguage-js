@@ -306,31 +306,30 @@ export default class Connection {
    * Ask the server for an OAuth2 token.
    *
    * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
-   * @param {string} organisationId - Id of the organisation to request a token for.
-   * @param {string} userId - Id of the user to request a token for.
+   * @param {string} [scopes] - The scopes which should be availible for the requested token.
    * @returns {Promise} Promise containing a access_token, token_type and scope.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  getOauth2Token(basicAuth, organisationId, userId) {
+  getOauth2Token(basicAuth, scopes) {
     const url = this._settings.apiUrl + '/tokens';
-    let scopes = 'tenant/' + basicAuth.tenantId;
-    if (organisationId) {
-      scopes += '/organisation/' + organisationId;
-    }
-    if (organisationId && userId) {
-      scopes += '/user/' + userId;
-    }
+
     const headers = new Headers();
-    headers.append('Content-Type',
-      'application/x-www-form-urlencoded; charset=utf8');
-    const formData = 'grant_type=password&scope=' + scopes +
+    headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=utf8');
+
+    let formData = 'grant_type=password' +
       '&username=' + basicAuth.principal +
       '&password=' + basicAuth.credentials;
+
+    if (scopes) {
+      formData += '&scope=' + scopes;
+    }
+
     const options = {
       method: 'POST',
       headers,
       body: formData
     };
+
     return fetch(url, options)
       .then(response =>
         response.json()
@@ -347,10 +346,20 @@ export default class Connection {
   /**
    * Request authentication for a {@link User}. The basicAuth now contains the user's username and password.
    *
+   * This method also generates the appropriate scope for the given params.
+   *
    * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
    * @param {string} organisationId - Id of the organisation this user is part of.
    */
   getUserAuth(basicAuth, organisationId) {
-    return this.getOauth2Token(basicAuth, organisationId, basicAuth.principal);
+    let scopes = 'tenant/' + basicAuth.tenantId;
+    if (organisationId) {
+      scopes += '/organisation/' + organisationId;
+      if (basicAuth.principal) {
+        scopes += '/user/' + basicAuth.principal;
+      }
+    }
+
+    return this.getOauth2Token(basicAuth, scopes);
   }
 }
