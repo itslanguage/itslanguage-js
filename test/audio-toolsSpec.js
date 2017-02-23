@@ -171,8 +171,8 @@ describe('Audio tools', () => {
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
     spyOn(VolumeMeter, '_getAverageVolume').and.returnValue(5);
     spyOn(window, 'requestAnimationFrame').and.callFake(animloop => {
-      meter.willAnimate.anim = false;
-      if (meter.willAnimate.anim === false) {
+      meter.willAnimate = false;
+      if (meter.willAnimate === false) {
         animloop();
       }
     });
@@ -184,12 +184,21 @@ describe('Audio tools', () => {
 
   it('should stop analyzing', () => {
     const meter = new VolumeMeter();
-    meter.willAnimate = {anim: false};
-    expect(meter.willAnimate.anim).toBeFalsy();
-    meter.willAnimate.anim = true;
-    expect(meter.willAnimate.anim).toBeTruthy();
+    meter.willAnimate = false;
+    expect(meter.willAnimate).toBeFalsy();
+    meter.willAnimate = true;
+    expect(meter.willAnimate).toBeTruthy();
     meter.stopAnalyser();
-    expect(meter.willAnimate.anim).toBeFalsy();
+    expect(meter.willAnimate).toBeFalsy();
+  });
+
+  it('should resume analyzing', () => {
+    const meter = new VolumeMeter();
+    expect(meter.willAnimate).toBeTruthy();
+    meter.stopAnalyser();
+    expect(meter.willAnimate).toBeFalsy();
+    meter.resumeAnalyser();
+    expect(meter.willAnimate).toBeTruthy();
   });
 
   it('should generate a wave file', () => {
