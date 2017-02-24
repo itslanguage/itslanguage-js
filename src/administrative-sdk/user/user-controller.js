@@ -32,7 +32,7 @@ export default class UserController {
     const fd = JSON.stringify(user);
     return this._connection._secureAjaxPost(url, fd)
       .then(data => {
-        const result = new User(data.id, data.profile, data.groups, data.roles);
+        const result = new User(data.id, data.roles, data.profile, data.groups);
         result.created = new Date(data.created);
         result.updated = new Date(data.updated);
         return result;
@@ -54,7 +54,7 @@ export default class UserController {
     const url = this._connection._settings.apiUrl + '/users/' + userId;
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const user = new User(data.id, data.profile, data.groups, data.roles);
+        const user = new User(data.id, data.roles, data.profile, data.groups);
         user.created = new Date(data.created);
         user.updated = new Date(data.updated);
         return user;
@@ -71,7 +71,7 @@ export default class UserController {
     const url = this._connection._settings.apiUrl + '/users';
     return this._connection._secureAjaxGet(url)
       .then(data => data.map(datum => {
-        const user = new User(datum.id, datum.profile, datum.groups, datum.roles);
+        const user = new User(datum.id, datum.roles, datum.profile, datum.groups);
         user.created = new Date(datum.created);
         user.updated = new Date(datum.updated);
         return user;
@@ -88,7 +88,7 @@ export default class UserController {
     const url = this._connection._settings.apiUrl + '/user';
     return this._connection._secureAjaxGet(url)
       .then(data => {
-        const user = new User(data.id, data.profile, data.groups, data.roles);
+        const user = new User(data.id, data.roles, data.profile, data.groups);
         user.created = new Date(data.created);
         user.updated = new Date(data.updated);
         return user;

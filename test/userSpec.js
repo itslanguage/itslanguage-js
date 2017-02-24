@@ -11,36 +11,37 @@ describe('User object test', () => {
     });
   });
 
-  it('should not instantiate a User with an invalid profile', () => {
-    [0, '0', {}, [], true, false, undefined].map(v => {
+  it('should not instantiate a User with invalid roles', () => {
+    [0, '0', {}, [], true, false, null, undefined].map(v => {
       expect(() => {
         new User('1', v);
+      }).toThrowError('non-empty roles parameter of type "Array.<string>" is required');
+    });
+  });
+
+  it('should not instantiate a User with an invalid profile', () => {
+    [0, '0', {}, [], true, false].map(v => {
+      expect(() => {
+        new User('1', [{}], v);
       }).toThrowError('profile parameter of type "Profile|null" is required');
     });
   });
 
   it('should not instantiate a User with invalid groups', () => {
-    [0, '0', {}, true, false, undefined].map(v => {
+    [0, '0', {}, true, false].map(v => {
       expect(() => {
-        new User('1', null, v);
+        new User('1', [{}], null, v);
       }).toThrowError('groups parameter of type "Array.<Groups>|null" is required');
-    });
-  });
-  it('should not instantiate a User with invalid roles', () => {
-    [0, '0', {}, [], true, false, null, undefined].map(v => {
-      expect(() => {
-        new User('1', null, null, v);
-      }).toThrowError('non-empty roles parameter of type "Array.<string>" is required');
     });
   });
 
   it('should instantiate a User', () => {
-    const s = new User('0', null, [], [{}]);
+    const s = new User('0', [{}], null, []);
     expect(s).toBeDefined();
     expect(s.id).toBe('0');
+    expect(s.roles).toEqual([{}]);
     expect(s.profile).toBeNull();
     expect(s.groups).toEqual([]);
-    expect(s.roles).toEqual([{}]);
   });
 });
 
@@ -59,7 +60,7 @@ describe('User API interaction test', () => {
 
   it('should create a user', done => {
     const stringDate = '2014-12-31T23:59:59Z';
-    const studentUser = new User('0', null, ['GROUP1'], ['STUDENT']);
+    const studentUser = new User('0', ['STUDENT'], null, ['GROUP1']);
     const api = new Connection({
       oAuth2Token: 'token'
     });
@@ -68,11 +69,11 @@ describe('User API interaction test', () => {
     const expected = JSON.stringify(studentUser);
     const content = {
       id: '0',
-      created: stringDate,
-      updated: stringDate,
-      profile: null,
       roles: ['STUDENT'],
-      groups: ['GROUP1']
+      profile: null,
+      groups: ['GROUP1'],
+      created: stringDate,
+      updated: stringDate
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 201,
@@ -106,16 +107,16 @@ describe('User API interaction test', () => {
     const content = [
       {
         id: 'sdcjb823jhguys5j',
-        profile: null,
         roles: ['STUDENT'],
+        profile: null,
         groups: ['GROUP1'],
         created: stringDate,
         updated: stringDate
       },
       {
         id: 'iosdhrfd893ufg',
-        profile: null,
         roles: ['TEACHER'],
+        profile: null,
         groups: ['GROUP1'],
         created: stringDate,
         updated: stringDate
@@ -134,8 +135,8 @@ describe('User API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
-        const user1 = new User('sdcjb823jhguys5j', null, ['GROUP1'], ['STUDENT']);
-        const user2 = new User('iosdhrfd893ufg', null, ['GROUP1'], ['TEACHER']);
+        const user1 = new User('sdcjb823jhguys5j', ['STUDENT'], null, ['GROUP1']);
+        const user2 = new User('iosdhrfd893ufg', ['TEACHER'], null, ['GROUP1']);
         user1.created = new Date(stringDate);
         user1.updated = new Date(stringDate);
         user2.created = new Date(stringDate);
@@ -169,11 +170,11 @@ describe('User API interaction test', () => {
     const url = 'https://api.itslanguage.nl/users/4';
     const content = {
       id: '4',
-      created: stringDate,
-      updated: stringDate,
-      profile: null,
       roles: ['STUDENT'],
-      groups: ['GROUP1']
+      profile: null,
+      groups: ['GROUP1'],
+      created: stringDate,
+      updated: stringDate
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -188,7 +189,7 @@ describe('User API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
-        const user = new User('4', null, ['GROUP1'], ['STUDENT']);
+        const user = new User('4', ['STUDENT'], null, ['GROUP1']);
         user.created = new Date(stringDate);
         user.updated = new Date(stringDate);
         expect(result).toEqual(user);
@@ -207,11 +208,11 @@ describe('User API interaction test', () => {
     const url = 'https://api.itslanguage.nl/user';
     const content = {
       id: '4',
-      created: stringDate,
-      updated: stringDate,
-      profile: null,
       roles: ['STUDENT'],
-      groups: ['GROUP1']
+      profile: null,
+      groups: ['GROUP1'],
+      created: stringDate,
+      updated: stringDate
     };
     const fakeResponse = new Response(JSON.stringify(content), {
       status: 200,
@@ -226,7 +227,7 @@ describe('User API interaction test', () => {
         const request = window.fetch.calls.mostRecent().args;
         expect(request[0]).toBe(url);
         expect(request[1].method).toBe('GET');
-        const user = new User('4', null, ['GROUP1'], ['STUDENT']);
+        const user = new User('4', ['STUDENT'], null, ['GROUP1']);
         user.created = new Date(stringDate);
         user.updated = new Date(stringDate);
         expect(result).toEqual(user);
