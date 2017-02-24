@@ -72,11 +72,16 @@ export default class CategoryController {
   /**
    * Get and return all top level categories which do not have a parent Category.
    *
+   * @param {string} [groupId] - The ID of the group for which to fetch the categories.
    * @returns {Promise.<Category[]>} Promise containing an array of Categories.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  getTopLevelCategories() {
-    return this.getCategories();
+  getTopLevelCategories(groupId) {
+    let urlMod;
+    if (groupId) {
+      urlMod = `?group=${groupId}`;
+    }
+    return this.getCategories(urlMod);
   }
 
   /**

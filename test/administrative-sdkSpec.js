@@ -108,7 +108,7 @@ describe('Administrative SDK', () => {
 
     expect(fakeCategoryController.createCategory).toHaveBeenCalledWith(1);
     expect(fakeCategoryController.getCategory).toHaveBeenCalledWith(1);
-    expect(fakeCategoryController.getTopLevelCategories).toHaveBeenCalledWith();
+    expect(fakeCategoryController.getTopLevelCategories).toHaveBeenCalledWith(undefined);
     expect(fakeCategoryController.getCategoriesWithParent).toHaveBeenCalledWith(1);
 
     expect(fakeChoiceChallengeController.createChoiceChallenge).toHaveBeenCalledWith(1);

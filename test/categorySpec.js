@@ -247,6 +247,55 @@ describe('Category', () => {
         .then(done);
     });
 
+    it('should get all top level categories for a group', done => {
+      const url = 'https://api.itslanguage.nl/categories?group=fi_fa_fo';
+      const api = new Connection({
+        oAuth2Token: 'token'
+      });
+      const controller = new CategoryController(api);
+      const stringDate = '2014-12-31T23:59:59Z';
+      const content = [
+        {
+          id: 'category_1',
+          parent: null,
+          created: stringDate,
+          updated: stringDate,
+          name: 'Category 1',
+          description: 'Some awesome description.',
+          color: '#00f',
+          imageUrl: 'https://api.itslanguage.nl/download/UKbsMpBsXaJUsBbK',
+          iconUrl: 'https://api.itslanguage.nl/download/GdExSbs-ZVNnQUUe',
+          speechChallenges: []
+        },
+        {
+          id: 'category_2',
+          parent: null,
+          created: stringDate,
+          updated: stringDate,
+          name: 'Category 2',
+          description: 'Another awesome description.',
+          color: '#0f0',
+          imageUrl: 'https://api.itslanguage.nl/download/UKbsMpBsXaJUsBbK',
+          iconUrl: 'https://api.itslanguage.nl/download/GdExSbs-ZVNnQUUe',
+          speechChallenges: []
+        }
+      ];
+      const fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
+        }
+      });
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+
+      controller.getTopLevelCategories('fi_fa_fo')
+        .then(() => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+        })
+        .then(done, fail);
+    });
+
     it('should not get all categories with an invalid parent', done => {
       const controller = new CategoryController();
       [0, {}, [], true, false, null, undefined].map(v => {
