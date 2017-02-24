@@ -65,11 +65,12 @@ export default class AdministrativeSDK {
   /**
    * Get and return all top level categories which do not have a parent Category.
    *
+   * @param {string} [groupId] - The ID of the group for which to fetch all top level categories.
    * @returns {Promise.<Category[]>} Promise containing an array of Categories.
    * @throws {Promise.<Error>} If no result could not be found.
    */
-  getTopLevelCategories() {
-    return this._categoryController.getTopLevelCategories();
+  getTopLevelCategories(groupId) {
+    return this._categoryController.getTopLevelCategories(groupId);
   }
 
   /**
@@ -532,5 +533,3 @@ export default class AdministrativeSDK {
     return this._progressController.getProgress(categoryId);
   }
 }
-
-
