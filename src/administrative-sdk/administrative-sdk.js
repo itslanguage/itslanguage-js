@@ -524,12 +524,15 @@ export default class AdministrativeSDK {
    * from the OAuth2 scope. The progress wil be returned for the current user. If a user is eligible
    * to see the progress of more user, that progress is returned as well.
    *
+   * It is also possible to obtain the progress for the members of a given group.
+   *
    * @param {string} categoryId - Specify a Category identifier.
+   * @param {string} [groupId] - Optionally specify the group identifier.
    * @returns {Promise.<Progress[]>} Array of Progress.
    * @throws {Promise.<Error>} categoryId parameter of type "string" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  getProgress(categoryId) {
-    return this._progressController.getProgress(categoryId);
+  getProgress(categoryId, groupId) {
+    return this._progressController.getProgress(categoryId, groupId);
   }
 }
