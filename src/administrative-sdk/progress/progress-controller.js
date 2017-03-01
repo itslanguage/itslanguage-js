@@ -52,7 +52,7 @@ export default class ProgressController {
       urlMod = `?group=${groupId}`;
     }
 
-    if (roles) {
+    if (groupId && roles) {
       roles.map(role => {
         urlMod += `&role=${role}`;
       });
