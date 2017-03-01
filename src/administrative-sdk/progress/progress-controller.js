@@ -26,12 +26,14 @@ export default class ProgressController {
    *
    * @param {string} categoryId - Specify a Category identifier.
    * @param {?string} groupId - Specify a Group identifier.
+   * @param {?Array} roles - Specify user roles as a filter to the result.
    * @returns {Promise.<Progress[]>} Array of Progress.
    * @throws {Promise.<Error>} categoryId parameter of type "string" is required.
    * @throws {Promise.<Error>} groupId parameter of type "string|null" is required.
+   * @throws {Promise.<Error>} roles parameter of type "Array|null" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  getProgress(categoryId, groupId = null) {
+  getProgress(categoryId, groupId = null, roles = null) {
     let urlMod = '';
 
     if (typeof categoryId !== 'string') {
@@ -42,8 +44,18 @@ export default class ProgressController {
       return Promise.reject(new Error('groupId parameter of type "string|null" is required'));
     }
 
+    if (roles !== null && !Array.isArray(roles)) {
+      return Promise.reject(new Error('roles parameter of type "Array|null" is required'));
+    }
+
     if (groupId) {
       urlMod = `?group=${groupId}`;
+    }
+
+    if (groupId && roles) {
+      roles.map(role => {
+        urlMod += `&role=${role}`;
+      });
     }
 
     const url = `${this._connection._settings.apiUrl}/categories/${categoryId}/progress${urlMod}`;

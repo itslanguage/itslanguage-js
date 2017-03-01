@@ -70,6 +70,18 @@ describe('Progress', () => {
       });
     });
 
+    it('should not get progress with invalid roles parameter', done => {
+      const controller = new ProgressController();
+      [0, {}, '', true, false].map(v => {
+        controller.getProgress('x', 'x', v)
+          .then(fail)
+          .catch(error => {
+            expect(error.message).toEqual('roles parameter of type "Array|null" is required');
+          })
+          .then(done);
+      });
+    });
+
     it('should get progress through the api', done => {
       const api = new Connection({
         oAuth2Token: 'token'
@@ -174,6 +186,122 @@ describe('Progress', () => {
       spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       const controller = new ProgressController(api);
       controller.getProgress('category_x', 'Groep_3')
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].method).toBe('GET');
+          expect(result.length).toBe(1);
+        })
+        .catch(error => {
+          fail('No error should be thrown: ' + error);
+        })
+        .then(done);
+    });
+
+    it('should get progress through the api with roles', done => {
+      const api = new Connection({
+        oAuth2Token: 'token'
+      });
+      const url = 'https://api.itslanguage.nl/categories/category_x/progress?group=Groep_3&role=USER';
+      const content = [
+        {
+          percentage: 100,
+          category: 'category_x',
+          challenges: [
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/4efde4469b7f4d5f9d2fcafefaf993f1',
+              id: 'assignment_a',
+              recording: {
+                id: '5066549580791808',
+                audioUrl: 'https://api.itslanguage.nl/download/746f95e09334440ca186b1b387959037'
+              }
+            },
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/5c1c2066b1384b8dacce9ea2328b576c',
+              id: 'assignment_b',
+              recording: null
+            },
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/ee07b91a14d64e3f9d750c3e6716ed84',
+              id: 'assignment_c',
+              recording: null
+            }
+          ],
+          user: {
+            infix: '',
+            id: 'user1',
+            firstName: 'Usert',
+            lastName: 'Rules'
+          }
+        }
+      ];
+      const fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
+        }
+      });
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      const controller = new ProgressController(api);
+      controller.getProgress('category_x', 'Groep_3', ['USER'])
+        .then(result => {
+          const request = window.fetch.calls.mostRecent().args;
+          expect(request[0]).toBe(url);
+          expect(request[1].method).toBe('GET');
+          expect(result.length).toBe(1);
+        })
+        .catch(error => {
+          fail('No error should be thrown: ' + error);
+        })
+        .then(done);
+    });
+
+    it('should get progress through the api with multiple roles', done => {
+      const api = new Connection({
+        oAuth2Token: 'token'
+      });
+      const url = 'https://api.itslanguage.nl/categories/category_x/progress?group=Groep_3&role=USER&role=STUDENT';
+      const content = [
+        {
+          percentage: 100,
+          category: 'category_x',
+          challenges: [
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/4efde4469b7f4d5f9d2fcafefaf993f1',
+              id: 'assignment_a',
+              recording: {
+                id: '5066549580791808',
+                audioUrl: 'https://api.itslanguage.nl/download/746f95e09334440ca186b1b387959037'
+              }
+            },
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/5c1c2066b1384b8dacce9ea2328b576c',
+              id: 'assignment_b',
+              recording: null
+            },
+            {
+              referenceAudioUrl: 'https://api.itslanguage.nl/download/ee07b91a14d64e3f9d750c3e6716ed84',
+              id: 'assignment_c',
+              recording: null
+            }
+          ],
+          user: {
+            infix: '',
+            id: 'user1',
+            firstName: 'Usert',
+            lastName: 'Rules'
+          }
+        }
+      ];
+      const fakeResponse = new Response(JSON.stringify(content), {
+        status: 200,
+        headers: {
+          'Content-type': 'application/json; charset=utf-8'
+        }
+      });
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+      const controller = new ProgressController(api);
+      controller.getProgress('category_x', 'Groep_3', ['USER', 'STUDENT'])
         .then(result => {
           const request = window.fetch.calls.mostRecent().args;
           expect(request[0]).toBe(url);

@@ -99,6 +99,7 @@ describe('Administrative SDK', () => {
     sdk.getProfiles();
     sdk.getProgress('category_id');
     sdk.getProgress('category_id', 'group_id');
+    sdk.getProgress('category_id', 'group_id', ['ROLE']);
     sdk.createCategory(1);
     sdk.getCategory(1);
     sdk.getCategoriesWithParent(1);
@@ -158,7 +159,8 @@ describe('Administrative SDK', () => {
     expect(fakeProfileController.getProfile).toHaveBeenCalledWith(1);
     expect(fakeProfileController.getProfiles).toHaveBeenCalledWith();
 
-    expect(fakeProgressController.getProgress).toHaveBeenCalledWith('category_id', undefined);
-    expect(fakeProgressController.getProgress).toHaveBeenCalledWith('category_id', 'group_id');
+    expect(fakeProgressController.getProgress).toHaveBeenCalledWith('category_id', undefined, undefined);
+    expect(fakeProgressController.getProgress).toHaveBeenCalledWith('category_id', 'group_id', undefined);
+    expect(fakeProgressController.getProgress).toHaveBeenCalledWith('category_id', 'group_id', ['ROLE']);
   });
 });
