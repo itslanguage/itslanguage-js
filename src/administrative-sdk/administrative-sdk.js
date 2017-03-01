@@ -528,11 +528,12 @@ export default class AdministrativeSDK {
    *
    * @param {string} categoryId - Specify a Category identifier.
    * @param {string} [groupId] - Optionally specify the group identifier.
+   * @param {Array} [roles] - Optionally specify user roles to filter.
    * @returns {Promise.<Progress[]>} Array of Progress.
    * @throws {Promise.<Error>} categoryId parameter of type "string" is required.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  getProgress(categoryId, groupId) {
-    return this._progressController.getProgress(categoryId, groupId);
+  getProgress(categoryId, groupId, roles) {
+    return this._progressController.getProgress(categoryId, groupId, roles);
   }
 }
