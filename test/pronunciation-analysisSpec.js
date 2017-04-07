@@ -719,6 +719,65 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
         })
         .then(done);
     });
+    it('should handle wamp.error.runtime_error', done => {
+      api._session.call = (name, args) => {
+        if (name !== 'nl.itslanguage.pronunciation.init_analysis') {
+          expect(args[0]).not.toBeNull();
+        }
+        const d = autobahn.when.defer();
+        if (name === 'nl.itslanguage.pronunciation.analyse') {
+          d.reject({
+            error: 'wamp.error.runtime_error',
+            kwargs: {}
+          });
+        } else {
+          d.notify();
+          d.resolve(fakeResponse);
+        }
+        return d.promise;
+      };
+
+      recorder = {
+        getAudioSpecs() {
+          return {
+            audioFormat: 'audio/wave',
+            audioParameters: {
+              channels: 1,
+              sampleWidth: 16,
+              sampleRate: 48000
+            },
+            audioUrl: 'https://api.itslanguage.nl/download/Ysjd7bUGseu8-bsJ'
+          };
+        },
+        hasUserMediaApproval() {
+          return true;
+        },
+        isRecording() {
+          return false;
+        },
+        addEventListener(name, callback) {
+          if (name === 'dataavailable') {
+            return callback(1);
+          } else if (name === 'ready') {
+            return callback();
+          }
+          setTimeout(callback, 500);
+        },
+        removeEventListener() {
+        }
+      };
+
+      controller.startStreamingPronunciationAnalysis(challenge, recorder)
+        .then(() => {
+          fail('An error should be returned');
+        })
+        .catch(error => {
+          expect(error.message).toEqual('Unhandled error');
+          expect(error.analysis).toBeUndefined();
+          expect(controller._connection._analysisId).toBeNull();
+        })
+        .then(done);
+    });
   });
   it('should start streaming a new pronunciation analysis', done => {
     const progressCalled = [];

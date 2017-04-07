@@ -146,11 +146,17 @@ export default class PronunciationAnalysisController {
         // Either there was an unexpected error, or the audio failed to
         // align, in which case no analysis is provided, but just the
         // basic metadata.
-        const analysis = new PronunciationAnalysis(
-          challenge.id, data.userId, data.id,
-          new Date(data.created), new Date(data.updated),
-          self._connection.addAccessToken(data.audioUrl));
-        reject({analysis, message: data.message});
+        const {message} = data;
+
+        if (data.id) {
+          const analysis = new PronunciationAnalysis(
+            challenge.id, data.userId, data.id,
+            new Date(data.created), new Date(data.updated),
+            self._connection.addAccessToken(data.audioUrl));
+          reject({analysis, message});
+        } else {
+          reject({message});
+        }
       }
 
       // Start streaming the binary audio when the user instructs
@@ -185,17 +191,19 @@ export default class PronunciationAnalysisController {
           })
           .then(reportDone)
           .catch(res => {
-            if (res.error === 'nl.itslanguage.ref_alignment_failed') {
-              res.kwargs.analysis.message = 'Reference alignment failed';
-            } else if (res.error === 'nl.itslanguage.alignment_failed') {
-              res.kwargs.analysis.message = 'Alignment failed';
-            } else if (res.error === 'nl.itslanguage.analysis_failed') {
-              res.kwargs.analysis.message = 'Analysis failed';
+            const {error, kwargs: {analysis = {}}} = res;
+
+            if (error === 'nl.itslanguage.ref_alignment_failed') {
+              analysis.message = 'Reference alignment failed';
+            } else if (error === 'nl.itslanguage.alignment_failed') {
+              analysis.message = 'Alignment failed';
+            } else if (error === 'nl.itslanguage.analysis_failed') {
+              analysis.message = 'Analysis failed';
             } else {
-              res.kwargs.analysis.message = 'Unhandled error';
+              analysis.message = 'Unhandled error';
               Connection.logRPCError(res);
             }
-            reportError(res.kwargs.analysis);
+            reportError(analysis);
           });
       }
 
