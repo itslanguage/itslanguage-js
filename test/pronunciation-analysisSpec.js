@@ -806,7 +806,7 @@ describe('Pronunciation Analyisis Websocket API interaction test', () => {
       }
     })
     );
-    const expectedNotifyCall = {progress: 'NOTIFY', referenceAlignment: undefined};
+    const expectedNotifyCall = {progress: 'NOTIFY', referenceAlignment: 'AlignmentResult'};
     controller.startStreamingPronunciationAnalysis(
       challenge, recorder)
       .progress(args => {
