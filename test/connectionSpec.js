@@ -2,6 +2,7 @@
 camelcase
  */
 
+import * as communication from '../src/api/communication';
 import Autobahn from 'autobahn';
 import BasicAuth from '../src/administrative-sdk/basic-auth/basic-auth';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
@@ -88,6 +89,9 @@ describe('Events', () => {
 });
 
 describe('Connection', () => {
+  /**
+   * XXX This is a nested test hell. Restructuring is desired/required.
+   */
   beforeEach(() => {
     api = new Connection({
       oAuth2Token: 'token'
@@ -98,31 +102,37 @@ describe('Connection', () => {
   let url;
   describe('POST, GET and DELETE', () => {
     it('should throw error on required auth credentials on GET', done => {
-      api._settings.oAuth2Token = null;
-      api._secureAjaxGet()
+      const con = new Connection({
+        oAuth2Token: null
+      });
+      con._secureAjaxGet()
         .then(fail)
         .catch(error => {
-          expect(error).toEqual('Please set oAuth2Token');
+          expect(error).toEqual('Please authenticate first.');
         })
         .then(done);
     });
 
     it('should throw error on required auth credentials on POST', done => {
-      api._settings.oAuth2Token = null;
-      api._secureAjaxPost()
+      const con = new Connection({
+        oAuth2Token: null
+      });
+      con._secureAjaxPost()
         .then(fail)
         .catch(error => {
-          expect(error).toEqual('Please set oAuth2Token');
+          expect(error).toEqual('Please authenticate first.');
         })
         .then(done);
     });
 
     it('should throw error on required auth credentials on DELETE', done => {
-      api._settings.oAuth2Token = null;
-      api._secureAjaxDelete()
+      const con = new Connection({
+        oAuth2Token: null
+      });
+      con._secureAjaxDelete()
         .then(fail)
         .catch(error => {
-          expect(error).toEqual('Please set oAuth2Token');
+          expect(error).toEqual('Please authenticate first.');
         })
         .then(done);
     });
@@ -322,189 +332,126 @@ describe('Connection', () => {
     });
   });
 
-  describe('Connection oauth2 token get', () => {
-    it('should handle server error on invalid scope', done => {
-      const content = {
-        error: 'invalid_scope'
-      };
-      fakeResponse = new Response(JSON.stringify(content), {
-        status: 400,
-        headers: {
-          'Content-type': 'application/json; charset=utf-8'
-        }
-      });
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+  describe('getOauth2Token', () => {
+    it('should return a rejected error if the request went wrong', done => {
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.reject('418: I\'m a teapot'));
+
       const basicAuth = new BasicAuth('', 'principal', 'credentials');
-      api.getOauth2Token(basicAuth, 'fb', 'dummy')
-        .then(fail)
-        .catch(error => {
-          expect(error).toEqual(content);
-        })
-        .then(done);
-    });
 
-    it('should handle server errors on invalid credentials', done => {
-      const content = {
-        error: 'invalid_request'
-      };
-      fakeResponse = new Response(JSON.stringify(content), {
-        status: 400,
-        headers: {
-          'Content-type': 'application/json; charset=utf-8'
-        }
-      });
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-      const basicAuth = new BasicAuth('', 'invalid', 'invalid');
-      api.getOauth2Token(basicAuth, 'fb', 'dummy')
-        .then(fail)
-        .catch(error => {
-          expect(error).toEqual(content);
-        })
-        .then(done);
-    });
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'passord');
+      expectedBody.set('username', basicAuth.principal);
+      expectedBody.set('credentials', basicAuth.credentials);
 
-    it('should get a token', done => {
-      const content = {
-        access_token: '2b198b6bc87db1bdb',
-        token_type: 'Bearer',
-        scope: 'tenant/4'
-      };
-      fakeResponse = new Response(JSON.stringify(content), {
-        status: 200,
-        headers: {
-          'Content-type': 'application/json; charset=utf-8'
-        }
-      });
-      const basicAuth = new BasicAuth('4', 'principal', 'credentials');
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-      url += '/tokens';
-      api.getOauth2Token(basicAuth, 'tenant/' + basicAuth.tenantId)
-        .then(result => {
-          const request = window.fetch.calls.mostRecent().args;
-          expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual(
-            'grant_type=password' +
-            '&username=' + basicAuth.principal +
-            '&password=' + basicAuth.credentials +
-            '&scope=tenant/' + basicAuth.tenantId);
-          expect(result.token_type).toEqual('Bearer');
-          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
-          expect(result.scope).toEqual('tenant/4');
-          expect(api._settings.oAuth2Token).toEqual('2b198b6bc87db1bdb');
-        })
-        .catch(error => {
-          fail('No error should be thrown ' + error);
-        })
-        .then(done);
-    });
-
-    it('should get a token without user id', done => {
-      const content = {
-        access_token: '2b198b6bc87db1bdb',
-        token_type: 'Bearer',
-        scope: 'tenant/4'
-      };
-      fakeResponse = new Response(JSON.stringify(content), {
-        status: 200,
-        headers: {
-          'Content-type': 'application/json; charset=utf-8'
-        }
-      });
-      const basicAuth = new BasicAuth('4', 'principal', 'credentials');
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
-      api.getOauth2Token(basicAuth, 'tenant/' + basicAuth.tenantId + '/organisation/fb')
-        .then(result => {
-          const request = window.fetch.calls.mostRecent().args;
-          expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual('grant_type=password' +
-            '&username=' + basicAuth.principal +
-            '&password=' + basicAuth.credentials +
-            '&scope=tenant/' + basicAuth.tenantId + '/organisation/fb');
-          expect(result.token_type).toEqual('Bearer');
-          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
-          expect(result.scope).toEqual('tenant/4');
-        })
-        .catch(error => {
-          fail('No error should be thrown ' + error);
-        })
-        .then(done);
-    });
-
-    it('should get a token without organisation and user', done => {
-      const content = {
-        access_token: '2b198b6bc87db1bdb',
-        token_type: 'Bearer',
-        scope: 'tenant/4'
-      };
-      fakeResponse = new Response(JSON.stringify(content), {
-        status: 200,
-        headers: {
-          'Content-type': 'application/json; charset=utf-8'
-        }
-      });
-      const basicAuth = new BasicAuth('4', 'principal', 'credentials');
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
       api.getOauth2Token(basicAuth)
-        .then(result => {
-          const request = window.fetch.calls.mostRecent().args;
-          expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual('grant_type=password' +
-            '&username=' + basicAuth.principal +
-            '&password=' + basicAuth.credentials);
-          expect(result.token_type).toEqual('Bearer');
-          expect(result.access_token).toEqual('2b198b6bc87db1bdb');
-          expect(result.scope).toEqual('tenant/4');
-        })
-        .catch(error => {
-          fail('No error should be thrown ' + error);
-        })
-        .then(done);
+        .then(fail, done);
     });
 
-    it('should get a token without organisation and with user', done => {
-      const content = {
-        error: 'invalid_scope'
-      };
-      fakeResponse = new Response(JSON.stringify(content), {
-        status: 400,
-        headers: {
-          'Content-type': 'application/json; charset=utf-8'
-        }
-      });
-      const basicAuth = new BasicAuth('4', null, 'credentials');
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(fakeResponse));
+    it('should make an authentication request', done => {
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const basicAuth = new BasicAuth('', 'principal', 'credentials');
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'passord');
+      expectedBody.set('username', basicAuth.principal);
+      expectedBody.set('credentials', basicAuth.credentials);
+
       api.getOauth2Token(basicAuth)
-        .then(fail)
-        .catch(error => {
-          expect(error.error).toEqual('invalid_scope');
-          const request = window.fetch.calls.mostRecent().args;
-          expect(request[0]).toBe(url);
-          expect(request[1].body).toEqual('grant_type=password' +
-            '&username=' + basicAuth.principal +
-            '&password=' + basicAuth.credentials);
-        })
-        .then(done);
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
     });
 
-    it('should call the oauth2 method with the right parameters when requesting a userauth', () => {
-      spyOn(api, 'getOauth2Token');
-      const basicAuth = new BasicAuth('tenantID', 'username', 'credentials');
-      api.getUserAuth(basicAuth, 'org123');
-      expect(api.getOauth2Token).toHaveBeenCalledTimes(1);
-      expect(api.getOauth2Token).toHaveBeenCalledWith(basicAuth, 'tenant/tenantID/organisation/org123/user/username');
+    it('should make an authentication request with the provided scope', done => {
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const basicAuth = new BasicAuth('', 'principal', 'credentials');
+      const scope = '/tenant/t3n/organisation/0rg';
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'passord');
+      expectedBody.set('username', basicAuth.principal);
+      expectedBody.set('credentials', basicAuth.credentials);
+      expectedBody.set('scope', scope);
+
+      api.getOauth2Token(basicAuth, scope)
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
+    });
+  });
+
+  describe('getUserAuth', () => {
+    it('should build the scope based on the given BasicAuth object and organisation ID', done => {
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const basicAuth = new BasicAuth('t3n', 'principal', 'credentials');
+      const scope = '/tenant/t3n/organisation/0rg/user/principal';
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'passord');
+      expectedBody.set('username', basicAuth.principal);
+      expectedBody.set('credentials', basicAuth.credentials);
+      expectedBody.set('scope', scope);
+
+      api.getUserAuth(basicAuth, '0rg')
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
     });
 
-    it('should call the oauth2 method with the appropriate scope', () => {
-      spyOn(api, 'getOauth2Token');
-      const basicAuth = new BasicAuth('tenantID', 'username', 'credentials');
-      const userlessBasicAuth = new BasicAuth('tenantID', undefined, 'credentials');
+    it('should omit the user from the scope if no principal was set in the given BasicAuth', done => {
+      /**
+       * XXX This feels like a flaw in the design of the authentication. The
+       * principal property is used to identify the username from a given user.
+       * but this method blatendly allows to omit that part. This leaves room
+       * for faulty/incomplete authentication requests.
+       */
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
 
-      api.getUserAuth(userlessBasicAuth, 'org123');
-      api.getUserAuth(basicAuth);
+      const basicAuth = new BasicAuth('t3n', undefined, 'credentials');
+      const scope = '/tenant/t3n/organisation/0rg';
 
-      expect(api.getOauth2Token).toHaveBeenCalledTimes(2);
-      expect(api.getOauth2Token).toHaveBeenCalledWith(basicAuth, 'tenant/tenantID');
-      expect(api.getOauth2Token).toHaveBeenCalledWith(userlessBasicAuth, 'tenant/tenantID/organisation/org123');
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'passord');
+      expectedBody.set('username', basicAuth.principal);
+      expectedBody.set('credentials', basicAuth.credentials);
+      expectedBody.set('scope', scope);
+
+      api.getUserAuth(basicAuth, '0rg')
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
+    });
+
+    it('should only use the tenant as scope when no organisation ID is given', done => {
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const basicAuth = new BasicAuth('t3n', 'principal', 'credentials');
+      const scope = '/tenant/t3n';
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'passord');
+      expectedBody.set('username', basicAuth.principal);
+      expectedBody.set('credentials', basicAuth.credentials);
+      expectedBody.set('scope', scope);
+
+      api.getUserAuth(basicAuth)
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
     });
   });
 
