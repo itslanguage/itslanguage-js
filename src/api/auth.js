@@ -55,6 +55,8 @@ export function assembleScope(tenant, organisation, user) {
  *
  * @returns {Promise} - A promise which will resolve if the authentication
  *                      concluded successfully, it'll reject in any other case.
+ *                      It resolves with the response body of the token
+ *                      request.
  */
 export function authenticate(username, password, scope) {
   const body = new URLSearchParams();
@@ -67,8 +69,9 @@ export function authenticate(username, password, scope) {
     body.set('scope', scope);
   }
 
-  return request('POST', '/token', body)
+  return request('POST', '/tokens', body)
     .then(result => {
       updateSettings({authorizationToken: result.access_token});
+      return result;
     });
 }
