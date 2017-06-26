@@ -51,7 +51,7 @@ describe('authenticate', () => {
     auth.authenticate('foo', 'bar', 'this/is/not/a/valid/scope')
       .then(() => {
         const requestCall = requestSpy.calls.mostRecent();
-        expect(requestCall.args).toEqual(['POST', '/token', expectedBody]);
+        expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({authorizationToken: 'token'});
         done();
       }, fail);
@@ -68,7 +68,7 @@ describe('authenticate', () => {
     auth.authenticate('foo', 'bar')
       .then(() => {
         const requestCall = requestSpy.calls.mostRecent();
-        expect(requestCall.args).toEqual(['POST', '/token', expectedBody]);
+        expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({authorizationToken: 'token'});
         done();
       }, fail);
