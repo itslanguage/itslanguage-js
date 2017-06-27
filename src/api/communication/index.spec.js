@@ -1,11 +1,22 @@
 /**
  * This file contains the unittests for all exported functions in the
- * acompanying `communication.js` file.
+ * acompanying `index.js` file.
  */
 
-import * as communication from './communication';
+import * as communication from './index';
 
 const TEST_API_URL = 'https://www.example.com';
+
+
+describe('settings', () => {
+  it('should expose the settings object', () => {
+    // Expect that the default keys are not undefined, they are either null,
+    // or something else by default.
+    expect(communication.settings.apiURL).not.toBe(undefined);
+    expect(communication.settings.wsURL).not.toBe(undefined);
+    expect(communication.settings.authorizationToken).not.toBe(undefined);
+  });
+});
 
 
 describe('updateSettings', () => {
@@ -17,6 +28,11 @@ describe('updateSettings', () => {
     };
 
     expect(() => communication.updateSettings(newSettings)).not.toThrowError();
+    // Expect that all these separatly because there might be more in the
+    // settings object due to it being used in multiple tests.
+    expect(communication.settings.fi).toEqual('fi');
+    expect(communication.settings.fa).toEqual('fa');
+    expect(communication.settings.fo).toEqual('fo');
   });
 
   it('should throw an error when something other than a object is given', () => {

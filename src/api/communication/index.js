@@ -1,5 +1,6 @@
 /**
- * This file contains ITSLanguage API communication related functions.
+ * This file contains the settings and the communication mechanism for the
+ * ITSLanguage REST API.
  */
 
 // Headers
@@ -9,11 +10,13 @@ const AUTHORIZATION = 'Authorization';
 // Content-Types
 const APPLICATION_JSON = 'application/json';
 
+
 /**
  * The settings to use for the communication with the ITSLanguage API.
  */
-const settings = {
+export const settings = {
   apiURL: 'https://api.itslanguage.nl',
+  wsURL: null,
   authorizationToken: null
 };
 
