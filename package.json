@@ -3,7 +3,13 @@
   "version": "3.0.0-beta-3",
   "description": "The core JavaScript SDK for ITSLanguage.",
   "main": "index.js",
+  "engines": {
+    "npm": ">=6",
+    "node": ">=9"
+  },
   "scripts": {
+    "npmcheckversion": "node ./internals/scripts/npmcheckversion.js",
+    "preinstall": "npm run npmcheckversion",
     "prebuild": "npm run build:clean",
     "build": "babel src --ignore '**/*.spec.js' --out-dir build --source-maps inline",
     "postbuild": "copy package.json README.md ./build/",
@@ -57,6 +63,7 @@
     "esdoc": "^0.5.2",
     "eslint": "^3.15.0",
     "eslint-config-d-centralize": "^0.4.1",
+    "eslint-plugin-async-await": "0.0.0",
     "eslint-plugin-jsdoc": "^2.4.0",
     "isparta": "^4.0.0",
     "jasmine-ajax": "^3.3.1",
