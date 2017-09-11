@@ -1,4 +1,3 @@
-import CordovaMediaPlayer from './cordova-media-player';
 import Stopwatch from './tools';
 import WebAudioPlayer from './web-audio-player';
 import allOff from 'event-emitter/all-off';
@@ -55,9 +54,9 @@ export default class AudioPlayer {
       }
     };
     /**
-     * @type {CordovaMediaPlayer|WebAudioPlayer} player - Specific audio player.
+     * @type {WebAudioPlayer} player - Specific audio player.
      */
-    this._player = this._getBestPlayer(callbacks);
+    this._player = this._getPlayer(callbacks);
     this._emitter = ee({});
     this._stopwatch = null;
     this._audioLevel = 1;
@@ -105,13 +104,7 @@ export default class AudioPlayer {
     this.canUseAudio = Boolean(Audio);
     console.log('Native HTML5 Audio playback capability:', this.canUseAudio);
 
-    // Detect Cordova Media Playback
-    // It allows playing audio using the native bridge inside WebView Apps.
-    // https://github.com/apache/cordova-plugin-media/blob/master/doc/index.md
-    this.canUseCordovaMedia = Boolean(window.Media);
-    console.log('Cordova Media playback capability:', this.canUseCordovaMedia);
-
-    if (!this.canUseAudio && !this.canUseCordovaMedia) {
+    if (!this.canUseAudio) {
       throw new Error(
         'Some form of audio playback capability is required');
     }
@@ -122,15 +115,15 @@ export default class AudioPlayer {
           'Unable to detect audio playback capabilities');
       }
       const canPlayOggVorbis = _audio.canPlayType(
-          'audio/ogg; codecs="vorbis"') !== '';
+        'audio/ogg; codecs="vorbis"') !== '';
       const canPlayOggOpus = _audio.canPlayType(
-          'audio/ogg; codecs="opus"') !== '';
+        'audio/ogg; codecs="opus"') !== '';
       const canPlayWave = _audio.canPlayType('audio/wav') !== '';
       const canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
       const canPlayAAC = _audio.canPlayType(
-          'audio/mp4; codecs="mp4a.40.2"') !== '';
+        'audio/mp4; codecs="mp4a.40.2"') !== '';
       const canPlay3GPP = _audio.canPlayType(
-          'audio/3gpp; codecs="samr"') !== '';
+        'audio/3gpp; codecs="samr"') !== '';
 
       console.log('Native Vorbis audio in Ogg container playback capability:', canPlayOggVorbis);
       console.log('Native Opus audio in Ogg container playback capability:', canPlayOggOpus);
@@ -156,17 +149,10 @@ export default class AudioPlayer {
    * @param {Function} callbacks - Callbacks to add to the chosen player.
    * @private
    */
-  _getBestPlayer(callbacks) {
+  _getPlayer(callbacks) {
     let player = null;
-    // Start by checking for a Cordova environment.
-    // When running under a debugger like Ripple, both Cordova and WebAudio
-    // environments get detected. While this is technically valid -Ripple is
-    // running in Chrome, which supports WebAudio-, it's not a sandbox that
-    // also disables functionality that would not be available on a device.
-    if (this.canUseCordovaMedia) {
-      // Use Cordova audio encoding (used codec depends on the platform).
-      player = new CordovaMediaPlayer(callbacks);
-    } else if (this.canUseAudio) {
+
+    if (this.canUseAudio) {
       // Use the recorder with MediaRecorder implementation.
       player = new WebAudioPlayer(callbacks);
     } else {

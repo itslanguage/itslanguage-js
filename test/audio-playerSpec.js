@@ -1,6 +1,5 @@
 import * as Stopwatch from '../src/audio/tools';
 import AudioPlayer from '../src/audio/audio-player';
-import CordovaMediaPlayer from '../src/audio/cordova-media-player';
 import WebAudioPlayer from '../src/audio/web-audio-player';
 
 describe('Audio player', () => {
@@ -11,7 +10,7 @@ describe('Audio player', () => {
     oldMedia = window.Media;
     oldAudio = window.Audio;
     spyOn(AudioPlayer.prototype, '_playbackCompatibility');
-    spyOn(AudioPlayer.prototype, '_getBestPlayer');
+    spyOn(AudioPlayer.prototype, '_getPlayer');
   });
 
   afterEach(() => {
@@ -29,8 +28,8 @@ describe('Audio player', () => {
     player._emitter.emit('evt1', ['args']);
     player._emitter.emit('evt2');
     expect(player._playbackCompatibility).toHaveBeenCalledTimes(1);
-    expect(player._getBestPlayer).toHaveBeenCalledTimes(1);
-    const callbacks = player._getBestPlayer.calls.mostRecent().args[0];
+    expect(player._getPlayer).toHaveBeenCalledTimes(1);
+    const callbacks = player._getPlayer.calls.mostRecent().args[0];
     expect(player.resetEventListeners).toEqual(jasmine.any(Function));
     expect(player.addEventListener).toEqual(jasmine.any(Function));
     expect(player.removeEventListener).toEqual(jasmine.any(Function));
@@ -64,16 +63,6 @@ describe('Audio player', () => {
       player._playbackCompatibility.and.callThrough();
       player._playbackCompatibility();
       expect(player.canUseAudio).toBeTruthy();
-      expect(player.canUseCordovaMedia).toBeTruthy();
-    });
-
-    it('should recognize playback compatibility when only cordova is available', () => {
-      window.Audio = undefined;
-      const player = new AudioPlayer();
-      player._playbackCompatibility.and.callThrough();
-      player._playbackCompatibility();
-      expect(player.canUseAudio).toBeFalsy();
-      expect(player.canUseCordovaMedia).toBeTruthy();
     });
 
     it('should recognize playback compatibility when only HTML5 is available', () => {
@@ -85,7 +74,6 @@ describe('Audio player', () => {
       player._playbackCompatibility.and.callThrough();
       player._playbackCompatibility();
       expect(player.canUseAudio).toBeTruthy();
-      expect(player.canUseCordovaMedia).toBeFalsy();
     });
 
     it('should recognize playback compatibility when only HTML5 is available, but has no methods.', () => {
@@ -123,16 +111,6 @@ describe('Audio player', () => {
     });
   });
 
-  it('should get the best player when it can use cordova', () => {
-    window.device = {platform: 'Android'};
-    const player = new AudioPlayer();
-    AudioPlayer.prototype._getBestPlayer.and.callThrough();
-    player.canUseCordovaMedia = true;
-    const result = player._getBestPlayer();
-    expect(result).toEqual(jasmine.any(CordovaMediaPlayer));
-    delete window.device;
-  });
-
   it('should get the best player when it can use HTML5', () => {
     const oldAudio_ = window.Audio;
     window.Audio = jasmine.createSpy().and.returnValue({
@@ -141,19 +119,18 @@ describe('Audio player', () => {
     spyOn(WebAudioPlayer.prototype, '_initPlayer');
     const player = new AudioPlayer();
     player.canUseAudio = true;
-    AudioPlayer.prototype._getBestPlayer.and.callThrough();
-    const result = player._getBestPlayer();
+    AudioPlayer.prototype._getPlayer.and.callThrough();
+    const result = player._getPlayer();
     expect(result).toEqual(jasmine.any(WebAudioPlayer));
     window.Audio = oldAudio_;
   });
 
   it('should get the best player when it can use neither', () => {
     const player = new AudioPlayer();
-    player.canUseCordovaMedia = false;
     player.canUseAudio = false;
-    AudioPlayer.prototype._getBestPlayer.and.callThrough();
+    AudioPlayer.prototype._getPlayer.and.callThrough();
     expect(() => {
-      player._getBestPlayer();
+      player._getPlayer();
     }).toThrowError('Unable to find a proper player.');
   });
 

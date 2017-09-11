@@ -1,4 +1,3 @@
-import CordovaMediaRecorder from './cordova-media-recorder';
 import MediaRecorder from './media-recorder';
 import Stopwatch from './tools';
 import WavePacker from './wave-packer';
@@ -27,19 +26,12 @@ export default class AudioRecorder {
 
     /**
      *
-     * @type {CordovaMediaRecorder|WebAudioRecorder|MediaRecorder} The specific recorder type.
+     * @type {WebAudioRecorder|MediaRecorder} The specific recorder type.
      */
     this._recorder = null;
 
     this._emitter = ee({});
 
-
-    if (this.canUseCordovaMedia) {
-      // Through the App permissions, access to the microphone was
-      // already granted.
-      this.userMediaApproval = true;
-      this._recorder = this._getBestRecorder();
-    }
     this._stopwatch = null;
   }
 
@@ -132,15 +124,7 @@ export default class AudioRecorder {
     const canCreateAudioContext = Boolean(window.AudioContext);
     console.log('Native Web Audio API (AudioContext) processing capability:', canCreateAudioContext);
 
-    // Detect Cordova Media Recording
-    // It allows recording audio using the native bridge inside WebView Apps.
-    // Note that it may also require native playback when codecs were used for
-    // recording that are not yet supported in the WebView.
-    // https://github.com/apache/cordova-plugin-media/blob/master/doc/index.md
-    this.canUseCordovaMedia = Boolean(window.Media);
-    console.log('Cordova Media recording capability:', this.canUseCordovaMedia);
-
-    if (!(this.canGetUserMedia || this.canUseCordovaMedia)) {
+    if (!this.canGetUserMedia) {
       throw new Error(
         'Some form of audio recording capability is required');
     }
@@ -242,15 +226,8 @@ export default class AudioRecorder {
    */
   _getBestRecorder(micInputGain) {
     let recorder = null;
-    // Start by checking for a Cordova environment.
-    // When running under a debugger like Ripple, both Cordova and WebAudio
-    // environments get detected. While this is technically valid -Ripple is
-    // running in Chrome, which supports WebAudio-, it's not a sandbox that
-    // also disables functionality that would not be available on a device.
-    if (this.canUseCordovaMedia && !this._settings.forceWave) {
-      // Use Cordova audio encoding (used codec depends on the platform).
-      recorder = new CordovaMediaRecorder();
-    } else if (this.canUserMediaRecorder && !this._settings.forceWave) {
+    // Start by checking for a MediaRecorder.
+    if (this.canUserMediaRecorder && !this._settings.forceWave) {
       // Use the recorder with MediaRecorder implementation.
       recorder = new MediaRecorder(micInputGain);
     } else if (this.canGetUserMedia) {

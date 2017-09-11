@@ -1,4 +1,3 @@
-import * as CordovaMediaRecorder from '../src/audio/cordova-media-recorder';
 import * as MediaRecorder from '../src/audio/media-recorder';
 import * as WebAudioRecorder from '../src/audio/web-audio-recorder';
 import AudioRecorder from '../src/audio/audio-recorder';
@@ -11,32 +10,7 @@ describe('Audio recorder', () => {
     spyOn(AudioRecorder.prototype, '_recordingCompatibility');
   });
 
-  it('should construct with cordova compatibility', () => {
-    AudioRecorder.prototype.canUseCordovaMedia = true;
-    const recorder = new AudioRecorder();
-    expect(recorder._settings).toEqual({});
-    expect(recorder.userMediaApproval).toBeTruthy();
-    expect(recorder.addEventListener).toEqual(jasmine.any(Function));
-    expect(recorder.removeEventListener).toEqual(jasmine.any(Function));
-    expect(recorder.fireEvent).toEqual(jasmine.any(Function));
-    expect(recorder.canUseCordovaMedia).toBeTruthy();
-    expect(recorder._recorder).toEqual('recorder');
-  });
-
-  it('should construct without cordova compatibility', () => {
-    AudioRecorder.prototype.canUseCordovaMedia = false;
-    const recorder = new AudioRecorder();
-    expect(recorder._settings).toEqual({});
-    expect(recorder.userMediaApproval).toBeFalsy();
-    expect(recorder.addEventListener).toEqual(jasmine.any(Function));
-    expect(recorder.removeEventListener).toEqual(jasmine.any(Function));
-    expect(recorder.fireEvent).toEqual(jasmine.any(Function));
-    expect(recorder.canUseCordovaMedia).toBeFalsy();
-    expect(recorder._recorder).toBeNull();
-  });
-
   it('should construct with event functionality', () => {
-    AudioRecorder.prototype.canUseCordovaMedia = false;
     const recorder = new AudioRecorder();
     recorder._emitter = jasmine.createSpyObj('_emitter', ['on', 'off', 'emit']);
     recorder.addEventListener('evt1', () => {});
@@ -183,25 +157,11 @@ describe('Audio recorder', () => {
     window.AudioContext = oldContext;
   });
 
-  it('should get the best recorder with cordova', () => {
-    const fakeCordova = jasmine.createSpy();
-    spyOn(CordovaMediaRecorder, 'default').and.returnValue(fakeCordova);
-    const recorder = new AudioRecorder();
-    recorder._getBestRecorder.and.callThrough();
-    recorder.canUseCordovaMedia = true;
-    recorder._settings = {
-      forceWave: false
-    };
-    const result = recorder._getBestRecorder();
-    expect(result).toEqual(fakeCordova);
-  });
-
   it('should get the best recorder with mediaRecorder implementation', () => {
     const fakeMediaRecorder = jasmine.createSpy();
     spyOn(MediaRecorder, 'default').and.returnValue(fakeMediaRecorder);
     const recorder = new AudioRecorder();
     recorder._getBestRecorder.and.callThrough();
-    recorder.canUseCordovaMedia = false;
     recorder.canUserMediaRecorder = true;
     recorder._settings = {
       forceWave: false
@@ -220,7 +180,6 @@ describe('Audio recorder', () => {
     spyOn(recorder, 'streamCallback').and.callThrough();
     spyOn(recorder, 'fireEvent');
     recorder._getBestRecorder.and.callThrough();
-    recorder.canUseCordovaMedia = false;
     recorder.canUserMediaRecorder = false;
     recorder.canGetUserMedia = true;
     const result = recorder._getBestRecorder();
@@ -232,7 +191,6 @@ describe('Audio recorder', () => {
   it('should get the best recorder when no proper recorder can be found', () => {
     const recorder = new AudioRecorder();
     recorder._getBestRecorder.and.callThrough();
-    recorder.canUseCordovaMedia = false;
     recorder.canUserMediaRecorder = false;
     recorder.canGetUserMedia = false;
     expect(() => {
