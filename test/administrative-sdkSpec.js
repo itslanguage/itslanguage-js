@@ -21,15 +21,15 @@ describe('Administrative SDK', () => {
   });
   let sdk;
   const fakeCategoryController = jasmine.createSpyObj('CategoryController',
-  ['createCategory', 'getCategory', 'getTopLevelCategories', 'getCategoriesWithParent', 'getCategories']);
+    ['createCategory', 'getCategory', 'getTopLevelCategories', 'getCategoriesWithParent', 'getCategories']);
   const fakeChoiceChallengeController = jasmine.createSpyObj('ChoiceChallengeController',
     ['createChoiceChallenge', 'getChoiceChallenge', 'getChoiceChallenges']);
   const fakeChoiceRecognitionController = jasmine.createSpyObj('ChoiceRecogController',
     ['startStreamingChoiceRecognition', 'getChoiceRecognition', 'getChoiceRecognitions']);
   const fakeEmailCredentialsController = jasmine.createSpyObj('EmailCredentialsController',
-  ['createEmailCredentials']);
+    ['createEmailCredentials']);
   const fakeGroupController = jasmine.createSpyObj('GroupController',
-  ['createGroup', 'getGroup', 'getGroups']);
+    ['createGroup', 'getGroup', 'getGroups']);
   const fakeOrganisationController = jasmine.createSpyObj('OrganisationController',
     ['createOrganisation', 'getOrganisation', 'getOrganisations']);
   const fakeProfileController = jasmine.createSpyObj('ProfileController', ['getProfile', 'getProfiles']);

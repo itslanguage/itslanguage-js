@@ -10,7 +10,6 @@ import ee from 'event-emitter';
  * Controller class for managing connection interaction.
  */
 export default class Connection {
-
   /**
    *
    * @param {Object} options - Options to configure the connection with.

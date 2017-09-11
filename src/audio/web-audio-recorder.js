@@ -25,7 +25,7 @@ export default class WebAudioRecorder {
     this.sampleRate = this.recordedSampleRate / 2;
     // Streaming doesn't yet downsample: #1302.
     this.sampleRate = streamingCallback ? this.recordedSampleRate :
-                        this.sampleRate;
+      this.sampleRate;
 
     // Always record audio in mono.
     this.channels = 1;

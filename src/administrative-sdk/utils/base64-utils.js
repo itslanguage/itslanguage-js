@@ -2,7 +2,6 @@
  * @private
  */
 export default class Base64Utils {
-
   /**
    * Convert an array buffer to a base64 encoded binary string.
    *
