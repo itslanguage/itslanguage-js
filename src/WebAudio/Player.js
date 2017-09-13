@@ -53,6 +53,9 @@ export default class Player {
     }
 
     this.suspendAudioContext = this.suspendAudioContext.bind(this);
+
+    // set log to output to stdout
+    this.log.log = console.log.bind(console);
   }
 
   /**
