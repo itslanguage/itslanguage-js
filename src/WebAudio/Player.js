@@ -7,7 +7,7 @@ import debug from 'debug';
  */
 export default class Player {
   /**
-   * Private object to hold AudioContext nodee.
+   * Private object to hold AudioContext node.
    * @private
    */
   audioContext = null;
