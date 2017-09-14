@@ -45,7 +45,7 @@ function handleWebsocketAuthorisationChallenge(session, method) {
 function establishNewBundesbahn() {
   bundesautobahn = new Promise((resolve, reject) => {
     const bahn = new autobahn.Connection({
-      url: settings.WS_URL,
+      url: settings.wsURL,
       realm: 'default',
       // Of course we want to use es6 promises if they are availbile.
       use_es6_promises: true, // eslint-disable-line camelcase
