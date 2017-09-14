@@ -1,50 +1,50 @@
 /**
- * The unittests for the exported functions from `pronunciation.js`.
+ * The unittests for the exported functions from `index.js`.
  */
 
-import * as communication from '../communication';
-import * as pronunciation from './pronunciation';
+import * as communication from '../../communication';
+import * as speech from './index';
 
 
-describe('createPronunciationChallenge', () => {
+describe('createSpeechChallenge', () => {
   it('should make an authorised request', done => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
     authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-    pronunciation.createPronunciationChallenge({question: 'poes?'})
+    speech.createSpeechChallenge({question: 'poes?'})
       .then(() => {
         const createRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(createRequest.args).toEqual(['POST', '/challenges/pronunciation', {question: 'poes?'}]);
+        expect(createRequest.args).toEqual(['POST', '/challenges/speech', {question: 'poes?'}]);
         done();
       }, fail);
   });
 });
 
 
-describe('getPronunciationChallengeByID', () => {
+describe('getSpeechChallengeByID', () => {
   it('should make an authorised request', done => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
     authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-    pronunciation.getPronunciationChallengeByID('c4t')
+    speech.getSpeechChallengeByID('c4t')
       .then(() => {
         const getRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation/c4t']);
+        expect(getRequest.args).toEqual(['GET', '/challenges/speech/c4t']);
         done();
       }, fail);
   });
 });
 
 
-describe('getAllPronunciationChallenges', () => {
+describe('getAllSpeechChallenges', () => {
   it('should make an authorised request', done => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
     authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
 
-    pronunciation.getAllPronunciationChallenges()
+    speech.getAllSpeechChallenges()
       .then(() => {
         const getRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation']);
+        expect(getRequest.args).toEqual(['GET', '/challenges/speech']);
         done();
       }, fail);
   });
@@ -56,31 +56,16 @@ describe('getAllPronunciationChallenges', () => {
     const filters = new URLSearchParams();
     filters.set('theme', 'm30w');
 
-    pronunciation.getAllPronunciationChallenges(filters)
+    speech.getAllSpeechChallenges(filters)
       .then(() => {
         const getRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation?theme=m30w']);
+        expect(getRequest.args).toEqual(['GET', '/challenges/speech?theme=m30w']);
         done();
       }, fail);
   });
 
   it('should reject when something other than URLSearchParams is given as the filters', done => {
-    pronunciation.getAllPronunciationChallenges('this is not an instance of URLSearchParams')
+    speech.getAllSpeechChallenges('this is not an instance of URLSearchParams')
       .then(fail, done);
-  });
-});
-
-
-describe('deletePronunciationChallenge', () => {
-  it('should make an authorised request', done => {
-    const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
-
-    pronunciation.deletePronunciationChallenge('c4t')
-      .then(() => {
-        const getRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(getRequest.args).toEqual(['DELETE', '/challenges/pronunciation/c4t']);
-        done();
-      }, fail);
   });
 });

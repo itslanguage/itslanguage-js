@@ -3,7 +3,7 @@
  * ITSLanguage choice challenge API.
  */
 
-import {authorisedRequest} from '../communication';
+import {authorisedRequest} from '../../communication';
 
 // The URL for the choice challenge handler(s).
 const url = '/challenges/choice';

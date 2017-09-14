@@ -3,7 +3,7 @@
  * ITSLanguage speech challenge API.
  */
 
-import {authorisedRequest} from '../communication';
+import {authorisedRequest} from '../../communication';
 
 // The URL for the speech challenge handler(s).
 const url = '/challenges/speech';

@@ -1,9 +1,9 @@
 /**
- * The unittests for the exported functions from `choice.js`.
+ * The unittests for the exported functions from `index.js`.
  */
 
 import * as choice from './choice';
-import * as communication from '../communication';
+import * as communication from '../../communication';
 
 
 describe('createChoiceChallenge', () => {
