@@ -142,8 +142,7 @@ function getBearerToken() {
  *
  * This request will add the ``Authorization`` header to the request.
  *
- * This function only allows to make calls to the ITSLanguage API using
- * partial URLs.
+ * This function only allows to make calls to the ITSLanguage API.
  *
  * @param {string} method - The request METHOD ('GET', 'POST', 'PUT', 'DELETE').
  * @param {string} url - The location to send the request to.
@@ -160,9 +159,8 @@ export function authorisedRequest(method, url, body, headers) {
   // XXX remove the URL truthy check when all parts of the SDK no longer build
   // a complete url by themselves using the "private" settings object of their
   // connection reference.
-  if (url && !url.startsWith('/')) {
-    console.warn('Complete URLs will soon be disallowed in authorised requests.');
-    // return Promise.reject('Only relative ITSLanguage API URLs are allowed.');
+  if (url && (!url.startsWith('/') && !url.startsWith(settings.apiURL))) {
+    return Promise.reject('Only relative ITSLanguage API URLs are allowed.');
   }
 
   try {
