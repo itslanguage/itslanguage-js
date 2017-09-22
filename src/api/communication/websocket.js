@@ -3,8 +3,12 @@
  */
 
 import autobahn from 'autobahn';
+import debug from 'debug';
 import {settings} from './index';
 
+const log = debug('its-sdk:WebSocket');
+const error = debug('its-sdk:WebSocket');
+log.log = console.log.bind(console);
 
 /**
  * Keep hold of the currently open autobahn connection.
@@ -74,6 +78,7 @@ function establishNewBundesbahn() {
 
     // Connection got established; lets us it.
     bahn.onopen = () => {
+      log('Successfully established a websocket connection.');
       // Remove the `onclose` handler as it is no longer of interest to us.
       delete bahn.onclose;
       resolve(bahn);
@@ -143,14 +148,18 @@ export function closeWebsocketConnection() {
       try {
         bahn.close();
         bundesautobahn = null;
-        return 'The websocket connection has been closed successfully.';
+        const message = 'The websocket connection has been closed successfully.';
+        log(message);
+        return message;
       } catch (reason) {
         // `autobahn.Connection.close()` throws a string when the connection is
         // already closed. The connection is not exposed and therefore cannot be
         // closed by anyone using the SDK. Regardless, when it happens just
         // return a resolved promise.
         bundesautobahn = null;
-        return 'The websocket connection has already been closed.';
+        const message = 'The websocket connection has already been closed.';
+        error(message);
+        return message;
       }
     });
 }
