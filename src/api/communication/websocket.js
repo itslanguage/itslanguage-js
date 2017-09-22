@@ -52,7 +52,9 @@ function establishNewBundesbahn() {
       url: settings.wsURL,
       realm: 'default',
       // Of course we want to use es6 promises if they are availbile.
-      use_es6_promises: true, // eslint-disable-line camelcase
+      // But, the backend sometimes spits out progress. For that we need
+      // a When.JS promise..
+      use_es6_promises: false, // eslint-disable-line camelcase
       // The following options are required in order to authorise the
       // connection.
       authmethods: ['ticket'],
