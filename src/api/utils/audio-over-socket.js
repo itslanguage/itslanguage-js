@@ -4,14 +4,14 @@
 
 import broadcaster from '../broadcaster';
 import {dataToBase64} from './index';
-import {makeWebsocketCall} from '../communication';
+import {makeWebsocketCall} from '../communication/websocket';
 
 
 /**
  * Encode the audio as base64 and send it to the websocket server.
  *
  * @param {string} id - The reserved ID for the audio.
- * @param {MediaRecorder} recorder - The recorder to use to get the recording.
+ * @param {MediaRecorder|Recorder} recorder - The recorder to use to get the recording.
  * @param {string} rpc - The RPC to use to store the data.
  *
  * @returns {Promise.<*>} - The response of the given RPC.
@@ -22,7 +22,7 @@ export function encodeAndSendAudioOnDataAvailible(id, recorder, rpc) {
     // websocket server and continue with the chain.
     recorder.addEventListener('dataavailable', chunk => {
       const encoded = dataToBase64(chunk);
-      makeWebsocketCall(rpc, [id, encoded, 'base64'])
+      makeWebsocketCall(rpc, {args: [id, encoded, 'base64']})
         .then(resolve, reject);
     });
   });
@@ -36,7 +36,7 @@ export function encodeAndSendAudioOnDataAvailible(id, recorder, rpc) {
  * resolved.
  *
  * @param {string} id - The reserved ID for the audio.
- * @param {MediaRecorder} recorder - The recorder which has been set up to
+ * @param {MediaRecorder|Recorder} recorder - The recorder which has been set up to
  *                                   record.
  * @param {string} rpc - The RPC to use to initialize the websocket server.
  *
@@ -49,7 +49,7 @@ export function encodeAndSendAudioOnDataAvailible(id, recorder, rpc) {
  */
 export function prepareServerForAudio(id, recorder, rpc) {
   const {audioFormat, audioParameters} = recorder.getAudioSpecs();
-  return makeWebsocketCall(rpc, [id, audioFormat], audioParameters)
+  return makeWebsocketCall(rpc, {args: [id, audioFormat], kwargs: audioParameters})
     .then(() => {
       // We've preped the websocket server, now it can receive audio. Broadcast
       // that it is allowed to record.

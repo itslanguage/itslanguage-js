@@ -168,7 +168,7 @@ export function closeWebsocketConnection() {
 
 
 /**
- * Make a (raw) call to the its-ws server.
+ * Make a rpc call to the ITSLanguage websocket server.
  *
  * This method will try to establish a websocket connection if there isn't one
  * already.
@@ -176,13 +176,38 @@ export function closeWebsocketConnection() {
  * @param {string} rpc - The RPC to make. This be prepended by `nl.itslanguage`
  *                       as the websocket server only handles websocket calls
  *                       when the RPC starts with that prefix.
- * @param {Array} [args] - The positional arguments to pass to the RPC.
- * @param {Object} [kwargs] - The key word mapped arguments to pass to the RPC.
- * @param {Object} [options] - The options to pass to the RPC.
+ * @param {Object} [options] - Destructured object with options to pass to the websocket server.
+ * @param {Array} [options.args] - An array with arguments to pass to the RPC.
+ * @param {Object} [options.kwargs] - An object (dictionary) with arguments to pass to the RPC.
+ * @param {Object} [options.options] - The options to pass to the RPC.
+ * @param {Function} [options.progressCb] - Optional callback to receive progressed results.
  *
  * @returns {Promise.<*>} - The response of the websocket call.
  */
-export function makeWebsocketCall(rpc, args, kwargs, options) {
+export function makeWebsocketCall(rpc, {args, kwargs, options, progressCb} = {}) {
+  let mergedOptions = options;
+  if (progressCb) {
+    mergedOptions = {
+      ...options,
+      receive_progress: true // eslint-disable-line camelcase
+    };
+  }
   return getWebsocketConnection()
-    .then(connection => connection.session.call(`nl.itslanguage.${rpc}`, args, kwargs, options));
+    .then(connection =>
+      connection.session.call(`nl.itslanguage.${rpc}`, args, kwargs, mergedOptions)
+        .progress(progressCb)
+    )
+    .catch(result => {
+      const {error: wssError, kwargs: wssKwargs, args: wssArgs} = result;
+
+      // Log the error to stderr
+      error(result);
+
+      // Return a slightly simplistic version of the error that occurred
+      return Promise.reject({
+        error: wssError,
+        ...wssKwargs,
+        args: [...wssArgs]
+      });
+    });
 }
