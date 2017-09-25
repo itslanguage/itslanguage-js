@@ -43,7 +43,7 @@ export function preparePronunciationAnalysis() {
  * @param {string} challengeId - The ID of the challenge that belongs to a specific analysis.
  * @returns {Promise.<*>} - Promise with the result of the init_challenge call.
  */
-export function prepareAnalysisChalllenge(analysisId, challengeId) {
+export function prepareAnalysisChallenge(analysisId, challengeId) {
   return makeWebsocketCall('pronunciation.init_challenge', {args: [analysisId, challengeId]});
 }
 
