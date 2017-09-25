@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
   "dependencies": {
-    "autobahn-js-built": "0.11.1",
+    "autobahn": "0.11.2",
     "client-oauth2": "4.1.0",
     "debug": "3.0.1",
     "event-emitter": "0.3.5",
