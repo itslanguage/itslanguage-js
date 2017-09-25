@@ -1,4 +1,4 @@
-import MediaRecorder from './media-recorder';
+// import MediaRecorder from './media-recorder';
 import Stopwatch from './tools';
 import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
@@ -92,12 +92,12 @@ export default class AudioRecorder {
     // Detect audio recording capabilities.
     // http://caniuse.com/#feat=stream
     // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
-    navigator.getUserMedia = navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia ||
-      navigator.msGetUserMedia;
-    this.canGetUserMedia = Boolean(navigator.getUserMedia);
-    console.log('Native deprecated navigator.getUserMedia API capability:', this.canGetUserMedia);
+    // navigator.getUserMedia = navigator.getUserMedia ||
+    //   navigator.webkitGetUserMedia ||
+    //   navigator.mozGetUserMedia ||
+    //   navigator.msGetUserMedia;
+    // this.canGetUserMedia = Boolean(navigator.getUserMedia);
+    // console.log('Native deprecated navigator.getUserMedia API capability:', this.canGetUserMedia);
 
     // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/mediaDevices.getUserMedia
     this.canMediaDevicesGetUserMedia = false;
@@ -113,8 +113,8 @@ export default class AudioRecorder {
     // It allows recording audio using the MediaStream from the above
     // getUserMedia directly with a native codec better than Wave.
     // http://www.w3.org/TR/mediastream-recording/
-    this.canUseMediaRecorder = Boolean(window.MediaRecorder);
-    console.log('Native MediaRecorder recording capability:', this.canUseMediaRecorder);
+    // this.canUseMediaRecorder = Boolean(window.MediaRecorder);
+    // console.log('Native MediaRecorder recording capability:', this.canUseMediaRecorder);
 
     // Web Audio API
     // High-level JavaScript API for processing and synthesizing audio
@@ -124,7 +124,7 @@ export default class AudioRecorder {
     const canCreateAudioContext = Boolean(window.AudioContext);
     console.log('Native Web Audio API (AudioContext) processing capability:', canCreateAudioContext);
 
-    if (!this.canGetUserMedia) {
+    if (!this.canGetUserMedia && !this.canMediaDevicesGetUserMedia) {
       throw new Error(
         'Some form of audio recording capability is required');
     }
@@ -227,10 +227,11 @@ export default class AudioRecorder {
   _getBestRecorder(micInputGain) {
     let recorder = null;
     // Start by checking for a MediaRecorder.
-    if (this.canUserMediaRecorder && !this._settings.forceWave) {
-      // Use the recorder with MediaRecorder implementation.
-      recorder = new MediaRecorder(micInputGain);
-    } else if (this.canGetUserMedia) {
+    // if (this.canUserMediaRecorder && !this._settings.forceWave) {
+    //   // Use the recorder with MediaRecorder implementation.
+    //   recorder = new MediaRecorder(micInputGain);
+    // } else if (this.canGetUserMedia) {
+    if (this.canMediaDevicesGetUserMedia) {
       // Fall back to raw (WAVE) audio encoding.
       const self = this;
       recorder = new WebAudioRecorder(micInputGain, data => {
