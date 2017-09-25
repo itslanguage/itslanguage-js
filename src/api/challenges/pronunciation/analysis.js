@@ -9,7 +9,8 @@
 
 import {
   encodeAndSendAudioOnDataAvailible,
-  prepareServerForAudio
+  prepareServerForAudio,
+  waitForUserMediaApproval
 } from '../../utils/audio-over-socket';
 import {authorisedRequest} from '../../communication';
 import {makeWebsocketCall} from '../../communication/websocket';
@@ -67,7 +68,8 @@ export function performAlignmentOnChallenge(analysisId) {
  * @returns {Promise} - Result of preparing the audio.
  */
 export function prepareAudioForPronuncationAnalysis(analyseId, recorder) {
-  return prepareServerForAudio(analyseId, recorder, 'pronunciation.init_audio');
+  return prepareServerForAudio(analyseId, recorder, 'pronunciation.init_audio')
+    .then(recording => waitForUserMediaApproval(recording, recorder));
 }
 
 /**

@@ -9,7 +9,8 @@
 
 import {
   encodeAndSendAudioOnDataAvailible,
-  prepareServerForAudio
+  prepareServerForAudio,
+  waitForUserMediaApproval
 } from '../../utils/audio-over-socket';
 import {authorisedRequest} from '../../communication';
 import {makeWebsocketCall} from '../../communication/websocket';
@@ -33,7 +34,8 @@ export function prepareChoiceRecognitionChallenge(recognitionId, challengeId) {
 }
 
 export function prepareAudioForChoiceRecognition(recognitionId, recorder) {
-  return prepareServerForAudio(recognitionId, recorder, 'choice.init_audio');
+  return prepareServerForAudio(recognitionId, recorder, 'choice.init_audio')
+    .then(recording => waitForUserMediaApproval(recording, recorder));
 }
 
 export function streamAudioForChoiceRecognition(recognitionId, recorder) {
