@@ -1,4 +1,3 @@
-// import MediaRecorder from './media-recorder';
 import Stopwatch from './tools';
 import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
@@ -33,6 +32,27 @@ export default class AudioRecorder {
     this._emitter = ee({});
 
     this._stopwatch = null;
+
+    if (options.audioContext) {
+      this.audioContext = options.audioContext;
+    } else {
+      this.audioContext = this.createAudioContext();
+    }
+  }
+
+
+  /**
+   * Get the audio context or create one.
+   *
+   * @return {AudioContext} The AudioContext created will be returned
+   */
+  createAudioContext() {
+    if (!window.ItslAudioContext) {
+      window.AudioContext =
+        window.AudioContext || window.webkitAudioContext;
+      window.ItslAudioContext = new window.AudioContext();
+    }
+    return window.ItslAudioContext;
   }
 
   /**
@@ -89,16 +109,6 @@ export default class AudioRecorder {
    * @private
    */
   _recordingCompatibility/* istanbul ignore next */() {
-    // Detect audio recording capabilities.
-    // http://caniuse.com/#feat=stream
-    // https://developer.mozilla.org/en-US/docs/Web/API/Navigator.getUserMedia
-    // navigator.getUserMedia = navigator.getUserMedia ||
-    //   navigator.webkitGetUserMedia ||
-    //   navigator.mozGetUserMedia ||
-    //   navigator.msGetUserMedia;
-    // this.canGetUserMedia = Boolean(navigator.getUserMedia);
-    // console.log('Native deprecated navigator.getUserMedia API capability:', this.canGetUserMedia);
-
     // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/mediaDevices.getUserMedia
     this.canMediaDevicesGetUserMedia = false;
     if (navigator.mediaDevices) {
@@ -108,21 +118,6 @@ export default class AudioRecorder {
       this.canMediaDevicesGetUserMedia = Boolean(navigator.mediaDevices.getUserMedia);
     }
     console.log('Native navigator.mediaDevices.getUserMedia API capability:', this.canMediaDevicesGetUserMedia);
-
-    // Detect MediaStream Recording
-    // It allows recording audio using the MediaStream from the above
-    // getUserMedia directly with a native codec better than Wave.
-    // http://www.w3.org/TR/mediastream-recording/
-    // this.canUseMediaRecorder = Boolean(window.MediaRecorder);
-    // console.log('Native MediaRecorder recording capability:', this.canUseMediaRecorder);
-
-    // Web Audio API
-    // High-level JavaScript API for processing and synthesizing audio
-    // http://caniuse.com/#feat=audio-api
-    window.AudioContext = window.AudioContext ||
-      window.webkitAudioContext || window.mozAudioContext;
-    const canCreateAudioContext = Boolean(window.AudioContext);
-    console.log('Native Web Audio API (AudioContext) processing capability:', canCreateAudioContext);
 
     if (!this.canGetUserMedia && !this.canMediaDevicesGetUserMedia) {
       throw new Error(
@@ -148,34 +143,22 @@ export default class AudioRecorder {
    * @throws {Error} If no live audio input is available or permitted.
    */
   requestUserMedia() {
-    const self = this;
-    function success(stream) {
-      console.log('Got getUserMedia stream');
-
-      // checking audio presence
-      if (self.canMediaDevicesGetUserMedia) {
-        if (stream.getAudioTracks().length) {
-          console.log('Got audio tracks:', stream.getAudioTracks().length);
-        }
-      }
-
+    const readyForStream = stream => {
       // Modify state of userMediaApproval now access is granted.
-      self.userMediaApproval = true;
+      this.userMediaApproval = true;
 
-      const micInputGain = self._startUserMedia(stream);
-      self.fireEvent('ready', [self.audioContext, micInputGain]);
-    }
-    function failure(e) {
-      console.log(e);
+      const micInputGain = this._startUserMedia(stream);
+      this.fireEvent('ready', [this.audioContext, micInputGain]);
+    };
+
+    const userCanceled = error => {
+      console.error(error);
       throw new Error('No live audio input available or permitted');
-    }
+    };
 
-    if (this.canMediaDevicesGetUserMedia) {
-      // Use of promises is required.
-      navigator.mediaDevices.getUserMedia({audio: true}).then(success).catch(failure);
-    } else if (this.canGetUserMedia) {
-      navigator.getUserMedia({audio: true}, success, failure);
-    }
+    navigator.mediaDevices.getUserMedia({audio: true})
+      .then(readyForStream)
+      .catch(userCanceled);
   }
 
   /**
@@ -185,16 +168,6 @@ export default class AudioRecorder {
    * @private
    */
   _startUserMedia(stream) {
-    if (!this.audioContext) {
-      // Initialize the context once, and only when getUserMedia was
-      // successful.
-      this.audioContext = new window.AudioContext();
-    }
-
-    if (!this.audioContext.createMediaStreamSource) {
-      throw new Error('AudioContext has no property createMediaStreamSource');
-    }
-
     // Creates an audio node from the microphone incoming stream.
     const micInput = this.audioContext.createMediaStreamSource(stream);
 
@@ -225,23 +198,9 @@ export default class AudioRecorder {
    * @private
    */
   _getBestRecorder(micInputGain) {
-    let recorder = null;
-    // Start by checking for a MediaRecorder.
-    // if (this.canUserMediaRecorder && !this._settings.forceWave) {
-    //   // Use the recorder with MediaRecorder implementation.
-    //   recorder = new MediaRecorder(micInputGain);
-    // } else if (this.canGetUserMedia) {
-    if (this.canMediaDevicesGetUserMedia) {
-      // Fall back to raw (WAVE) audio encoding.
-      const self = this;
-      recorder = new WebAudioRecorder(micInputGain, data => {
-        self.streamCallback(data);
-      }, new WavePacker());
-    } else {
-      throw new Error('Unable to find a proper recorder.');
-    }
-    console.log('Recorder initialised.');
-    return recorder;
+    return new WebAudioRecorder(micInputGain, this.audioContext, data => {
+      this.streamCallback(data);
+    }, new WavePacker(), false);
   }
 
   /**
@@ -296,6 +255,8 @@ export default class AudioRecorder {
     if (this.isRecording()) {
       throw new Error('Already recording, stop recording first.');
     }
+
+    this.audioContext.resume();
 
     this._recorder.record();
     if (this._stopwatch) {
