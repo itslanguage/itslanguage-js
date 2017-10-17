@@ -8,6 +8,7 @@ module.exports = config => {
       'jasmine'
     ],
     files: [
+      'node_modules/babel-polyfill/dist/polyfill.min.js',
       'test/**/*.js',
       'src/**/*.spec.js'
     ],
