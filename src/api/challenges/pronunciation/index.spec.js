@@ -3,7 +3,7 @@
  */
 
 import * as communication from '../../communication';
-import * as pronunciation from './pronunciation';
+import * as pronunciation from './index';
 
 
 describe('createPronunciationChallenge', () => {

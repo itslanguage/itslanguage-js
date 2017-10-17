@@ -2,7 +2,7 @@
  * The unittests for the exported functions from `index.js`.
  */
 
-import * as choice from './choice';
+import * as choice from './index';
 import * as communication from '../../communication';
 
 
