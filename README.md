@@ -4,8 +4,8 @@
 
 | branch | build status |
 | ------ | ------------ |
-| master | [![Build Status](https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master)](https://travis-ci.org/itslanguage/itslanguage-js) |
-| @next  | [![Build Status](https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next)](https://travis-ci.org/itslanguage/itslanguage-js) |
+| master | [![Build Status][master build logo]][travis] |
+| next   | [![Build Status][next build logo]][travis] |
 
 ## Getting started
 
@@ -25,9 +25,9 @@ npm install --save itslanguage@next
 ```
 
 **Warning**: this will install the ITSLanguage Javascript SDK as a beta package to your project.
-Things might not work as expected, for instance the sdk might require a specific backend to work on.
-If you're installint the sdk this way, make sure you now what you're doing. Breaking changes will
-occur.
+Things might not work as expected. For instance the sdk might require a specific backend version 
+to be able to function with this version to work on. So make sure you now what you're doing when
+installing the next branch to your project. Breaking changes will occur.
 
 ### Dependencies
 
@@ -73,18 +73,23 @@ these APIs to your environment. Here are a few we found useful.
 We appreciate any contribution to extend/update these lists. Feel free to contact us on our github
 page or drop us a line at support@itslanguage.nl
 
-## The `@next` dist-tag
+## The Next Branch
 
-Our `@next` line can be used to try out new features that are coming out in the near future.
+Our `next` branch can be used to try out new features that are coming out in the near future.
 Important to keep in mind is that this version possibly does not work on your ITSLanguage
 backend environment due to breaking changes. If not sure, drop us a line to find out.  
 
-### Current status of `@next`
+### Current status of next branche
 
 These are the items currently we're currently developing on for the `@next` version.
 - Improve our CI/CD flow for better releases
 - Improve communication/authentication mechanism
+- Improve websocket communication mechanism
 - Add safari support (macOS and iOS)
+
+[master build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master
+[next build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next
+[travis]: https://travis-ci.org/itslanguage/itslanguage-js
 
 [MDN fetch]: https://developer.mozilla.org/en/docs/Web/API/Fetch_API
 [MDN URLSearchParams]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
