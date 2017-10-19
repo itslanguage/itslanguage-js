@@ -3,7 +3,7 @@
  */
 
 import * as aos from './audio-over-socket';
-import * as communication from '../communication';
+import * as communication from '../communication/websocket';
 import * as utils from './index';
 import broadcaster from '../broadcaster';
 
@@ -31,11 +31,11 @@ describe('encodeAndSendAudioOnDataAvailible', () => {
       .then(result => {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'his.palms.are.sweaty',
-          [
+          {args: [
             'r353rv3d1d',
             'There\'s vomit on his sweater already, mom\'s spaghetti',
             'base64'
-          ]);
+          ]});
         expect(result).toEqual('He\'s nervous, but on the surface he looks calm and ready');
         done();
       }, fail);
@@ -53,11 +53,11 @@ describe('encodeAndSendAudioOnDataAvailible', () => {
       .then(fail, result => {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'his.palms.are.sweaty',
-          [
+          {args: [
             'r353rv3d1d',
             'There\'s vomit on his sweater already, mom\'s spaghetti',
             'base64'
-          ]);
+          ]});
         expect(result).toBe('Websocket server has received and rejected the call.');
         done();
       }, fail);
@@ -89,9 +89,11 @@ describe('prepareServerForAudio', () => {
       .then(result => {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'write.this.down.kiddo',
-          ['r353rv3d1d', 'audio/ogg'],
           {
-            bitrate: 9001
+            args: ['r353rv3d1d', 'audio/ogg'],
+            kwargs: {
+              bitrate: 9001
+            }
           }
         );
         expect(result).toEqual('r353rv3d1d');
@@ -113,9 +115,11 @@ describe('prepareServerForAudio', () => {
       .then(fail, () => {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'write.this.down.kiddo',
-          ['r353rv3d1d', 'audio/ogg'],
           {
-            bitrate: 9001
+            args: ['r353rv3d1d', 'audio/ogg'],
+            kwargs: {
+              bitrate: 9001
+            }
           }
         );
         done();

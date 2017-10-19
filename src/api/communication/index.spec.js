@@ -193,32 +193,12 @@ describe('authorisedRequest', () => {
     });
   });
 
-  // XXX Currently it is only a warning that is logged. Most of the SDK is
-  // still building a complete URL which blocks this feature. Once all those
-  // comlete URLs are changed to relative URLs, this comment should be
-  // removed and this test should be executed.
-  xit('should only allow relative urls', done => {
+  it('should only allow relative urls', done => {
     communication.authorisedRequest('PUT', 'https://domain.ext/path', {foo: 'bar'})
       .then(fail, message => {
         expect(message).toEqual('Only relative ITSLanguage API URLs are allowed.');
         done();
       });
-  });
-
-  // XXX This test should be removed if when te 'should only allow relative
-  // URLs' test is included in the test run.
-  it('warns the develors that a change needs to be made to the SDK for every full URL', done => {
-    const warnSpy = spyOn(console, 'warn');
-    fetchSpy.and.returnValue(Promise.resolve(new Response()));
-
-    const expectedRequestHeaders = new Headers();
-    expectedRequestHeaders.set('Authorization', 'Bearer token');
-
-    communication.authorisedRequest('GET', 'https://domain.ext/path')
-      .then(() => {
-        expect(warnSpy).toHaveBeenCalledWith('Complete URLs will soon be disallowed in authorised requests.');
-        done();
-      }, fail);
   });
 
   it('should reject when there is no authorizationToken set in the settings', done => {

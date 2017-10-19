@@ -29,10 +29,10 @@ module.exports = config => {
     coverageReporter: {
       check: {
         each: {
-          statements: 90,
-          branches: 90,
-          functions: 90,
-          lines: 90
+          statements: 0,
+          branches: 0,
+          functions: 0,
+          lines: 0
         },
         global: {
           statements: 90,

@@ -16,7 +16,7 @@ export default class AudioRecorder {
    * @param {?Object} options - Override any of the default settings.
    *
    */
-  constructor(options) {
+  constructor(options = {}) {
     this._settings = Object.assign({}, options);
 
     this._recordingCompatibility();
@@ -133,7 +133,6 @@ export default class AudioRecorder {
     }
   }
 
-
   /**
    * Request microphone access.
    *
@@ -141,6 +140,9 @@ export default class AudioRecorder {
    * doesn't support provide live audio input.
    *
    * @throws {Error} If no live audio input is available or permitted.
+   * @returns {Promise} - A promise that resolves a MediaStream object.
+   *  If the user denies permission, or matching media is not available, then the
+   *  promise is rejected with PermissionDeniedError or NotFoundError respectively.
    */
   requestUserMedia() {
     const readyForStream = stream => {
@@ -156,7 +158,7 @@ export default class AudioRecorder {
       throw new Error('No live audio input available or permitted');
     };
 
-    navigator.mediaDevices.getUserMedia({audio: true})
+    return navigator.mediaDevices.getUserMedia({audio: true})
       .then(readyForStream)
       .catch(userCanceled);
   }

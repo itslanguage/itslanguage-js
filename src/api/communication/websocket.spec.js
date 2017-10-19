@@ -169,8 +169,15 @@ describe('makeWebsocketCall', () => {
 
   beforeEach(() => {
     spyOn(autobahn.Connection.prototype, 'close');
-    connectionSessionStub = jasmine.createSpyObj('Session', ['call']);
     connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
+    connectionSessionStub = jasmine.createSpyObj('Session', ['call']);
+    connectionSessionStub.call.and.callFake(() => {
+      // eslint-disable-next-line new-cap
+      const defer = new autobahn.when.defer();
+      defer.resolve();
+      return defer.promise;
+    });
+
     connectionOpenSpy.and.callFake(function() {
       // This property is returned through the session "property" of a
       // conncection instance. Sadly only the get is defined with the
@@ -190,9 +197,11 @@ describe('makeWebsocketCall', () => {
     websocket.openWebsocketConnection()
       .then(() => websocket.makeWebsocketCall(
         'do.a.rpc',
-        ['accept', 'these'],
-        {kwarg: 'value'},
-        {option: 'value'}
+        {
+          args: ['accept', 'these'],
+          kwargs: {kwarg: 'value'},
+          options: {option: 'value'}
+        }
       ))
       .then(() => {
         expect(connectionSessionStub.call).toHaveBeenCalledWith(
@@ -206,16 +215,19 @@ describe('makeWebsocketCall', () => {
   });
 
   it('should open a websocket connection if there isn\'t one already', done => {
-    websocket.makeWebsocketCall('do.a.rpc', ['accept', 'these'], {kwarg: 'value'}, {option: 'value'})
-      .then(() => {
-        expect(connectionOpenSpy).toHaveBeenCalled();
-        expect(connectionSessionStub.call).toHaveBeenCalledWith(
-          'nl.itslanguage.do.a.rpc',
-          ['accept', 'these'],
-          {kwarg: 'value'},
-          {option: 'value'}
-        );
-        done();
-      }, fail);
+    websocket.makeWebsocketCall('do.a.rpc', {
+      args: ['accept', 'these'],
+      kwargs: {kwarg: 'value'},
+      options: {option: 'value'}
+    }).then(() => {
+      expect(connectionOpenSpy).toHaveBeenCalled();
+      expect(connectionSessionStub.call).toHaveBeenCalledWith(
+        'nl.itslanguage.do.a.rpc',
+        ['accept', 'these'],
+        {kwarg: 'value'},
+        {option: 'value'}
+      );
+      done();
+    }, fail);
   });
 });
