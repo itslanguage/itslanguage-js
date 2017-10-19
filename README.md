@@ -24,10 +24,25 @@ release, just add the `@next` tag to the install option:
 npm install --save itslanguage@next
 ```
 
+**note**: if you're using npm >= 5 in your project you can ommit the `--save` flag. That is assumed
+by default.
+
 **Warning**: this will install the ITSLanguage Javascript SDK as a beta package to your project.
 Things might not work as expected. For instance the sdk might require a specific backend version 
 to be able to function with this version to work on. So make sure you now what you're doing when
 installing the next branch to your project. Breaking changes will occur.
+
+### Usage
+
+Simply import `itslanguage` in your project. For example:
+
+```js
+
+import { Connection } from 'itslanguage';
+
+```
+
+For more usage and examples read our documentation on [the GitHub pages website].
 
 ### Dependencies
 
@@ -91,6 +106,8 @@ available on npm.
 [master build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master
 [next build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next
 [travis]: https://travis-ci.org/itslanguage/itslanguage-js
+
+[the GitHub pages website]: https://itslanguage.github.io/itslanguage-js/
 
 [MDN fetch]: https://developer.mozilla.org/en/docs/Web/API/Fetch_API
 [MDN URLSearchParams]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
