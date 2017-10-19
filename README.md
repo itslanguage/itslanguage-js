@@ -79,9 +79,10 @@ Our `next` branch can be used to try out new features that are coming out in the
 Important to keep in mind is that this version possibly does not work on your ITSLanguage
 backend environment due to breaking changes. If not sure, drop us a line to find out.  
 
-### Current status of next branche
+### Current status of next branch
 
-These are the items currently we're currently developing on for the `@next` version.
+These are the items currently we are currently developing on for the `@next` dist-tag which is
+available on npm.
 - Improve our CI/CD flow for better releases
 - Improve communication/authentication mechanism
 - Improve websocket communication mechanism
