@@ -138,8 +138,8 @@ export function recogniseChoiceRecognition(recognitionId, progressCb) {
  * @param {string} challengeId - The ID of the challenge for the choice recognition.
  * @param {Recorder} recorder - Audio Recorder instance.
  * @param {Function} progressCb - Callback function to call if progressed results are being used.
- * @returns {Promise} - If all good the result will have the recognition perfomed. Otherwise it will
- *                      return an error.
+ * @returns {Promise} - If all good the result will have the recognition performed. Otherwise it
+ *                      will return an error.
  */
 export function performChoiceRecognition(challengeId, recorder, progressCb) {
   return prepareChoiceRecognition()
