@@ -27,6 +27,9 @@ npm install --save itslanguage@next
 **note**: if you're using npm >= 5 in your project you can ommit the `--save` flag. That is assumed
 by default.
 
+**note**: the ITSLanguage SDK is build with using [yarn] in favor of NPM. For using the SDK in your
+own project this is not an requirement.
+
 **Warning**: this will install the ITSLanguage Javascript SDK as a beta package to your project.
 Things might not work as expected. For instance the sdk might require a specific backend version 
 to be able to function with this version to work on. So make sure you now what you're doing when
@@ -108,6 +111,8 @@ available on npm.
 [travis]: https://travis-ci.org/itslanguage/itslanguage-js
 
 [the GitHub pages website]: https://itslanguage.github.io/itslanguage-js/
+
+[yarn]: https://yarnpkg.com
 
 [MDN fetch]: https://developer.mozilla.org/en/docs/Web/API/Fetch_API
 [MDN URLSearchParams]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
