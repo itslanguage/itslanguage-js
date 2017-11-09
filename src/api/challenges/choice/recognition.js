@@ -11,7 +11,7 @@
 
 import {
   encodeAndSendAudioOnDataAvailible,
-  prepareServerForAudio
+  prepareServerForAudio, waitForUserMediaApproval
 } from '../../utils/audio-over-socket';
 import {authorisedRequest} from '../../communication';
 import {makeWebsocketCall} from '../../communication/websocket';
@@ -117,7 +117,7 @@ export function prepareAudioForChoiceRecognition(recognitionId, recorder) {
  * @param {Recorder} recorder - Instance of a recorder. The data will be fetched from it.
  * @returns {Promise} - If it fails an error will be returned. Otherwise there will be no result.
  */
-export function streamAudioForChoiceRecognition(recognitionId, recorder) {
+export function writeAudioForChoiceRecognition(recognitionId, recorder) {
   return encodeAndSendAudioOnDataAvailible(recognitionId, recorder, 'choice.write');
 }
 
@@ -130,8 +130,28 @@ export function streamAudioForChoiceRecognition(recognitionId, recorder) {
  * @param {Function} progressCb - A function that could be called if progressed results are required.
  * @returns {Promise.<Object>} - It will return a object with the recognition result if successful.
  */
-export function endStreamAudioForChoiceRecognition(recognitionId, progressCb) {
+export function recogniseChoiceRecognition(recognitionId, progressCb) {
   return makeWebsocketCall('choice.recognise', {args: [recognitionId], progressCb});
+}
+
+/**
+ * Expose easy way to run the choice challenge in one go.
+ *
+ * @param {string} challengeId - The ID of the challenge for the choice recognition.
+ * @param {Recorder} recorder - Audio Recorder instance.
+ * @param {Function} progressCb - Callback function to call if progressed results are being used.
+ * @returns {Promise} - If all good the result will have the recognition perfomed. Otherwise it will
+ *                      return an error.
+ */
+export function performChoiceRecognition(challengeId, recorder, progressCb) {
+  return prepareChoiceRecognition()
+    .then(recognitionId =>
+      prepareChoiceRecognitionChallenge(recognitionId, challengeId)
+        .then(waitForUserMediaApproval(recognitionId, recorder))
+        .then(prepareAudioForChoiceRecognition(recognitionId, recorder))
+        .then(writeAudioForChoiceRecognition(recognitionId, recorder))
+        .then(recogniseChoiceRecognition(recognitionId, progressCb))
+    );
 }
 
 /*
