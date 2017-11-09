@@ -111,7 +111,6 @@ export function prepareAudioForChoiceRecognition(recognitionId, recorder) {
  * The streaming works by repeatedly calling this RPC. Each time the RPC is called, the data will be
  * appended to an audio file on the server.
  *
- * @deprecated
  * @see https://itslanguage.github.io/itslanguage-docs/websocket/choice_recognitions/index.html#stream-recognition-audio
  * @param {string} recognitionId - The ID of the recognition for which to upload audio.
  * @param {Recorder} recorder - Instance of a recorder. The data will be fetched from it.
@@ -124,7 +123,6 @@ export function writeAudioForChoiceRecognition(recognitionId, recorder) {
 /**
  * After completing the streaming of the audio, the recognition can be performed.
  *
- * @deprecated
  * @see https://itslanguage.github.io/itslanguage-docs/websocket/choice_recognitions/index.html#perform-the-recognition
  * @param {string} recognitionId - The ID of the recognition to recognise on.
  * @param {Function} progressCb - A function that could be called if progressed results are required.
