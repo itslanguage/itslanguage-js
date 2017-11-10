@@ -66,6 +66,7 @@
     "copy": "0.3.1",
     "esdoc": "1.0.3",
     "esdoc-ecmascript-proposal-plugin": "1.0.0",
+    "esdoc-importpath-plugin": "1.0.1",
     "esdoc-standard-plugin": "1.0.0",
     "eslint": "4.7.2",
     "eslint-config-d-centralize": "0.4.1",
