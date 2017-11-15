@@ -1,6 +1,7 @@
 {
   "source": "./src",
   "destination": "./esdoc",
+  "excludes": ["(spec|Spec|test|Test)\\.js$"],
   "plugins": [
     {
       "name": "esdoc-standard-plugin",
