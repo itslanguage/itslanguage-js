@@ -18,9 +18,9 @@ set -e # Exit with nonzero exit code if anything fails
 SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 
-# Pull requests and commits to other branches shouldn't try to deploy.
-# the .travis.yml file should only allow master and vX.X.X branches (= tags).
-# But just checking to be sure!
+# Pull requests and commits to other branches shouldn't try to deploy
+# new GitHub pages. Only allow master and vX.X.X branches (= a tag for
+# a new version).
 if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
     exit 0
 fi
@@ -42,18 +42,20 @@ cd ..
 if [ "$TRAVIS_BRANCH" == "$SOURCE_BRANCH" ]; then
   # find all files and folders that do not start with vX.
   # they could be older versions we still want!
+  # We actually do that by inverse the search: find all
+  # but exclude the vX.X.X folders.
   find . -not -regex "./v.*" -delete
 fi
 
 # Run the build.
-yarn run build
+# yarn run build
 
 # Start the copy of the docs process
 if [ "$TRAVIS_BRANCH" == "$SOURCE_BRANCH" ]; then
   echo "Trying to update master."
 
   # copy docs to main folder
-  cp -r build/esdoc/* out/
+  cp -r docs/* out/
 elif [ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]; then
   echo "New tag: $TRAVIS_TAG"
 
@@ -61,7 +63,7 @@ elif [ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]; then
   rm -Rf out/$TRAVIS_TAG/**/* || exit 0
 
   # copy docs to tag folder.
-  cp -r build/esdoc/* out/$TRAVIS_TAG
+  cp -r docs/* out/$TRAVIS_TAG
 fi
 
 # Now let's go have some fun with the cloned repo
@@ -86,3 +88,7 @@ ssh-add deploy-key
 
 # Now that we're all set up, we can push.
 git push $SSH_REPO $TARGET_BRANCH
+
+# Cleanup our out folder!
+cd ..
+rm -Rf out
