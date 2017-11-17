@@ -26,12 +26,13 @@ after_success:
 before_deploy:
   # We want to be in the build directory for
   # all steps that follow
+  - chmod +x $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
   - cd build
 deploy:
   # Deploy to GitHub pages with our Bot user.
   - provider: script
     skip_cleanup: true
-    script: ../internals/scripts/gh-pages.sh
+    script: $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
     on:
       branch: master
       tags: true
