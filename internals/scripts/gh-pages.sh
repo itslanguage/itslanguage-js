@@ -44,7 +44,7 @@ echo "Deploy docs for branch \"$TRAVIS_BRANCH\""
 rm -Rf "./$TRAVIS_BRANCH"
 mkdir "$TRAVIS_BRANCH"
 # copy documentation to place
-cp -r ../build/docs/* "./$TRAVIS_BRANCH"
+cp -r $TRAVIS_BUILD_DIR/build/docs/* "./$TRAVIS_BRANCH"
 
 # Now let's go have some fun with the cloned repo
 git config user.name "$COMMIT_AUTHOR_NAME"
