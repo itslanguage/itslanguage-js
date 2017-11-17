@@ -26,36 +26,14 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_TAG" == "" ]; then
 fi
 
 #Save some useful information
-REPO_SSH_URL=`git config remote.origin.url`
+REPO_URL="https://$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
 SHA=`git rev-parse --verify HEAD`
-
-# identify repo url with GITHUB_TOKEN
-REPO_URL=`git remote -v | grep -m1 "^origin" | sed -Ene's#.*(git@github.com:[^[:space:]]*).*#\1#p'`
-if [ -z "$REPO_URL" ]; then
-  echo "-- ERROR:  Could not identify Repo url."
-  echo "   It is possible this repo is already using HTTPS instead of SSH."
-  exit 1
-fi
-
-USER=`echo $REPO_URL | sed -Ene's#git@github.com:([^/]*)/(.*).git#\1#p'`
-if [ -z "$USER" ]; then
-  echo "-- ERROR:  Could not identify User."
-  exit 1
-fi
-
-REPO=`echo $REPO_URL | sed -Ene's#git@github.com:([^/]*)/(.*).git#\2#p'`
-if [ -z "$REPO" ]; then
-  echo "-- ERROR:  Could not identify Repo."
-  exit 1
-fi
-
-REPO_HTTPS_URL="https://$GITHUB_TOKEN@github.com/$USER/$REPO.git"
 
 # Clone the existing gh-pages for this repo into out/
 # Create a new empty branch if gh-pages doesn't exist yet (should only
 # happen on first deploy)
 rm -Rf ./out || exit 0
-git clone $REPO_SSH_URL out
+git clone $REPO_URL out
 cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 
@@ -78,7 +56,7 @@ git add -A .
 git commit -m "Deploy to GitHub Pages: ${SHA}"
 
 # Now that we're all set up, we can push.
-git push --force --quiet $REPO_HTTPS_URL $TARGET_BRANCH > /dev/null 2>&1
+git push --force --quiet $REPO_URL $TARGET_BRANCH > /dev/null 2>&1
 
 # Cleanup our out folder!
 cd ..
