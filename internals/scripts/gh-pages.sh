@@ -21,14 +21,33 @@ TARGET_BRANCH="gh-pages"
 # Pull requests and commits to other branches shouldn't try to deploy
 # new GitHub pages. Only allow master and vX.X.X branches (= a tag for
 # a new version).
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_TAG" == "" ]; then
     exit 0
 fi
 
-# Save some useful information
-REPO=`git config remote.origin.url`
-SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
-SHA=`git rev-parse --verify HEAD`
+#
+
+# identify repo url with GITHUB_TOKEN
+REPO_URL=`git remote -v | grep -m1 "^origin" | sed -Ene's#.*(git@github.com:[^[:space:]]*).*#\1#p'`
+if [ -z "$REPO_URL" ]; then
+  echo "-- ERROR:  Could not identify Repo url."
+  echo "   It is possible this repo is already using HTTPS instead of SSH."
+  exit 1
+fi
+
+USER=`echo $REPO_URL | sed -Ene's#git@github.com:([^/]*)/(.*).git#\1#p'`
+if [ -z "$USER" ]; then
+  echo "-- ERROR:  Could not identify User."
+  exit 1
+fi
+
+REPO=`echo $REPO_URL | sed -Ene's#git@github.com:([^/]*)/(.*).git#\2#p'`
+if [ -z "$REPO" ]; then
+  echo "-- ERROR:  Could not identify Repo."
+  exit 1
+fi
+
+REPO_HTTPS_URL="https://$GITHUB_TOKEN@github.com/$USER/$REPO.git"
 
 # Clone the existing gh-pages for this repo into out/
 # Create a new empty branch if gh-pages doesn't exist yet (should only
@@ -36,39 +55,18 @@ SHA=`git rev-parse --verify HEAD`
 git clone $REPO out
 cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
-cd ..
 
-# Clean out existing master docs if on master
-if [ "$TRAVIS_BRANCH" == "$SOURCE_BRANCH" ]; then
-  # find all files and folders that do not start with vX.
-  # they could be older versions we still want!
-  # We actually do that by inverse the search: find all
-  # but exclude the vX.X.X folders.
-  find . -not -regex "./v.*" -delete
-fi
+echo "Deploy $TARGET_BRANCH docs!"
 
-# Run the build.
-# yarn run build
-
-# Start the copy of the docs process
-if [ "$TRAVIS_BRANCH" == "$SOURCE_BRANCH" ]; then
-  echo "Trying to update master."
-
-  # copy docs to main folder
-  cp -r docs/* out/
-elif [ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]; then
-  echo "New tag: $TRAVIS_TAG"
-
-  # clean out existing tag.
-  rm -Rf out/$TRAVIS_TAG/**/* || exit 0
-
-  # copy docs to tag folder.
-  cp -r docs/* out/$TRAVIS_TAG
-fi
+# create directory. If it exists... wel then it will
+# be wiped!
+rm -Rf ./$TARGET_BRANCH
+mkdir $TARGET_BRANCH
+# copy documentation to place
+cp -r ../docs/* ./$TARGET_BRANCH
 
 # Now let's go have some fun with the cloned repo
-cd out
-git config user.name "Travis CI"
+git config user.name "$COMMIT_AUTHOR_NAME"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # Commit the "changes", i.e. the new version.
@@ -76,18 +74,8 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 git add -A .
 git commit -m "Deploy to GitHub Pages: ${SHA}"
 
-# Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
-ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"
-ENCRYPTED_IV_VAR="encrypted_${ENCRYPTION_LABEL}_iv"
-ENCRYPTED_KEY=${!ENCRYPTED_KEY_VAR}
-ENCRYPTED_IV=${!ENCRYPTED_IV_VAR}
-openssl aes-256-cbc -K $ENCRYPTED_KEY -iv $ENCRYPTED_IV -in ../deploy-key.enc -out ../deploy-key -d
-chmod 600 ../deploy-key
-eval `ssh-agent -s`
-ssh-add deploy-key
-
 # Now that we're all set up, we can push.
-git push $SSH_REPO $TARGET_BRANCH
+git push --force --quiet $REPO_HTTPS_URL $TARGET_BRANCH > /dev/null 2>&1
 
 # Cleanup our out folder!
 cd ..

@@ -5,32 +5,40 @@ node_js:
 
 env:
   global:
-  - ENCRYPTION_LABEL: "61f3e155fadb"
-  - COMMIT_AUTHOR_EMAIL: "support@itslanguage.nl"
+  - COMMIT_AUTHOR_NAME: "ITSLanguage Bot"
+  - COMMIT_AUTHOR_EMAIL: "its-bot@itslanguage.nl"
 
 before_install:
+  # Install latest yarn version
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s --
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  # Setup chromium for karma
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
-before_deploy:
+after_success:
+  # Failing will "fail" the build
+  # doing this step in before_deploy
+  # will not.
   - yarn run build
+
+before_deploy:
+  # We want to be in the build directory for
+  # all steps that follow
   - cd build
 deploy:
+  # Deploy to GitHub pages with our Bot user.
   - provider: script
     skip_cleanup: true
     script: ./internals/scripts/gh-pages.sh
-    # safelist, only build on master or
-    # branches (e.g. tags!) that have the
-    # vX.X.X format (v.3.0.0)
     on:
-      branch:
-        - master
-        - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      branch: master
+      tags: true
 
   - provider: npm
     skip_cleanup: true
-    email: "travis-ci@itslanguage.nl"
+    email: "its-bot@itslanguage.nl"
     api_key:
       secure: "j1BaEcsvaqTi28BK8GNz7c0nQY60eWdexpUnHVHDzR5TPNrf0I/uJ+3OXKgc5lvnHqNPsKH25w0fpyXIM0rbOw3WxNMlEEpQbgZVKdufCUX5XK5riZObuQh8pnpzhluCsfaZKJh7NFSFtpyO18cz27E/wZVujF6Xe+DLEM/UVwc70TH2A9wSlqAjFiBEhO1JUhNnxZKBmVSUYzI+CWtukE2ihRm7jLNcn+NtVlb0QnHd1JehtaeUj4mNV6IcFHy1N4STfX4Y+fMUQeXyO1ZsmrDy3YsTG8tsSwTZdqjqNkNJlq9fK8+6/+ZRN2NmXelreGiBaNJsskdYVZBQJN02dOXkjyFQ2BmYERY9hbaJYDJbKzgIvIF6YWEddPjSMO8hJOEtlWQArwgxZ0CrWG6MRl8HV/ah+e7Zj1h9iQUj+H+eMmLF8F2D9e3BlW5x36qAYXbFii9I5MYLbQOehmzX2osONeqFQQTiNb4qeZKeLxY7RzU+2fnBv8s3y+gRmh3aytuWkpppLDVI8+erZDisytbOR0Au7UCqQPdGTEdiKNv19sHA33/PseEp3bgR1QsPDz70jfWcD2nWmg94kRBKa+3sVusYcOR12h+baYAS1oD4+/fJ6IPWj4vrGn8wO9AofKgGCny1G+/QVv6X4XF9P5cdfywVOR53089Z/CCoTZ8="
     on:
