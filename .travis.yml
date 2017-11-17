@@ -31,7 +31,7 @@ deploy:
   # Deploy to GitHub pages with our Bot user.
   - provider: script
     skip_cleanup: true
-    script: ./internals/scripts/gh-pages.sh
+    script: ../internals/scripts/gh-pages.sh
     on:
       branch: master
       tags: true
