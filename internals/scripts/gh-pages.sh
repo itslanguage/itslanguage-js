@@ -25,7 +25,9 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_TAG" == "" ]; then
     exit 0
 fi
 
-#
+#Save some useful information
+REPO_SSH_URL=`git config remote.origin.url`
+SHA=`git rev-parse --verify HEAD`
 
 # identify repo url with GITHUB_TOKEN
 REPO_URL=`git remote -v | grep -m1 "^origin" | sed -Ene's#.*(git@github.com:[^[:space:]]*).*#\1#p'`
@@ -52,18 +54,19 @@ REPO_HTTPS_URL="https://$GITHUB_TOKEN@github.com/$USER/$REPO.git"
 # Clone the existing gh-pages for this repo into out/
 # Create a new empty branch if gh-pages doesn't exist yet (should only
 # happen on first deploy)
-git clone $REPO out
+rm -Rf ./out || exit 0
+git clone $REPO_SSH_URL out
 cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 
-echo "Deploy $TARGET_BRANCH docs!"
+echo "Deploy docs for branch \"$TRAVIS_BRANCH\""
 
 # create directory. If it exists... wel then it will
 # be wiped!
-rm -Rf ./$TARGET_BRANCH
-mkdir $TARGET_BRANCH
+rm -Rf "./$TRAVIS_BRANCH"
+mkdir "$TRAVIS_BRANCH"
 # copy documentation to place
-cp -r ../docs/* ./$TARGET_BRANCH
+cp -r ../build/docs/* "./$TRAVIS_BRANCH"
 
 # Now let's go have some fun with the cloned repo
 git config user.name "$COMMIT_AUTHOR_NAME"
