@@ -22,12 +22,12 @@ after_success:
   # doing this step in before_deploy
   # will not.
   - yarn run build
-
-before_deploy:
   # We want to be in the build directory for
   # all steps that follow
-  - chmod +x $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
   - cd build
+  # Make sure our script is executable
+  - chmod +x $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
+
 deploy:
   # Deploy to GitHub pages with our Bot user.
   - provider: script
