@@ -12,7 +12,7 @@
 Adding ITSLanguage into your JavaScript project is as easy as:
 
 ```shell
-npm install --save itslanguage
+npm install --save @itslanguage/sdk
 ```
 
 This will install the latest stable version of the SDK to your project. If you want to live on the
@@ -20,8 +20,14 @@ edge you can also try and install our `@next` version. It's just as easy as inst
 release, just add the `@next` tag to the install option:
 
 ```shell
-npm install --save itslanguage@next
+npm install --save @itslanguage/sdk@next
 ```
+
+**note**: for existing users, the v3.0.0 release was a scoped release. This means that you can only
+install this version by also updating all references to ITSLangauge SDK. An `import { Player } from
+'itslanguage';` should be refactored to `import { Player } from '@itslanguage/sdk';`.
+The reason for this change is fairly simple: we want our users to be sure they install our software
+and using scopes gives us the opportunity to say so. Only we can push new versions to this scope.
 
 **note**: if you're using npm >= 5 in your project you can omit the `--save` flag. That is assumed
 by default.
@@ -44,7 +50,7 @@ project:
 
 ```js
 
-import { Player } from 'itslanguage';
+import { Player } from '@itslanguage/sdk';
 
 ```
 
