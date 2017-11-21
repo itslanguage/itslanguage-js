@@ -30,12 +30,21 @@ after_success:
 
 deploy:
   # Deploy to GitHub pages with our Bot user.
+  # Runs when a tag is made available.
+  - provider: script
+    skip_cleanup: true
+    script: $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
+    on:
+      tags: true
+
+  # Deploy to GitHub pages with our Bot user.
+  # It seems that it is not possible to specify both "on"
+  # arguments. Runs when master get's an update.
   - provider: script
     skip_cleanup: true
     script: $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
     on:
       branch: master
-      tags: true
 
   - provider: npm
     skip_cleanup: true
