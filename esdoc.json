@@ -1,7 +1,37 @@
 {
   "source": "./src",
   "destination": "./esdoc",
-  "manual": {
-    "faq": ["./manual/troubleshooting.md"]
-  }
+  "excludes": ["(spec|Spec|test|Test)\\.js$"],
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "manual": {
+          "index": "./manual/index.md",
+          "globalIndex": false,
+          "files": [
+            "./manual/troubleshooting.md"
+          ]
+        }
+      }
+    },
+    {
+      "name": "esdoc-ecmascript-proposal-plugin",
+      "option": {
+        "all": true
+      }
+    },
+    {
+      "name": "esdoc-importpath-plugin",
+      "option": {
+        "stripPackageName": false,
+        "replaces": [
+          {
+            "from": "^src/",
+            "to": ""
+          }
+        ]
+      }
+    }
+  ]
 }

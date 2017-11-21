@@ -90,5 +90,4 @@ export default class Stopwatch {
   stopListening(tickCb) {
     this._emitter.off('tick', tickCb);
   }
-
 }

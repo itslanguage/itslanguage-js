@@ -91,7 +91,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
   it('should fail streaming when websocket connection is closed', done => {
     api = new Connection({});
     controller = new ChoiceRecognitionController(api);
-      // Save WebSocket
+    // Save WebSocket
     const old = window.WebSocket;
     window.WebSocket = jasmine.createSpy('WebSocket');
     controller.startStreamingChoiceRecognition(challenge, recorder)
@@ -100,7 +100,7 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       })
       .catch(error => {
         expect(error.message).toEqual('WebSocket connection was not open.');
-          // Restore WebSocket
+        // Restore WebSocket
         window.WebSocket = old;
       })
       .then(done);
@@ -198,8 +198,8 @@ describe('ChoiceRecognition Websocket API interaction test', () => {
       .then(result => {
         expect(api._session.call).toHaveBeenCalled();
         expect(api._session.call).toHaveBeenCalledWith(
-            'nl.itslanguage.choice.init_recognition', [],
-            {trimStart: 0.00, trimEnd: 0});
+          'nl.itslanguage.choice.init_recognition', [],
+          {trimStart: 0.00, trimEnd: 0});
         expect(result.recognition.challengeId).toEqual(challenge.id);
         expect(result.recognition.id).toEqual('4');
         expect(result.recognitionId).toEqual(fakeResponse);

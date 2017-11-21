@@ -9,6 +9,7 @@ import Connection from './administrative-sdk/connection/connection-controller';
 import EmailCredentials from './administrative-sdk/email-credentials/email-credentials';
 import Group from './administrative-sdk/group/group';
 import Organisation from './administrative-sdk/organisation/organisation';
+import Player from './WebAudio/Player';
 import Profile from './administrative-sdk/profile/profile';
 import Progress from './administrative-sdk/progress/progress';
 import PronunciationChallenge from './administrative-sdk/pronunciation-challenge/pronunciation-challenge';
@@ -40,5 +41,7 @@ export {
 
   Stopwatch,
 
-  VolumeMeter
+  VolumeMeter,
+
+  Player
 };

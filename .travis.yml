@@ -1,29 +1,47 @@
-sudo: required
-dist: trusty
 language: node_js
+
 node_js:
-  - 6
+  - "8"
+
 env:
   global:
-  - ENCRYPTION_LABEL: "72243f7e1ca1"
-  - COMMIT_AUTHOR_EMAIL: "loek@d-centralize.nl"
+  - COMMIT_AUTHOR_NAME: "ITSLanguage Bot"
+  - COMMIT_AUTHOR_EMAIL: "its-bot@itslanguage.nl"
+
 before_install:
+  # Install latest yarn version
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s --
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  # Setup chromium for karma
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+
+after_success:
+  # Failing will "fail" the build
+  # doing this step in before_deploy
+  # will not.
+  - yarn run build
+  # We want to be in the build directory for
+  # all steps that follow
+  - cd build
+  # Make sure our script is executable
+  - chmod +x $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
+
 deploy:
+  # Deploy to GitHub pages with our Bot user.
   - provider: script
-    script: ./deploy.sh
-    on:
-      tags: true
     skip_cleanup: true
+    script: $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
+    on:
+      branch: master
+      tags: true
 
   - provider: npm
-    email: kvdb@d-centralize.nl
+    skip_cleanup: true
+    email: "its-bot@itslanguage.nl"
     api_key:
-      secure: KlsdLI5KOLYVhkuQTAxxHlBMNcWtKJ3mCoX66jy1vv4CaIaYBrtgpU8BBPoR8zpQOfvpr7LwaOmeSSmCvfsOC3Ai+0XtmJNBeotnpCkHOz5Z7+vFpUmpDjWiCtIkerlZZdCFBIv1t8Lz870RVoTyevZo7txHcr6BD4QMEJcS8siZmGNLOSiUeoJXkpd9e4VNHKjodbm8stCWQjdIQ4f85B/EvGPzS3vosh8M6W++w1j1vNeJXCGfjoI+bfDr1sg0P31h2KBSWmTF+idFMSEWPgbPwq0/rrcUwTrrpaA2mbarNG5aDLRIdmUFdw+xw3TW/TE6euy6SVNFOcE+Wy8BKgOsZLVtz9s6TWB0eHcfoWg5nEwbRwu1FHHItmVMP9nW7aX7mKBlXBnXh5egekw4m6vGwUEe9ayhJs0xXz8vyrvkwJvAtDmx0eGaCLupBbHJRnjZvlLqU+2HeUMxNz3t/MbXdbytazyA5TDiBp5ZSJ9srCoCby0mnFjkQxmgFB6XbEpVz6Zo1e0hOwdP5P7iWxbKzBGvwgK2QjZDhLpCctvTWPGNmO0bUZMbCdVPPRcfIKe2m83CTvVbUy47vzreeiaVhx+Wef0MUr/cm1SvDOoNaIWb2j5eVHUvbOr5+L1uV0peR6oO26xOVmQZzyMBjC+K9vfiGeHUO3t4072C4nk=
+      secure: "j1BaEcsvaqTi28BK8GNz7c0nQY60eWdexpUnHVHDzR5TPNrf0I/uJ+3OXKgc5lvnHqNPsKH25w0fpyXIM0rbOw3WxNMlEEpQbgZVKdufCUX5XK5riZObuQh8pnpzhluCsfaZKJh7NFSFtpyO18cz27E/wZVujF6Xe+DLEM/UVwc70TH2A9wSlqAjFiBEhO1JUhNnxZKBmVSUYzI+CWtukE2ihRm7jLNcn+NtVlb0QnHd1JehtaeUj4mNV6IcFHy1N4STfX4Y+fMUQeXyO1ZsmrDy3YsTG8tsSwTZdqjqNkNJlq9fK8+6/+ZRN2NmXelreGiBaNJsskdYVZBQJN02dOXkjyFQ2BmYERY9hbaJYDJbKzgIvIF6YWEddPjSMO8hJOEtlWQArwgxZ0CrWG6MRl8HV/ah+e7Zj1h9iQUj+H+eMmLF8F2D9e3BlW5x36qAYXbFii9I5MYLbQOehmzX2osONeqFQQTiNb4qeZKeLxY7RzU+2fnBv8s3y+gRmh3aytuWkpppLDVI8+erZDisytbOR0Au7UCqQPdGTEdiKNv19sHA33/PseEp3bgR1QsPDz70jfWcD2nWmg94kRBKa+3sVusYcOR12h+baYAS1oD4+/fJ6IPWj4vrGn8wO9AofKgGCny1G+/QVv6X4XF9P5cdfywVOR53089Z/CCoTZ8="
     on:
       tags: true
-    skip_cleanup: true
-    file_glob: true
-    file: build/
+

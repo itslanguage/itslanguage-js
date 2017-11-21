@@ -1,6 +1,7 @@
 root: true
 
 extends: d-centralize/es6
+parser: babel-eslint
 
 env:
   browser: true
@@ -9,7 +10,12 @@ env:
   jasmine: true
 
 plugins:
-  ["jsdoc"]
+  ["jsdoc", "async-await"]
+
+parserOptions:
+  ecmaVersion: 2017
+  ecmaFeatures:
+    classes: true
 
 rules:
   no-console: 0  # This project purposely uses console.
@@ -24,3 +30,5 @@ rules:
   jsdoc/require-param-type: 1
   jsdoc/require-returns-description: 1
   jsdoc/require-returns-type: 1
+  async-await/space-after-async: 2
+  async-await/space-after-await: 2

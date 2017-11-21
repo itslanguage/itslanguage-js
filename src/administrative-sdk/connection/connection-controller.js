@@ -2,13 +2,14 @@
 camelcase
  */
 
+import {authorisedRequest, request, updateSettings} from '../../api/communication';
+
 import autobahn from 'autobahn';
 import ee from 'event-emitter';
 /**
  * Controller class for managing connection interaction.
  */
 export default class Connection {
-
   /**
    *
    * @param {Object} options - Options to configure the connection with.
@@ -19,7 +20,7 @@ export default class Connection {
    * * adminPrincipal - The username of the admin account.
    * * adminPassword - The password of the admin account.
    */
-  constructor(options) {
+  constructor(options = {}) {
     /**
      * @type {Object}
      */
@@ -36,6 +37,9 @@ export default class Connection {
     this._recognitionId = null;
     this._emitter = ee({});
     this._connection = null;
+
+    // Use the new connection file for future requests.
+    updateSettings(Object.assign({}, options, {authorizationToken: options.oAuth2Token}));
   }
 
   /**
@@ -67,20 +71,6 @@ export default class Connection {
    */
   fireEvent(name, args = []) {
     this._emitter.emit(name, ...args);
-  }
-
-  /**
-   * Assemble a HTTP Authentication header.
-   *
-   * @returns {Promise.<string>} Promise containing an authorization header string.
-   * @throws {Promise.<Error>} If the oAuth2Token in {@link Connection#settings} is not set.
-   */
-  _getAuthHeaders() {
-    if (!this._settings.oAuth2Token) {
-      return Promise.reject('Please set oAuth2Token');
-    }
-    const authHeader = 'Bearer ' + this._settings.oAuth2Token;
-    return Promise.resolve(authHeader);
   }
 
   /**
@@ -165,17 +155,7 @@ export default class Connection {
    * @throws {Promise.<Error>} If the server returned an error.
    */
   _secureAjaxGet(url) {
-    return this._getAuthHeaders()
-      .then(auth => {
-        const headers = new Headers();
-        headers.append('Authorization', auth);
-        const options = {
-          method: 'GET',
-          headers
-        };
-        return fetch(url, options)
-          .then(this.handleResponse);
-      });
+    return authorisedRequest('GET', url);
   }
 
   /**
@@ -187,22 +167,7 @@ export default class Connection {
    * @throws {Promise.<Error>} If the server returned an error.
    */
   _secureAjaxPost(url, formdata) {
-    return this._getAuthHeaders()
-      .then(auth => {
-        const headers = new Headers();
-        headers.append('Authorization', auth);
-        if (typeof formdata === 'string') {
-          headers.append('Content-Type',
-            'application/json; charset=utf-8');
-        }
-        const options = {
-          method: 'POST',
-          headers,
-          body: formdata
-        };
-        return fetch(url, options)
-          .then(this.handleResponse);
-      });
+    return authorisedRequest('POST', url, formdata);
   }
 
   /**
@@ -213,32 +178,7 @@ export default class Connection {
    * @throws {Promise.<Error>} If the server returned an error.
    */
   _secureAjaxDelete(url) {
-    return this._getAuthHeaders()
-      .then(auth => {
-        const headers = new Headers();
-        headers.append('Authorization', auth);
-        const options = {
-          method: 'DELETE',
-          headers
-        };
-        return fetch(url, options)
-          .then(this.handleResponse);
-      });
-  }
-
-  handleResponse(response) {
-    return response.text()
-      .then(textResponse => {
-        if (response.headers.get('Content-type').includes('application/json')) {
-          const result = JSON.parse(textResponse);
-          if (response.ok) {
-            return result;
-          }
-          return Promise.reject(result);
-        } else if (!response.ok) {
-          return Promise.reject(response.status + ': ' + response.statusText);
-        }
-      });
+    return authorisedRequest('DELETE', url);
   }
 
   /**
@@ -306,41 +246,24 @@ export default class Connection {
    * Ask the server for an OAuth2 token.
    *
    * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
-   * @param {string} [scopes] - The scopes which should be availible for the requested token.
+   * @param {string} [scope] - The scope which should be availible for the requested token.
    * @returns {Promise} Promise containing a access_token, token_type and scope.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  getOauth2Token(basicAuth, scopes) {
-    const url = this._settings.apiUrl + '/tokens';
+  getOauth2Token(basicAuth, scope) {
+    const body = new URLSearchParams();
+    body.append('grant_type', 'password');
+    body.append('username', basicAuth.principal);
+    body.append('password', basicAuth.credentials);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=utf8');
-
-    let formData = 'grant_type=password' +
-      '&username=' + basicAuth.principal +
-      '&password=' + basicAuth.credentials;
-
-    if (scopes) {
-      formData += '&scope=' + scopes;
+    if (scope) {
+      body.append('scope', scope);
     }
 
-    const options = {
-      method: 'POST',
-      headers,
-      body: formData
-    };
-
-    return fetch(url, options)
-      .then(response =>
-        response.json()
-          .then(data => {
-            if (response.ok) {
-              this._settings.oAuth2Token = data.access_token;
-              return data;
-            }
-            throw data;
-          })
-      );
+    return request('POST', '/tokens', body).then(response => {
+      this._settings.oAuth2Token = response.access_token;
+      updateSettings({authorizationToken: response.access_token});
+    });
   }
 
   /**

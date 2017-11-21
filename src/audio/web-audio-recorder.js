@@ -10,13 +10,14 @@ export default class WebAudioRecorder {
    * Currently supported in all modern HTML5/WebAudio browsers.
    *
    * @param {GainNode} source - The source to record.
+   * @param {AudioContext} ctx - The AudioContext to use.
    * @param {?Function} streamingCallback - The callback to deliver audio chunks to.
    * @param {WavePacker} packer - Packer to use.
    */
-  constructor(source, streamingCallback, packer) {
+  constructor(source, ctx, streamingCallback, packer) {
     this.recording = false;
 
-    const context = source.context;
+    const context = ctx;
     // For the best quality, use the samplerate in which audio is recorded.
     this.recordedSampleRate = context.sampleRate;
     // var sampleRate = recordedSampleRate;
@@ -25,7 +26,7 @@ export default class WebAudioRecorder {
     this.sampleRate = this.recordedSampleRate / 2;
     // Streaming doesn't yet downsample: #1302.
     this.sampleRate = streamingCallback ? this.recordedSampleRate :
-                        this.sampleRate;
+      this.sampleRate;
 
     // Always record audio in mono.
     this.channels = 1;
@@ -50,12 +51,12 @@ export default class WebAudioRecorder {
     this._recorder = recorder;
 
     const self = this;
-    recorder.onaudioprocess = function(e) {
+    recorder.onaudioprocess = function(audioProcessing) {
       if (!self.recording) {
         return;
       }
-      const left = e.inputBuffer.getChannelData(0);
-      const right = e.inputBuffer.getChannelData(1);
+      const left = audioProcessing.inputBuffer.getChannelData(0);
+      const right = audioProcessing.inputBuffer.getChannelData(1);
       // These returned channel buffers are pointers to the current samples
       // coming in. Make a snapshot (clone). The webworkers can't serialize
       // the pointers. Well, Chrome and FF could, but Edge can't.

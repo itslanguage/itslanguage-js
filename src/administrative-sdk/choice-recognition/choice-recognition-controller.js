@@ -232,8 +232,8 @@ export default class ChoiceRecognitionController {
 
     return this._connection._secureAjaxGet(url)
       .then(datum => new ChoiceRecognition(challengeId, datum.userId,
-          datum.id, new Date(datum.created), new Date(datum.updated),
-          datum.audioUrl, datum.recognised));
+        datum.id, new Date(datum.created), new Date(datum.updated),
+        datum.audioUrl, datum.recognised));
   }
 
   /**

@@ -8,7 +8,9 @@ module.exports = config => {
       'jasmine'
     ],
     files: [
-      'test/**/*.js'
+      'node_modules/babel-polyfill/dist/polyfill.min.js',
+      'test/**/*.js',
+      'src/**/*.spec.js'
     ],
     browsers: [
       'Chrome'
@@ -27,16 +29,16 @@ module.exports = config => {
     coverageReporter: {
       check: {
         each: {
-          statements: 100,
-          branches: 100,
-          functions: 100,
-          lines: 100
+          statements: 0,
+          branches: 0,
+          functions: 0,
+          lines: 0
         },
         global: {
-          statements: 100,
-          branches: 100,
-          functions: 100,
-          lines: 100
+          statements: 90,
+          branches: 90,
+          functions: 90,
+          lines: 90
         }
       },
       reporters: [
@@ -54,7 +56,8 @@ module.exports = config => {
       ]
     },
     preprocessors: {
-      'test/**/*.js': ['browserify']
+      'test/**/*.js': ['browserify'],
+      'src/**/*.spec.js': ['browserify']
     },
     browserify: {
       entries: 'src/index.js',

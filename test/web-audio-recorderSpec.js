@@ -38,7 +38,7 @@ describe('WebAudioRecorder', () => {
 
   describe('Constructor', () => {
     it('should construct without callback', () => {
-      webAudioRecorder = new WebAudioRecorder(source, null, packerMock);
+      webAudioRecorder = new WebAudioRecorder(source, source.context, null, packerMock);
       expect(webAudioRecorder.recording).toBeFalsy();
       expect(webAudioRecorder.recordedSampleRate).toEqual(48000);
       expect(webAudioRecorder.sampleRate).toEqual(24000);
@@ -55,7 +55,7 @@ describe('WebAudioRecorder', () => {
     });
 
     it('should construct with callback', () => {
-      webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
+      webAudioRecorder = new WebAudioRecorder(source, source.context, cb, packerMock);
       expect(webAudioRecorder.recording).toBeFalsy();
       expect(webAudioRecorder.recordedSampleRate).toEqual(48000);
       expect(webAudioRecorder.sampleRate).toEqual(48000);
@@ -72,7 +72,7 @@ describe('WebAudioRecorder', () => {
     });
 
     it('should respond to onaudioprocess without callback while recording', () => {
-      webAudioRecorder = new WebAudioRecorder(source, null, packerMock);
+      webAudioRecorder = new WebAudioRecorder(source, source.context, null, packerMock);
       webAudioRecorder.recording = true;
       mockRecorder.onaudioprocess(mockEvent);
       expect(packerMock.record).toHaveBeenCalledWith(f32array, f32array);
@@ -80,7 +80,7 @@ describe('WebAudioRecorder', () => {
     });
 
     it('should respond to onaudioprocess with callback while recording', () => {
-      webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
+      webAudioRecorder = new WebAudioRecorder(source, source.context, cb, packerMock);
       webAudioRecorder.recording = true;
       mockRecorder.onaudioprocess(mockEvent);
       expect(packerMock.record).toHaveBeenCalledWith(f32array, f32array);
@@ -88,7 +88,7 @@ describe('WebAudioRecorder', () => {
     });
 
     it('should respond to onaudioprocess while not recording', () => {
-      webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
+      webAudioRecorder = new WebAudioRecorder(source, source.context, cb, packerMock);
       mockRecorder.onaudioprocess(mockEvent);
       expect(packerMock.record).not.toHaveBeenCalled();
       expect(packerMock.recordStreaming).not.toHaveBeenCalled();
@@ -97,7 +97,7 @@ describe('WebAudioRecorder', () => {
 
   it('should start recording audio', () => {
     packerMock.clear = jasmine.createSpy();
-    webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
+    webAudioRecorder = new WebAudioRecorder(source, source.context, cb, packerMock);
     webAudioRecorder.record();
     expect(packerMock.clear).toHaveBeenCalledTimes(1);
     expect(webAudioRecorder.recording).toBeTruthy();
@@ -106,7 +106,7 @@ describe('WebAudioRecorder', () => {
   it('should get encoded audio', () => {
     packerMock.exportWAV = jasmine.createSpy();
     const encodedCb = jasmine.createSpy();
-    webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
+    webAudioRecorder = new WebAudioRecorder(source, source.context, cb, packerMock);
     webAudioRecorder.getEncodedAudio(encodedCb);
     expect(packerMock.exportWAV).toHaveBeenCalledTimes(1);
     expect(packerMock.exportWAV).toHaveBeenCalledWith(encodedCb);
@@ -114,7 +114,7 @@ describe('WebAudioRecorder', () => {
 
   it('should stop recording', () => {
     packerMock.clear = jasmine.createSpy();
-    webAudioRecorder = new WebAudioRecorder(source, cb, packerMock);
+    webAudioRecorder = new WebAudioRecorder(source, source.context, cb, packerMock);
 
     webAudioRecorder.record();
     let isRecording = webAudioRecorder.isRecording();
