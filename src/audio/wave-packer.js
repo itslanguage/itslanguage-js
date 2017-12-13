@@ -89,6 +89,7 @@ export default class WavePacker {
    *
    * Specs: {@link https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}.
    *
+   * @todo: This function should use the {@link createWAVEHeader} function for creating the header.
    * @param {[]} interleaved - Array of interleaved audio.
    */
   encodeWAV(interleaved) {
@@ -194,10 +195,99 @@ export default class WavePacker {
     return result;
   }
 
+  /**
+   * Deprecated function, will be removed in favor of the pure
+   * {@link wordToUTF8ByteArray} function.
+   *
+   * @deprecated
+   * @param {DataView} view - DataView to write the bytes to.
+   * @param {number} offset - Position in the DataView to start writing from.
+   * @param {string} string - String to write to the DataView.
+   * @returns {void} - Nothing will be returned.
+   */
   static writeUTFBytes(view, offset, string) {
     const lng = string.length;
     for (let i = 0; i < lng; i++) {
       view.setUint8(offset + i, string.charCodeAt(i));
     }
   }
+}
+
+/**
+ * Composes a PCM WAVE file header.
+ * This header will lack any size information, so in effect
+ * timing information will most probably be incorrect.
+ *
+ * More information on the WAVE file specification can be found below.
+ * For the SDK and our backend services we use the WAVE PCM format.
+ *
+ * @see http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
+ * @param {number} channels - Channels in the audio.
+ * @param {number} sampleRate - SampleRate of the audio.
+ * @returns {ArrayBuffer} - The header as ArrayBuffer.
+ */
+export function createWAVEHeader(channels, sampleRate) {
+  // Default WAVE header length is 44 bytes long.
+  const buffer = new ArrayBuffer(44);
+  const header = new DataView(buffer);
+
+  // Set RIFF chunk descriptor
+  wordToUTF8ByteArray('RIFF').forEach((ui8Int, index) => {
+    header.setUint8(index, ui8Int);
+  });
+
+  // Set RIFF type
+  wordToUTF8ByteArray('WAVE').forEach((ui8Int, index) => {
+    header.setUint8(index + 8, ui8Int);
+  });
+
+  // Set FMT sub-chunk
+  wordToUTF8ByteArray('fmt ').forEach((ui8Int, index) => {
+    header.setUint8(index + 12, ui8Int);
+  });
+
+  // Set format chunk length
+  header.setUint32(16, 16, true);
+
+  // Set sample format (raw)
+  header.setUint16(20, 1, true);
+
+  // Set channel count. mono=1, stereo=2
+  header.setUint16(22, channels, true);
+
+  // Set sample rate
+  header.setUint32(24, sampleRate, true);
+
+  // Set byte rate (sample rate * block align)
+  header.setUint32(28, sampleRate * 2 * channels, true);
+
+  // Set block align (channel count * bytes per sample)
+  header.setUint16(32, channels * 2, true);
+
+  // Set bits per sample
+  header.setUint16(34, 16, true);
+
+  // Set data sub-chunk
+  wordToUTF8ByteArray('data').forEach((ui8Int, index) => {
+    header.setUint8(index + 36, ui8Int);
+  });
+
+  // Return the ArrayBuffer of the header.
+  return header.buffer;
+}
+
+/**
+ * Get an TypedArray (an Uint8Array to be more precise) that
+ * represents a string.
+ *
+ * @param {string} word - The word to convert.
+ * @returns {Uint8Array} - The converted word as Uint8Array.
+ */
+export function wordToUTF8ByteArray(word) {
+  const buffer = new ArrayBuffer(word.length);
+  const bufferView = new Uint8Array(buffer);
+  bufferView.map((item, index, array) => {
+    array[index] = word.charCodeAt(index);
+  });
+  return bufferView;
 }
