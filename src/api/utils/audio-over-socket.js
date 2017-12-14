@@ -152,7 +152,7 @@ export function prepareServerForAudio(id, recorder, rpc) {
  * resolved.
  *
  * @param {string} id - The reserved ID for the audio.
- * @param {MediaRecorder} recorder - The recorder for which to wait.
+ * @param {MediaRecorder|Recorder} recorder - The recorder for which to wait.
  *
  * @returns {Promise} - The promise which resolves if the user has allowed us
  *                      to record them.
