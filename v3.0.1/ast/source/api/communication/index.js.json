@@ -438,9 +438,9 @@
                           "line": 18,
                           "column": 8
                         },
-                        "identifierName": "apiURL"
+                        "identifierName": "apiUrl"
                       },
-                      "name": "apiURL"
+                      "name": "apiUrl"
                     },
                     "value": {
                       "type": "StringLiteral",
@@ -493,9 +493,9 @@
                           "line": 19,
                           "column": 7
                         },
-                        "identifierName": "wsURL"
+                        "identifierName": "wsUrl"
                       },
-                      "name": "wsURL"
+                      "name": "wsUrl"
                     },
                     "value": {
                       "type": "NullLiteral",
@@ -3587,9 +3587,9 @@
                                     "line": 110,
                                     "column": 35
                                   },
-                                  "identifierName": "apiURL"
+                                  "identifierName": "apiUrl"
                                 },
-                                "name": "apiURL"
+                                "name": "apiUrl"
                               },
                               "computed": false
                             },
@@ -4988,9 +4988,9 @@
                                   "line": 162,
                                   "column": 69
                                 },
-                                "identifierName": "apiURL"
+                                "identifierName": "apiUrl"
                               },
-                              "name": "apiURL"
+                              "name": "apiUrl"
                             },
                             "computed": false
                           }
@@ -6661,7 +6661,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "apiURL",
+      "value": "apiUrl",
       "start": 368,
       "end": 374,
       "loc": {
@@ -6766,7 +6766,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "wsURL",
+      "value": "wsUrl",
       "start": 408,
       "end": 413,
       "loc": {
@@ -13004,7 +13004,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "apiURL",
+      "value": "apiUrl",
       "start": 3411,
       "end": 3417,
       "loc": {
@@ -15810,7 +15810,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "apiURL",
+      "value": "apiUrl",
       "start": 5104,
       "end": 5110,
       "loc": {

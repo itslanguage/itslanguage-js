@@ -1629,9 +1629,9 @@
                                                   "line": 52,
                                                   "column": 25
                                                 },
-                                                "identifierName": "wsURL"
+                                                "identifierName": "wsUrl"
                                               },
-                                              "name": "wsURL"
+                                              "name": "wsUrl"
                                             },
                                             "computed": false
                                           }
@@ -11105,7 +11105,7 @@
         "postfix": false,
         "binop": null
       },
-      "value": "wsURL",
+      "value": "wsUrl",
       "start": 1559,
       "end": 1564,
       "loc": {

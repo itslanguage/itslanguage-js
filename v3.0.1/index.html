@@ -159,13 +159,18 @@
 </tbody>
 </table>
 <h2 id="getting-started">Getting started</h2><p>Adding ITSLanguage into your JavaScript project is as easy as:</p>
-<pre><code class="lang-shell"><code class="source-code prettyprint">npm install --save itslanguage</code>
+<pre><code class="lang-shell"><code class="source-code prettyprint">npm install --save @itslanguage/sdk</code>
 </code></pre>
 <p>This will install the latest stable version of the SDK to your project. If you want to live on the
 edge you can also try and install our <code>@next</code> version. It&apos;s just as easy as installing the stable
 release, just add the <code>@next</code> tag to the install option:</p>
-<pre><code class="lang-shell"><code class="source-code prettyprint">npm install --save itslanguage@next</code>
+<pre><code class="lang-shell"><code class="source-code prettyprint">npm install --save @itslanguage/sdk@next</code>
 </code></pre>
+<p><strong>note</strong>: for existing users, the v3.0.0 release was a scoped release. This means that you can only
+install this version by also updating all references to ITSLangauge SDK. An <code>import { Player } from
+&apos;itslanguage&apos;;</code> should be refactored to <code>import { Player } from &apos;@itslanguage/sdk&apos;;</code>.
+The reason for this change is fairly simple: we want our users to be sure they install our software
+and using scopes gives us the opportunity to say so. Only we can push new versions to this scope.</p>
 <p><strong>note</strong>: if you&apos;re using npm &gt;= 5 in your project you can omit the <code>--save</code> flag. That is assumed
 by default.</p>
 <p><strong>note</strong>: the ITSLanguage SDK is build with using <a href="https://yarnpkg.com">yarn</a> in favor of NPM. For using the SDK in your
@@ -180,7 +185,7 @@ SDK the docs are the best place to look. It is an esdoc generated website, which
 one can import that is needed. To import the default audio player you can just do this in your
 project:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">
-import { Player } from &apos;itslanguage&apos;;</code>
+import { Player } from &apos;@itslanguage/sdk&apos;;</code>
 </code></pre>
 <p>So, for more usage and examples read our documentation on <a href="https://itslanguage.github.io/itslanguage-js/">the GitHub pages website</a>.</p>
 <h3 id="dependencies">Dependencies</h3><p>This SDK was build with the browser in mind. However any JavaScript project can use this SDK to
