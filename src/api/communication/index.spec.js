@@ -12,8 +12,8 @@ describe('settings', () => {
   it('should expose the settings object', () => {
     // Expect that the default keys are not undefined, they are either null,
     // or something else by default.
-    expect(communication.settings.apiURL).not.toBe(undefined);
-    expect(communication.settings.wsURL).not.toBe(undefined);
+    expect(communication.settings.apiUrl).not.toBe(undefined);
+    expect(communication.settings.wsUrl).not.toBe(undefined);
     expect(communication.settings.authorizationToken).not.toBe(undefined);
   });
 });
@@ -49,7 +49,7 @@ describe('request', () => {
 
   beforeEach(() => {
     fetchSpy = spyOn(global, 'fetch');
-    communication.updateSettings({apiURL: TEST_API_URL});
+    communication.updateSettings({apiUrl: TEST_API_URL});
   });
 
   it('should make the request for the given params and handle its response', done => {
@@ -188,7 +188,7 @@ describe('authorisedRequest', () => {
   beforeEach(() => {
     fetchSpy = spyOn(window, 'fetch');
     communication.updateSettings({
-      apiURL: TEST_API_URL,
+      apiUrl: TEST_API_URL,
       authorizationToken: 'token'
     });
   });

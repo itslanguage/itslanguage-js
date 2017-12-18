@@ -15,8 +15,8 @@ const APPLICATION_JSON = 'application/json';
  * The settings to use for the communication with the ITSLanguage API.
  */
 export const settings = {
-  apiURL: 'https://api.itslanguage.nl',
-  wsURL: null,
+  apiUrl: 'https://api.itslanguage.nl',
+  wsUrl: null,
   authorizationToken: null
 };
 
@@ -107,7 +107,7 @@ export function request(method, url, body, headers) {
   // XXX remove the URL truthy check when all tests are properly written. Now
   // it happens way to often that the URL is omitted without any good reason.
   if (url && url.startsWith('/')) {
-    requestURL = `${settings.apiURL}${url}`;
+    requestURL = `${settings.apiUrl}${url}`;
   }
 
   const requestOptions = {
@@ -159,7 +159,7 @@ export function authorisedRequest(method, url, body, headers) {
   // XXX remove the URL truthy check when all parts of the SDK no longer build
   // a complete url by themselves using the "private" settings object of their
   // connection reference.
-  if (url && (!url.startsWith('/') && !url.startsWith(settings.apiURL))) {
+  if (url && (!url.startsWith('/') && !url.startsWith(settings.apiUrl))) {
     return Promise.reject('Only relative ITSLanguage API URLs are allowed.');
   }
 
