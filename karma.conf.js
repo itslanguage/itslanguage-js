@@ -18,8 +18,8 @@ module.exports = config => {
     transports: ['polling'],
     customLaunchers: {
       ChromeTravisCi: {
-        base: 'Chrome',
-        flags: ['--no-sandbox --headless --disable-gpu']
+        base: 'ChromeHeadless',
+        flags: ['--headless --disable-gpu']
       }
     },
     reporters: [
