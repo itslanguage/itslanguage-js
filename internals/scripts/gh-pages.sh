@@ -8,10 +8,12 @@
 #
 # NOTE:
 # Travis has a convenient "pages" provider. This provider works awesome
-# and saves the script that is below. BUT it has one huge drawback: you
+# and saves the script that is below. BUT it has some drawbacks: you
 # can only use it with an personal access token. This way, worst case,
-# someone could gane access to the key provider its repositories. So we
+# someone could gain access to the key provider its repositories. So we
 # should limit that risk by using this script.
+# Also, the default provider does not take multiple versions of
+# documentation in account. We do try that with this script.
 
 set -e # Exit with nonzero exit code if anything fails
 
@@ -21,7 +23,10 @@ TARGET_BRANCH="gh-pages"
 # Pull requests and commits to other branches shouldn't try to deploy
 # new GitHub pages. Only allow master and vX.X.X branches (= a tag for
 # a new version).
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_TAG" == "" ]; then
+if [ "$TRAVIS_PULL_REQUEST" != "false" ] || 
+   [ "$TRAVIS_TAG" == "" ] &&
+   [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
+    echo "Skipping deploy"
     exit 0
 fi
 
