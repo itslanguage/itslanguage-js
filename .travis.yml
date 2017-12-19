@@ -8,6 +8,9 @@ env:
   - COMMIT_AUTHOR_NAME: "ITSLanguage Bot"
   - COMMIT_AUTHOR_EMAIL: "its-bot@itslanguage.nl"
 
+addons:
+  chrome: stable
+
 before_install:
   # Install latest yarn version
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s --
