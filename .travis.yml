@@ -8,14 +8,15 @@ env:
   - COMMIT_AUTHOR_NAME: "ITSLanguage Bot"
   - COMMIT_AUTHOR_EMAIL: "its-bot@itslanguage.nl"
 
+addons:
+  chrome: stable
+
 before_install:
   # Install latest yarn version
   - curl -o- -L https://yarnpkg.com/install.sh | bash -s --
   - export PATH="$HOME/.yarn/bin:$PATH"
-  # Setup chromium for karma
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  # Setup path to Chrome so Karma can find it
+  - export CHROME_BIN=google-chrome-stable
 
 after_success:
   # Failing will "fail" the build
