@@ -13,13 +13,13 @@ module.exports = config => {
       'src/**/*.spec.js'
     ],
     browsers: [
-      'Chrome'
+      'ChromeHeadless'
     ],
     transports: ['polling'],
     customLaunchers: {
       ChromeTravisCi: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
+        base: 'ChromeHeadless',
+        flags: ['--headless --disable-gpu']
       }
     },
     reporters: [
