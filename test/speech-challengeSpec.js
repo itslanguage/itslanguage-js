@@ -1,6 +1,35 @@
+import {AdministrativeSDK} from '../src/index';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
 import SpeechChallenge from '../src/administrative-sdk/speech-challenge/speech-challenge';
 import SpeechChallengeController from '../src/administrative-sdk/speech-challenge/speech-challenge-controller';
+
+describe('Create SpeechChallenge', () => {
+  // reset the settings object to "normal"
+  afterEach(() => {
+    new Connection({
+      apiUrl: 'https://api.itslanguage.nl',
+      oAuth2Token: 'fake_token'
+    });
+  });
+
+  it('should not thow only relative url\'s are allowd', done => {
+    const config = {
+      apiUrl: 'https://custom.url.itslanguage.nl',
+      oAuth2Token: 'fake_token'
+    };
+
+    const connection = new Connection(config);
+    const sdk = new AdministrativeSDK(connection);
+    const challenge = new SpeechChallenge('custom_challenge');
+    const result = sdk.createSpeechChallenge(challenge);
+
+    result
+      .catch(error => {
+        expect(error).not.toEqual('Only relative ITSLanguage API URLs are allowed.');
+      })
+      .then(done);
+  });
+});
 
 describe('SpeechChallenge object test', () => {
   it('should not construct with an invalid id', () => {
