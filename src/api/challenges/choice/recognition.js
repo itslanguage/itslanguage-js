@@ -10,8 +10,8 @@
  */
 
 import {
-  encodeAndSendAudioOnDataAvailible,
-  prepareServerForAudio, waitForUserMediaApproval
+  registerStreamForRecorder,
+  waitForUserMediaApproval
 } from '../../utils/audio-over-socket';
 import {authorisedRequest} from '../../communication';
 import {makeWebsocketCall} from '../../communication/websocket';
@@ -95,69 +95,39 @@ export function prepareChoiceRecognitionChallenge(recognitionId, challengeId) {
 }
 
 /**
- * The audio that is to be uploaded for recognition is streamed to the server. Some information is
- * required in order for the server to be able to store and use the audio correctly.
+ * Based on a recognitionId and a recorder register a RPC call that will be used to send the audio
+ * across the line. The actual registration will not be done here, but we send the RPC that the
+ * backend needs to call to the 'nl.itslanguage.choice.recognise' function.
  *
- * @see https://itslanguage.github.io/itslanguage-docs/websocket/choice_recognitions/index.html#initialising-audio-for-uploading
- * @param {string} recognitionId - The ID of the recognition to initialise the audio for.
- * @param {Recorder} recorder - Instance of a recorder. The metadata will be extracted elsewhere.
- * @returns {Promise} - If it fails an error will be returned. Otherwise nothing will be returned.
+ * @param {string} recognitionId - The ID of the recognition to send audio for.
+ * @param {Recorder} recorder - Audio recorder instance.
+ * @returns {Promise} - When all good, the result will have the actual recognition.
  */
-export function prepareAudioForChoiceRecognition(recognitionId, recorder) {
-  return prepareServerForAudio(recognitionId, recorder, 'choice.init_audio');
+export function recogniseAudioStream(recognitionId, recorder) {
+  // Generate a somewhat unique RPC name
+  const rpcNameToRegister = `choice.stream.${Math.floor(Date.now() / 1000)}`;
+  return registerStreamForRecorder(recorder, rpcNameToRegister)
+    // We don't use rpcNameToRegister here because it lacks some namespacing info. The
+    // registration.procedure does have the needed information.
+    .then(registration => makeWebsocketCall('choice.recognise', {args: [recognitionId, registration.procedure]}));
 }
 
 /**
- * The streaming works by repeatedly calling this RPC. Each time the RPC is called, the data will be
- * appended to an audio file on the server.
+ * Easy function to do a recognition in one go. This is the "dance of the RPC's" that needs to be
+ * done in order to get correct feedback from the backend.
  *
- * @see https://itslanguage.github.io/itslanguage-docs/websocket/choice_recognitions/index.html#stream-recognition-audio
- * @param {string} recognitionId - The ID of the recognition for which to upload audio.
- * @param {Recorder} recorder - Instance of a recorder. The data will be fetched from it.
- * @returns {Promise} - If it fails an error will be returned. Otherwise there will be no result.
+ * @param {string} challengeId - The ID of the challenge to take the recognition for.
+ * @param {Recorder} recorder - Audio recorder instance.
+ * @returns {Promise<*>} - If all good it returns the actual recognition. If not, any error can be
+ *                         expected to be returned.
  */
-export function writeAudioForChoiceRecognition(recognitionId, recorder) {
-  return encodeAndSendAudioOnDataAvailible(recognitionId, recorder, 'choice.write');
-}
-
-/**
- * After completing the streaming of the audio, the recognition can be performed.
- *
- * @see https://itslanguage.github.io/itslanguage-docs/websocket/choice_recognitions/index.html#perform-the-recognition
- * @param {string} recognitionId - The ID of the recognition to recognise on.
- * @param {Function} progressCb - A function that could be called if progressed results are required.
- * @returns {Promise.<Object>} - It will return a object with the recognition result if successful.
- */
-export function recogniseChoiceRecognition(recognitionId, progressCb) {
-  return makeWebsocketCall('choice.recognise', {args: [recognitionId], progressCb});
-}
-
-/**
- * Expose easy way to run the choice challenge in one go.
- *
- * @param {string} challengeId - The ID of the challenge for the choice recognition.
- * @param {Recorder} recorder - Audio Recorder instance.
- * @param {Function} progressCb - Callback function to call if progressed results are being used.
- * @returns {Promise} - If all good the result will have the recognition performed. Otherwise it
- *                      will return an error.
- */
-export function performChoiceRecognition(challengeId, recorder, progressCb) {
+export function recognise(challengeId, recorder) {
+  let recognitionId;
   return prepareChoiceRecognition()
-    .then(recognitionId =>
-      prepareChoiceRecognitionChallenge(recognitionId, challengeId)
-        .then(waitForUserMediaApproval(recognitionId, recorder))
-        .then(prepareAudioForChoiceRecognition(recognitionId, recorder))
-        .then(writeAudioForChoiceRecognition(recognitionId, recorder))
-        .then(recogniseChoiceRecognition(recognitionId, progressCb))
-    );
+    .then(rId => {
+      recognitionId = rId;
+      return waitForUserMediaApproval(recognitionId, recorder);
+    })
+    .then(() => prepareChoiceRecognitionChallenge(recognitionId, challengeId))
+    .then(() => recogniseAudioStream(recognitionId, recorder).then(result => result));
 }
-
-/*
- * below is some code for the new streaming yet to come.
- *
- * export function prepareAudioStream(recognitionId, recorder) {
- *   const rpc = 'choise.chuck';
- *   return registerAudioStream(recorder, rpc)
- *     .then(() => makeWebsocketCall('choice.recognise', {args: [recognitionId, rpc]}));
- * }
- */

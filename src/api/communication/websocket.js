@@ -125,7 +125,7 @@ export function openWebsocketConnection() {
  *
  * @returns {Promise.<autobahn.Connection>} - The current websocket connection.
  */
-function getWebsocketConnection() {
+export function getWebsocketConnection() {
   if (!bundesautobahn) {
     return establishNewBundesbahn();
   }
