@@ -263,6 +263,7 @@ export default class Connection {
     return request('POST', '/tokens', body).then(response => {
       this._settings.oAuth2Token = response.access_token;
       updateSettings({authorizationToken: response.access_token});
+      return response;
     });
   }
 
