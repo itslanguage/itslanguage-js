@@ -2,12 +2,12 @@ sudo: required
 language: node_js
 
 node_js:
-  - "8"
+  - '8'
 
 env:
   global:
-  - COMMIT_AUTHOR_NAME: "ITSLanguage Bot"
-  - COMMIT_AUTHOR_EMAIL: "its-bot@itslanguage.nl"
+  - COMMIT_AUTHOR_NAME: ITSLanguage Bot
+  - COMMIT_AUTHOR_EMAIL: its-bot@itslanguage.nl
 
 addons:
   chrome: stable
@@ -35,7 +35,7 @@ deploy:
   # Runs when a tag is made available.
   - provider: script
     skip_cleanup: true
-    script: $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
+    script: "$TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh"
     on:
       branch: master
       tags: true
@@ -45,15 +45,15 @@ deploy:
   # arguments. Runs when master get's an update.
   - provider: script
     skip_cleanup: true
-    script: $TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh
+    script: "$TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh"
     on:
       branch: master
 
   - provider: npm
     skip_cleanup: true
-    email: "its-bot@itslanguage.nl"
+    email: its-bot@itslanguage.nl
     api_key:
-      secure: "j1BaEcsvaqTi28BK8GNz7c0nQY60eWdexpUnHVHDzR5TPNrf0I/uJ+3OXKgc5lvnHqNPsKH25w0fpyXIM0rbOw3WxNMlEEpQbgZVKdufCUX5XK5riZObuQh8pnpzhluCsfaZKJh7NFSFtpyO18cz27E/wZVujF6Xe+DLEM/UVwc70TH2A9wSlqAjFiBEhO1JUhNnxZKBmVSUYzI+CWtukE2ihRm7jLNcn+NtVlb0QnHd1JehtaeUj4mNV6IcFHy1N4STfX4Y+fMUQeXyO1ZsmrDy3YsTG8tsSwTZdqjqNkNJlq9fK8+6/+ZRN2NmXelreGiBaNJsskdYVZBQJN02dOXkjyFQ2BmYERY9hbaJYDJbKzgIvIF6YWEddPjSMO8hJOEtlWQArwgxZ0CrWG6MRl8HV/ah+e7Zj1h9iQUj+H+eMmLF8F2D9e3BlW5x36qAYXbFii9I5MYLbQOehmzX2osONeqFQQTiNb4qeZKeLxY7RzU+2fnBv8s3y+gRmh3aytuWkpppLDVI8+erZDisytbOR0Au7UCqQPdGTEdiKNv19sHA33/PseEp3bgR1QsPDz70jfWcD2nWmg94kRBKa+3sVusYcOR12h+baYAS1oD4+/fJ6IPWj4vrGn8wO9AofKgGCny1G+/QVv6X4XF9P5cdfywVOR53089Z/CCoTZ8="
+      secure: j1BaEcsvaqTi28BK8GNz7c0nQY60eWdexpUnHVHDzR5TPNrf0I/uJ+3OXKgc5lvnHqNPsKH25w0fpyXIM0rbOw3WxNMlEEpQbgZVKdufCUX5XK5riZObuQh8pnpzhluCsfaZKJh7NFSFtpyO18cz27E/wZVujF6Xe+DLEM/UVwc70TH2A9wSlqAjFiBEhO1JUhNnxZKBmVSUYzI+CWtukE2ihRm7jLNcn+NtVlb0QnHd1JehtaeUj4mNV6IcFHy1N4STfX4Y+fMUQeXyO1ZsmrDy3YsTG8tsSwTZdqjqNkNJlq9fK8+6/+ZRN2NmXelreGiBaNJsskdYVZBQJN02dOXkjyFQ2BmYERY9hbaJYDJbKzgIvIF6YWEddPjSMO8hJOEtlWQArwgxZ0CrWG6MRl8HV/ah+e7Zj1h9iQUj+H+eMmLF8F2D9e3BlW5x36qAYXbFii9I5MYLbQOehmzX2osONeqFQQTiNb4qeZKeLxY7RzU+2fnBv8s3y+gRmh3aytuWkpppLDVI8+erZDisytbOR0Au7UCqQPdGTEdiKNv19sHA33/PseEp3bgR1QsPDz70jfWcD2nWmg94kRBKa+3sVusYcOR12h+baYAS1oD4+/fJ6IPWj4vrGn8wO9AofKgGCny1G+/QVv6X4XF9P5cdfywVOR53089Z/CCoTZ8=
     on:
       tags: true
 
