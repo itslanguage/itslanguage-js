@@ -109,6 +109,9 @@ export function registerStreamForRecorder(recorder, rpcName) {
       connection.session.register(rpc, sendAudioChunks).then(registration => {
         // Registering done. Save it so we can un-register later on.
         rpcRegistration = registration;
+        // We've preped the websocket server, now it can receive audio. Broadcast
+        // that it is allowed to record.
+        broadcaster.emit('websocketserverreadyforaudio');
         resolve(registration);
       });
     });
