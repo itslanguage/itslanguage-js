@@ -109,7 +109,7 @@ export function registerStreamForRecorder(recorder, rpcName) {
       connection.session.register(rpc, sendAudioChunks).then(registration => {
         // Registering done. Save it so we can un-register later on.
         rpcRegistration = registration;
-        // We've preped the websocket server, now it can receive audio. Broadcast
+        // We've prepped the websocket server, now it can receive audio. Broadcast
         // that it is allowed to record.
         broadcaster.emit('websocketserverreadyforaudio');
         resolve(registration);
@@ -140,7 +140,7 @@ export function prepareServerForAudio(id, recorder, rpc) {
   const {audioFormat, audioParameters} = recorder.getAudioSpecs();
   return makeWebsocketCall(rpc, {args: [id, audioFormat], kwargs: audioParameters})
     .then(() => {
-      // We've preped the websocket server, now it can receive audio. Broadcast
+      // We've prepped the websocket server, now it can receive audio. Broadcast
       // that it is allowed to record.
       broadcaster.emit('websocketserverreadyforaudio');
       return id;
