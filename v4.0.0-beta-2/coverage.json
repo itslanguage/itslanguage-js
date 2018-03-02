@@ -1,0 +1,472 @@
+{
+  "coverage": "79.75%",
+  "expectCount": 563,
+  "actualCount": 449,
+  "files": {
+    "src/WebAudio/AudioContext.js": {
+      "expectCount": 13,
+      "actualCount": 12,
+      "undocumentLines": [
+        116
+      ]
+    },
+    "src/WebAudio/Player.js": {
+      "expectCount": 11,
+      "actualCount": 8,
+      "undocumentLines": [
+        21,
+        37,
+        123
+      ]
+    },
+    "src/WebAudio/Recorder.js": {
+      "expectCount": 16,
+      "actualCount": 6,
+      "undocumentLines": [
+        3,
+        4,
+        5,
+        6,
+        29,
+        31,
+        47,
+        56,
+        65,
+        74
+      ]
+    },
+    "src/administrative-sdk/administrative-sdk.js": {
+      "expectCount": 56,
+      "actualCount": 41,
+      "undocumentLines": [
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38
+      ]
+    },
+    "src/administrative-sdk/basic-auth/basic-auth.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/category/category-controller.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        102
+      ]
+    },
+    "src/administrative-sdk/category/category.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-challenge/choice-challenge-controller.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-challenge/choice-challenge.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-recognition/choice-recognition-controller.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/choice-recognition/choice-recognition.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/connection/connection-controller.js": {
+      "expectCount": 23,
+      "actualCount": 17,
+      "undocumentLines": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        146
+      ]
+    },
+    "src/administrative-sdk/email-credentials/email-credentials-controller.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/email-credentials/email-credentials.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/group/group-controller.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/group/group.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/organisation/organisation-controller.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/organisation/organisation.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/administrative-sdk/phoneme/phoneme.js": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/administrative-sdk/profile/profile-controller.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/profile/profile.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/progress/progress-controller.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/progress/progress.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller.js": {
+      "expectCount": 10,
+      "actualCount": 9,
+      "undocumentLines": [
+        68
+      ]
+    },
+    "src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/role/role-controller.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/role/role.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/speech-challenge/speech-challenge-controller.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/speech-challenge/speech-challenge.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/speech-recording/speech-recording-controller.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        15
+      ]
+    },
+    "src/administrative-sdk/speech-recording/speech-recording.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/user/user-controller.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/user/user.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/utils/base64-utils.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/word/word.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/administrative-sdk/word-chunk/word-chunk.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/api/auth.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/api/broadcaster.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/api/categories.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/challenges/choice/index.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/challenges/choice/recognition.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        19
+      ]
+    },
+    "src/api/challenges/feedback/speech.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/api/challenges/pronunciation/analysis.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        17
+      ]
+    },
+    "src/api/challenges/pronunciation/index.js": {
+      "expectCount": 5,
+      "actualCount": 4,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/challenges/speech/index.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/challenges/speech/recordings.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        19
+      ]
+    },
+    "src/api/communication/index.js": {
+      "expectCount": 9,
+      "actualCount": 7,
+      "undocumentLines": [
+        8,
+        11
+      ]
+    },
+    "src/api/communication/websocket.js": {
+      "expectCount": 8,
+      "actualCount": 6,
+      "undocumentLines": [
+        9,
+        10
+      ]
+    },
+    "src/api/groups.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/organisations.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/roles.js": {
+      "expectCount": 3,
+      "actualCount": 2,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/users.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/api/utils/audio-over-socket.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/utils/index.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/audio/audio-player.js": {
+      "expectCount": 35,
+      "actualCount": 29,
+      "undocumentLines": [
+        17,
+        60,
+        61,
+        62,
+        63,
+        104
+      ]
+    },
+    "src/audio/audio-recorder.js": {
+      "expectCount": 30,
+      "actualCount": 22,
+      "undocumentLines": [
+        20,
+        24,
+        32,
+        34,
+        37,
+        113,
+        180,
+        241
+      ]
+    },
+    "src/audio/audio-tools.js": {
+      "expectCount": 14,
+      "actualCount": 6,
+      "undocumentLines": [
+        41,
+        49,
+        50,
+        51,
+        72,
+        73,
+        75,
+        82
+      ]
+    },
+    "src/audio/media-recorder.js": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        27,
+        44,
+        45
+      ]
+    },
+    "src/audio/tools.js": {
+      "expectCount": 14,
+      "actualCount": 8,
+      "undocumentLines": [
+        33,
+        34,
+        35,
+        36,
+        86,
+        90
+      ]
+    },
+    "src/audio/wave-packer.js": {
+      "expectCount": 20,
+      "actualCount": 6,
+      "undocumentLines": [
+        15,
+        21,
+        32,
+        33,
+        36,
+        37,
+        38,
+        39,
+        42,
+        48,
+        66,
+        78,
+        142,
+        186
+      ]
+    },
+    "src/audio/web-audio-player.js": {
+      "expectCount": 22,
+      "actualCount": 14,
+      "undocumentLines": [
+        21,
+        26,
+        27,
+        28,
+        308,
+        312,
+        329,
+        333
+      ]
+    },
+    "src/audio/web-audio-recorder.js": {
+      "expectCount": 13,
+      "actualCount": 7,
+      "undocumentLines": [
+        18,
+        22,
+        26,
+        32,
+        36,
+        51
+      ]
+    }
+  }
+}

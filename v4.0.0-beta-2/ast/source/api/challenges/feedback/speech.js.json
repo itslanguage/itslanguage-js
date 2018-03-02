@@ -1,0 +1,6236 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 4207,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 98,
+      "column": 0
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 4207,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 98,
+        "column": 0
+      }
+    },
+    "sourceType": "module",
+    "body": [
+      {
+        "type": "ImportDeclaration",
+        "start": 900,
+        "end": 1004,
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 0
+          },
+          "end": {
+            "line": 27,
+            "column": 39
+          }
+        },
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "start": 911,
+            "end": 936,
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 2
+              },
+              "end": {
+                "line": 25,
+                "column": 27
+              }
+            },
+            "imported": {
+              "type": "Identifier",
+              "start": 911,
+              "end": 936,
+              "loc": {
+                "start": {
+                  "line": 25,
+                  "column": 2
+                },
+                "end": {
+                  "line": 25,
+                  "column": 27
+                },
+                "identifierName": "registerStreamForRecorder"
+              },
+              "name": "registerStreamForRecorder",
+              "leadingComments": null
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 911,
+              "end": 936,
+              "loc": {
+                "start": {
+                  "line": 25,
+                  "column": 2
+                },
+                "end": {
+                  "line": 25,
+                  "column": 27
+                },
+                "identifierName": "registerStreamForRecorder"
+              },
+              "name": "registerStreamForRecorder"
+            },
+            "leadingComments": null
+          },
+          {
+            "type": "ImportSpecifier",
+            "start": 940,
+            "end": 964,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 2
+              },
+              "end": {
+                "line": 26,
+                "column": 26
+              }
+            },
+            "imported": {
+              "type": "Identifier",
+              "start": 940,
+              "end": 964,
+              "loc": {
+                "start": {
+                  "line": 26,
+                  "column": 2
+                },
+                "end": {
+                  "line": 26,
+                  "column": 26
+                },
+                "identifierName": "waitForUserMediaApproval"
+              },
+              "name": "waitForUserMediaApproval"
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 940,
+              "end": 964,
+              "loc": {
+                "start": {
+                  "line": 26,
+                  "column": 2
+                },
+                "end": {
+                  "line": 26,
+                  "column": 26
+                },
+                "identifierName": "waitForUserMediaApproval"
+              },
+              "name": "waitForUserMediaApproval"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 972,
+          "end": 1003,
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 7
+            },
+            "end": {
+              "line": 27,
+              "column": 38
+            }
+          },
+          "extra": {
+            "rawValue": "../../utils/audio-over-socket",
+            "raw": "'../../utils/audio-over-socket'"
+          },
+          "value": "../../utils/audio-over-socket"
+        },
+        "leadingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\n * This file contains the functions that are needed to interact with the ITSLanguage Speech\n * Feedback API.\n *\n * It's possible to get feedback while recording. After every sentence feedback is provided\n * indicating whether or not the sentence was read well. This will be done through the\n * ITSLanguage WebSocket Server.\n *\n * The general approach for getting real-time feedback is:\n *  - Prepare the speech feedback\n *  - Register audio procedure for streaming\n *  - Start listening for audio\n *\n *  To read up on the Speech feedback:\n *  @see https://itslanguage.github.io/itslanguage-docs/websocket/feedback/index.html\n *\n *  To read more on Speech Challenges:\n *  @see https://itslanguage.github.io/itslanguage-docs/api/speech_challenges/index.html\n *\n *  @TODO: Backend API features are not implemented yet.\n *  @TODO: The feedback.pause and feedback.resume are not implemented yet.\n ",
+            "start": 0,
+            "end": 898,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 22,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ImportDeclaration",
+        "start": 1005,
+        "end": 1069,
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 0
+          },
+          "end": {
+            "line": 28,
+            "column": 64
+          }
+        },
+        "specifiers": [
+          {
+            "type": "ImportSpecifier",
+            "start": 1013,
+            "end": 1030,
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 8
+              },
+              "end": {
+                "line": 28,
+                "column": 25
+              }
+            },
+            "imported": {
+              "type": "Identifier",
+              "start": 1013,
+              "end": 1030,
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 8
+                },
+                "end": {
+                  "line": 28,
+                  "column": 25
+                },
+                "identifierName": "makeWebsocketCall"
+              },
+              "name": "makeWebsocketCall"
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 1013,
+              "end": 1030,
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 8
+                },
+                "end": {
+                  "line": 28,
+                  "column": 25
+                },
+                "identifierName": "makeWebsocketCall"
+              },
+              "name": "makeWebsocketCall"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 1037,
+          "end": 1068,
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 32
+            },
+            "end": {
+              "line": 28,
+              "column": 63
+            }
+          },
+          "extra": {
+            "rawValue": "../../communication/websocket",
+            "raw": "'../../communication/websocket'"
+          },
+          "value": "../../communication/websocket"
+        },
+        "trailingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\n * Prepare a new Speech Feedback.\n * Should be called upon each new speech feedback.\n * The backend will generate an unique ID for the feedback and prepare a speech challenge.\n *\n * @param {string} challengeId - The ID of the challenge to prepare.\n * @returns {Promise} - The ID of the Speech Feedback.\n ",
+            "start": 1071,
+            "end": 1381,
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 0
+              },
+              "end": {
+                "line": 37,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 1382,
+        "end": 1501,
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 0
+          },
+          "end": {
+            "line": 40,
+            "column": 1
+          }
+        },
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "FunctionDeclaration",
+          "start": 1389,
+          "end": 1501,
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 7
+            },
+            "end": {
+              "line": 40,
+              "column": 1
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 1398,
+            "end": 1413,
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 16
+              },
+              "end": {
+                "line": 38,
+                "column": 31
+              },
+              "identifierName": "prepareFeedback"
+            },
+            "name": "prepareFeedback",
+            "leadingComments": null
+          },
+          "generator": false,
+          "expression": false,
+          "async": false,
+          "params": [
+            {
+              "type": "Identifier",
+              "start": 1414,
+              "end": 1425,
+              "loc": {
+                "start": {
+                  "line": 38,
+                  "column": 32
+                },
+                "end": {
+                  "line": 38,
+                  "column": 43
+                },
+                "identifierName": "challengeId"
+              },
+              "name": "challengeId"
+            }
+          ],
+          "body": {
+            "type": "BlockStatement",
+            "start": 1427,
+            "end": 1501,
+            "loc": {
+              "start": {
+                "line": 38,
+                "column": 45
+              },
+              "end": {
+                "line": 40,
+                "column": 1
+              }
+            },
+            "body": [
+              {
+                "type": "ReturnStatement",
+                "start": 1431,
+                "end": 1499,
+                "loc": {
+                  "start": {
+                    "line": 39,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 39,
+                    "column": 70
+                  }
+                },
+                "argument": {
+                  "type": "CallExpression",
+                  "start": 1438,
+                  "end": 1498,
+                  "loc": {
+                    "start": {
+                      "line": 39,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 39,
+                      "column": 69
+                    }
+                  },
+                  "callee": {
+                    "type": "Identifier",
+                    "start": 1438,
+                    "end": 1455,
+                    "loc": {
+                      "start": {
+                        "line": 39,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 39,
+                        "column": 26
+                      },
+                      "identifierName": "makeWebsocketCall"
+                    },
+                    "name": "makeWebsocketCall"
+                  },
+                  "arguments": [
+                    {
+                      "type": "StringLiteral",
+                      "start": 1456,
+                      "end": 1474,
+                      "loc": {
+                        "start": {
+                          "line": 39,
+                          "column": 27
+                        },
+                        "end": {
+                          "line": 39,
+                          "column": 45
+                        }
+                      },
+                      "extra": {
+                        "rawValue": "feedback.prepare",
+                        "raw": "'feedback.prepare'"
+                      },
+                      "value": "feedback.prepare"
+                    },
+                    {
+                      "type": "ObjectExpression",
+                      "start": 1476,
+                      "end": 1497,
+                      "loc": {
+                        "start": {
+                          "line": 39,
+                          "column": 47
+                        },
+                        "end": {
+                          "line": 39,
+                          "column": 68
+                        }
+                      },
+                      "properties": [
+                        {
+                          "type": "ObjectProperty",
+                          "start": 1477,
+                          "end": 1496,
+                          "loc": {
+                            "start": {
+                              "line": 39,
+                              "column": 48
+                            },
+                            "end": {
+                              "line": 39,
+                              "column": 67
+                            }
+                          },
+                          "method": false,
+                          "shorthand": false,
+                          "computed": false,
+                          "key": {
+                            "type": "Identifier",
+                            "start": 1477,
+                            "end": 1481,
+                            "loc": {
+                              "start": {
+                                "line": 39,
+                                "column": 48
+                              },
+                              "end": {
+                                "line": 39,
+                                "column": 52
+                              },
+                              "identifierName": "args"
+                            },
+                            "name": "args"
+                          },
+                          "value": {
+                            "type": "ArrayExpression",
+                            "start": 1483,
+                            "end": 1496,
+                            "loc": {
+                              "start": {
+                                "line": 39,
+                                "column": 54
+                              },
+                              "end": {
+                                "line": 39,
+                                "column": 67
+                              }
+                            },
+                            "elements": [
+                              {
+                                "type": "Identifier",
+                                "start": 1484,
+                                "end": 1495,
+                                "loc": {
+                                  "start": {
+                                    "line": 39,
+                                    "column": 55
+                                  },
+                                  "end": {
+                                    "line": 39,
+                                    "column": 66
+                                  },
+                                  "identifierName": "challengeId"
+                                },
+                                "name": "challengeId"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "directives": [],
+            "trailingComments": null
+          },
+          "leadingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\n * Prepare a new Speech Feedback.\n * Should be called upon each new speech feedback.\n * The backend will generate an unique ID for the feedback and prepare a speech challenge.\n *\n * @param {string} challengeId - The ID of the challenge to prepare.\n * @returns {Promise} - The ID of the Speech Feedback.\n ",
+              "start": 1071,
+              "end": 1381,
+              "loc": {
+                "start": {
+                  "line": 30,
+                  "column": 0
+                },
+                "end": {
+                  "line": 37,
+                  "column": 3
+                }
+              }
+            }
+          ],
+          "trailingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\n * In order to receive feedback the server needs to listen for audio on a registered audio rpc.\n * While listening the server will reply using progressive results. The server will stop listening\n * when the audio rpc returns.\n *\n * If you call this function the SDK will register an RPC method to the realm on which audio will be\n * streamed to the backend.\n *\n * @param {string} feedbackId - The Id of the Feedback Challenge.\n * @param {Function} progressCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+              "start": 1503,
+              "end": 2423,
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 0
+                },
+                "end": {
+                  "line": 57,
+                  "column": 3
+                }
+              }
+            }
+          ]
+        },
+        "leadingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\n * Prepare a new Speech Feedback.\n * Should be called upon each new speech feedback.\n * The backend will generate an unique ID for the feedback and prepare a speech challenge.\n *\n * @param {string} challengeId - The ID of the challenge to prepare.\n * @returns {Promise} - The ID of the Speech Feedback.\n ",
+            "start": 1071,
+            "end": 1381,
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 0
+              },
+              "end": {
+                "line": 37,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\n * In order to receive feedback the server needs to listen for audio on a registered audio rpc.\n * While listening the server will reply using progressive results. The server will stop listening\n * when the audio rpc returns.\n *\n * If you call this function the SDK will register an RPC method to the realm on which audio will be\n * streamed to the backend.\n *\n * @param {string} feedbackId - The Id of the Feedback Challenge.\n * @param {Function} progressCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+            "start": 1503,
+            "end": 2423,
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 0
+              },
+              "end": {
+                "line": 57,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 2424,
+        "end": 3030,
+        "loc": {
+          "start": {
+            "line": 58,
+            "column": 0
+          },
+          "end": {
+            "line": 74,
+            "column": 1
+          }
+        },
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "FunctionDeclaration",
+          "start": 2431,
+          "end": 3030,
+          "loc": {
+            "start": {
+              "line": 58,
+              "column": 7
+            },
+            "end": {
+              "line": 74,
+              "column": 1
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 2440,
+            "end": 2454,
+            "loc": {
+              "start": {
+                "line": 58,
+                "column": 16
+              },
+              "end": {
+                "line": 58,
+                "column": 30
+              },
+              "identifierName": "listenAndReply"
+            },
+            "name": "listenAndReply",
+            "leadingComments": null
+          },
+          "generator": false,
+          "expression": false,
+          "async": false,
+          "params": [
+            {
+              "type": "Identifier",
+              "start": 2455,
+              "end": 2465,
+              "loc": {
+                "start": {
+                  "line": 58,
+                  "column": 31
+                },
+                "end": {
+                  "line": 58,
+                  "column": 41
+                },
+                "identifierName": "feedbackId"
+              },
+              "name": "feedbackId"
+            },
+            {
+              "type": "Identifier",
+              "start": 2467,
+              "end": 2477,
+              "loc": {
+                "start": {
+                  "line": 58,
+                  "column": 43
+                },
+                "end": {
+                  "line": 58,
+                  "column": 53
+                },
+                "identifierName": "progressCb"
+              },
+              "name": "progressCb"
+            },
+            {
+              "type": "Identifier",
+              "start": 2479,
+              "end": 2487,
+              "loc": {
+                "start": {
+                  "line": 58,
+                  "column": 55
+                },
+                "end": {
+                  "line": 58,
+                  "column": 63
+                },
+                "identifierName": "recorder"
+              },
+              "name": "recorder"
+            }
+          ],
+          "body": {
+            "type": "BlockStatement",
+            "start": 2489,
+            "end": 3030,
+            "loc": {
+              "start": {
+                "line": 58,
+                "column": 65
+              },
+              "end": {
+                "line": 74,
+                "column": 1
+              }
+            },
+            "body": [
+              {
+                "type": "VariableDeclaration",
+                "start": 2534,
+                "end": 2611,
+                "loc": {
+                  "start": {
+                    "line": 60,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 60,
+                    "column": 79
+                  }
+                },
+                "declarations": [
+                  {
+                    "type": "VariableDeclarator",
+                    "start": 2540,
+                    "end": 2610,
+                    "loc": {
+                      "start": {
+                        "line": 60,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 60,
+                        "column": 78
+                      }
+                    },
+                    "id": {
+                      "type": "Identifier",
+                      "start": 2540,
+                      "end": 2557,
+                      "loc": {
+                        "start": {
+                          "line": 60,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 60,
+                          "column": 25
+                        },
+                        "identifierName": "rpcNameToRegister"
+                      },
+                      "name": "rpcNameToRegister",
+                      "leadingComments": null
+                    },
+                    "init": {
+                      "type": "TemplateLiteral",
+                      "start": 2560,
+                      "end": 2610,
+                      "loc": {
+                        "start": {
+                          "line": 60,
+                          "column": 28
+                        },
+                        "end": {
+                          "line": 60,
+                          "column": 78
+                        }
+                      },
+                      "expressions": [
+                        {
+                          "type": "CallExpression",
+                          "start": 2579,
+                          "end": 2608,
+                          "loc": {
+                            "start": {
+                              "line": 60,
+                              "column": 47
+                            },
+                            "end": {
+                              "line": 60,
+                              "column": 76
+                            }
+                          },
+                          "callee": {
+                            "type": "MemberExpression",
+                            "start": 2579,
+                            "end": 2589,
+                            "loc": {
+                              "start": {
+                                "line": 60,
+                                "column": 47
+                              },
+                              "end": {
+                                "line": 60,
+                                "column": 57
+                              }
+                            },
+                            "object": {
+                              "type": "Identifier",
+                              "start": 2579,
+                              "end": 2583,
+                              "loc": {
+                                "start": {
+                                  "line": 60,
+                                  "column": 47
+                                },
+                                "end": {
+                                  "line": 60,
+                                  "column": 51
+                                },
+                                "identifierName": "Math"
+                              },
+                              "name": "Math"
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "start": 2584,
+                              "end": 2589,
+                              "loc": {
+                                "start": {
+                                  "line": 60,
+                                  "column": 52
+                                },
+                                "end": {
+                                  "line": 60,
+                                  "column": 57
+                                },
+                                "identifierName": "floor"
+                              },
+                              "name": "floor"
+                            },
+                            "computed": false
+                          },
+                          "arguments": [
+                            {
+                              "type": "BinaryExpression",
+                              "start": 2590,
+                              "end": 2607,
+                              "loc": {
+                                "start": {
+                                  "line": 60,
+                                  "column": 58
+                                },
+                                "end": {
+                                  "line": 60,
+                                  "column": 75
+                                }
+                              },
+                              "left": {
+                                "type": "CallExpression",
+                                "start": 2590,
+                                "end": 2600,
+                                "loc": {
+                                  "start": {
+                                    "line": 60,
+                                    "column": 58
+                                  },
+                                  "end": {
+                                    "line": 60,
+                                    "column": 68
+                                  }
+                                },
+                                "callee": {
+                                  "type": "MemberExpression",
+                                  "start": 2590,
+                                  "end": 2598,
+                                  "loc": {
+                                    "start": {
+                                      "line": 60,
+                                      "column": 58
+                                    },
+                                    "end": {
+                                      "line": 60,
+                                      "column": 66
+                                    }
+                                  },
+                                  "object": {
+                                    "type": "Identifier",
+                                    "start": 2590,
+                                    "end": 2594,
+                                    "loc": {
+                                      "start": {
+                                        "line": 60,
+                                        "column": 58
+                                      },
+                                      "end": {
+                                        "line": 60,
+                                        "column": 62
+                                      },
+                                      "identifierName": "Date"
+                                    },
+                                    "name": "Date"
+                                  },
+                                  "property": {
+                                    "type": "Identifier",
+                                    "start": 2595,
+                                    "end": 2598,
+                                    "loc": {
+                                      "start": {
+                                        "line": 60,
+                                        "column": 63
+                                      },
+                                      "end": {
+                                        "line": 60,
+                                        "column": 66
+                                      },
+                                      "identifierName": "now"
+                                    },
+                                    "name": "now"
+                                  },
+                                  "computed": false
+                                },
+                                "arguments": []
+                              },
+                              "operator": "/",
+                              "right": {
+                                "type": "NumericLiteral",
+                                "start": 2603,
+                                "end": 2607,
+                                "loc": {
+                                  "start": {
+                                    "line": 60,
+                                    "column": 71
+                                  },
+                                  "end": {
+                                    "line": 60,
+                                    "column": 75
+                                  }
+                                },
+                                "extra": {
+                                  "rawValue": 1000,
+                                  "raw": "1000"
+                                },
+                                "value": 1000
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "quasis": [
+                        {
+                          "type": "TemplateElement",
+                          "start": 2561,
+                          "end": 2577,
+                          "loc": {
+                            "start": {
+                              "line": 60,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 60,
+                              "column": 45
+                            }
+                          },
+                          "value": {
+                            "raw": "feedback.stream.",
+                            "cooked": "feedback.stream."
+                          },
+                          "tail": false
+                        },
+                        {
+                          "type": "TemplateElement",
+                          "start": 2609,
+                          "end": 2609,
+                          "loc": {
+                            "start": {
+                              "line": 60,
+                              "column": 77
+                            },
+                            "end": {
+                              "line": 60,
+                              "column": 77
+                            }
+                          },
+                          "value": {
+                            "raw": "",
+                            "cooked": ""
+                          },
+                          "tail": true
+                        }
+                      ]
+                    },
+                    "leadingComments": null
+                  }
+                ],
+                "kind": "const",
+                "leadingComments": [
+                  {
+                    "type": "CommentLine",
+                    "value": " Generate a somewhat unique RPC name",
+                    "start": 2493,
+                    "end": 2531,
+                    "loc": {
+                      "start": {
+                        "line": 59,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 59,
+                        "column": 40
+                      }
+                    }
+                  }
+                ],
+                "trailingComments": [
+                  {
+                    "type": "CommentLine",
+                    "value": " Below we use registration.procedure instead of rpcNameToRegister. This is because the later",
+                    "start": 2615,
+                    "end": 2709,
+                    "loc": {
+                      "start": {
+                        "line": 62,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 62,
+                        "column": 96
+                      }
+                    }
+                  },
+                  {
+                    "type": "CommentLine",
+                    "value": " lacks some namespacing information that we do need.",
+                    "start": 2712,
+                    "end": 2766,
+                    "loc": {
+                      "start": {
+                        "line": 63,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 63,
+                        "column": 56
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ReturnStatement",
+                "start": 2769,
+                "end": 3028,
+                "loc": {
+                  "start": {
+                    "line": 64,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 73,
+                    "column": 6
+                  }
+                },
+                "argument": {
+                  "type": "CallExpression",
+                  "start": 2776,
+                  "end": 3027,
+                  "loc": {
+                    "start": {
+                      "line": 64,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 73,
+                      "column": 5
+                    }
+                  },
+                  "callee": {
+                    "type": "MemberExpression",
+                    "start": 2776,
+                    "end": 2840,
+                    "loc": {
+                      "start": {
+                        "line": 64,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 65,
+                        "column": 9
+                      }
+                    },
+                    "object": {
+                      "type": "CallExpression",
+                      "start": 2776,
+                      "end": 2830,
+                      "loc": {
+                        "start": {
+                          "line": 64,
+                          "column": 9
+                        },
+                        "end": {
+                          "line": 64,
+                          "column": 63
+                        }
+                      },
+                      "callee": {
+                        "type": "Identifier",
+                        "start": 2776,
+                        "end": 2801,
+                        "loc": {
+                          "start": {
+                            "line": 64,
+                            "column": 9
+                          },
+                          "end": {
+                            "line": 64,
+                            "column": 34
+                          },
+                          "identifierName": "registerStreamForRecorder"
+                        },
+                        "name": "registerStreamForRecorder",
+                        "leadingComments": null
+                      },
+                      "arguments": [
+                        {
+                          "type": "Identifier",
+                          "start": 2802,
+                          "end": 2810,
+                          "loc": {
+                            "start": {
+                              "line": 64,
+                              "column": 35
+                            },
+                            "end": {
+                              "line": 64,
+                              "column": 43
+                            },
+                            "identifierName": "recorder"
+                          },
+                          "name": "recorder"
+                        },
+                        {
+                          "type": "Identifier",
+                          "start": 2812,
+                          "end": 2829,
+                          "loc": {
+                            "start": {
+                              "line": 64,
+                              "column": 45
+                            },
+                            "end": {
+                              "line": 64,
+                              "column": 62
+                            },
+                            "identifierName": "rpcNameToRegister"
+                          },
+                          "name": "rpcNameToRegister"
+                        }
+                      ],
+                      "leadingComments": null
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "start": 2836,
+                      "end": 2840,
+                      "loc": {
+                        "start": {
+                          "line": 65,
+                          "column": 5
+                        },
+                        "end": {
+                          "line": 65,
+                          "column": 9
+                        },
+                        "identifierName": "then"
+                      },
+                      "name": "then"
+                    },
+                    "computed": false,
+                    "leadingComments": null
+                  },
+                  "arguments": [
+                    {
+                      "type": "ArrowFunctionExpression",
+                      "start": 2841,
+                      "end": 3021,
+                      "loc": {
+                        "start": {
+                          "line": 65,
+                          "column": 10
+                        },
+                        "end": {
+                          "line": 72,
+                          "column": 7
+                        }
+                      },
+                      "id": null,
+                      "generator": false,
+                      "expression": true,
+                      "async": false,
+                      "params": [
+                        {
+                          "type": "Identifier",
+                          "start": 2841,
+                          "end": 2853,
+                          "loc": {
+                            "start": {
+                              "line": 65,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 65,
+                              "column": 22
+                            },
+                            "identifierName": "registration"
+                          },
+                          "name": "registration"
+                        }
+                      ],
+                      "body": {
+                        "type": "CallExpression",
+                        "start": 2863,
+                        "end": 3021,
+                        "loc": {
+                          "start": {
+                            "line": 66,
+                            "column": 6
+                          },
+                          "end": {
+                            "line": 72,
+                            "column": 7
+                          }
+                        },
+                        "callee": {
+                          "type": "Identifier",
+                          "start": 2863,
+                          "end": 2880,
+                          "loc": {
+                            "start": {
+                              "line": 66,
+                              "column": 6
+                            },
+                            "end": {
+                              "line": 66,
+                              "column": 23
+                            },
+                            "identifierName": "makeWebsocketCall"
+                          },
+                          "name": "makeWebsocketCall"
+                        },
+                        "arguments": [
+                          {
+                            "type": "StringLiteral",
+                            "start": 2890,
+                            "end": 2917,
+                            "loc": {
+                              "start": {
+                                "line": 67,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 67,
+                                "column": 35
+                              }
+                            },
+                            "extra": {
+                              "rawValue": "feedback.listen_and_reply",
+                              "raw": "'feedback.listen_and_reply'"
+                            },
+                            "value": "feedback.listen_and_reply"
+                          },
+                          {
+                            "type": "ObjectExpression",
+                            "start": 2927,
+                            "end": 3013,
+                            "loc": {
+                              "start": {
+                                "line": 68,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 71,
+                                "column": 9
+                              }
+                            },
+                            "properties": [
+                              {
+                                "type": "ObjectProperty",
+                                "start": 2939,
+                                "end": 2981,
+                                "loc": {
+                                  "start": {
+                                    "line": 69,
+                                    "column": 10
+                                  },
+                                  "end": {
+                                    "line": 69,
+                                    "column": 52
+                                  }
+                                },
+                                "method": false,
+                                "shorthand": false,
+                                "computed": false,
+                                "key": {
+                                  "type": "Identifier",
+                                  "start": 2939,
+                                  "end": 2943,
+                                  "loc": {
+                                    "start": {
+                                      "line": 69,
+                                      "column": 10
+                                    },
+                                    "end": {
+                                      "line": 69,
+                                      "column": 14
+                                    },
+                                    "identifierName": "args"
+                                  },
+                                  "name": "args"
+                                },
+                                "value": {
+                                  "type": "ArrayExpression",
+                                  "start": 2945,
+                                  "end": 2981,
+                                  "loc": {
+                                    "start": {
+                                      "line": 69,
+                                      "column": 16
+                                    },
+                                    "end": {
+                                      "line": 69,
+                                      "column": 52
+                                    }
+                                  },
+                                  "elements": [
+                                    {
+                                      "type": "Identifier",
+                                      "start": 2946,
+                                      "end": 2956,
+                                      "loc": {
+                                        "start": {
+                                          "line": 69,
+                                          "column": 17
+                                        },
+                                        "end": {
+                                          "line": 69,
+                                          "column": 27
+                                        },
+                                        "identifierName": "feedbackId"
+                                      },
+                                      "name": "feedbackId"
+                                    },
+                                    {
+                                      "type": "MemberExpression",
+                                      "start": 2958,
+                                      "end": 2980,
+                                      "loc": {
+                                        "start": {
+                                          "line": 69,
+                                          "column": 29
+                                        },
+                                        "end": {
+                                          "line": 69,
+                                          "column": 51
+                                        }
+                                      },
+                                      "object": {
+                                        "type": "Identifier",
+                                        "start": 2958,
+                                        "end": 2970,
+                                        "loc": {
+                                          "start": {
+                                            "line": 69,
+                                            "column": 29
+                                          },
+                                          "end": {
+                                            "line": 69,
+                                            "column": 41
+                                          },
+                                          "identifierName": "registration"
+                                        },
+                                        "name": "registration"
+                                      },
+                                      "property": {
+                                        "type": "Identifier",
+                                        "start": 2971,
+                                        "end": 2980,
+                                        "loc": {
+                                          "start": {
+                                            "line": 69,
+                                            "column": 42
+                                          },
+                                          "end": {
+                                            "line": 69,
+                                            "column": 51
+                                          },
+                                          "identifierName": "procedure"
+                                        },
+                                        "name": "procedure"
+                                      },
+                                      "computed": false
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "ObjectProperty",
+                                "start": 2993,
+                                "end": 3003,
+                                "loc": {
+                                  "start": {
+                                    "line": 70,
+                                    "column": 10
+                                  },
+                                  "end": {
+                                    "line": 70,
+                                    "column": 20
+                                  }
+                                },
+                                "method": false,
+                                "shorthand": true,
+                                "computed": false,
+                                "key": {
+                                  "type": "Identifier",
+                                  "start": 2993,
+                                  "end": 3003,
+                                  "loc": {
+                                    "start": {
+                                      "line": 70,
+                                      "column": 10
+                                    },
+                                    "end": {
+                                      "line": 70,
+                                      "column": 20
+                                    },
+                                    "identifierName": "progressCb"
+                                  },
+                                  "name": "progressCb"
+                                },
+                                "value": {
+                                  "type": "Identifier",
+                                  "start": 2993,
+                                  "end": 3003,
+                                  "loc": {
+                                    "start": {
+                                      "line": 70,
+                                      "column": 10
+                                    },
+                                    "end": {
+                                      "line": 70,
+                                      "column": 20
+                                    },
+                                    "identifierName": "progressCb"
+                                  },
+                                  "name": "progressCb"
+                                },
+                                "extra": {
+                                  "shorthand": true
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "leadingComments": null
+                },
+                "leadingComments": [
+                  {
+                    "type": "CommentLine",
+                    "value": " Below we use registration.procedure instead of rpcNameToRegister. This is because the later",
+                    "start": 2615,
+                    "end": 2709,
+                    "loc": {
+                      "start": {
+                        "line": 62,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 62,
+                        "column": 96
+                      }
+                    }
+                  },
+                  {
+                    "type": "CommentLine",
+                    "value": " lacks some namespacing information that we do need.",
+                    "start": 2712,
+                    "end": 2766,
+                    "loc": {
+                      "start": {
+                        "line": 63,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 63,
+                        "column": 56
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "directives": [],
+            "trailingComments": null
+          },
+          "leadingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\n * In order to receive feedback the server needs to listen for audio on a registered audio rpc.\n * While listening the server will reply using progressive results. The server will stop listening\n * when the audio rpc returns.\n *\n * If you call this function the SDK will register an RPC method to the realm on which audio will be\n * streamed to the backend.\n *\n * @param {string} feedbackId - The Id of the Feedback Challenge.\n * @param {Function} progressCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+              "start": 1503,
+              "end": 2423,
+              "loc": {
+                "start": {
+                  "line": 42,
+                  "column": 0
+                },
+                "end": {
+                  "line": 57,
+                  "column": 3
+                }
+              }
+            }
+          ],
+          "trailingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\n * Function for convenience. Using this function calls the corresponding functions so that the\n * required backend flow is backed up.\n *\n * It will call the following functions (and more important, in the correct order):\n *  - {@link prepareFeedback}.\n *  - {@link waitForUserMediaApproval}.\n *  - {@link listenAndReply}.\n *\n * @param {string} challengeId - The Id of the Challenge to get feedback on.\n * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+              "start": 3032,
+              "end": 3937,
+              "loc": {
+                "start": {
+                  "line": 76,
+                  "column": 0
+                },
+                "end": {
+                  "line": 92,
+                  "column": 3
+                }
+              }
+            }
+          ]
+        },
+        "leadingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\n * In order to receive feedback the server needs to listen for audio on a registered audio rpc.\n * While listening the server will reply using progressive results. The server will stop listening\n * when the audio rpc returns.\n *\n * If you call this function the SDK will register an RPC method to the realm on which audio will be\n * streamed to the backend.\n *\n * @param {string} feedbackId - The Id of the Feedback Challenge.\n * @param {Function} progressCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+            "start": 1503,
+            "end": 2423,
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 0
+              },
+              "end": {
+                "line": 57,
+                "column": 3
+              }
+            }
+          }
+        ],
+        "trailingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\n * Function for convenience. Using this function calls the corresponding functions so that the\n * required backend flow is backed up.\n *\n * It will call the following functions (and more important, in the correct order):\n *  - {@link prepareFeedback}.\n *  - {@link waitForUserMediaApproval}.\n *  - {@link listenAndReply}.\n *\n * @param {string} challengeId - The Id of the Challenge to get feedback on.\n * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+            "start": 3032,
+            "end": 3937,
+            "loc": {
+              "start": {
+                "line": 76,
+                "column": 0
+              },
+              "end": {
+                "line": 92,
+                "column": 3
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ExportNamedDeclaration",
+        "start": 3938,
+        "end": 4206,
+        "loc": {
+          "start": {
+            "line": 93,
+            "column": 0
+          },
+          "end": {
+            "line": 97,
+            "column": 1
+          }
+        },
+        "specifiers": [],
+        "source": null,
+        "declaration": {
+          "type": "FunctionDeclaration",
+          "start": 3945,
+          "end": 4206,
+          "loc": {
+            "start": {
+              "line": 93,
+              "column": 7
+            },
+            "end": {
+              "line": 97,
+              "column": 1
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 3954,
+            "end": 3962,
+            "loc": {
+              "start": {
+                "line": 93,
+                "column": 16
+              },
+              "end": {
+                "line": 93,
+                "column": 24
+              },
+              "identifierName": "feedback"
+            },
+            "name": "feedback",
+            "leadingComments": null
+          },
+          "generator": false,
+          "expression": false,
+          "async": false,
+          "params": [
+            {
+              "type": "Identifier",
+              "start": 3963,
+              "end": 3974,
+              "loc": {
+                "start": {
+                  "line": 93,
+                  "column": 25
+                },
+                "end": {
+                  "line": 93,
+                  "column": 36
+                },
+                "identifierName": "challengeId"
+              },
+              "name": "challengeId"
+            },
+            {
+              "type": "Identifier",
+              "start": 3976,
+              "end": 3996,
+              "loc": {
+                "start": {
+                  "line": 93,
+                  "column": 38
+                },
+                "end": {
+                  "line": 93,
+                  "column": 58
+                },
+                "identifierName": "progressiveResultsCb"
+              },
+              "name": "progressiveResultsCb"
+            },
+            {
+              "type": "Identifier",
+              "start": 3998,
+              "end": 4006,
+              "loc": {
+                "start": {
+                  "line": 93,
+                  "column": 60
+                },
+                "end": {
+                  "line": 93,
+                  "column": 68
+                },
+                "identifierName": "recorder"
+              },
+              "name": "recorder"
+            }
+          ],
+          "body": {
+            "type": "BlockStatement",
+            "start": 4008,
+            "end": 4206,
+            "loc": {
+              "start": {
+                "line": 93,
+                "column": 70
+              },
+              "end": {
+                "line": 97,
+                "column": 1
+              }
+            },
+            "body": [
+              {
+                "type": "ReturnStatement",
+                "start": 4012,
+                "end": 4204,
+                "loc": {
+                  "start": {
+                    "line": 94,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 96,
+                    "column": 84
+                  }
+                },
+                "argument": {
+                  "type": "CallExpression",
+                  "start": 4019,
+                  "end": 4203,
+                  "loc": {
+                    "start": {
+                      "line": 94,
+                      "column": 9
+                    },
+                    "end": {
+                      "line": 96,
+                      "column": 83
+                    }
+                  },
+                  "callee": {
+                    "type": "MemberExpression",
+                    "start": 4019,
+                    "end": 4129,
+                    "loc": {
+                      "start": {
+                        "line": 94,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 96,
+                        "column": 9
+                      }
+                    },
+                    "object": {
+                      "type": "CallExpression",
+                      "start": 4019,
+                      "end": 4119,
+                      "loc": {
+                        "start": {
+                          "line": 94,
+                          "column": 9
+                        },
+                        "end": {
+                          "line": 95,
+                          "column": 71
+                        }
+                      },
+                      "callee": {
+                        "type": "MemberExpression",
+                        "start": 4019,
+                        "end": 4057,
+                        "loc": {
+                          "start": {
+                            "line": 94,
+                            "column": 9
+                          },
+                          "end": {
+                            "line": 95,
+                            "column": 9
+                          }
+                        },
+                        "object": {
+                          "type": "CallExpression",
+                          "start": 4019,
+                          "end": 4047,
+                          "loc": {
+                            "start": {
+                              "line": 94,
+                              "column": 9
+                            },
+                            "end": {
+                              "line": 94,
+                              "column": 37
+                            }
+                          },
+                          "callee": {
+                            "type": "Identifier",
+                            "start": 4019,
+                            "end": 4034,
+                            "loc": {
+                              "start": {
+                                "line": 94,
+                                "column": 9
+                              },
+                              "end": {
+                                "line": 94,
+                                "column": 24
+                              },
+                              "identifierName": "prepareFeedback"
+                            },
+                            "name": "prepareFeedback"
+                          },
+                          "arguments": [
+                            {
+                              "type": "Identifier",
+                              "start": 4035,
+                              "end": 4046,
+                              "loc": {
+                                "start": {
+                                  "line": 94,
+                                  "column": 25
+                                },
+                                "end": {
+                                  "line": 94,
+                                  "column": 36
+                                },
+                                "identifierName": "challengeId"
+                              },
+                              "name": "challengeId"
+                            }
+                          ]
+                        },
+                        "property": {
+                          "type": "Identifier",
+                          "start": 4053,
+                          "end": 4057,
+                          "loc": {
+                            "start": {
+                              "line": 95,
+                              "column": 5
+                            },
+                            "end": {
+                              "line": 95,
+                              "column": 9
+                            },
+                            "identifierName": "then"
+                          },
+                          "name": "then"
+                        },
+                        "computed": false
+                      },
+                      "arguments": [
+                        {
+                          "type": "ArrowFunctionExpression",
+                          "start": 4058,
+                          "end": 4118,
+                          "loc": {
+                            "start": {
+                              "line": 95,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 95,
+                              "column": 70
+                            }
+                          },
+                          "id": null,
+                          "generator": false,
+                          "expression": true,
+                          "async": false,
+                          "params": [
+                            {
+                              "type": "Identifier",
+                              "start": 4058,
+                              "end": 4068,
+                              "loc": {
+                                "start": {
+                                  "line": 95,
+                                  "column": 10
+                                },
+                                "end": {
+                                  "line": 95,
+                                  "column": 20
+                                },
+                                "identifierName": "feedbackId"
+                              },
+                              "name": "feedbackId"
+                            }
+                          ],
+                          "body": {
+                            "type": "CallExpression",
+                            "start": 4072,
+                            "end": 4118,
+                            "loc": {
+                              "start": {
+                                "line": 95,
+                                "column": 24
+                              },
+                              "end": {
+                                "line": 95,
+                                "column": 70
+                              }
+                            },
+                            "callee": {
+                              "type": "Identifier",
+                              "start": 4072,
+                              "end": 4096,
+                              "loc": {
+                                "start": {
+                                  "line": 95,
+                                  "column": 24
+                                },
+                                "end": {
+                                  "line": 95,
+                                  "column": 48
+                                },
+                                "identifierName": "waitForUserMediaApproval"
+                              },
+                              "name": "waitForUserMediaApproval"
+                            },
+                            "arguments": [
+                              {
+                                "type": "Identifier",
+                                "start": 4097,
+                                "end": 4107,
+                                "loc": {
+                                  "start": {
+                                    "line": 95,
+                                    "column": 49
+                                  },
+                                  "end": {
+                                    "line": 95,
+                                    "column": 59
+                                  },
+                                  "identifierName": "feedbackId"
+                                },
+                                "name": "feedbackId"
+                              },
+                              {
+                                "type": "Identifier",
+                                "start": 4109,
+                                "end": 4117,
+                                "loc": {
+                                  "start": {
+                                    "line": 95,
+                                    "column": 61
+                                  },
+                                  "end": {
+                                    "line": 95,
+                                    "column": 69
+                                  },
+                                  "identifierName": "recorder"
+                                },
+                                "name": "recorder"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "start": 4125,
+                      "end": 4129,
+                      "loc": {
+                        "start": {
+                          "line": 96,
+                          "column": 5
+                        },
+                        "end": {
+                          "line": 96,
+                          "column": 9
+                        },
+                        "identifierName": "then"
+                      },
+                      "name": "then"
+                    },
+                    "computed": false
+                  },
+                  "arguments": [
+                    {
+                      "type": "ArrowFunctionExpression",
+                      "start": 4130,
+                      "end": 4202,
+                      "loc": {
+                        "start": {
+                          "line": 96,
+                          "column": 10
+                        },
+                        "end": {
+                          "line": 96,
+                          "column": 82
+                        }
+                      },
+                      "id": null,
+                      "generator": false,
+                      "expression": true,
+                      "async": false,
+                      "params": [
+                        {
+                          "type": "Identifier",
+                          "start": 4130,
+                          "end": 4140,
+                          "loc": {
+                            "start": {
+                              "line": 96,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 96,
+                              "column": 20
+                            },
+                            "identifierName": "feedbackId"
+                          },
+                          "name": "feedbackId"
+                        }
+                      ],
+                      "body": {
+                        "type": "CallExpression",
+                        "start": 4144,
+                        "end": 4202,
+                        "loc": {
+                          "start": {
+                            "line": 96,
+                            "column": 24
+                          },
+                          "end": {
+                            "line": 96,
+                            "column": 82
+                          }
+                        },
+                        "callee": {
+                          "type": "Identifier",
+                          "start": 4144,
+                          "end": 4158,
+                          "loc": {
+                            "start": {
+                              "line": 96,
+                              "column": 24
+                            },
+                            "end": {
+                              "line": 96,
+                              "column": 38
+                            },
+                            "identifierName": "listenAndReply"
+                          },
+                          "name": "listenAndReply"
+                        },
+                        "arguments": [
+                          {
+                            "type": "Identifier",
+                            "start": 4159,
+                            "end": 4169,
+                            "loc": {
+                              "start": {
+                                "line": 96,
+                                "column": 39
+                              },
+                              "end": {
+                                "line": 96,
+                                "column": 49
+                              },
+                              "identifierName": "feedbackId"
+                            },
+                            "name": "feedbackId"
+                          },
+                          {
+                            "type": "Identifier",
+                            "start": 4171,
+                            "end": 4191,
+                            "loc": {
+                              "start": {
+                                "line": 96,
+                                "column": 51
+                              },
+                              "end": {
+                                "line": 96,
+                                "column": 71
+                              },
+                              "identifierName": "progressiveResultsCb"
+                            },
+                            "name": "progressiveResultsCb"
+                          },
+                          {
+                            "type": "Identifier",
+                            "start": 4193,
+                            "end": 4201,
+                            "loc": {
+                              "start": {
+                                "line": 96,
+                                "column": 73
+                              },
+                              "end": {
+                                "line": 96,
+                                "column": 81
+                              },
+                              "identifierName": "recorder"
+                            },
+                            "name": "recorder"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "directives": []
+          },
+          "leadingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\n * Function for convenience. Using this function calls the corresponding functions so that the\n * required backend flow is backed up.\n *\n * It will call the following functions (and more important, in the correct order):\n *  - {@link prepareFeedback}.\n *  - {@link waitForUserMediaApproval}.\n *  - {@link listenAndReply}.\n *\n * @param {string} challengeId - The Id of the Challenge to get feedback on.\n * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+              "start": 3032,
+              "end": 3937,
+              "loc": {
+                "start": {
+                  "line": 76,
+                  "column": 0
+                },
+                "end": {
+                  "line": 92,
+                  "column": 3
+                }
+              }
+            }
+          ],
+          "trailingComments": []
+        },
+        "leadingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\n * Function for convenience. Using this function calls the corresponding functions so that the\n * required backend flow is backed up.\n *\n * It will call the following functions (and more important, in the correct order):\n *  - {@link prepareFeedback}.\n *  - {@link waitForUserMediaApproval}.\n *  - {@link listenAndReply}.\n *\n * @param {string} challengeId - The Id of the Challenge to get feedback on.\n * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+            "start": 3032,
+            "end": 3937,
+            "loc": {
+              "start": {
+                "line": 76,
+                "column": 0
+              },
+              "end": {
+                "line": 92,
+                "column": 3
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "directives": []
+  },
+  "comments": [
+    {
+      "type": "CommentBlock",
+      "value": "*\n * This file contains the functions that are needed to interact with the ITSLanguage Speech\n * Feedback API.\n *\n * It's possible to get feedback while recording. After every sentence feedback is provided\n * indicating whether or not the sentence was read well. This will be done through the\n * ITSLanguage WebSocket Server.\n *\n * The general approach for getting real-time feedback is:\n *  - Prepare the speech feedback\n *  - Register audio procedure for streaming\n *  - Start listening for audio\n *\n *  To read up on the Speech feedback:\n *  @see https://itslanguage.github.io/itslanguage-docs/websocket/feedback/index.html\n *\n *  To read more on Speech Challenges:\n *  @see https://itslanguage.github.io/itslanguage-docs/api/speech_challenges/index.html\n *\n *  @TODO: Backend API features are not implemented yet.\n *  @TODO: The feedback.pause and feedback.resume are not implemented yet.\n ",
+      "start": 0,
+      "end": 898,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * Prepare a new Speech Feedback.\n * Should be called upon each new speech feedback.\n * The backend will generate an unique ID for the feedback and prepare a speech challenge.\n *\n * @param {string} challengeId - The ID of the challenge to prepare.\n * @returns {Promise} - The ID of the Speech Feedback.\n ",
+      "start": 1071,
+      "end": 1381,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * In order to receive feedback the server needs to listen for audio on a registered audio rpc.\n * While listening the server will reply using progressive results. The server will stop listening\n * when the audio rpc returns.\n *\n * If you call this function the SDK will register an RPC method to the realm on which audio will be\n * streamed to the backend.\n *\n * @param {string} feedbackId - The Id of the Feedback Challenge.\n * @param {Function} progressCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+      "start": 1503,
+      "end": 2423,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 57,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " Generate a somewhat unique RPC name",
+      "start": 2493,
+      "end": 2531,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 2
+        },
+        "end": {
+          "line": 59,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " Below we use registration.procedure instead of rpcNameToRegister. This is because the later",
+      "start": 2615,
+      "end": 2709,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 2
+        },
+        "end": {
+          "line": 62,
+          "column": 96
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " lacks some namespacing information that we do need.",
+      "start": 2712,
+      "end": 2766,
+      "loc": {
+        "start": {
+          "line": 63,
+          "column": 2
+        },
+        "end": {
+          "line": 63,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * Function for convenience. Using this function calls the corresponding functions so that the\n * required backend flow is backed up.\n *\n * It will call the following functions (and more important, in the correct order):\n *  - {@link prepareFeedback}.\n *  - {@link waitForUserMediaApproval}.\n *  - {@link listenAndReply}.\n *\n * @param {string} challengeId - The Id of the Challenge to get feedback on.\n * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+      "start": 3032,
+      "end": 3937,
+      "loc": {
+        "start": {
+          "line": 76,
+          "column": 0
+        },
+        "end": {
+          "line": 92,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "CommentBlock",
+      "value": "*\n * This file contains the functions that are needed to interact with the ITSLanguage Speech\n * Feedback API.\n *\n * It's possible to get feedback while recording. After every sentence feedback is provided\n * indicating whether or not the sentence was read well. This will be done through the\n * ITSLanguage WebSocket Server.\n *\n * The general approach for getting real-time feedback is:\n *  - Prepare the speech feedback\n *  - Register audio procedure for streaming\n *  - Start listening for audio\n *\n *  To read up on the Speech feedback:\n *  @see https://itslanguage.github.io/itslanguage-docs/websocket/feedback/index.html\n *\n *  To read more on Speech Challenges:\n *  @see https://itslanguage.github.io/itslanguage-docs/api/speech_challenges/index.html\n *\n *  @TODO: Backend API features are not implemented yet.\n *  @TODO: The feedback.pause and feedback.resume are not implemented yet.\n ",
+      "start": 0,
+      "end": 898,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "import",
+        "keyword": "import",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "import",
+      "start": 900,
+      "end": 906,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 907,
+      "end": 908,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 7
+        },
+        "end": {
+          "line": 24,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "registerStreamForRecorder",
+      "start": 911,
+      "end": 936,
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 2
+        },
+        "end": {
+          "line": 25,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 936,
+      "end": 937,
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 27
+        },
+        "end": {
+          "line": 25,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "waitForUserMediaApproval",
+      "start": 940,
+      "end": 964,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 2
+        },
+        "end": {
+          "line": 26,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 965,
+      "end": 966,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "from",
+      "start": 967,
+      "end": 971,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 2
+        },
+        "end": {
+          "line": 27,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "string",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "../../utils/audio-over-socket",
+      "start": 972,
+      "end": 1003,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 7
+        },
+        "end": {
+          "line": 27,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1003,
+      "end": 1004,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 38
+        },
+        "end": {
+          "line": 27,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "import",
+        "keyword": "import",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "import",
+      "start": 1005,
+      "end": 1011,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1012,
+      "end": 1013,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 7
+        },
+        "end": {
+          "line": 28,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "makeWebsocketCall",
+      "start": 1013,
+      "end": 1030,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 8
+        },
+        "end": {
+          "line": 28,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1030,
+      "end": 1031,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 25
+        },
+        "end": {
+          "line": 28,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "from",
+      "start": 1032,
+      "end": 1036,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 27
+        },
+        "end": {
+          "line": 28,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "string",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "../../communication/websocket",
+      "start": 1037,
+      "end": 1068,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 32
+        },
+        "end": {
+          "line": 28,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1068,
+      "end": 1069,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 63
+        },
+        "end": {
+          "line": 28,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * Prepare a new Speech Feedback.\n * Should be called upon each new speech feedback.\n * The backend will generate an unique ID for the feedback and prepare a speech challenge.\n *\n * @param {string} challengeId - The ID of the challenge to prepare.\n * @returns {Promise} - The ID of the Speech Feedback.\n ",
+      "start": 1071,
+      "end": 1381,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
+      "start": 1382,
+      "end": 1388,
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 0
+        },
+        "end": {
+          "line": 38,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "function",
+        "keyword": "function",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "function",
+      "start": 1389,
+      "end": 1397,
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 7
+        },
+        "end": {
+          "line": 38,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "prepareFeedback",
+      "start": 1398,
+      "end": 1413,
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 16
+        },
+        "end": {
+          "line": 38,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1413,
+      "end": 1414,
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 31
+        },
+        "end": {
+          "line": 38,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "challengeId",
+      "start": 1414,
+      "end": 1425,
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 32
+        },
+        "end": {
+          "line": 38,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1425,
+      "end": 1426,
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 43
+        },
+        "end": {
+          "line": 38,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1427,
+      "end": 1428,
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 45
+        },
+        "end": {
+          "line": 38,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "return",
+        "keyword": "return",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "return",
+      "start": 1431,
+      "end": 1437,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 2
+        },
+        "end": {
+          "line": 39,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "makeWebsocketCall",
+      "start": 1438,
+      "end": 1455,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 9
+        },
+        "end": {
+          "line": 39,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1455,
+      "end": 1456,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 26
+        },
+        "end": {
+          "line": 39,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "string",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "feedback.prepare",
+      "start": 1456,
+      "end": 1474,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 27
+        },
+        "end": {
+          "line": 39,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1474,
+      "end": 1475,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 45
+        },
+        "end": {
+          "line": 39,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1476,
+      "end": 1477,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 47
+        },
+        "end": {
+          "line": 39,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "args",
+      "start": 1477,
+      "end": 1481,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 48
+        },
+        "end": {
+          "line": 39,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ":",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1481,
+      "end": 1482,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 52
+        },
+        "end": {
+          "line": 39,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "[",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1483,
+      "end": 1484,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 54
+        },
+        "end": {
+          "line": 39,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "challengeId",
+      "start": 1484,
+      "end": 1495,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 55
+        },
+        "end": {
+          "line": 39,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "]",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1495,
+      "end": 1496,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 66
+        },
+        "end": {
+          "line": 39,
+          "column": 67
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1496,
+      "end": 1497,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 67
+        },
+        "end": {
+          "line": 39,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1497,
+      "end": 1498,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 68
+        },
+        "end": {
+          "line": 39,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1498,
+      "end": 1499,
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 69
+        },
+        "end": {
+          "line": 39,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 1500,
+      "end": 1501,
+      "loc": {
+        "start": {
+          "line": 40,
+          "column": 0
+        },
+        "end": {
+          "line": 40,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * In order to receive feedback the server needs to listen for audio on a registered audio rpc.\n * While listening the server will reply using progressive results. The server will stop listening\n * when the audio rpc returns.\n *\n * If you call this function the SDK will register an RPC method to the realm on which audio will be\n * streamed to the backend.\n *\n * @param {string} feedbackId - The Id of the Feedback Challenge.\n * @param {Function} progressCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+      "start": 1503,
+      "end": 2423,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 57,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
+      "start": 2424,
+      "end": 2430,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 0
+        },
+        "end": {
+          "line": 58,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "function",
+        "keyword": "function",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "function",
+      "start": 2431,
+      "end": 2439,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 7
+        },
+        "end": {
+          "line": 58,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "listenAndReply",
+      "start": 2440,
+      "end": 2454,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 16
+        },
+        "end": {
+          "line": 58,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2454,
+      "end": 2455,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 30
+        },
+        "end": {
+          "line": 58,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "feedbackId",
+      "start": 2455,
+      "end": 2465,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 31
+        },
+        "end": {
+          "line": 58,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2465,
+      "end": 2466,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 41
+        },
+        "end": {
+          "line": 58,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "progressCb",
+      "start": 2467,
+      "end": 2477,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 43
+        },
+        "end": {
+          "line": 58,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2477,
+      "end": 2478,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 53
+        },
+        "end": {
+          "line": 58,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "recorder",
+      "start": 2479,
+      "end": 2487,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 55
+        },
+        "end": {
+          "line": 58,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2487,
+      "end": 2488,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 63
+        },
+        "end": {
+          "line": 58,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2489,
+      "end": 2490,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 65
+        },
+        "end": {
+          "line": 58,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " Generate a somewhat unique RPC name",
+      "start": 2493,
+      "end": 2531,
+      "loc": {
+        "start": {
+          "line": 59,
+          "column": 2
+        },
+        "end": {
+          "line": 59,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "const",
+        "keyword": "const",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "const",
+      "start": 2534,
+      "end": 2539,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 2
+        },
+        "end": {
+          "line": 60,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "rpcNameToRegister",
+      "start": 2540,
+      "end": 2557,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 8
+        },
+        "end": {
+          "line": 60,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 2558,
+      "end": 2559,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 26
+        },
+        "end": {
+          "line": 60,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "`",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2560,
+      "end": 2561,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 28
+        },
+        "end": {
+          "line": 60,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "template",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "feedback.stream.",
+      "start": 2561,
+      "end": 2577,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 29
+        },
+        "end": {
+          "line": 60,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "${",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2577,
+      "end": 2579,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 45
+        },
+        "end": {
+          "line": 60,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "Math",
+      "start": 2579,
+      "end": 2583,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 47
+        },
+        "end": {
+          "line": 60,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2583,
+      "end": 2584,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 51
+        },
+        "end": {
+          "line": 60,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "floor",
+      "start": 2584,
+      "end": 2589,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 52
+        },
+        "end": {
+          "line": 60,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2589,
+      "end": 2590,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 57
+        },
+        "end": {
+          "line": 60,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "Date",
+      "start": 2590,
+      "end": 2594,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 58
+        },
+        "end": {
+          "line": 60,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2594,
+      "end": 2595,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 62
+        },
+        "end": {
+          "line": 60,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "now",
+      "start": 2595,
+      "end": 2598,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 63
+        },
+        "end": {
+          "line": 60,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2598,
+      "end": 2599,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 66
+        },
+        "end": {
+          "line": 60,
+          "column": 67
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2599,
+      "end": 2600,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 67
+        },
+        "end": {
+          "line": 60,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "/",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": 10,
+        "updateContext": null
+      },
+      "value": "/",
+      "start": 2601,
+      "end": 2602,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 69
+        },
+        "end": {
+          "line": 60,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "num",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": 1000,
+      "start": 2603,
+      "end": 2607,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 71
+        },
+        "end": {
+          "line": 60,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2607,
+      "end": 2608,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 75
+        },
+        "end": {
+          "line": 60,
+          "column": 76
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2608,
+      "end": 2609,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 76
+        },
+        "end": {
+          "line": 60,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "template",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "",
+      "start": 2609,
+      "end": 2609,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 77
+        },
+        "end": {
+          "line": 60,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "`",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2609,
+      "end": 2610,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 77
+        },
+        "end": {
+          "line": 60,
+          "column": 78
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2610,
+      "end": 2611,
+      "loc": {
+        "start": {
+          "line": 60,
+          "column": 78
+        },
+        "end": {
+          "line": 60,
+          "column": 79
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " Below we use registration.procedure instead of rpcNameToRegister. This is because the later",
+      "start": 2615,
+      "end": 2709,
+      "loc": {
+        "start": {
+          "line": 62,
+          "column": 2
+        },
+        "end": {
+          "line": 62,
+          "column": 96
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " lacks some namespacing information that we do need.",
+      "start": 2712,
+      "end": 2766,
+      "loc": {
+        "start": {
+          "line": 63,
+          "column": 2
+        },
+        "end": {
+          "line": 63,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "return",
+        "keyword": "return",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "return",
+      "start": 2769,
+      "end": 2775,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 2
+        },
+        "end": {
+          "line": 64,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "registerStreamForRecorder",
+      "start": 2776,
+      "end": 2801,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 9
+        },
+        "end": {
+          "line": 64,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2801,
+      "end": 2802,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 34
+        },
+        "end": {
+          "line": 64,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "recorder",
+      "start": 2802,
+      "end": 2810,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 35
+        },
+        "end": {
+          "line": 64,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2810,
+      "end": 2811,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 43
+        },
+        "end": {
+          "line": 64,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "rpcNameToRegister",
+      "start": 2812,
+      "end": 2829,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 45
+        },
+        "end": {
+          "line": 64,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2829,
+      "end": 2830,
+      "loc": {
+        "start": {
+          "line": 64,
+          "column": 62
+        },
+        "end": {
+          "line": 64,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2835,
+      "end": 2836,
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 4
+        },
+        "end": {
+          "line": 65,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "then",
+      "start": 2836,
+      "end": 2840,
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 5
+        },
+        "end": {
+          "line": 65,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2840,
+      "end": 2841,
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 9
+        },
+        "end": {
+          "line": 65,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "registration",
+      "start": 2841,
+      "end": 2853,
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 10
+        },
+        "end": {
+          "line": 65,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=>",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2854,
+      "end": 2856,
+      "loc": {
+        "start": {
+          "line": 65,
+          "column": 23
+        },
+        "end": {
+          "line": 65,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "makeWebsocketCall",
+      "start": 2863,
+      "end": 2880,
+      "loc": {
+        "start": {
+          "line": 66,
+          "column": 6
+        },
+        "end": {
+          "line": 66,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2880,
+      "end": 2881,
+      "loc": {
+        "start": {
+          "line": 66,
+          "column": 23
+        },
+        "end": {
+          "line": 66,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "string",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "feedback.listen_and_reply",
+      "start": 2890,
+      "end": 2917,
+      "loc": {
+        "start": {
+          "line": 67,
+          "column": 8
+        },
+        "end": {
+          "line": 67,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2917,
+      "end": 2918,
+      "loc": {
+        "start": {
+          "line": 67,
+          "column": 35
+        },
+        "end": {
+          "line": 67,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2927,
+      "end": 2928,
+      "loc": {
+        "start": {
+          "line": 68,
+          "column": 8
+        },
+        "end": {
+          "line": 68,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "args",
+      "start": 2939,
+      "end": 2943,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 10
+        },
+        "end": {
+          "line": 69,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ":",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2943,
+      "end": 2944,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 14
+        },
+        "end": {
+          "line": 69,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "[",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2945,
+      "end": 2946,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 16
+        },
+        "end": {
+          "line": 69,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "feedbackId",
+      "start": 2946,
+      "end": 2956,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 17
+        },
+        "end": {
+          "line": 69,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2956,
+      "end": 2957,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 27
+        },
+        "end": {
+          "line": 69,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "registration",
+      "start": 2958,
+      "end": 2970,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 29
+        },
+        "end": {
+          "line": 69,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2970,
+      "end": 2971,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 41
+        },
+        "end": {
+          "line": 69,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "procedure",
+      "start": 2971,
+      "end": 2980,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 42
+        },
+        "end": {
+          "line": 69,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "]",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2980,
+      "end": 2981,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 51
+        },
+        "end": {
+          "line": 69,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2981,
+      "end": 2982,
+      "loc": {
+        "start": {
+          "line": 69,
+          "column": 52
+        },
+        "end": {
+          "line": 69,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "progressCb",
+      "start": 2993,
+      "end": 3003,
+      "loc": {
+        "start": {
+          "line": 70,
+          "column": 10
+        },
+        "end": {
+          "line": 70,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 3012,
+      "end": 3013,
+      "loc": {
+        "start": {
+          "line": 71,
+          "column": 8
+        },
+        "end": {
+          "line": 71,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 3020,
+      "end": 3021,
+      "loc": {
+        "start": {
+          "line": 72,
+          "column": 6
+        },
+        "end": {
+          "line": 72,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 3026,
+      "end": 3027,
+      "loc": {
+        "start": {
+          "line": 73,
+          "column": 4
+        },
+        "end": {
+          "line": 73,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 3027,
+      "end": 3028,
+      "loc": {
+        "start": {
+          "line": 73,
+          "column": 5
+        },
+        "end": {
+          "line": 73,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 3029,
+      "end": 3030,
+      "loc": {
+        "start": {
+          "line": 74,
+          "column": 0
+        },
+        "end": {
+          "line": 74,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * Function for convenience. Using this function calls the corresponding functions so that the\n * required backend flow is backed up.\n *\n * It will call the following functions (and more important, in the correct order):\n *  - {@link prepareFeedback}.\n *  - {@link waitForUserMediaApproval}.\n *  - {@link listenAndReply}.\n *\n * @param {string} challengeId - The Id of the Challenge to get feedback on.\n * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.\n * @param {Recorder} recorder - Audio recorder instance.\n * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This\n *                      feedback will be given through the progressiveResultsCb function. When the\n *                      rpc is done, the promise will return an recording with the appropriate\n *                      feedback per sentence.\n ",
+      "start": 3032,
+      "end": 3937,
+      "loc": {
+        "start": {
+          "line": 76,
+          "column": 0
+        },
+        "end": {
+          "line": 92,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
+      "start": 3938,
+      "end": 3944,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 0
+        },
+        "end": {
+          "line": 93,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "function",
+        "keyword": "function",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "function",
+      "start": 3945,
+      "end": 3953,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 7
+        },
+        "end": {
+          "line": 93,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "feedback",
+      "start": 3954,
+      "end": 3962,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 16
+        },
+        "end": {
+          "line": 93,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 3962,
+      "end": 3963,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 24
+        },
+        "end": {
+          "line": 93,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "challengeId",
+      "start": 3963,
+      "end": 3974,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 25
+        },
+        "end": {
+          "line": 93,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 3974,
+      "end": 3975,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 36
+        },
+        "end": {
+          "line": 93,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "progressiveResultsCb",
+      "start": 3976,
+      "end": 3996,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 38
+        },
+        "end": {
+          "line": 93,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 3996,
+      "end": 3997,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 58
+        },
+        "end": {
+          "line": 93,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "recorder",
+      "start": 3998,
+      "end": 4006,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 60
+        },
+        "end": {
+          "line": 93,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4006,
+      "end": 4007,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 68
+        },
+        "end": {
+          "line": 93,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4008,
+      "end": 4009,
+      "loc": {
+        "start": {
+          "line": 93,
+          "column": 70
+        },
+        "end": {
+          "line": 93,
+          "column": 71
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "return",
+        "keyword": "return",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "return",
+      "start": 4012,
+      "end": 4018,
+      "loc": {
+        "start": {
+          "line": 94,
+          "column": 2
+        },
+        "end": {
+          "line": 94,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "prepareFeedback",
+      "start": 4019,
+      "end": 4034,
+      "loc": {
+        "start": {
+          "line": 94,
+          "column": 9
+        },
+        "end": {
+          "line": 94,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4034,
+      "end": 4035,
+      "loc": {
+        "start": {
+          "line": 94,
+          "column": 24
+        },
+        "end": {
+          "line": 94,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "challengeId",
+      "start": 4035,
+      "end": 4046,
+      "loc": {
+        "start": {
+          "line": 94,
+          "column": 25
+        },
+        "end": {
+          "line": 94,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4046,
+      "end": 4047,
+      "loc": {
+        "start": {
+          "line": 94,
+          "column": 36
+        },
+        "end": {
+          "line": 94,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4052,
+      "end": 4053,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 4
+        },
+        "end": {
+          "line": 95,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "then",
+      "start": 4053,
+      "end": 4057,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 5
+        },
+        "end": {
+          "line": 95,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4057,
+      "end": 4058,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 9
+        },
+        "end": {
+          "line": 95,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "feedbackId",
+      "start": 4058,
+      "end": 4068,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 10
+        },
+        "end": {
+          "line": 95,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=>",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4069,
+      "end": 4071,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 21
+        },
+        "end": {
+          "line": 95,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "waitForUserMediaApproval",
+      "start": 4072,
+      "end": 4096,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 24
+        },
+        "end": {
+          "line": 95,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4096,
+      "end": 4097,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 48
+        },
+        "end": {
+          "line": 95,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "feedbackId",
+      "start": 4097,
+      "end": 4107,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 49
+        },
+        "end": {
+          "line": 95,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4107,
+      "end": 4108,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 59
+        },
+        "end": {
+          "line": 95,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "recorder",
+      "start": 4109,
+      "end": 4117,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 61
+        },
+        "end": {
+          "line": 95,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4117,
+      "end": 4118,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 69
+        },
+        "end": {
+          "line": 95,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4118,
+      "end": 4119,
+      "loc": {
+        "start": {
+          "line": 95,
+          "column": 70
+        },
+        "end": {
+          "line": 95,
+          "column": 71
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4124,
+      "end": 4125,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 4
+        },
+        "end": {
+          "line": 96,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "then",
+      "start": 4125,
+      "end": 4129,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 5
+        },
+        "end": {
+          "line": 96,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4129,
+      "end": 4130,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 9
+        },
+        "end": {
+          "line": 96,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "feedbackId",
+      "start": 4130,
+      "end": 4140,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 10
+        },
+        "end": {
+          "line": 96,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=>",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4141,
+      "end": 4143,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 21
+        },
+        "end": {
+          "line": 96,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "listenAndReply",
+      "start": 4144,
+      "end": 4158,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 24
+        },
+        "end": {
+          "line": 96,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4158,
+      "end": 4159,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 38
+        },
+        "end": {
+          "line": 96,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "feedbackId",
+      "start": 4159,
+      "end": 4169,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 39
+        },
+        "end": {
+          "line": 96,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4169,
+      "end": 4170,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 49
+        },
+        "end": {
+          "line": 96,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "progressiveResultsCb",
+      "start": 4171,
+      "end": 4191,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 51
+        },
+        "end": {
+          "line": 96,
+          "column": 71
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4191,
+      "end": 4192,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 71
+        },
+        "end": {
+          "line": 96,
+          "column": 72
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "recorder",
+      "start": 4193,
+      "end": 4201,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 73
+        },
+        "end": {
+          "line": 96,
+          "column": 81
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4201,
+      "end": 4202,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 81
+        },
+        "end": {
+          "line": 96,
+          "column": 82
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4202,
+      "end": 4203,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 82
+        },
+        "end": {
+          "line": 96,
+          "column": 83
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4203,
+      "end": 4204,
+      "loc": {
+        "start": {
+          "line": 96,
+          "column": 83
+        },
+        "end": {
+          "line": 96,
+          "column": 84
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 4205,
+      "end": 4206,
+      "loc": {
+        "start": {
+          "line": 97,
+          "column": 0
+        },
+        "end": {
+          "line": 97,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "eof",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 4207,
+      "end": 4207,
+      "loc": {
+        "start": {
+          "line": 98,
+          "column": 0
+        },
+        "end": {
+          "line": 98,
+          "column": 0
+        }
+      }
+    }
+  ]
+}
