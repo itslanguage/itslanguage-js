@@ -1,6 +1,6 @@
 {
   "name": "@itslanguage/sdk",
-  "version": "4.0.0-beta-3",
+  "version": "4.0.0-beta-2",
   "private": false,
   "description": "The core JavaScript SDK for ITSLanguage.",
   "main": "index.js",
