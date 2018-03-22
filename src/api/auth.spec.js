@@ -23,6 +23,11 @@ describe('assembleScope', () => {
       .toEqual('tenant/rotterdam');
   });
 
+  it('should build a valid scope for a tenant user only', () => {
+    expect(auth.assembleScope('rotterdam', null, 'lee'))
+      .toEqual('tenant/rotterdam/user/lee');
+  });
+
   it('should build a valid scope for an organisation in a tenant', () => {
     expect(auth.assembleScope('rotterdam', 'towers'))
       .toEqual('tenant/rotterdam/organisation/towers');
