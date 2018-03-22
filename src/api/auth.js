@@ -38,8 +38,14 @@ export function assembleScope(tenant, organisation, user) {
     }
   }
 
+  // The special admin user, no tenant and organisation provided
   if (!tenant && !organisation && user) {
     scope = `user/${user}`;
+  }
+
+  // The TENANT user, has no organisation
+  if (tenant && !organisation && user) {
+    scope += `/user/${user}`;
   }
 
   return scope;
