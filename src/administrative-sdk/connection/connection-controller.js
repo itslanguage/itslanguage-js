@@ -268,7 +268,7 @@ export default class Connection {
     // Auth is either BasicAuth or EmailCredentials.
     // In case of both (which theoretically could not happen, but hey) the BasicAuth takes
     // precedent over the EmailCredentials.
-    const {principal, credentials, email, password} = auth || {};
+    const {principal, credentials, email, password} = auth;
     return authenticate(principal || email, credentials || password, scope).then(handleResponse);
   }
 
