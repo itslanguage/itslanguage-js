@@ -54,7 +54,9 @@ import { Player } from '@itslanguage/sdk';
 
 ```
 
-So, for more usage and examples read our documentation on [the GitHub pages website].
+So, for more usage and examples read our documentation on our github pages.
+For the master version look at [the master GitHub pages website]. For our `@next` branch look at
+the documentation that is included in the packages (the docs folder).
 
 ### Dependencies
 
@@ -111,16 +113,17 @@ backend environment due to breaking changes. If not sure, drop us a line to find
 These are the items currently we are currently developing on for the `@next` dist-tag which is
 available on npm.
 
+- Add support for streaming audio
 - Improve our CI/CD flow for better releases
 - Improve communication/authentication mechanism
 - Improve websocket communication mechanism
-- Add safari support (macOS and iOS)
+- Improve safari support (macOS and iOS)
 
 [master build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master
 [next build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next
 [travis]: https://travis-ci.org/itslanguage/itslanguage-js
 
-[the GitHub pages website]: https://itslanguage.github.io/itslanguage-js/
+[the master GitHub pages website]: https://itslanguage.github.io/itslanguage-js/master
 
 [yarn]: https://yarnpkg.com
 
