@@ -516,6 +516,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "itslanguage/api/auth.js~impersonate",
+    "function/index.html#static-function-impersonate",
+    "<span>impersonate</span> <span class=\"search-result-import-path\">itslanguage/api/auth.js</span>",
+    "function"
+  ],
+  [
     "itslanguage/api/communication/websocket.js~makewebsocketcall",
     "function/index.html#static-function-makeWebsocketCall",
     "<span>makeWebsocketCall</span> <span class=\"search-result-import-path\">itslanguage/api/communication/websocket.js</span>",

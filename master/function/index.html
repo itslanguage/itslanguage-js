@@ -69,6 +69,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-word-chunk">administrative-sdk/word-chunk</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api">api</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-assembleScope">assembleScope</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authenticate">authenticate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-impersonate">impersonate</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createCategory">createCategory</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllCategories">getAllCategories</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCategoryByID">getCategoryByID</a></span></span></li>
@@ -1290,6 +1291,35 @@ We also accept a special callback that can be used to receive progress on.</p>
           
           
           
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-impersonate">impersonate</a></span></span><span class="code" data-ice="signature">(scope: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Impersonate some other tenant, user or organisation.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="function/index.html#static-function-makeWebsocketCall">makeWebsocketCall</a></span></span><span class="code" data-ice="signature">(rpc: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, options: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span>&lt;<span>*</span>&gt;</span>
         </p>
       </div>
@@ -1794,10 +1824,10 @@ We also accept a special callback that can be used to receive progress on.</p>
   
   
   <div data-ice="description"><p>Assemble the scope form the given individual pieces.</p>
-<p>The scope is used to identify what the authenticated is allowed to do. It
-can also be used by admin users to impersonate as an organisation or user.</p>
-<p>Keep in mind that in order to specify the user, the scope also needs to be
-specified.</p>
+<p>The scope is used to identify what the authenticated is allowed to do. It can slo be used by
+admin and tenant users to impersonate as a tenant, organisation or user.</p>
+<p>Keep in mind that in order to specify the user, the scope also needs to be specified.</p>
+<p>@see: <a href="https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation">https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation</a></p>
 </div>
 
   
@@ -1813,7 +1843,7 @@ specified.</p>
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">tenant</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>The ID of the tenant which is requesting this scope.</p>
 </td>
     </tr>
@@ -1821,8 +1851,7 @@ specified.</p>
       <td data-ice="name" class="code" data-depth="0">organisation</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>The ID of the organisation which is
-                                 requesting this scope.</p>
+      <td data-ice="description"><p>The ID of the organisation which is requesting this scope.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -1863,7 +1892,7 @@ specified.</p>
       
       <tr class="throw" data-ice="throw">
         <td><p data-ice="throwName"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a></span></p></td>
-        <td data-ice="throwDesc"><p>When the required tenant is not set.</p>
+        <td data-ice="throwDesc"><p>When no arguments are provided.</p>
 </td>
       </tr>
 </tbody>
@@ -1891,16 +1920,16 @@ specified.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/api/auth.js.html#lineNumber61">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/api/auth.js.html#lineNumber105">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {authenticate} from &apos;<span><a href="file/src/api/auth.js.html#lineNumber61">itslanguage/api/auth.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {authenticate} from &apos;<span><a href="file/src/api/auth.js.html#lineNumber105">itslanguage/api/auth.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Authenticate for the given credentials with the given scope.</p>
-<p>On a successful authentication, the settings are updated so every
-follow-up API requests is authorized by the currently authenticated user.</p>
+<p>On a successful authentication, the settings are updated so every follow-up API requests is
+authorized by the currently authenticated user.</p>
 </div>
 
   
@@ -1946,10 +1975,9 @@ follow-up API requests is authorized by the currently authenticated user.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>A promise which will resolve if the authentication
-                     concluded successfully, it&apos;ll reject in any other case.
-                     It resolves with the response body of the token
-                     request.</p>
+          <td class="return-desc" data-ice="returnDescription"><p>A promise which will resolve if the authentication concluded successfully,
+                     it&apos;ll reject in any other case. It resolves with the response body of the
+                     token request.</p>
 </td>
         </tr>
       </tbody>
@@ -4954,6 +4982,90 @@ filters as a <code>URLSearchParams</code> object.</p>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></td>
           <td class="return-desc" data-ice="returnDescription"><p>The promise for the user.</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-impersonate">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">impersonate</span><span class="code" data-ice="signature">(scope: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/api/auth.js.html#lineNumber74">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {impersonate} from &apos;<span><a href="file/src/api/auth.js.html#lineNumber74">itslanguage/api/auth.js</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Impersonate some other tenant, user or organisation. The impersonation will be done by using
+the authorisation token for the current user.</p>
+<p>On a successful impersonation, the settings are updated so every follow-up API requests is
+authorized by the access_token required with this impersonation.</p>
+<p>As an admin or tenant user it is possible to do impersonation. This goes from top to down. So, a
+tenant user can impersonate an organisation, or an user in an organisation. But an user can&apos;t
+impersonate.</p>
+<p>@see: <a href="https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation">https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation</a></p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">scope</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>The scope of the impersonation. Omitting this value will cause the API
+                          to return a token for the current user.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>A promise which will resolve if the authentication concluded successfully,
+                     it&apos;ll reject in any other case. It resolves with the response body of the
+                     token request.</p>
 </td>
         </tr>
       </tbody>

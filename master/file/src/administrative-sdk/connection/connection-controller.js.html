@@ -69,6 +69,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-word-chunk">administrative-sdk/word-chunk</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api">api</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-assembleScope">assembleScope</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authenticate">authenticate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-impersonate">impersonate</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createCategory">createCategory</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllCategories">getAllCategories</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCategoryByID">getCategoryByID</a></span></span></li>
@@ -142,10 +143,12 @@
 camelcase
  */
 
-import {authorisedRequest, request, updateSettings} from &apos;../../api/communication&apos;;
+import {assembleScope, authenticate, impersonate} from &apos;../../api/auth&apos;;
+import {authorisedRequest, updateSettings} from &apos;../../api/communication&apos;;
 
 import autobahn from &apos;autobahn&apos;;
 import ee from &apos;event-emitter&apos;;
+
 /**
  * Controller class for managing connection interaction.
  */
@@ -385,45 +388,48 @@ export default class Connection {
   /**
    * Ask the server for an OAuth2 token.
    *
-   * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
-   * @param {string} [scope] - The scope which should be availible for the requested token.
+   * @param {BasicAuth|EmailCredentials} [auth] - Auth to obtain credentials from. If omitted we
+   *                                              assume impersonation.
+   * @param {string} [scope] - The scope which should be available for the requested token. If
+   *                           omitted the current user will be used.
    * @returns {Promise} Promise containing a access_token, token_type and scope.
    * @throws {Promise.&lt;Error&gt;} If the server returned an error.
    */
-  getOauth2Token(basicAuth, scope) {
-    const body = new URLSearchParams();
-    body.append(&apos;grant_type&apos;, &apos;password&apos;);
-    body.append(&apos;username&apos;, basicAuth.principal);
-    body.append(&apos;password&apos;, basicAuth.credentials);
+  getOauth2Token(auth, scope) {
+    const handleResponse = response =&gt; {
+      this._settings.oAuth2Token = response.access_token;
+      return response;
+    };
 
-    if (scope) {
-      body.append(&apos;scope&apos;, scope);
+    if (!auth) {
+      // We didn&apos;t get auth, so we need to assume impersonation here!
+      return impersonate(scope).then(handleResponse);
     }
 
-    return request(&apos;POST&apos;, &apos;/tokens&apos;, body).then(response =&gt; {
-      this._settings.oAuth2Token = response.access_token;
-      updateSettings({authorizationToken: response.access_token});
-    });
+    // Auth is either BasicAuth or EmailCredentials.
+    // In case of both (which theoretically could not happen, but hey) the BasicAuth takes
+    // precedent over the EmailCredentials.
+    const {principal, credentials, email, password} = auth;
+    return authenticate(principal || email, credentials || password, scope).then(handleResponse);
   }
 
   /**
-   * Request authentication for a {@link User}. The basicAuth now contains the user&apos;s username and password.
+   * Request authentication for a {@link User}. This will either work for users with BasicAuth or
+   * for users with EmailCredentials (EmailAuth).
    *
    * This method also generates the appropriate scope for the given params.
    *
-   * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
-   * @param {string} organisationId - Id of the organisation this user is part of.
+   * @param {BasicAuth|EmailCredentials} auth - Auth to obtain credentials from.
+   * @param {string} [organisationId] - Id of the organisation this user is part of.
+   *
    */
-  getUserAuth(basicAuth, organisationId) {
-    let scopes = &apos;tenant/&apos; + basicAuth.tenantId;
-    if (organisationId) {
-      scopes += &apos;/organisation/&apos; + organisationId;
-      if (basicAuth.principal) {
-        scopes += &apos;/user/&apos; + basicAuth.principal;
-      }
-    }
-
-    return this.getOauth2Token(basicAuth, scopes);
+  getUserAuth(auth, organisationId) {
+    // Auth is either BasicAuth or EmailCredentials.
+    // In case of both (which theoretically could not happen, but hey) the BasicAuth takes
+    // precedent over the EmailCredentials.
+    const {tenantId, principal, email} = auth;
+    const scope = assembleScope(tenantId, organisationId, principal || email);
+    return this.getOauth2Token(auth, scope);
   }
 }
 </code></pre>

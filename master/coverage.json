@@ -1,7 +1,7 @@
 {
-  "coverage": "79.42%",
-  "expectCount": 559,
-  "actualCount": 444,
+  "coverage": "79.46%",
+  "expectCount": 560,
+  "actualCount": 445,
   "files": {
     "src/WebAudio/AudioContext.js": {
       "expectCount": 13,
@@ -97,12 +97,12 @@
       "expectCount": 23,
       "actualCount": 17,
       "undocumentLines": [
-        35,
-        36,
         37,
         38,
         39,
-        146
+        40,
+        41,
+        148
       ]
     },
     "src/administrative-sdk/email-credentials/email-credentials-controller.js": {
@@ -244,8 +244,8 @@
       "undocumentLines": []
     },
     "src/api/auth.js": {
-      "expectCount": 2,
-      "actualCount": 2,
+      "expectCount": 3,
+      "actualCount": 3,
       "undocumentLines": []
     },
     "src/api/broadcaster.js": {

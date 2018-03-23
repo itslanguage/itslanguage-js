@@ -69,6 +69,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-word-chunk">administrative-sdk/word-chunk</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api">api</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-assembleScope">assembleScope</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authenticate">authenticate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-impersonate">impersonate</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createCategory">createCategory</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllCategories">getAllCategories</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCategoryByID">getCategoryByID</a></span></span></li>
@@ -138,13 +139,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Connection from &apos;<span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber12">itslanguage/administrative-sdk/connection/connection-controller.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Connection from &apos;<span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber14">itslanguage/administrative-sdk/connection/connection-controller.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber12">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber14">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -593,7 +594,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html#instance-method-getOauth2Token">getOauth2Token</a></span></span><span class="code" data-ice="signature">(basicAuth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span>, scope: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html#instance-method-getOauth2Token">getOauth2Token</a></span></span><span class="code" data-ice="signature">(auth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span> | <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>, scope: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
         </p>
       </div>
       <div>
@@ -622,7 +623,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html#instance-method-getUserAuth">getUserAuth</a></span></span><span class="code" data-ice="signature">(basicAuth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span>, organisationId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html#instance-method-getUserAuth">getUserAuth</a></span></span><span class="code" data-ice="signature">(auth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span> | <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>, organisationId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
         </p>
       </div>
       <div>
@@ -866,7 +867,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber241">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber243">source</a></span></span>
     </span>
   </h3>
 
@@ -929,7 +930,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber204">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber206">source</a></span></span>
     </span>
   </h3>
 
@@ -988,7 +989,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber23">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber25">source</a></span></span>
     </span>
   </h3>
 
@@ -1059,7 +1060,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber35">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber37">source</a></span></span>
     </span>
   </h3>
 
@@ -1102,7 +1103,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber39">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber41">source</a></span></span>
     </span>
   </h3>
 
@@ -1145,7 +1146,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber38">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber40">source</a></span></span>
     </span>
   </h3>
 
@@ -1188,7 +1189,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber37">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber39">source</a></span></span>
     </span>
   </h3>
 
@@ -1231,7 +1232,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber36">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber38">source</a></span></span>
     </span>
   </h3>
 
@@ -1274,7 +1275,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber27">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber29">source</a></span></span>
     </span>
   </h3>
 
@@ -1320,7 +1321,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber190">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber192">source</a></span></span>
     </span>
   </h3>
 
@@ -1394,7 +1395,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber51">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber53">source</a></span></span>
     </span>
   </h3>
 
@@ -1462,7 +1463,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber140">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber142">source</a></span></span>
     </span>
   </h3>
 
@@ -1543,7 +1544,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber217">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber219">source</a></span></span>
     </span>
   </h3>
 
@@ -1600,11 +1601,11 @@ Valid options include:</p>
     
     
     
-    <span class="code" data-ice="name">getOauth2Token</span><span class="code" data-ice="signature">(basicAuth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span>, scope: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
+    <span class="code" data-ice="name">getOauth2Token</span><span class="code" data-ice="signature">(auth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span> | <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>, scope: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber253">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber257">source</a></span></span>
     </span>
   </h3>
 
@@ -1625,17 +1626,19 @@ Valid options include:</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">basicAuth</td>
-      <td data-ice="type" class="code"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Basic Auth to obtain credentials from.</p>
+      <td data-ice="name" class="code" data-depth="0">auth</td>
+      <td data-ice="type" class="code"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span> | <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>Auth to obtain credentials from. If omitted we
+                                             assume impersonation.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">scope</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>The scope which should be availible for the requested token.</p>
+      <td data-ice="description"><p>The scope which should be available for the requested token. If
+                          omitted the current user will be used.</p>
 </td>
     </tr>
 </tbody>
@@ -1693,18 +1696,19 @@ Valid options include:</p>
     
     
     
-    <span class="code" data-ice="name">getUserAuth</span><span class="code" data-ice="signature">(basicAuth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span>, organisationId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+    <span class="code" data-ice="name">getUserAuth</span><span class="code" data-ice="signature">(auth: <span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span> | <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span>, organisationId: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber277">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber285">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Request authentication for a <span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>. The basicAuth now contains the user&apos;s username and password.</p>
+  <div data-ice="description"><p>Request authentication for a <span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span>. This will either work for users with BasicAuth or
+for users with EmailCredentials (EmailAuth).</p>
 <p>This method also generates the appropriate scope for the given params.</p>
 </div>
 
@@ -1719,16 +1723,16 @@ Valid options include:</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">basicAuth</td>
-      <td data-ice="type" class="code"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">auth</td>
+      <td data-ice="type" class="code"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span> | <span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>Basic Auth to obtain credentials from.</p>
+      <td data-ice="description"><p>Auth to obtain credentials from.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">organisationId</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>Id of the organisation this user is part of.</p>
 </td>
     </tr>
@@ -1778,7 +1782,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber61">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber63">source</a></span></span>
     </span>
   </h3>
 
@@ -1846,7 +1850,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber80">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber82">source</a></span></span>
     </span>
   </h3>
 
@@ -1890,7 +1894,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber146">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber148">source</a></span></span>
     </span>
   </h3>
 
@@ -1935,7 +1939,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber180">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber182">source</a></span></span>
     </span>
   </h3>
 
@@ -2021,7 +2025,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber157">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber159">source</a></span></span>
     </span>
   </h3>
 
@@ -2107,7 +2111,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber169">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber171">source</a></span></span>
     </span>
   </h3>
 
@@ -2200,7 +2204,7 @@ Valid options include:</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber72">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#lineNumber74">source</a></span></span>
     </span>
   </h3>
 
