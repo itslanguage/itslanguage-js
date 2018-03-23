@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
+
+## [3.1.0]
 ### Added
 - New functions to do proper impersonation, does not require credentials.
 ### Fixed
@@ -17,4 +19,5 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
 
-[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v3.0.1...prepare_v3.1.0_release
+[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/itslanguage/itslanguage-js/compare/v3.0.1...v3.1.0
