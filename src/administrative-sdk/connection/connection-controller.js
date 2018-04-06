@@ -2,10 +2,12 @@
 camelcase
  */
 
-import {authorisedRequest, request, updateSettings} from '../../api/communication';
+import {assembleScope, authenticate, impersonate} from '../../api/auth';
+import {authorisedRequest, updateSettings} from '../../api/communication';
 
 import autobahn from 'autobahn';
 import ee from 'event-emitter';
+
 /**
  * Controller class for managing connection interaction.
  */
@@ -245,45 +247,47 @@ export default class Connection {
   /**
    * Ask the server for an OAuth2 token.
    *
-   * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
-   * @param {string} [scope] - The scope which should be availible for the requested token.
+   * @param {BasicAuth|EmailCredentials} [auth] - Auth to obtain credentials from. If omitted we
+   *                                              assume impersonation.
+   * @param {string} [scope] - The scope which should be available for the requested token. If
+   *                           omitted the current user will be used.
    * @returns {Promise} Promise containing a access_token, token_type and scope.
    * @throws {Promise.<Error>} If the server returned an error.
    */
-  getOauth2Token(basicAuth, scope) {
-    const body = new URLSearchParams();
-    body.append('grant_type', 'password');
-    body.append('username', basicAuth.principal);
-    body.append('password', basicAuth.credentials);
+  getOauth2Token(auth, scope) {
+    const handleResponse = response => {
+      this._settings.oAuth2Token = response.access_token;
+      return response;
+    };
 
-    if (scope) {
-      body.append('scope', scope);
+    if (!auth) {
+      // We didn't get auth, so we need to assume impersonation here!
+      return impersonate(scope).then(handleResponse);
     }
 
-    return request('POST', '/tokens', body).then(response => {
-      this._settings.oAuth2Token = response.access_token;
-      updateSettings({authorizationToken: response.access_token});
-      return response;
-    });
+    // Auth is either BasicAuth or EmailCredentials.
+    // In case of both (which theoretically could not happen, but hey) the BasicAuth takes
+    // precedent over the EmailCredentials.
+    const {principal, credentials, email, password} = auth;
+    return authenticate(principal || email, credentials || password, scope).then(handleResponse);
   }
 
   /**
-   * Request authentication for a {@link User}. The basicAuth now contains the user's username and password.
+   * Request authentication for a {@link User}. This will either work for users with BasicAuth or
+   * for users with EmailCredentials (EmailAuth).
    *
    * This method also generates the appropriate scope for the given params.
    *
-   * @param {BasicAuth} basicAuth - Basic Auth to obtain credentials from.
-   * @param {string} organisationId - Id of the organisation this user is part of.
+   * @param {BasicAuth|EmailCredentials} auth - Auth to obtain credentials from.
+   * @param {string} [organisationId] - Id of the organisation this user is part of.
+   *
    */
-  getUserAuth(basicAuth, organisationId) {
-    let scopes = 'tenant/' + basicAuth.tenantId;
-    if (organisationId) {
-      scopes += '/organisation/' + organisationId;
-      if (basicAuth.principal) {
-        scopes += '/user/' + basicAuth.principal;
-      }
-    }
-
-    return this.getOauth2Token(basicAuth, scopes);
+  getUserAuth(auth, organisationId) {
+    // Auth is either BasicAuth or EmailCredentials.
+    // In case of both (which theoretically could not happen, but hey) the BasicAuth takes
+    // precedent over the EmailCredentials.
+    const {tenantId, principal, email} = auth;
+    const scope = assembleScope(tenantId, organisationId, principal || email);
+    return this.getOauth2Token(auth, scope);
   }
 }

@@ -6,6 +6,7 @@ import * as communication from '../src/api/communication';
 import Autobahn from 'autobahn';
 import BasicAuth from '../src/administrative-sdk/basic-auth/basic-auth';
 import Connection from '../src/administrative-sdk/connection/connection-controller';
+import EmailCredentials from '../src/administrative-sdk/email-credentials/email-credentials';
 let api;
 
 describe('Events', () => {
@@ -337,14 +338,7 @@ describe('Connection', () => {
       const requestSpy = spyOn(communication, 'request');
       requestSpy.and.returnValue(Promise.reject('418: I\'m a teapot'));
 
-      const basicAuth = new BasicAuth('', 'principal', 'credentials');
-
-      const expectedBody = new URLSearchParams();
-      expectedBody.set('grant_type', 'passord');
-      expectedBody.set('username', basicAuth.principal);
-      expectedBody.set('credentials', basicAuth.credentials);
-
-      api.getOauth2Token(basicAuth)
+      api.getOauth2Token()
         .then(fail, done);
     });
 
@@ -360,6 +354,55 @@ describe('Connection', () => {
       expectedBody.set('credentials', basicAuth.credentials);
 
       api.getOauth2Token(basicAuth)
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
+    });
+
+    it('should allow email-credentials object to do authentication request', done => {
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const emailAuth = new EmailCredentials('email@example.org', 'fake');
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'password');
+      expectedBody.set('username', emailAuth.email);
+      expectedBody.set('credentials', emailAuth.password);
+
+      api.getOauth2Token(emailAuth)
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
+    });
+
+    it('should use impersonisation if only scope is provided', done => {
+      const requestSpy = spyOn(communication, 'authorisedRequest');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const fakeScope = 'tenant/rotterdam';
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'client_credentials');
+      expectedBody.set('scope', fakeScope);
+
+      api.getOauth2Token(null, fakeScope)
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
+    });
+
+    it('should use impersonation for the current user if no auth and scope are provided', done => {
+      const requestSpy = spyOn(communication, 'authorisedRequest');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'client_credentials');
+
+      api.getOauth2Token(null)
         .then(() => {
           expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
           done();
@@ -448,6 +491,24 @@ describe('Connection', () => {
       expectedBody.set('scope', scope);
 
       api.getUserAuth(basicAuth)
+        .then(() => {
+          expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
+          done();
+        }, fail);
+    });
+
+    it('should allow EmailCredentials as authentication method', done => {
+      const requestSpy = spyOn(communication, 'request');
+      requestSpy.and.returnValue(Promise.resolve({access_token: 'gib4cc35pl0x'}));
+
+      const emailAuth = new EmailCredentials('email@example.org', 'fake');
+
+      const expectedBody = new URLSearchParams();
+      expectedBody.set('grant_type', 'password');
+      expectedBody.set('username', emailAuth.email);
+      expectedBody.set('credentials', emailAuth.password);
+
+      api.getUserAuth(emailAuth)
         .then(() => {
           expect(requestSpy.calls.mostRecent().args).toEqual(['POST', '/tokens', expectedBody]);
           done();
