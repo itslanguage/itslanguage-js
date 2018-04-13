@@ -73,6 +73,20 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
 }
 
 /**
+ * Feedback can be paused. This will stop the backend from processing the audio stream and returning
+ * feedback.
+ *
+ * Important note: pausing the feedback will not stop the feedback. Also make sure to stop sending
+ *                 data from the recorder to the backend.
+ *
+ * @param {string} feedbackId - The ID of the feedback to pause.
+ * @returns {Promise} - An error if something went wrong.
+ */
+export function pause(feedbackId) {
+  return makeWebsocketCall('feedback.pause', {args: [feedbackId]});
+}
+
+/**
  * Function for convenience. Using this function calls the corresponding functions so that the
  * required backend flow is backed up.
  *
