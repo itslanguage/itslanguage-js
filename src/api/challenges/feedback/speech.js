@@ -87,6 +87,18 @@ export function pause(feedbackId) {
 }
 
 /**
+ * A paused feedback can be resumed at a sentence in the challenge. If not provided, it will resume
+ * at the first sentence.
+ *
+ * @param {string} feedbackId - The ID of the feedback to resume.
+ * @param {string} sentenceId - The ID of the sentence to resume feedback from.
+ * @returns {Promise} - An error if something went wrong.
+ */
+export function resume(feedbackId, sentenceId = 0) {
+  return makeWebsocketCall('feedback.resume', {args: [feedbackId, sentenceId]});
+}
+
+/**
  * Function for convenience. Using this function calls the corresponding functions so that the
  * required backend flow is backed up.
  *
