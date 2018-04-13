@@ -17,7 +17,6 @@
  *  To read more on Speech Challenges:
  *  @see https://itslanguage.github.io/itslanguage-docs/api/speech_challenges/index.html
  *
- *  @TODO: Backend API features are not implemented yet.
  *  @TODO: The feedback.pause and feedback.resume are not implemented yet.
  */
 
