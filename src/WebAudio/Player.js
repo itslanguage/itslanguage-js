@@ -18,6 +18,27 @@ export default class Player extends AudioContext {
    */
   audioSource = null;
 
+  /**
+   * Player playback state.
+   * @private
+   * @type {boolean}
+   */
+  playing = false;
+
+  /**
+   * Point in time where player is paused.
+   * @private
+   * @type {number}
+   */
+  pausedAt = 0;
+
+  /**
+   * Point in time where player is started
+   * @private
+   * @type {number}
+   */
+  startedAt = 0;
+
   createBufferSource() {
     this.disconnectBufferSource();
 
@@ -96,6 +117,8 @@ export default class Player extends AudioContext {
    * Start audio playback of that what is in the buffer.
    */
   play() {
+    const offset = this.pausedAt;
+
     this.createBufferSource();
 
     if (this.audioContext.state === 'suspended') {
@@ -103,7 +126,12 @@ export default class Player extends AudioContext {
     }
 
     // play the source now
-    this.audioSource.start();
+    this.audioSource.start(0, offset);
+
+    this.startedAt = this.audioContext.currentTime - offset;
+    this.pausedAt = 0;
+    this.playing = true;
+
     this.fireEvent('playing');
   }
 
@@ -117,15 +145,25 @@ export default class Player extends AudioContext {
     }
 
     this.audioSource.stop();
+    this.pausedAt = 0;
+    this.startedAt = 0;
+    this.playing = false;
+
     this.fireEvent('stopped');
   }
 
+  /**
+   * Pause playback of audio.
+   */
   pause() {
     if (!this.audioBufferExists() && !this.audioSourceExists()) {
       return;
     }
 
+    const elapsed = this.audioContext.currentTime - this.startedAt;
     this.audioSource.stop();
+    this.pausedAt = elapsed;
+
     this.fireEvent('pause');
   }
 }
