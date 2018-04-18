@@ -9,12 +9,14 @@ export default class Player extends AudioContext {
   /**
    * Private object to hold AudioBuffer node.
    * @private
+   * @Type {AudioBuffer}
    */
   audioBuffer = null;
 
   /**
    * Private object to hold AudioBufferSourceNode node.
    * @private
+   * @type {AudioBufferSourceNode}
    */
   audioSource = null;
 
@@ -39,6 +41,10 @@ export default class Player extends AudioContext {
    */
   startedAt = 0;
 
+  /**
+   * Create and initialize the AudioBufferSourceNode object.
+   *
+   */
   createBufferSource() {
     this.disconnectBufferSource();
 
@@ -55,6 +61,10 @@ export default class Player extends AudioContext {
     this.audioSource.addEventListener('ended', this.suspendAudioContext);
   }
 
+  /**
+   * Disconnect the AudioBufferSourceNode.
+   *
+   */
   disconnectBufferSource() {
     if (this.audioSourceExists()) {
       this.audioSource.disconnect();
