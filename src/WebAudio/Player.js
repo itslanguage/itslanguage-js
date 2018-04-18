@@ -9,15 +9,42 @@ export default class Player extends AudioContext {
   /**
    * Private object to hold AudioBuffer node.
    * @private
+   * @Type {AudioBuffer}
    */
   audioBuffer = null;
 
   /**
    * Private object to hold AudioBufferSourceNode node.
    * @private
+   * @type {AudioBufferSourceNode}
    */
   audioSource = null;
 
+  /**
+   * Player playback state.
+   * @private
+   * @type {boolean}
+   */
+  playing = false;
+
+  /**
+   * Point in time where player is paused.
+   * @private
+   * @type {number}
+   */
+  pausedAt = 0;
+
+  /**
+   * Point in time where player is started
+   * @private
+   * @type {number}
+   */
+  startedAt = 0;
+
+  /**
+   * Create and initialize the AudioBufferSourceNode object.
+   *
+   */
   createBufferSource() {
     this.disconnectBufferSource();
 
@@ -34,6 +61,10 @@ export default class Player extends AudioContext {
     this.audioSource.addEventListener('ended', this.suspendAudioContext);
   }
 
+  /**
+   * Disconnect the AudioBufferSourceNode.
+   *
+   */
   disconnectBufferSource() {
     if (this.audioSourceExists()) {
       this.audioSource.disconnect();
@@ -53,7 +84,7 @@ export default class Player extends AudioContext {
    * @param {string} url - Url to load.
    * @param {boolean} withItslToken - Make use of authorizedRequest or just request if set to false.
    */
-  async load(url, withItslToken = true) {
+  load(url, withItslToken = true) {
     if (!url) {
       return;
     }
@@ -62,16 +93,15 @@ export default class Player extends AudioContext {
     const requestMethod = withItslToken ? authorisedRequest : request;
     const {audioContext} = this;
 
-    try {
-      const response = await requestMethod('GET', url);
-      const audioData = await response.arrayBuffer();
-      audioContext.decodeAudioData(audioData, decodedAudio => {
+    requestMethod('GET', url)
+      .then(response => response.arrayBuffer())
+      .then(audioData => audioContext.decodeAudioData(audioData, decodedAudio => {
         this.audioBuffer = decodedAudio;
         this.fireEvent('loaded');
+      }))
+      .catch(error => {
+        this.error(`${error.name}: ${error.message}`);
       });
-    } catch (error) {
-      this.error(`${error.name}: ${error.message}`);
-    }
   }
 
   /**
@@ -96,6 +126,8 @@ export default class Player extends AudioContext {
    * Start audio playback of that what is in the buffer.
    */
   play() {
+    const offset = this.pausedAt;
+
     this.createBufferSource();
 
     if (this.audioContext.state === 'suspended') {
@@ -103,7 +135,12 @@ export default class Player extends AudioContext {
     }
 
     // play the source now
-    this.audioSource.start();
+    this.audioSource.start(0, offset);
+
+    this.startedAt = this.audioContext.currentTime - offset;
+    this.pausedAt = 0;
+    this.playing = true;
+
     this.fireEvent('playing');
   }
 
@@ -117,15 +154,60 @@ export default class Player extends AudioContext {
     }
 
     this.audioSource.stop();
+    this.pausedAt = 0;
+    this.startedAt = 0;
+    this.playing = false;
+
     this.fireEvent('stopped');
   }
 
+  /**
+   * Pause playback of audio.
+   */
   pause() {
     if (!this.audioBufferExists() && !this.audioSourceExists()) {
       return;
     }
 
+    const elapsed = this.audioContext.currentTime - this.startedAt;
     this.audioSource.stop();
+    this.pausedAt = elapsed;
+
     this.fireEvent('pause');
+  }
+
+  /**
+   * Is the player currently playing.
+   *
+   * @returns {boolean} - Whether or not the player is playing audio.
+   */
+  isPlaying() {
+    return this.playing;
+  }
+
+  /**
+   * Get the duration of the loaded audio.
+   *
+   * @returns {number} - Duration of the loaded audio.
+   */
+  getDuration() {
+    return this.audioBuffer.duration;
+  }
+
+  /**
+   * Get the currentTime for the audio that is loaded.
+   *
+   * @returns {number} - The currentTime value.
+   */
+  getCurrentTime() {
+    if (this.pausedAt) {
+      return this.pausedAt;
+    }
+
+    if (this.startedAt) {
+      return this.audioContext.currentTime - this.startedAt;
+    }
+
+    return 0;
   }
 }
