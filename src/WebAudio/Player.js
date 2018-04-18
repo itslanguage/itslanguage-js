@@ -84,7 +84,7 @@ export default class Player extends AudioContext {
    * @param {string} url - Url to load.
    * @param {boolean} withItslToken - Make use of authorizedRequest or just request if set to false.
    */
-  async load(url, withItslToken = true) {
+  load(url, withItslToken = true) {
     if (!url) {
       return;
     }
@@ -93,16 +93,15 @@ export default class Player extends AudioContext {
     const requestMethod = withItslToken ? authorisedRequest : request;
     const {audioContext} = this;
 
-    try {
-      const response = await requestMethod('GET', url);
-      const audioData = await response.arrayBuffer();
-      audioContext.decodeAudioData(audioData, decodedAudio => {
+    requestMethod('GET', url)
+      .then(response => response.arrayBuffer())
+      .then(audioData => audioContext.decodeAudioData(audioData, decodedAudio => {
         this.audioBuffer = decodedAudio;
         this.fireEvent('loaded');
+      }))
+      .catch(error => {
+        this.error(`${error.name}: ${error.message}`);
       });
-    } catch (error) {
-      this.error(`${error.name}: ${error.message}`);
-    }
   }
 
   /**
