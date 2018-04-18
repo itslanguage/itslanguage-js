@@ -175,4 +175,39 @@ export default class Player extends AudioContext {
 
     this.fireEvent('pause');
   }
+
+  /**
+   * Is the player currently playing.
+   *
+   * @returns {boolean} - Whether or not the player is playing audio.
+   */
+  isPlaying() {
+    return this.playing;
+  }
+
+  /**
+   * Get the duration of the loaded audio.
+   *
+   * @returns {number} - Duration of the loaded audio.
+   */
+  getDuration() {
+    return this.audioBuffer.duration;
+  }
+
+  /**
+   * Get the currentTime for the audio that is loaded.
+   *
+   * @returns {number} - The currentTime value.
+   */
+  getCurrentTime() {
+    if (this.pausedAt) {
+      return this.pausedAt;
+    }
+
+    if (this.startedAt) {
+      return this.audioContext.currentTime - this.startedAt;
+    }
+
+    return 0;
+  }
 }
