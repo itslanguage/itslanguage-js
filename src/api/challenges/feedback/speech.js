@@ -16,8 +16,6 @@
  *
  *  To read more on Speech Challenges:
  *  @see https://itslanguage.github.io/itslanguage-docs/api/speech_challenges/index.html
- *
- *  @TODO: The feedback.pause and feedback.resume are not implemented yet.
  */
 
 import {
@@ -66,10 +64,36 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
         'feedback.listen_and_reply',
         {
           args: [feedbackId, registration.procedure],
-          progressCb
+          progressCb: progressCb.bind(null, feedbackId)
         }
       )
     );
+}
+
+/**
+ * Feedback can be paused. This will stop the backend from processing the audio stream and returning
+ * feedback.
+ *
+ * Important note: pausing the feedback will not stop the feedback. Also make sure to stop sending
+ *                 data from the recorder to the backend.
+ *
+ * @param {string} feedbackId - The ID of the feedback to pause.
+ * @returns {Promise} - An error if something went wrong.
+ */
+export function pause(feedbackId) {
+  return makeWebsocketCall('feedback.pause', {args: [feedbackId]});
+}
+
+/**
+ * A paused feedback can be resumed at a sentence in the challenge. If not provided, it will resume
+ * at the first sentence.
+ *
+ * @param {string} feedbackId - The ID of the feedback to resume.
+ * @param {string} sentenceId - The ID of the sentence to resume feedback from.
+ * @returns {Promise} - An error if something went wrong.
+ */
+export function resume(feedbackId, sentenceId = 0) {
+  return makeWebsocketCall('feedback.resume', {args: [feedbackId, sentenceId]});
 }
 
 /**

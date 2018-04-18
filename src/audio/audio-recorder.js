@@ -299,6 +299,18 @@ export default class AudioRecorder {
     });
   }
 
+  pause() {
+    if (!this._recorder.isRecording()) {
+      return;
+    }
+    this._recorder.stop();
+    if (this._stopwatch) {
+      this._stopwatch.stop();
+    }
+    console.log('paused recording for id: ' + this.activeRecordingId);
+    this.fireEvent('paused', [self.activeRecordingId]);
+  }
+
   /**
    * Check if there is a recording in progress.
    *
