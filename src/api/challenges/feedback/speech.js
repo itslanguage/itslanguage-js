@@ -66,7 +66,7 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
         'feedback.listen_and_reply',
         {
           args: [feedbackId, registration.procedure],
-          progressCb
+          progressCb: progressCb.bind(null, feedbackId)
         }
       )
     );
