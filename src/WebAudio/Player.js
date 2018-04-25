@@ -100,6 +100,7 @@ export default class Player extends AudioContext {
       .then(response => response.arrayBuffer())
       .then(audioData => audioContext.decodeAudioData(audioData, decodedAudio => {
         this.audioBuffer = decodedAudio;
+        this.createBufferSource();
         this.fireEvent('loaded');
       }))
       .catch(error => {
@@ -131,7 +132,9 @@ export default class Player extends AudioContext {
   play() {
     const offset = this.pausedAt;
 
-    this.createBufferSource();
+    if (offset !== 0) {
+      this.createBufferSource();
+    }
 
     if (this.audioContext.state === 'suspended') {
       this.audioContext.resume();
