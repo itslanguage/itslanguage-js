@@ -58,7 +58,10 @@ export default class Player extends AudioContext {
     this.audioSource.connect(this.audioContext.destination);
 
     // Add some event handlers;
-    this.audioSource.addEventListener('ended', this.suspendAudioContext);
+    this.audioSource.addEventListener('ended', () => {
+      this.fireEvent('ended');
+      this.suspendAudioContext();
+    });
   }
 
   /**
