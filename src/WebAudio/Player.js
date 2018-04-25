@@ -21,11 +21,24 @@ export default class Player extends AudioContext {
   audioSource = null;
 
   /**
+   * Private object to hold GainNode.
+   * @private
+   * @type {GainNode}
+   */
+  gainNode = null;
+
+  /**
    * Player playback state.
    * @private
    * @type {boolean}
    */
   playing = false;
+
+  /**
+   * Player volume. 0 is muted, 1 is 100%.
+   * @type {number}
+   */
+  volume = 1;
 
   /**
    * Point in time where player is paused.
@@ -42,6 +55,18 @@ export default class Player extends AudioContext {
   startedAt = 0;
 
   /**
+   * Player constructor.
+   * Creates a GainNode and stores it.
+   */
+  constructor() {
+    super();
+
+    this.gainNode = this.audioContext.createGain();
+    this.gainNode.gain.value = this.volume;
+    this.gainNode.connect(this.audioContext.destination);
+  }
+
+  /**
    * Create and initialize the AudioBufferSourceNode object.
    *
    */
@@ -54,8 +79,8 @@ export default class Player extends AudioContext {
     // Select what to play
     this.audioSource.buffer = this.audioBuffer;
 
-    // Connect to the speakers!
-    this.audioSource.connect(this.audioContext.destination);
+    // Connect to the GainNode!
+    this.audioSource.connect(this.gainNode);
 
     // Add some event handlers;
     this.audioSource.addEventListener('ended', () => {
@@ -198,6 +223,25 @@ export default class Player extends AudioContext {
    */
   getDuration() {
     return this.audioBuffer.duration;
+  }
+
+  /**
+   * Set the volume of the payer to a value between 0 - 1.
+   * 0 means no volume (muted), 1 means max.
+   *
+   * @param {number} volume - Value for volume between 0 an 1.
+   */
+  setVolume(volume = 1) {
+    this.volume = volume;
+    this.gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+  }
+
+  /**
+   * Mute the player by setting its volume to 0.
+   */
+  mute() {
+    this.volume = 0;
+    this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
   }
 
   /**
