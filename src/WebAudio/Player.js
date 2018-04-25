@@ -216,4 +216,23 @@ export default class Player extends AudioContext {
 
     return 0;
   }
+
+  /**
+   * Return the AudioBufferSourceNode node.
+   * Note that after a pause/resume the AudioBufferSourceNode will be recreated.
+   *
+   * @returns {AudioBufferSourceNode} - The current available AudioBufferSourceNode.
+   */
+  getBufferSource() {
+    return this.audioSource;
+  }
+
+  /**
+   * Return the AudioContext node.
+   *
+   * @returns {AudioContext} - The current available AudioContext.
+   */
+  getAudioContext() {
+    return this.audioContext;
+  }
 }
