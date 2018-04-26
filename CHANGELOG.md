@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 ### Added
-- Feedback API
+- Feedback API.
 - WebAudio Player supports pause now.
+- WebAudio Player supports volume now.
 
 ## [3.1.0]
 ### Added
