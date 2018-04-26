@@ -96,7 +96,7 @@ export default class Player extends AudioContext {
   disconnectBufferSource() {
     if (this.audioSourceExists()) {
       this.audioSource.disconnect();
-      this.audioSource.removeEventListener('ended', this.suspendAudioContext);
+      this.audioSource = null;
     }
   }
 
