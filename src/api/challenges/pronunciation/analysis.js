@@ -33,7 +33,7 @@ export function getPronunciationAnalysisById(challengeId, analysisId) {
  * @returns {Promise|Promise.<*>} - The result will hold the ID for the analysis.
  */
 export function preparePronunciationAnalysis() {
-  return makeWebsocketCall('pronunciation.init_analysis');
+  return makeWebsocketCall('pronunciation.init_analysis', {kwargs: {trimStart: 0.1, trimEnd: 0.05}});
 }
 
 /**
@@ -48,7 +48,7 @@ export function prepareAnalysisChallenge(analysisId, challengeId) {
 }
 
 /**
- * A Pronunciaion Challange could hold an alignment allready. If not so
+ * A Pronunciation Challenge could hold an alignment already. If not,
  * this function will instruct the backend to create the alignment and
  * return it to the client.
  *
