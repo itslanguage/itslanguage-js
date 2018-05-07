@@ -243,13 +243,16 @@ export default class AudioRecorder {
   }
 
   /**
-   * Start recording microphone input until stopped.
+   * Start recording microphone input until stopped. By default the actual recording will start
+   * a small delay of 100ms. Set disableDelay to true to disable this delay.
    *
    * @param {?Function} cb - The callback that provides a piece of raw audio when
    * it becomes available. It may be used for streaming.
+   * @param {boolean} disableDelay - If set to true it will disable the delay before the actual
+   * recording starts.
    * @emits {Event} 'recording' With arguments: [recording ID].
    */
-  record(cb) {
+  record(cb, disableDelay = false) {
     if (!this._requireGetUserMedia()) {
       return;
     }
@@ -258,20 +261,25 @@ export default class AudioRecorder {
       throw new Error('Already recording, stop recording first.');
     }
 
-    this.audioContext.resume();
+    const delay = disableDelay ? 0 : 100;
 
-    this._recorder.record();
-    if (this._stopwatch) {
-      this._stopwatch._value = 0;
-      this._stopwatch.start();
-    }
+    window.setTimeout(() => {
+      this.audioContext.resume();
 
-    if (!this.activeRecordingId) {
-      this.startRecordingSession();
-    }
-    console.log('Recording as id: ' + this.activeRecordingId);
+      this._recorder.record();
+      if (this._stopwatch) {
+        this._stopwatch._value = 0;
+        this._stopwatch.start();
+      }
 
-    this.fireEvent('recording', [this.activeRecordingId]);
+      if (!this.activeRecordingId) {
+        this.startRecordingSession();
+      }
+      console.log('Recording as id: ' + this.activeRecordingId);
+
+      this.fireEvent('recording', [this.activeRecordingId]);
+    }, delay);
+
     return cb;
   }
 
