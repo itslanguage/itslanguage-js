@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
+### Added
+- Delay for the recorder, start recording after 100ms.
 
 ## [3.1.0]
 ### Added
