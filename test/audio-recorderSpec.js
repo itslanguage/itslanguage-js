@@ -169,7 +169,7 @@ describe('Audio recorder', () => {
     expect(recorder.activeRecordingId).toEqual(1);
   });
 
-  it('should start recording microphone input until stopped', () => {
+  it('should start recording microphone input until stopped', done => {
     const recorder = new AudioRecorder();
     recorder._recorder = jasmine.createSpyObj('recorder', ['record']);
     const cb = jasmine.createSpy();
@@ -181,12 +181,16 @@ describe('Audio recorder', () => {
     });
     spyOn(recorder, 'fireEvent');
     const result = recorder.record(cb);
-    expect(recorder._requireGetUserMedia).toHaveBeenCalledTimes(1);
-    expect(recorder.isRecording).toHaveBeenCalledTimes(1);
-    expect(recorder._recorder.record).toHaveBeenCalledTimes(1);
-    expect(recorder.startRecordingSession).toHaveBeenCalledTimes(1);
-    expect(recorder.fireEvent).toHaveBeenCalledWith('recording', [1]);
-    expect(result).toEqual(cb);
+
+    setTimeout(() => {
+      expect(recorder._requireGetUserMedia).toHaveBeenCalledTimes(1);
+      expect(recorder.isRecording).toHaveBeenCalledTimes(1);
+      expect(recorder._recorder.record).toHaveBeenCalledTimes(1);
+      expect(recorder.startRecordingSession).toHaveBeenCalledTimes(1);
+      expect(recorder.fireEvent).toHaveBeenCalledWith('recording', [1]);
+      expect(result).toEqual(cb);
+      done();
+    }, 100);
   });
 
   it('should start recording microphone input until stopped without being able to get usermedia', () => {
@@ -213,7 +217,7 @@ describe('Audio recorder', () => {
     expect(recorder.isRecording).toHaveBeenCalledTimes(1);
   });
 
-  it('should start recording microphone input until stopped with an active recording id', () => {
+  it('should start recording microphone input until stopped with an active recording id', done => {
     const recorder = new AudioRecorder();
     recorder._recorder = jasmine.createSpyObj('recorder', ['record']);
     const cb = jasmine.createSpy();
@@ -223,12 +227,16 @@ describe('Audio recorder', () => {
     spyOn(recorder, 'startRecordingSession');
     spyOn(recorder, 'fireEvent');
     const result = recorder.record(cb);
-    expect(recorder._requireGetUserMedia).toHaveBeenCalledTimes(1);
-    expect(recorder.isRecording).toHaveBeenCalledTimes(1);
-    expect(recorder._recorder.record).toHaveBeenCalledTimes(1);
-    expect(recorder.startRecordingSession).toHaveBeenCalledTimes(0);
-    expect(recorder.fireEvent).toHaveBeenCalledWith('recording', [1]);
-    expect(result).toEqual(cb);
+
+    setTimeout(() => {
+      expect(recorder._requireGetUserMedia).toHaveBeenCalledTimes(1);
+      expect(recorder.isRecording).toHaveBeenCalledTimes(1);
+      expect(recorder._recorder.record).toHaveBeenCalledTimes(1);
+      expect(recorder.startRecordingSession).toHaveBeenCalledTimes(0);
+      expect(recorder.fireEvent).toHaveBeenCalledWith('recording', [1]);
+      expect(result).toEqual(cb);
+      done();
+    }, 100);
   });
 
   it('should stop recording when recording', () => {
@@ -320,7 +328,7 @@ describe('Audio recorder', () => {
     expect(result._tickCb).toEqual(cb);
   });
 
-  it('should bind the stop function to a stopwatch', () => {
+  it('should bind the stop function to a stopwatch', done => {
     const fakeWatch = jasmine.createSpyObj('_stopwatch', ['start']);
     fakeWatch._value = 10;
     const recorder = new AudioRecorder();
@@ -331,8 +339,12 @@ describe('Audio recorder', () => {
     recorder._stopwatch = fakeWatch;
     recorder.activeRecordingId = 1;
     recorder.record();
-    expect(fakeWatch._value).toEqual(0);
-    expect(fakeWatch.start).toHaveBeenCalledTimes(1);
+
+    setTimeout(() => {
+      expect(fakeWatch._value).toEqual(0);
+      expect(fakeWatch.start).toHaveBeenCalledTimes(1);
+      done();
+    }, 100);
   });
 
   it('should bind the stop function to a stopwatch', () => {
@@ -365,5 +377,29 @@ describe('Audio recorder', () => {
     const recorder = new AudioRecorder();
     recorder.userMediaApproval = true;
     expect(recorder.hasUserMediaApproval()).toBeTruthy();
+  });
+
+  it('should be able to disable the delay', done => {
+    const recorder = new AudioRecorder();
+    recorder._recorder = jasmine.createSpyObj('recorder', ['record']);
+    const cb = jasmine.createSpy();
+    recorder.activeRecordingId = undefined;
+    spyOn(recorder, 'isRecording').and.returnValue(false);
+    spyOn(recorder, '_requireGetUserMedia').and.returnValue(true);
+    spyOn(recorder, 'startRecordingSession').and.callFake(() => {
+      recorder.activeRecordingId = 1;
+    });
+    spyOn(recorder, 'fireEvent');
+    const result = recorder.record(cb, true);
+
+    setTimeout(() => {
+      expect(recorder._requireGetUserMedia).toHaveBeenCalledTimes(1);
+      expect(recorder.isRecording).toHaveBeenCalledTimes(1);
+      expect(recorder._recorder.record).toHaveBeenCalledTimes(1);
+      expect(recorder.startRecordingSession).toHaveBeenCalledTimes(1);
+      expect(recorder.fireEvent).toHaveBeenCalledWith('recording', [1]);
+      expect(result).toEqual(cb);
+      done();
+    }, 0);
   });
 });
