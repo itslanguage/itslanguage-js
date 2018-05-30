@@ -84,9 +84,14 @@ export default class Player extends AudioContext {
 
     // Add some event handlers;
     this.audioSource.addEventListener('ended', () => {
-      this.fireEvent('ended');
-      this.suspendAudioContext();
+      // Do not fire ended if player is paused!
+      if (!this.pausedAt) {
+        this.fireEvent('ended');
+        this.suspendAudioContext();
+      }
     });
+
+    this.fireEvent('loaded');
   }
 
   /**
@@ -126,7 +131,6 @@ export default class Player extends AudioContext {
       .then(audioData => audioContext.decodeAudioData(audioData, decodedAudio => {
         this.audioBuffer = decodedAudio;
         this.createBufferSource();
-        this.fireEvent('loaded');
       }))
       .catch(error => {
         this.error(`${error.name}: ${error.message}`);
