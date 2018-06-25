@@ -73,16 +73,16 @@ export function registerStreamForRecorder(recorder, rpcName) {
     const {audioParameters: {channels, sampleRate}} = recorder.getAudioSpecs();
     const headerArrBuff = createWAVEHeader(channels, sampleRate);
     const header = Array.from(new Uint8Array(headerArrBuff));
-    let headerSent = false;
+    let sentHeader = true;
 
     if (details.progress) {
       // Listen for recording events.
       recorder.addEventListener('dataavailable', chuck => {
-        if (!headerSent) {
+        if (sentHeader) {
           // Sent the empty wave header first, this is needed
           // for containerized WAVE files.
           details.progress([header]);
-          headerSent = true;
+          sentHeader = false;
         }
 
         // Send the data chunks to the backend! Whoop whoop!
@@ -96,6 +96,12 @@ export function registerStreamForRecorder(recorder, rpcName) {
         if (rpcRegistration) {
           getWebsocketConnection().then(connection => connection.session.unregister(rpcRegistration));
         }
+      });
+
+      // In case of a pause, make sure next chunk of data will
+      // get the header (again).
+      recorder.addEventListener('paused', () => {
+        sentHeader = true;
       });
     }
 
