@@ -58,6 +58,10 @@ export function registerStreamForRecorder(recorder, rpcName) {
    * we need to prepend our raw data with a WAVE file header. We do this as first step if data
    * becomes available.
    *
+   * When sending audio gets paused, which will be the case for the pause and resume functionality,
+   * we will resend the header after resuming. The API docs cover the need for this. Check there for
+   * more information.
+   *
    * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#register
    * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#progressive-results
    *
