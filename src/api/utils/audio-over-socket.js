@@ -58,6 +58,10 @@ export function registerStreamForRecorder(recorder, rpcName) {
    * we need to prepend our raw data with a WAVE file header. We do this as first step if data
    * becomes available.
    *
+   * When sending audio gets paused, which will be the case for the pause and resume functionality,
+   * we will resend the header after resuming. The API docs cover the need for this. Check there for
+   * more information.
+   *
    * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#register
    * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#progressive-results
    *
@@ -73,16 +77,16 @@ export function registerStreamForRecorder(recorder, rpcName) {
     const {audioParameters: {channels, sampleRate}} = recorder.getAudioSpecs();
     const headerArrBuff = createWAVEHeader(channels, sampleRate);
     const header = Array.from(new Uint8Array(headerArrBuff));
-    let headerSent = false;
+    let sendHeader = true;
 
     if (details.progress) {
       // Listen for recording events.
       recorder.addEventListener('dataavailable', chuck => {
-        if (!headerSent) {
+        if (sendHeader) {
           // Sent the empty wave header first, this is needed
           // for containerized WAVE files.
           details.progress([header]);
-          headerSent = true;
+          sendHeader = false;
         }
 
         // Send the data chunks to the backend! Whoop whoop!
@@ -96,6 +100,12 @@ export function registerStreamForRecorder(recorder, rpcName) {
         if (rpcRegistration) {
           getWebsocketConnection().then(connection => connection.session.unregister(rpcRegistration));
         }
+      });
+
+      // In case of a pause, make sure next chunk of data will
+      // get the header (again).
+      recorder.addEventListener('paused', () => {
+        sendHeader = true;
       });
     }
 

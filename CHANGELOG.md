@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Feedback API.
 - WebAudio Player supports pause now.
 - WebAudio Player supports volume now.
+- Recorder resend header at resume.
 
 ## [3.1.1]
 ### Added
