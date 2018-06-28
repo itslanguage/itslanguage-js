@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="">
+  <title data-ice="title">Source | itslanguage</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The core JavaScript SDK for ITSLanguage."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="itslanguage"><meta property="twitter:description" content="The core JavaScript SDK for ITSLanguage."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/itslanguage/itslanguage-js"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#webaudio">WebAudio</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/AudioContext.js~AudioContext.html">AudioContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/Player.js~Player.html">Player</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/Recorder.js~Recorder.html">Recorder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk">administrative-sdk</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html">AdministrativeSDK</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-basic-auth">administrative-sdk/basic-auth</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-category">administrative-sdk/category</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/category/category-controller.js~CategoryController.html">CategoryController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/category/category.js~Category.html">Category</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-choice-challenge">administrative-sdk/choice-challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge-controller.js~ChoiceChallengeController.html">ChoiceChallengeController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-choice-recognition">administrative-sdk/choice-recognition</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition-controller.js~ChoiceRecognitionController.html">ChoiceRecognitionController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-connection">administrative-sdk/connection</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-email-credentials">administrative-sdk/email-credentials</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials-controller.js~EmailCredentialsController.html">EmailCredentialsController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-group">administrative-sdk/group</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/group/group-controller.js~GroupController.html">GroupController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/group/group.js~Group.html">Group</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-organisation">administrative-sdk/organisation</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation-controller.js~OrganisationController.html">OrganisationController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-phoneme">administrative-sdk/phoneme</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/phoneme/phoneme.js~Phoneme.html">Phoneme</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-profile">administrative-sdk/profile</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/profile/profile-controller.js~ProfileController.html">ProfileController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-progress">administrative-sdk/progress</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/progress/progress-controller.js~ProgressController.html">ProgressController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/progress/progress.js~Progress.html">Progress</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-pronunciation-analysis">administrative-sdk/pronunciation-analysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller.js~PronunciationAnalysisController.html">PronunciationAnalysisController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-pronunciation-challenge">administrative-sdk/pronunciation-challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller.js~PronunciationChallengeController.html">PronunciationChallengeController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-role">administrative-sdk/role</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/role/role-controller.js~RoleController.html">RoleController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-speech-challenge">administrative-sdk/speech-challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge-controller.js~SpeechChallengeController.html">SpeechChallengeController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-speech-recording">administrative-sdk/speech-recording</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording-controller.js~SpeechRecordingController.html">SpeechRecordingController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-user">administrative-sdk/user</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/user/user-controller.js~UserController.html">UserController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-utils">administrative-sdk/utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/utils/base64-utils.js~Base64Utils.html">Base64Utils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-word">administrative-sdk/word</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word/word.js~Word.html">Word</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-word-chunk">administrative-sdk/word-chunk</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api">api</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-assembleScope">assembleScope</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authenticate">authenticate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-impersonate">impersonate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createCategory">createCategory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllCategories">getAllCategories</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCategoryByID">getCategoryByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createGroup">createGroup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllGroups">getAllGroups</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getGroupByID">getGroupByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createOrganisation">createOrganisation</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllOrganisations">getAllOrganisations</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getOrganisationByID">getOrganisationByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllRoles">getAllRoles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getRoleByID">getRoleByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUser">createUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllUsers">getAllUsers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getUserByID">getUserByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-broadcaster">broadcaster</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-choice">api/challenges/choice</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createChoiceChallenge">createChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllChoiceChallenges">getAllChoiceChallenges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getChoiceChallengeByID">getChoiceChallengeByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createChoiceRecognition">createChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllChoiceRecognitions">getAllChoiceRecognitions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getChoiceRecognitionByID">getChoiceRecognitionByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareChoiceRecognition">prepareChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareChoiceRecognitionChallenge">prepareChoiceRecognitionChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognise">recognise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recogniseAudioStream">recogniseAudioStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-feedback">api/challenges/feedback</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-feedback">feedback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-listenAndReply">listenAndReply</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pause">pause</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareFeedback">prepareFeedback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resume">resume</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-pronunciation">api/challenges/pronunciation</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-endStreamAudioForPronunciationAnalysis">endStreamAudioForPronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPronunciationAnalysisById">getPronunciationAnalysisById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-performAlignmentOnChallenge">performAlignmentOnChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAnalysisChallenge">prepareAnalysisChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAudioForPronuncationAnalysis">prepareAudioForPronuncationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-preparePronunciationAnalysis">preparePronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-streamAudioForPronunciationAnalysis">streamAudioForPronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createPronunciationChallenge">createPronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deletePronunciationChallenge">deletePronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllPronunciationChallenges">getAllPronunciationChallenges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPronunciationChallengeByID">getPronunciationChallengeByID</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-speech">api/challenges/speech</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createSpeechChallenge">createSpeechChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllSpeechChallenges">getAllSpeechChallenges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSpeechChallengeByID">getSpeechChallengeByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createSpeechRecording">createSpeechRecording</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllSpeechRecordings">getAllSpeechRecordings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSpeechRecordingByID">getSpeechRecordingByID</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-communication">api/communication</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authorisedRequest">authorisedRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-request">request</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateSettings">updateSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-closeWebsocketConnection">closeWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getWebsocketConnection">getWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeWebsocketCall">makeWebsocketCall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openWebsocketConnection">openWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-settings">settings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-utils">api/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeAndSendAudioOnDataAvailible">encodeAndSendAudioOnDataAvailible</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareServerForAudio">prepareServerForAudio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerStreamForRecorder">registerStreamForRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitForUserMediaApproval">waitForUserMediaApproval</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataToBase64">dataToBase64</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#audio">audio</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/media-recorder.js~MediaRecorder.html">MediaRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/tools.js~Stopwatch.html">Stopwatch</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/wave-packer.js~WavePacker.html">WavePacker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-player.js~WebAudioPlayer.html">WebAudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-recorder.js~WebAudioRecorder.html">WebAudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createWAVEHeader">createWAVEHeader</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wordToUTF8ByteArray">wordToUTF8ByteArray</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1>Source <img data-ice="coverageBadge" src="./badge.svg"><span data-ice="totalCoverageCount" class="total-coverage-count">468/580</span></h1>
+
+<table class="files-summary" data-ice="files" data-use-coverage="true">
+  <thead>
+    <tr>
+      <td>File</td>
+      <td>Identifier</td>
+      <td class="coverage">Document</td>
+      <td style="display: none;">Size</td>
+      <td style="display: none;">Lines</td>
+      <td style="display: none;">Updated</td>
+    </tr>
+  </thead>
+  <tbody>
+    
+  <tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/WebAudio/AudioContext.js.html#errorLines=116">src/WebAudio/AudioContext.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/WebAudio/AudioContext.js~AudioContext.html">AudioContext</a></span></td>
+      <td class="coverage"><span data-ice="coverage">92 %</span><span data-ice="coverageCount" class="coverage-count">12/13</span></td>
+      <td style="display: none;" data-ice="size">4791 byte</td>
+      <td style="display: none;" data-ice="lines">168</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/WebAudio/Player.js.html">src/WebAudio/Player.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/WebAudio/Player.js~Player.html">Player</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">24/24</span></td>
+      <td style="display: none;" data-ice="size">6358 byte</td>
+      <td style="display: none;" data-ice="lines">286</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/WebAudio/Recorder.js.html#errorLines=29,3,31,4,47,5,56,6,65,74">src/WebAudio/Recorder.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/WebAudio/Recorder.js~Recorder.html">Recorder</a></span></td>
+      <td class="coverage"><span data-ice="coverage">37 %</span><span data-ice="coverageCount" class="coverage-count">6/16</span></td>
+      <td style="display: none;" data-ice="size">2029 byte</td>
+      <td style="display: none;" data-ice="lines">84</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/administrative-sdk.js.html#errorLines=24,25,26,27,28,29,30,31,32,33,34,35,36,37,38">src/administrative-sdk/administrative-sdk.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html">AdministrativeSDK</a></span></td>
+      <td class="coverage"><span data-ice="coverage">73 %</span><span data-ice="coverageCount" class="coverage-count">41/56</span></td>
+      <td style="display: none;" data-ice="size">24874 byte</td>
+      <td style="display: none;" data-ice="lines">539</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/basic-auth/basic-auth.js.html">src/administrative-sdk/basic-auth/basic-auth.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">5/5</span></td>
+      <td style="display: none;" data-ice="size">1479 byte</td>
+      <td style="display: none;" data-ice="lines">47</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/category/category-controller.js.html#errorLines=102">src/administrative-sdk/category/category-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/category/category-controller.js~CategoryController.html">CategoryController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">87 %</span><span data-ice="coverageCount" class="coverage-count">7/8</span></td>
+      <td style="display: none;" data-ice="size">4230 byte</td>
+      <td style="display: none;" data-ice="lines">118</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/category/category.js.html">src/administrative-sdk/category/category.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/category/category.js~Category.html">Category</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">10/10</span></td>
+      <td style="display: none;" data-ice="size">3326 byte</td>
+      <td style="display: none;" data-ice="lines">95</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/choice-challenge/choice-challenge-controller.js.html">src/administrative-sdk/choice-challenge/choice-challenge-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge-controller.js~ChoiceChallengeController.html">ChoiceChallengeController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">3749 byte</td>
+      <td style="display: none;" data-ice="lines">89</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/choice-challenge/choice-challenge.js.html">src/administrative-sdk/choice-challenge/choice-challenge.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">1630 byte</td>
+      <td style="display: none;" data-ice="lines">55</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/choice-recognition/choice-recognition-controller.js.html">src/administrative-sdk/choice-recognition/choice-recognition-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition-controller.js~ChoiceRecognitionController.html">ChoiceRecognitionController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">8/8</span></td>
+      <td style="display: none;" data-ice="size">10489 byte</td>
+      <td style="display: none;" data-ice="lines">262</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/choice-recognition/choice-recognition.js.html">src/administrative-sdk/choice-recognition/choice-recognition.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">9/9</span></td>
+      <td style="display: none;" data-ice="size">1262 byte</td>
+      <td style="display: none;" data-ice="lines">59</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/connection/connection-controller.js.html#errorLines=148,37,38,39,40,41">src/administrative-sdk/connection/connection-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></td>
+      <td class="coverage"><span data-ice="coverage">73 %</span><span data-ice="coverageCount" class="coverage-count">17/23</span></td>
+      <td style="display: none;" data-ice="size">8903 byte</td>
+      <td style="display: none;" data-ice="lines">293</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/email-credentials/email-credentials-controller.js.html">src/administrative-sdk/email-credentials/email-credentials-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials-controller.js~EmailCredentialsController.html">EmailCredentialsController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">1902 byte</td>
+      <td style="display: none;" data-ice="lines">48</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/email-credentials/email-credentials.js.html">src/administrative-sdk/email-credentials/email-credentials.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">1077 byte</td>
+      <td style="display: none;" data-ice="lines">33</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/group/group-controller.js.html">src/administrative-sdk/group/group-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/group/group-controller.js~GroupController.html">GroupController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">2989 byte</td>
+      <td style="display: none;" data-ice="lines">87</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/group/group.js.html">src/administrative-sdk/group/group.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/group/group.js~Group.html">Group</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">892 byte</td>
+      <td style="display: none;" data-ice="lines">32</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/organisation/organisation-controller.js.html">src/administrative-sdk/organisation/organisation-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/organisation/organisation-controller.js~OrganisationController.html">OrganisationController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">3064 byte</td>
+      <td style="display: none;" data-ice="lines">83</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/organisation/organisation.js.html#errorLines=1">src/administrative-sdk/organisation/organisation.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">629 byte</td>
+      <td style="display: none;" data-ice="lines">27</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/phoneme/phoneme.js.html#errorLines=1">src/administrative-sdk/phoneme/phoneme.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/phoneme/phoneme.js~Phoneme.html">Phoneme</a></span></td>
+      <td class="coverage"><span data-ice="coverage">83 %</span><span data-ice="coverageCount" class="coverage-count">5/6</span></td>
+      <td style="display: none;" data-ice="size">1038 byte</td>
+      <td style="display: none;" data-ice="lines">34</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/profile/profile-controller.js.html">src/administrative-sdk/profile/profile-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/profile/profile-controller.js~ProfileController.html">ProfileController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">5/5</span></td>
+      <td style="display: none;" data-ice="size">2121 byte</td>
+      <td style="display: none;" data-ice="lines">59</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/profile/profile.js.html">src/administrative-sdk/profile/profile.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">7/7</span></td>
+      <td style="display: none;" data-ice="size">2036 byte</td>
+      <td style="display: none;" data-ice="lines">68</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/progress/progress-controller.js.html">src/administrative-sdk/progress/progress-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/progress/progress-controller.js~ProgressController.html">ProgressController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">2561 byte</td>
+      <td style="display: none;" data-ice="lines">68</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/progress/progress.js.html">src/administrative-sdk/progress/progress.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/progress/progress.js~Progress.html">Progress</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">2009 byte</td>
+      <td style="display: none;" data-ice="lines">56</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller.js.html#errorLines=68">src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller.js~PronunciationAnalysisController.html">PronunciationAnalysisController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">90 %</span><span data-ice="coverageCount" class="coverage-count">9/10</span></td>
+      <td style="display: none;" data-ice="size">13419 byte</td>
+      <td style="display: none;" data-ice="lines">319</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js.html">src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">11/11</span></td>
+      <td style="display: none;" data-ice="size">2297 byte</td>
+      <td style="display: none;" data-ice="lines">75</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller.js.html">src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller.js~PronunciationChallengeController.html">PronunciationChallengeController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">7/7</span></td>
+      <td style="display: none;" data-ice="size">4722 byte</td>
+      <td style="display: none;" data-ice="lines">112</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js.html">src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">1865 byte</td>
+      <td style="display: none;" data-ice="lines">55</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/role/role-controller.js.html">src/administrative-sdk/role/role-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/role/role-controller.js~RoleController.html">RoleController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">5/5</span></td>
+      <td style="display: none;" data-ice="size">1494 byte</td>
+      <td style="display: none;" data-ice="lines">47</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/role/role.js.html">src/administrative-sdk/role/role.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">923 byte</td>
+      <td style="display: none;" data-ice="lines">32</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/speech-challenge/speech-challenge-controller.js.html">src/administrative-sdk/speech-challenge/speech-challenge-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge-controller.js~SpeechChallengeController.html">SpeechChallengeController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">5493 byte</td>
+      <td style="display: none;" data-ice="lines">116</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/speech-challenge/speech-challenge.js.html">src/administrative-sdk/speech-challenge/speech-challenge.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">8/8</span></td>
+      <td style="display: none;" data-ice="size">2824 byte</td>
+      <td style="display: none;" data-ice="lines">83</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/speech-recording/speech-recording-controller.js.html#errorLines=15">src/administrative-sdk/speech-recording/speech-recording-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording-controller.js~SpeechRecordingController.html">SpeechRecordingController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">87 %</span><span data-ice="coverageCount" class="coverage-count">7/8</span></td>
+      <td style="display: none;" data-ice="size">8927 byte</td>
+      <td style="display: none;" data-ice="lines">219</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/speech-recording/speech-recording.js.html">src/administrative-sdk/speech-recording/speech-recording.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">8/8</span></td>
+      <td style="display: none;" data-ice="size">1385 byte</td>
+      <td style="display: none;" data-ice="lines">52</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/user/user-controller.js.html">src/administrative-sdk/user/user-controller.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/user/user-controller.js~UserController.html">UserController</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">7/7</span></td>
+      <td style="display: none;" data-ice="size">3421 byte</td>
+      <td style="display: none;" data-ice="lines">97</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/user/user.js.html">src/administrative-sdk/user/user.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">8/8</span></td>
+      <td style="display: none;" data-ice="size">2060 byte</td>
+      <td style="display: none;" data-ice="lines">72</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/utils/base64-utils.js.html">src/administrative-sdk/utils/base64-utils.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/utils/base64-utils.js~Base64Utils.html">Base64Utils</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">2/2</span></td>
+      <td style="display: none;" data-ice="size">499 byte</td>
+      <td style="display: none;" data-ice="lines">20</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/word-chunk/word-chunk.js.html">src/administrative-sdk/word-chunk/word-chunk.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">6/6</span></td>
+      <td style="display: none;" data-ice="size">1247 byte</td>
+      <td style="display: none;" data-ice="lines">42</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/administrative-sdk/word/word.js.html">src/administrative-sdk/word/word.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/administrative-sdk/word/word.js~Word.html">Word</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">3/3</span></td>
+      <td style="display: none;" data-ice="size">342 byte</td>
+      <td style="display: none;" data-ice="lines">17</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/auth.js.html">src/api/auth.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-assembleScope">assembleScope</a></span>
+<span><a href="function/index.html#static-function-authenticate">authenticate</a></span>
+<span><a href="function/index.html#static-function-impersonate">impersonate</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">3/3</span></td>
+      <td style="display: none;" data-ice="size">4109 byte</td>
+      <td style="display: none;" data-ice="lines">121</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/broadcaster.js.html">src/api/broadcaster.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="variable/index.html#static-variable-broadcaster">broadcaster</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">1/1</span></td>
+      <td style="display: none;" data-ice="size">456 byte</td>
+      <td style="display: none;" data-ice="lines">20</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/categories.js.html#errorLines=9">src/api/categories.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createCategory">createCategory</a></span>
+<span><a href="function/index.html#static-function-getAllCategories">getAllCategories</a></span>
+<span><a href="function/index.html#static-function-getCategoryByID">getCategoryByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">1546 byte</td>
+      <td style="display: none;" data-ice="lines">62</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/challenges/choice/index.js.html#errorLines=9">src/api/challenges/choice/index.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createChoiceChallenge">createChoiceChallenge</a></span>
+<span><a href="function/index.html#static-function-getAllChoiceChallenges">getAllChoiceChallenges</a></span>
+<span><a href="function/index.html#static-function-getChoiceChallengeByID">getChoiceChallengeByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">1648 byte</td>
+      <td style="display: none;" data-ice="lines">62</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/challenges/choice/recognition.js.html#errorLines=19">src/api/challenges/choice/recognition.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createChoiceRecognition">createChoiceRecognition</a></span>
+<span><a href="function/index.html#static-function-getAllChoiceRecognitions">getAllChoiceRecognitions</a></span>
+<span><a href="function/index.html#static-function-getChoiceRecognitionByID">getChoiceRecognitionByID</a></span>
+<span><a href="function/index.html#static-function-prepareChoiceRecognition">prepareChoiceRecognition</a></span>
+<span><a href="function/index.html#static-function-prepareChoiceRecognitionChallenge">prepareChoiceRecognitionChallenge</a></span>
+<span><a href="function/index.html#static-function-recognise">recognise</a></span>
+<span><a href="function/index.html#static-function-recogniseAudioStream">recogniseAudioStream</a></span></td>
+      <td class="coverage"><span data-ice="coverage">87 %</span><span data-ice="coverageCount" class="coverage-count">7/8</span></td>
+      <td style="display: none;" data-ice="size">6228 byte</td>
+      <td style="display: none;" data-ice="lines">133</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/challenges/feedback/speech.js.html">src/api/challenges/feedback/speech.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-feedback">feedback</a></span>
+<span><a href="function/index.html#static-function-listenAndReply">listenAndReply</a></span>
+<span><a href="function/index.html#static-function-pause">pause</a></span>
+<span><a href="function/index.html#static-function-prepareFeedback">prepareFeedback</a></span>
+<span><a href="function/index.html#static-function-resume">resume</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">5/5</span></td>
+      <td style="display: none;" data-ice="size">5100 byte</td>
+      <td style="display: none;" data-ice="lines">120</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/challenges/pronunciation/analysis.js.html#errorLines=17">src/api/challenges/pronunciation/analysis.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-endStreamAudioForPronunciationAnalysis">endStreamAudioForPronunciationAnalysis</a></span>
+<span><a href="function/index.html#static-function-getPronunciationAnalysisById">getPronunciationAnalysisById</a></span>
+<span><a href="function/index.html#static-function-performAlignmentOnChallenge">performAlignmentOnChallenge</a></span>
+<span><a href="function/index.html#static-function-prepareAnalysisChallenge">prepareAnalysisChallenge</a></span>
+<span><a href="function/index.html#static-function-prepareAudioForPronuncationAnalysis">prepareAudioForPronuncationAnalysis</a></span>
+<span><a href="function/index.html#static-function-preparePronunciationAnalysis">preparePronunciationAnalysis</a></span>
+<span><a href="function/index.html#static-function-streamAudioForPronunciationAnalysis">streamAudioForPronunciationAnalysis</a></span></td>
+      <td class="coverage"><span data-ice="coverage">87 %</span><span data-ice="coverageCount" class="coverage-count">7/8</span></td>
+      <td style="display: none;" data-ice="size">3651 byte</td>
+      <td style="display: none;" data-ice="lines">94</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/challenges/pronunciation/index.js.html#errorLines=9">src/api/challenges/pronunciation/index.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createPronunciationChallenge">createPronunciationChallenge</a></span>
+<span><a href="function/index.html#static-function-deletePronunciationChallenge">deletePronunciationChallenge</a></span>
+<span><a href="function/index.html#static-function-getAllPronunciationChallenges">getAllPronunciationChallenges</a></span>
+<span><a href="function/index.html#static-function-getPronunciationChallengeByID">getPronunciationChallengeByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">80 %</span><span data-ice="coverageCount" class="coverage-count">4/5</span></td>
+      <td style="display: none;" data-ice="size">2077 byte</td>
+      <td style="display: none;" data-ice="lines">74</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/challenges/speech/index.js.html#errorLines=9">src/api/challenges/speech/index.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createSpeechChallenge">createSpeechChallenge</a></span>
+<span><a href="function/index.html#static-function-getAllSpeechChallenges">getAllSpeechChallenges</a></span>
+<span><a href="function/index.html#static-function-getSpeechChallengeByID">getSpeechChallengeByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">1648 byte</td>
+      <td style="display: none;" data-ice="lines">62</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/challenges/speech/recordings.js.html#errorLines=19">src/api/challenges/speech/recordings.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createSpeechRecording">createSpeechRecording</a></span>
+<span><a href="function/index.html#static-function-getAllSpeechRecordings">getAllSpeechRecordings</a></span>
+<span><a href="function/index.html#static-function-getSpeechRecordingByID">getSpeechRecordingByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">3807 byte</td>
+      <td style="display: none;" data-ice="lines">98</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/communication/index.js.html#errorLines=11,8">src/api/communication/index.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-authorisedRequest">authorisedRequest</a></span>
+<span><a href="function/index.html#static-function-request">request</a></span>
+<span><a href="variable/index.html#static-variable-settings">settings</a></span>
+<span><a href="function/index.html#static-function-updateSettings">updateSettings</a></span></td>
+      <td class="coverage"><span data-ice="coverage">77 %</span><span data-ice="coverageCount" class="coverage-count">7/9</span></td>
+      <td style="display: none;" data-ice="size">5455 byte</td>
+      <td style="display: none;" data-ice="lines">174</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/communication/websocket.js.html#errorLines=10,9">src/api/communication/websocket.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-closeWebsocketConnection">closeWebsocketConnection</a></span>
+<span><a href="function/index.html#static-function-getWebsocketConnection">getWebsocketConnection</a></span>
+<span><a href="function/index.html#static-function-makeWebsocketCall">makeWebsocketCall</a></span>
+<span><a href="function/index.html#static-function-openWebsocketConnection">openWebsocketConnection</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">6/8</span></td>
+      <td style="display: none;" data-ice="size">7204 byte</td>
+      <td style="display: none;" data-ice="lines">213</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/groups.js.html#errorLines=9">src/api/groups.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createGroup">createGroup</a></span>
+<span><a href="function/index.html#static-function-getAllGroups">getAllGroups</a></span>
+<span><a href="function/index.html#static-function-getGroupByID">getGroupByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">1484 byte</td>
+      <td style="display: none;" data-ice="lines">62</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/organisations.js.html#errorLines=9">src/api/organisations.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createOrganisation">createOrganisation</a></span>
+<span><a href="function/index.html#static-function-getAllOrganisations">getAllOrganisations</a></span>
+<span><a href="function/index.html#static-function-getOrganisationByID">getOrganisationByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">1610 byte</td>
+      <td style="display: none;" data-ice="lines">62</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/roles.js.html#errorLines=9">src/api/roles.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-getAllRoles">getAllRoles</a></span>
+<span><a href="function/index.html#static-function-getRoleByID">getRoleByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">66 %</span><span data-ice="coverageCount" class="coverage-count">2/3</span></td>
+      <td style="display: none;" data-ice="size">1247 byte</td>
+      <td style="display: none;" data-ice="lines">50</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/users.js.html#errorLines=9">src/api/users.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-createUser">createUser</a></span>
+<span><a href="function/index.html#static-function-getAllUsers">getAllUsers</a></span>
+<span><a href="function/index.html#static-function-getUserByID">getUserByID</a></span></td>
+      <td class="coverage"><span data-ice="coverage">75 %</span><span data-ice="coverageCount" class="coverage-count">3/4</span></td>
+      <td style="display: none;" data-ice="size">1466 byte</td>
+      <td style="display: none;" data-ice="lines">62</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/utils/audio-over-socket.js.html">src/api/utils/audio-over-socket.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-encodeAndSendAudioOnDataAvailible">encodeAndSendAudioOnDataAvailible</a></span>
+<span><a href="function/index.html#static-function-prepareServerForAudio">prepareServerForAudio</a></span>
+<span><a href="function/index.html#static-function-registerStreamForRecorder">registerStreamForRecorder</a></span>
+<span><a href="function/index.html#static-function-waitForUserMediaApproval">waitForUserMediaApproval</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">4/4</span></td>
+      <td style="display: none;" data-ice="size">7430 byte</td>
+      <td style="display: none;" data-ice="lines">183</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/api/utils/index.js.html">src/api/utils/index.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="function/index.html#static-function-dataToBase64">dataToBase64</a></span></td>
+      <td class="coverage"><span data-ice="coverage">100 %</span><span data-ice="coverageCount" class="coverage-count">1/1</span></td>
+      <td style="display: none;" data-ice="size">475 byte</td>
+      <td style="display: none;" data-ice="lines">20</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/audio-player.js.html#errorLines=104,17,60,61,62,63">src/audio/audio-player.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></td>
+      <td class="coverage"><span data-ice="coverage">82 %</span><span data-ice="coverageCount" class="coverage-count">29/35</span></td>
+      <td style="display: none;" data-ice="size">11669 byte</td>
+      <td style="display: none;" data-ice="lines">415</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/audio-recorder.js.html#errorLines=113,180,20,24,241,310,32,34,37">src/audio/audio-recorder.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></td>
+      <td class="coverage"><span data-ice="coverage">70 %</span><span data-ice="coverageCount" class="coverage-count">22/31</span></td>
+      <td style="display: none;" data-ice="size">10460 byte</td>
+      <td style="display: none;" data-ice="lines">365</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/audio-tools.js.html#errorLines=41,49,50,51,72,73,75,82">src/audio/audio-tools.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span>
+<span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></td>
+      <td class="coverage"><span data-ice="coverage">42 %</span><span data-ice="coverageCount" class="coverage-count">6/14</span></td>
+      <td style="display: none;" data-ice="size">5007 byte</td>
+      <td style="display: none;" data-ice="lines">175</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/media-recorder.js.html#errorLines=27,44,45">src/audio/media-recorder.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/media-recorder.js~MediaRecorder.html">MediaRecorder</a></span></td>
+      <td class="coverage"><span data-ice="coverage">66 %</span><span data-ice="coverageCount" class="coverage-count">6/9</span></td>
+      <td style="display: none;" data-ice="size">2182 byte</td>
+      <td style="display: none;" data-ice="lines">82</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/tools.js.html#errorLines=33,34,35,36,86,90">src/audio/tools.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/tools.js~Stopwatch.html">Stopwatch</a></span></td>
+      <td class="coverage"><span data-ice="coverage">57 %</span><span data-ice="coverageCount" class="coverage-count">8/14</span></td>
+      <td style="display: none;" data-ice="size">2172 byte</td>
+      <td style="display: none;" data-ice="lines">93</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/wave-packer.js.html#errorLines=142,15,186,21,32,33,36,37,38,39,42,48,66,78">src/audio/wave-packer.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/wave-packer.js~WavePacker.html">WavePacker</a></span>
+<span><a href="function/index.html#static-function-createWAVEHeader">createWAVEHeader</a></span>
+<span><a href="function/index.html#static-function-wordToUTF8ByteArray">wordToUTF8ByteArray</a></span></td>
+      <td class="coverage"><span data-ice="coverage">30 %</span><span data-ice="coverageCount" class="coverage-count">6/20</span></td>
+      <td style="display: none;" data-ice="size">9005 byte</td>
+      <td style="display: none;" data-ice="lines">293</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/web-audio-player.js.html#errorLines=21,26,27,28,308,312,329,333">src/audio/web-audio-player.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/web-audio-player.js~WebAudioPlayer.html">WebAudioPlayer</a></span></td>
+      <td class="coverage"><span data-ice="coverage">63 %</span><span data-ice="coverageCount" class="coverage-count">14/22</span></td>
+      <td style="display: none;" data-ice="size">9941 byte</td>
+      <td style="display: none;" data-ice="lines">336</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/audio/web-audio-recorder.js.html#errorLines=18,22,26,32,36,51">src/audio/web-audio-recorder.js</a></span></td>
+      <td data-ice="identifier" class="identifiers"><span><a href="class/src/audio/web-audio-recorder.js~WebAudioRecorder.html">WebAudioRecorder</a></span></td>
+      <td class="coverage"><span data-ice="coverage">53 %</span><span data-ice="coverageCount" class="coverage-count">7/13</span></td>
+      <td style="display: none;" data-ice="size">4114 byte</td>
+      <td style="display: none;" data-ice="lines">127</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+<tr data-ice="file">
+      <td data-ice="filePath"><span><a href="file/src/index.js.html">src/index.js</a></span></td>
+      <td data-ice="identifier" class="identifiers">-</td>
+      <td class="coverage"><span data-ice="coverage">-</span></td>
+      <td style="display: none;" data-ice="size">1582 byte</td>
+      <td style="display: none;" data-ice="lines">47</td>
+      <td style="display: none;" data-ice="updated">2018-06-05 15:18:23 (UTC)</td>
+    </tr>
+</tbody>
+</table>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
