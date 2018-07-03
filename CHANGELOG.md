@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - WebAudio Player supports volume now.
 - Recorder resend header at resume.
 
+### Fixed
+- WebAudio recorder can be stopped from paused state.
+
 ## [3.1.1]
 ### Added
 - Delay for the recorder, start recording after 100ms.
