@@ -100,6 +100,7 @@ export function registerStreamForRecorder(recorder, rpcName) {
         if (rpcRegistration) {
           getWebsocketConnection().then(connection => connection.session.unregister(rpcRegistration));
         }
+        recorder.removeAllEventListeners();
       });
 
       // In case of a pause, make sure next chunk of data will
