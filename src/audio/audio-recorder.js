@@ -290,7 +290,7 @@ export default class AudioRecorder {
    * @emits {Event} 'recorded' With arguments: [recording ID, audio Blob, forced].
    */
   stop(forced) {
-    if (!this._recorder.isRecording()) {
+    if (!this._recorder.isPaused() && !this._recorder.isRecording()) {
       return;
     }
     this._recorder.stop();
@@ -308,10 +308,10 @@ export default class AudioRecorder {
   }
 
   pause() {
-    if (!this._recorder.isRecording()) {
+    if (!this._recorder.isPaused() && !this._recorder.isRecording()) {
       return;
     }
-    this._recorder.stop();
+    this._recorder.pause();
     if (this._stopwatch) {
       this._stopwatch.stop();
     }
@@ -329,6 +329,18 @@ export default class AudioRecorder {
       return false;
     }
     return this._recorder.isRecording();
+  }
+
+  /**
+   * Check if the recorder is in paused state.
+   *
+   * @returns {boolean} True if the recorder is paused. False` otherwise.
+   */
+  isPaused() {
+    if (!this._recorder) {
+      return false;
+    }
+    return this._recorder.isPaused();
   }
 
   /**
