@@ -244,13 +244,19 @@ describe('Audio recorder', () => {
     const recorder = new AudioRecorder();
     recorder.activeRecordingId = 1;
     spyOn(recorder, 'fireEvent');
-    recorder._recorder = jasmine.createSpyObj('recorder', ['isRecording', 'stop', 'getEncodedAudio']);
+    recorder._recorder = jasmine.createSpyObj('recorder', [
+      'isRecording',
+      'stop',
+      'getEncodedAudio',
+      'isPaused']);
     recorder._recorder.isRecording.and.returnValue(true);
+    recorder._recorder.isPaused.and.returnValue(false);
     recorder._recorder.getEncodedAudio.and.callFake(callback => {
       callback(response);
     });
     recorder.stop(false);
     expect(recorder._recorder.isRecording).toHaveBeenCalledTimes(1);
+    expect(recorder._recorder.isPaused).toHaveBeenCalledTimes(1);
     expect(recorder._recorder.stop).toHaveBeenCalledTimes(1);
     expect(recorder._recorder.getEncodedAudio).toHaveBeenCalledWith(jasmine.any(Function));
     expect(recorder.fireEvent).toHaveBeenCalledWith('recorded', [1, response, false]);
@@ -259,10 +265,17 @@ describe('Audio recorder', () => {
   it('should stop recording when not recording', () => {
     const recorder = new AudioRecorder();
     spyOn(recorder, 'fireEvent');
-    recorder._recorder = jasmine.createSpyObj('recorder', ['isRecording', 'stop', 'getEncodedAudio']);
+    recorder._recorder = jasmine.createSpyObj('recorder', [
+      'isRecording',
+      'stop',
+      'getEncodedAudio',
+      'isPaused'
+    ]);
     recorder._recorder.isRecording.and.returnValue(false);
+    recorder._recorder.isPaused.and.returnValue(false);
     recorder.stop(false);
     expect(recorder._recorder.isRecording).toHaveBeenCalledTimes(1);
+    expect(recorder._recorder.isPaused).toHaveBeenCalledTimes(1);
     expect(recorder._recorder.stop).not.toHaveBeenCalled();
     expect(recorder._recorder.getEncodedAudio).not.toHaveBeenCalled();
     expect(recorder.fireEvent).not.toHaveBeenCalled();
@@ -335,7 +348,8 @@ describe('Audio recorder', () => {
     spyOn(recorder, '_requireGetUserMedia').and.returnValue(true);
     spyOn(recorder, 'isRecording').and.returnValue(false);
     spyOn(recorder, 'fireEvent');
-    recorder._recorder = jasmine.createSpyObj('recorder', ['record']);
+    recorder._recorder = jasmine.createSpyObj('recorder', ['record', 'isPaused']);
+    recorder._recorder.isPaused.and.returnValue(false);
     recorder._stopwatch = fakeWatch;
     recorder.activeRecordingId = 1;
     recorder.record();
@@ -353,8 +367,14 @@ describe('Audio recorder', () => {
     spyOn(recorder, '_requireGetUserMedia').and.returnValue(true);
     spyOn(recorder, 'isRecording').and.returnValue(false);
     spyOn(recorder, 'fireEvent');
-    recorder._recorder = jasmine.createSpyObj('recorder', ['isRecording', 'stop', 'getEncodedAudio']);
+    recorder._recorder = jasmine.createSpyObj('recorder', [
+      'isRecording',
+      'isPaused',
+      'stop',
+      'getEncodedAudio'
+    ]);
     recorder._recorder.isRecording.and.returnValue(true);
+    recorder._recorder.isPaused.and.returnValue(false);
     recorder._stopwatch = fakeWatch;
     spyOn(recorder, 'stop').and.callThrough();
     recorder.stop();

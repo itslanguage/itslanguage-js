@@ -16,6 +16,7 @@ export default class WebAudioRecorder {
    */
   constructor(source, ctx, streamingCallback, packer) {
     this.recording = false;
+    this.paused = false;
 
     const context = ctx;
     // For the best quality, use the samplerate in which audio is recorded.
@@ -98,6 +99,7 @@ export default class WebAudioRecorder {
   record() {
     this.packer.clear();
     this.recording = true;
+    this.paused = false;
   }
 
   /**
@@ -118,10 +120,23 @@ export default class WebAudioRecorder {
     return this.recording;
   }
 
+  isPaused() {
+    return this.paused;
+  }
+
   /**
    * Stop recording audio.
    */
   stop() {
+    this.recording = false;
+    this.paused = false;
+  }
+
+  /**
+   * Pause recording audio.
+   */
+  pause() {
+    this.paused = true;
     this.recording = false;
   }
 }
