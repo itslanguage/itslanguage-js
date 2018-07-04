@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/audio/wave-packer.js | itslanguage</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The core JavaScript SDK for ITSLanguage."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="itslanguage"><meta property="twitter:description" content="The core JavaScript SDK for ITSLanguage."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/itslanguage/itslanguage-js"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#webaudio">WebAudio</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/AudioContext.js~AudioContext.html">AudioContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/Player.js~Player.html">Player</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/Recorder.js~Recorder.html">Recorder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk">administrative-sdk</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/administrative-sdk.js~AdministrativeSDK.html">AdministrativeSDK</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-basic-auth">administrative-sdk/basic-auth</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/basic-auth/basic-auth.js~BasicAuth.html">BasicAuth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-category">administrative-sdk/category</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/category/category-controller.js~CategoryController.html">CategoryController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/category/category.js~Category.html">Category</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-choice-challenge">administrative-sdk/choice-challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge-controller.js~ChoiceChallengeController.html">ChoiceChallengeController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-challenge/choice-challenge.js~ChoiceChallenge.html">ChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-choice-recognition">administrative-sdk/choice-recognition</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition-controller.js~ChoiceRecognitionController.html">ChoiceRecognitionController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/choice-recognition/choice-recognition.js~ChoiceRecognition.html">ChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-connection">administrative-sdk/connection</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/connection/connection-controller.js~Connection.html">Connection</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-email-credentials">administrative-sdk/email-credentials</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials-controller.js~EmailCredentialsController.html">EmailCredentialsController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/email-credentials/email-credentials.js~EmailCredentials.html">EmailCredentials</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-group">administrative-sdk/group</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/group/group-controller.js~GroupController.html">GroupController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/group/group.js~Group.html">Group</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-organisation">administrative-sdk/organisation</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation-controller.js~OrganisationController.html">OrganisationController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/organisation/organisation.js~Organisation.html">Organisation</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-phoneme">administrative-sdk/phoneme</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/phoneme/phoneme.js~Phoneme.html">Phoneme</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-profile">administrative-sdk/profile</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/profile/profile-controller.js~ProfileController.html">ProfileController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/profile/profile.js~Profile.html">Profile</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-progress">administrative-sdk/progress</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/progress/progress-controller.js~ProgressController.html">ProgressController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/progress/progress.js~Progress.html">Progress</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-pronunciation-analysis">administrative-sdk/pronunciation-analysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis-controller.js~PronunciationAnalysisController.html">PronunciationAnalysisController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-analysis/pronunciation-analysis.js~PronunciationAnalysis.html">PronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-pronunciation-challenge">administrative-sdk/pronunciation-challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge-controller.js~PronunciationChallengeController.html">PronunciationChallengeController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/pronunciation-challenge/pronunciation-challenge.js~PronunciationChallenge.html">PronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-role">administrative-sdk/role</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/role/role-controller.js~RoleController.html">RoleController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/role/role.js~Role.html">Role</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-speech-challenge">administrative-sdk/speech-challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge-controller.js~SpeechChallengeController.html">SpeechChallengeController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-challenge/speech-challenge.js~SpeechChallenge.html">SpeechChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-speech-recording">administrative-sdk/speech-recording</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording-controller.js~SpeechRecordingController.html">SpeechRecordingController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/speech-recording/speech-recording.js~SpeechRecording.html">SpeechRecording</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-user">administrative-sdk/user</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/user/user-controller.js~UserController.html">UserController</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/user/user.js~User.html">User</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-utils">administrative-sdk/utils</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/utils/base64-utils.js~Base64Utils.html">Base64Utils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-word">administrative-sdk/word</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word/word.js~Word.html">Word</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#administrative-sdk-word-chunk">administrative-sdk/word-chunk</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/administrative-sdk/word-chunk/word-chunk.js~WordChunk.html">WordChunk</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api">api</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-assembleScope">assembleScope</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authenticate">authenticate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-impersonate">impersonate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createCategory">createCategory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllCategories">getAllCategories</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCategoryByID">getCategoryByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createGroup">createGroup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllGroups">getAllGroups</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getGroupByID">getGroupByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createOrganisation">createOrganisation</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllOrganisations">getAllOrganisations</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getOrganisationByID">getOrganisationByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllRoles">getAllRoles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getRoleByID">getRoleByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUser">createUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllUsers">getAllUsers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getUserByID">getUserByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-broadcaster">broadcaster</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-choice">api/challenges/choice</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createChoiceChallenge">createChoiceChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllChoiceChallenges">getAllChoiceChallenges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getChoiceChallengeByID">getChoiceChallengeByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createChoiceRecognition">createChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllChoiceRecognitions">getAllChoiceRecognitions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getChoiceRecognitionByID">getChoiceRecognitionByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareChoiceRecognition">prepareChoiceRecognition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareChoiceRecognitionChallenge">prepareChoiceRecognitionChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognise">recognise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recogniseAudioStream">recogniseAudioStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-feedback">api/challenges/feedback</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-feedback">feedback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-listenAndReply">listenAndReply</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pause">pause</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareFeedback">prepareFeedback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resume">resume</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-pronunciation">api/challenges/pronunciation</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-endStreamAudioForPronunciationAnalysis">endStreamAudioForPronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPronunciationAnalysisById">getPronunciationAnalysisById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-performAlignmentOnChallenge">performAlignmentOnChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAnalysisChallenge">prepareAnalysisChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAudioForPronuncationAnalysis">prepareAudioForPronuncationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-preparePronunciationAnalysis">preparePronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-streamAudioForPronunciationAnalysis">streamAudioForPronunciationAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createPronunciationChallenge">createPronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deletePronunciationChallenge">deletePronunciationChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllPronunciationChallenges">getAllPronunciationChallenges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPronunciationChallengeByID">getPronunciationChallengeByID</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-speech">api/challenges/speech</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createSpeechChallenge">createSpeechChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllSpeechChallenges">getAllSpeechChallenges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSpeechChallengeByID">getSpeechChallengeByID</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createSpeechRecording">createSpeechRecording</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllSpeechRecordings">getAllSpeechRecordings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSpeechRecordingByID">getSpeechRecordingByID</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-communication">api/communication</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authorisedRequest">authorisedRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-request">request</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateSettings">updateSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-closeWebsocketConnection">closeWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getWebsocketConnection">getWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeWebsocketCall">makeWebsocketCall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openWebsocketConnection">openWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-settings">settings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-utils">api/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeAndSendAudioOnDataAvailible">encodeAndSendAudioOnDataAvailible</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareServerForAudio">prepareServerForAudio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerStreamForRecorder">registerStreamForRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitForUserMediaApproval">waitForUserMediaApproval</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataToBase64">dataToBase64</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#audio">audio</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/media-recorder.js~MediaRecorder.html">MediaRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/tools.js~Stopwatch.html">Stopwatch</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/wave-packer.js~WavePacker.html">WavePacker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-player.js~WebAudioPlayer.html">WebAudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-recorder.js~WebAudioRecorder.html">WebAudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createWAVEHeader">createWAVEHeader</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wordToUTF8ByteArray">wordToUTF8ByteArray</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/audio/wave-packer.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * Packer class for audio packing
+ *
+ * @private
+ */
+export default class WavePacker {
+  /**
+   * Stop recording audio.
+   *
+   * @param {number} recordingSampleRate - Sample rate of recording. Must be either 48000 or 44100.
+   * @param {number} sampleRate - Sample rate. Must be half or a quarter of the recording sample rate.
+   * @param {number} channels - Amount of audio channels. 1 or 2.
+   */
+  init(recordingSampleRate, sampleRate, channels) {
+    this.recordingSampleRate = recordingSampleRate;
+    if ([48000, 44100].indexOf(this.recordingSampleRate) === -1) {
+      throw new Error(
+        &apos;48000 or 44100 are the only supported recordingSampleRates&apos;);
+    }
+
+    this.sampleRate = sampleRate;
+    if ([
+      this.recordingSampleRate,
+      this.recordingSampleRate / 2,
+      this.recordingSampleRate / 4
+    ].indexOf(this.sampleRate) === -1) {
+      throw new Error(
+        &apos;sampleRate must be equal, half or a quarter of the &apos; +
+        &apos;recording sample rate&apos;);
+    }
+
+    this.channels = channels;
+    this.recording = false;
+  }
+
+  clear() {
+    this.recLength = 0;
+    this.recBuffersL = [];
+    this.recBuffersR = [];
+  }
+
+  record(left, right) {
+    this.recBuffersL.push(left);
+    this.recBuffersR.push(right);
+    this.recLength += left.length;
+  }
+
+  recordStreaming(left, right, callback) {
+    function convertFloat32ToInt16(buffer) {
+      let l = buffer.length;
+      const buf = new Int16Array(l);
+      while (l--) {
+        buf[l] = Math.min(1, buffer[l]) * 0x7FFF;
+      }
+      return buf.buffer;
+    }
+    // Both the left and right channel&apos;s data is a view (Float32Array)
+    // on top of the buffer (ArrayBuffer). Each buffer&apos;s element should
+    // have _value between -1 and 1.
+    // The audio to export are 16 bit PCM samples that are wrapped in
+    // a WAVE file at the server. Therefore convert from float here.
+    const converted = convertFloat32ToInt16(left);
+    callback(converted);
+  }
+
+  exportWAV(callback) {
+    const bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
+    const bufferR = WavePacker.mergeBuffers(this.recBuffersR, this.recLength);
+    const interleaved = this.interleave(bufferL, bufferR);
+    const dataview = this.encodeWAV(interleaved);
+    const audioBlob = new Blob([dataview], {
+      type: &apos;audio/wav&apos;
+    });
+    callback(audioBlob);
+  }
+
+
+  exportMonoWAV(callback) {
+    const bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
+    const dataview = this.encodeWAV(bufferL, true);
+    const audioBlob = new Blob([dataview], {
+      type: &apos;audio/wav&apos;
+    });
+    callback(audioBlob);
+  }
+
+  /**
+   * Wrap the raw audio in a header to make it a WAVE format.
+   *
+   * Specs: {@link https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}.
+   *
+   * @todo: This function should use the {@link createWAVEHeader} function for creating the header.
+   * @param {[]} interleaved - Array of interleaved audio.
+   */
+  encodeWAV(interleaved) {
+    const buffer = new ArrayBuffer(44 + interleaved.length * 2);
+    const view = new DataView(buffer);
+
+    // RIFF chunk descriptor
+    WavePacker.writeUTFBytes(view, 0, &apos;RIFF&apos;);
+    // file length
+    view.setUint32(4, 44 + interleaved.length * 2, true);
+    // RIFF type
+    WavePacker.writeUTFBytes(view, 8, &apos;WAVE&apos;);
+    // FMT sub-chunk
+    WavePacker.writeUTFBytes(view, 12, &apos;fmt &apos;);
+    // format chunk length
+    view.setUint32(16, 16, true);
+    // sample format (raw)
+    view.setUint16(20, 1, true);
+    // channel count. mono=1, stereo=2
+    view.setUint16(22, this.channels, true);
+    // sample rate
+    view.setUint32(24, this.sampleRate, true);
+    // byte rate (sample rate * block align)
+    view.setUint32(28, this.sampleRate * 2 * this.channels, true);
+    // block align (channel count * bytes per sample)
+    view.setUint16(32, this.channels * 2, true);
+    // bits per sample
+    view.setUint16(34, 16, true);
+    // data sub-chunk
+    WavePacker.writeUTFBytes(view, 36, &apos;data&apos;);
+    view.setUint32(40, interleaved.length * 2, true);
+
+    // write the PCM samples
+    const lng = interleaved.length;
+    let index = 44;
+    const volume = 1;
+    for (let i = 0; i &lt; lng; i++) {
+      view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
+      index += 2;
+    }
+
+    // Wrap in HTML5 Blob for transport
+    const blob = new Blob([view], {
+      type: &apos;audio/wav&apos;
+    });
+    console.log(&apos;Recorded audio/wav Blob size: &apos; + blob.size);
+    return blob;
+  }
+
+  interleave(leftChannel, rightChannel) {
+    let result = null;
+    let length = null;
+    let i = null;
+    let inputIndex = null;
+    if (this.channels === 1) {
+      // Keep both right and left input channels, but &quot;pan&quot; them both
+      // in the center (to the single mono channel)
+      length = leftChannel.length;
+      result = new Float32Array(length);
+      for (i = 0; i &lt; leftChannel.length; ++i) {
+        result[i] = 0.5 * (leftChannel[i] + rightChannel[i]);
+      }
+    } else {
+      length = leftChannel.length + rightChannel.length;
+      result = new Float32Array(length);
+
+      inputIndex = 0;
+      for (i = 0; i &lt; length;) {
+        result[i++] = leftChannel[inputIndex];
+        result[i++] = rightChannel[inputIndex];
+        inputIndex++;
+      }
+    }
+
+    // Also downsample if needed.
+    if (this.recordingSampleRate !== this.sampleRate) {
+      // E.g. 44100/11025 = 4
+      const reduceBy = this.recordingSampleRate / this.sampleRate;
+      const resampledResult = new Float32Array(length / reduceBy);
+
+      inputIndex = 0;
+      for (i = 0; i &lt; length;) {
+        let value = 0;
+        for (let j = 0; j &lt; reduceBy; j++) {
+          value += result[inputIndex++];
+        }
+        resampledResult[i++] = 1 / reduceBy * value;
+      }
+      return resampledResult;
+    }
+    return result;
+  }
+
+  static mergeBuffers(channelBuffer, recordingLength) {
+    const result = new Float32Array(recordingLength);
+    let offset = 0;
+    const lng = channelBuffer.length;
+    for (let i = 0; i &lt; lng; i++) {
+      const buffer = channelBuffer[i];
+      result.set(buffer, offset);
+      offset += buffer.length;
+    }
+    return result;
+  }
+
+  /**
+   * Deprecated function, will be removed in favor of the pure
+   * {@link wordToUTF8ByteArray} function.
+   *
+   * @deprecated
+   * @param {DataView} view - DataView to write the bytes to.
+   * @param {number} offset - Position in the DataView to start writing from.
+   * @param {string} string - String to write to the DataView.
+   * @returns {void} - Nothing will be returned.
+   */
+  static writeUTFBytes(view, offset, string) {
+    const lng = string.length;
+    for (let i = 0; i &lt; lng; i++) {
+      view.setUint8(offset + i, string.charCodeAt(i));
+    }
+  }
+}
+
+/**
+ * Composes a PCM WAVE file header.
+ * This header will lack any size information, so in effect
+ * timing information will most probably be incorrect.
+ *
+ * More information on the WAVE file specification can be found below.
+ * For the SDK and our backend services we use the WAVE PCM format.
+ *
+ * @see http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html
+ * @param {number} channels - Channels in the audio.
+ * @param {number} sampleRate - SampleRate of the audio.
+ * @returns {ArrayBuffer} - The header as ArrayBuffer.
+ */
+export function createWAVEHeader(channels, sampleRate) {
+  // Default WAVE header length is 44 bytes long.
+  const buffer = new ArrayBuffer(44);
+  const header = new DataView(buffer);
+
+  // Set RIFF chunk descriptor
+  wordToUTF8ByteArray(&apos;RIFF&apos;).forEach((ui8Int, index) =&gt; {
+    header.setUint8(index, ui8Int);
+  });
+
+  // Set RIFF type
+  wordToUTF8ByteArray(&apos;WAVE&apos;).forEach((ui8Int, index) =&gt; {
+    header.setUint8(index + 8, ui8Int);
+  });
+
+  // Set FMT sub-chunk
+  wordToUTF8ByteArray(&apos;fmt &apos;).forEach((ui8Int, index) =&gt; {
+    header.setUint8(index + 12, ui8Int);
+  });
+
+  // Set format chunk length
+  header.setUint32(16, 16, true);
+
+  // Set sample format (raw)
+  header.setUint16(20, 1, true);
+
+  // Set channel count. mono=1, stereo=2
+  header.setUint16(22, channels, true);
+
+  // Set sample rate
+  header.setUint32(24, sampleRate, true);
+
+  // Set byte rate (sample rate * block align)
+  header.setUint32(28, sampleRate * 2 * channels, true);
+
+  // Set block align (channel count * bytes per sample)
+  header.setUint16(32, channels * 2, true);
+
+  // Set bits per sample
+  header.setUint16(34, 16, true);
+
+  // Set data sub-chunk
+  wordToUTF8ByteArray(&apos;data&apos;).forEach((ui8Int, index) =&gt; {
+    header.setUint8(index + 36, ui8Int);
+  });
+
+  // Return the ArrayBuffer of the header.
+  return header.buffer;
+}
+
+/**
+ * Get an TypedArray (an Uint8Array to be more precise) that
+ * represents a string.
+ *
+ * @param {string} word - The word to convert.
+ * @returns {Uint8Array} - The converted word as Uint8Array.
+ */
+export function wordToUTF8ByteArray(word) {
+  const buffer = new ArrayBuffer(word.length);
+  const bufferView = new Uint8Array(buffer);
+  bufferView.map((item, index, array) =&gt; {
+    array[index] = word.charCodeAt(index);
+  });
+  return bufferView;
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
