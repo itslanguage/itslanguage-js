@@ -18,7 +18,7 @@
     "esdoc": "esdoc -c esdoc.json",
     "esdoc:clean": "rimraf ./esdoc",
     "lint": "npm run lint:js",
-    "lint:eslint": "eslint --ignore-path .gitignore",
+    "lint:eslint": "eslint --ignore-path .gitignore --fix",
     "lint:js": "npm run lint:eslint -- . ",
     "lint:staged": "lint-staged",
     "test": "karma start --single-run --color",
