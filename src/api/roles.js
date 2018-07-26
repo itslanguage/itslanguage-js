@@ -16,7 +16,7 @@ const url = '/roles';
  *
  * @returns {Promise} - The promise for the role.
  */
-export function getRoleByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -35,7 +35,7 @@ export function getRoleByID(id) {
  *
  * @returns {Promise} - The promise for the roles.
  */
-export function getAllRoles(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
