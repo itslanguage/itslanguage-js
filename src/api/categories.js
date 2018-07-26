@@ -44,7 +44,8 @@ export function getById(id) {
 
 
 /**
- * Get a all categories.
+ * Get a all top level categories.
+ * Top level categories are categories without a parent category.
  *
  * By default all categories are fetched though it is allowed to pass filters.
  * as a `URLSearchParams` object.
@@ -69,4 +70,15 @@ export function getAll(filters) {
   }
 
   return authorisedRequest('GET', urlWithFilters);
+}
+
+/**
+ * Get all categories that share the same parent.
+ *
+ * @param {string} id - The category identifier.
+ *
+ * @returns {Promise} - A promise and when fulfilled the requested categories.
+ */
+export function getAllWithParentId(id) {
+  return authorisedRequest('GET', `${url}/${id}/categories`);
 }

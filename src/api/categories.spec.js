@@ -70,4 +70,18 @@ describe('categories', () => {
         .then(fail, done);
     });
   });
+
+  describe('getAllWithParentId', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+
+      categories.getAllWithParentId('poes')
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(getRequest.args).toEqual(['GET', '/categories/poes/categories']);
+          done();
+        }, fail);
+    });
+  });
 });
