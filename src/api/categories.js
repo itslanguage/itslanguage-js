@@ -1,6 +1,10 @@
 /**
  * This file contains the readily availbile functions which interact with the
  * ITSLanguage categories API.
+ *
+ * Categorize Speech Challenges or categories.
+ *
+ * @see https://itslanguage.github.io/itslanguage-docs/api/categories/index.html
  */
 
 import {authorisedRequest} from './communication';
