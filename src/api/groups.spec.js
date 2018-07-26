@@ -6,66 +6,68 @@ import * as communication from './communication';
 import * as groups from './groups';
 
 
-describe('createGroup', () => {
-  it('should make an authorised request', done => {
-    const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+describe('groups', () => {
+  describe('create', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-    groups.createGroup({name: 'poes'})
-      .then(() => {
-        const createRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(createRequest.args).toEqual(['POST', '/groups', {name: 'poes'}]);
-        done();
-      }, fail);
-  });
-});
-
-
-describe('getGroupByID', () => {
-  it('should make an authorised request', done => {
-    const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
-
-    groups.getGroupByID('c4t')
-      .then(() => {
-        const getRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(getRequest.args).toEqual(['GET', '/groups/c4t']);
-        done();
-      }, fail);
-  });
-});
-
-
-describe('getAllGroups', () => {
-  it('should make an authorised request', done => {
-    const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
-
-    groups.getAllGroups()
-      .then(() => {
-        const getRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(getRequest.args).toEqual(['GET', '/groups']);
-        done();
-      }, fail);
+      groups.create({name: 'poes'})
+        .then(() => {
+          const createRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(createRequest.args).toEqual(['POST', '/groups', {name: 'poes'}]);
+          done();
+        }, fail);
+    });
   });
 
-  it('should allow filters if they are a URLSearchParams object', done => {
-    const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
 
-    const filters = new URLSearchParams();
-    filters.set('parent', 'd4ddyc4t');
+  describe('getById', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-    groups.getAllGroups(filters)
-      .then(() => {
-        const getRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(getRequest.args).toEqual(['GET', '/groups?parent=d4ddyc4t']);
-        done();
-      }, fail);
+      groups.getById('c4t')
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(getRequest.args).toEqual(['GET', '/groups/c4t']);
+          done();
+        }, fail);
+    });
   });
 
-  it('should reject when something other than URLSearchParams is given as the filters', done => {
-    groups.getAllGroups('this is not an instance of URLSearchParams')
-      .then(fail, done);
+
+  describe('getAll', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+
+      groups.getAll()
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(getRequest.args).toEqual(['GET', '/groups']);
+          done();
+        }, fail);
+    });
+
+    it('should allow filters if they are a URLSearchParams object', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+
+      const filters = new URLSearchParams();
+      filters.set('parent', 'd4ddyc4t');
+
+      groups.getAll(filters)
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(getRequest.args).toEqual(['GET', '/groups?parent=d4ddyc4t']);
+          done();
+        }, fail);
+    });
+
+    it('should reject when something other than URLSearchParams is given as the filters', done => {
+      groups.getAll('this is not an instance of URLSearchParams')
+        .then(fail, done);
+    });
   });
 });

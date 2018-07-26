@@ -16,7 +16,7 @@ const url = '/groups';
  *
  * @returns {Promise} - The group creation promise.
  */
-export function createGroup(group) {
+export function create(group) {
   return authorisedRequest('POST', url, group);
 }
 
@@ -28,7 +28,7 @@ export function createGroup(group) {
  *
  * @returns {Promise} - The promise for the group.
  */
-export function getGroupByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -47,7 +47,7 @@ export function getGroupByID(id) {
  *
  * @returns {Promise} - The promise for the groups.
  */
-export function getAllGroups(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
