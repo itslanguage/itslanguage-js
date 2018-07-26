@@ -7,6 +7,23 @@ import * as roles from './roles';
 
 
 describe('roles', () => {
+  describe('create', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+
+      roles.create({id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST']})
+        .then(() => {
+          const createRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(createRequest.args).toEqual(['POST', '/roles', {
+            id: 'Student',
+            permissions: ['SPEECH_CHALLENGE_LIST']
+          }]);
+          done();
+        }, fail);
+    });
+  });
+
   describe('getById', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');

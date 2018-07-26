@@ -8,6 +8,18 @@ import {authorisedRequest} from './communication';
 // The URL for the role handler(s).
 const url = '/roles';
 
+/**
+ * Create a new role.
+ *
+ * @param {Object} role - The role to create.
+ * @param {string} [role.id] - The category identifier. If none is given, one is generated.
+ * @param {Array} role.permissions - Array of permissions this role is authorized for.
+ *
+ * @returns {Promise} - The user creation promise.
+ */
+export function create(role) {
+  return authorisedRequest('POST', url, role);
+}
 
 /**
  * Get a single role by its ID.
