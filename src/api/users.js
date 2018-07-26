@@ -1,25 +1,42 @@
 /**
- * This file contains the readily availbile functions which interact with the
- * ITSLanguage user API.
+ * This file contains the readily availbile functions which interact with the ITSLanguage user API.
+ *
+ * @see https://itslanguage.github.io/itslanguage-docs/api/users/index.html
  */
 
 import {authorisedRequest} from './communication';
 
 // The URL for the user handler(s).
 const url = '/users';
+const singleUserUrl = '/user';
 
 
 /**
  * Create a new user.
  *
  * @param {Object} user - The user to create.
+ * @param {string} [user.id] - A unique identifier. If none is given, one is generated.
+ * @param {string} user.firstName - The first name of the user.
+ * @param {string} user.infix - The infix of the user.
+ * @param {string} user.lastName - The last name of the user.
+ * @param {Array} [user.groups] - Groups the user resides in.
+ * @param {Array} user.roles - The names of roles to grant the user.
  *
  * @returns {Promise} - The user creation promise.
  */
-export function createUser(user) {
+export function create(user) {
   return authorisedRequest('POST', url, user);
 }
 
+
+/**
+ * Get the current user.
+ *
+ * @returns {Promise} - The current user.
+ */
+export function getCurrent() {
+  return authorisedRequest('GET', singleUserUrl);
+}
 
 /**
  * Get a single user by its ID.
@@ -28,7 +45,7 @@ export function createUser(user) {
  *
  * @returns {Promise} - The promise for the user.
  */
-export function getUserByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -47,7 +64,7 @@ export function getUserByID(id) {
  *
  * @returns {Promise} - The promise for the users.
  */
-export function getAllUsers(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
