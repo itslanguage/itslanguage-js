@@ -13,10 +13,12 @@ const url = '/organisations';
  * Create a new organisation.
  *
  * @param {Object} organisation - The organisation to create.
+ * @param {string} [organisation.id] - The organisation identifier. If none is given, one is generated.
+ * @param {Array} organisation.name - The name of the organisation.
  *
  * @returns {Promise} - The organisation creation promise.
  */
-export function createOrganisation(organisation) {
+export function create(organisation) {
   return authorisedRequest('POST', url, organisation);
 }
 
@@ -28,7 +30,7 @@ export function createOrganisation(organisation) {
  *
  * @returns {Promise} - The promise for the organisation.
  */
-export function getOrganisationByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -47,7 +49,7 @@ export function getOrganisationByID(id) {
  *
  * @returns {Promise} - The promise for the organisations.
  */
-export function getAllOrganisations(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
