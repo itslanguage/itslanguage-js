@@ -12,7 +12,17 @@ const url = '/categories';
 /**
  * Create a new category.
  *
+ * The most convenient way to pas a category to this create function is to make use of the FormData object.
+ *
  * @param {Object} category - The category to create.
+ * @param {string} [category.id] - The category identifier. If none is given, one is generated.
+ * @param {string} [category.parent] - Identifier of the parent category.
+ * @param {string} [category.name] - A name for the category.
+ * @param {string} [category.description] - A possible more verbose description about the category.
+ * @param {string} [category.color] - A color, preferably in RGB format.
+ * @param {blob} [category.image] - An image to show with the category.
+ * @param {blob} [category.icon] - An icon to show with the category.
+ * @param {string} [category.speechChallenges] - Speech Challenge identifiers categorized in the category.
  *
  * @returns {Promise} - The category creation promise.
  */
