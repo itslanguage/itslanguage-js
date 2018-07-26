@@ -1,6 +1,10 @@
 /**
  * This file contains the readily availbile functions which interact with the
  * ITSLanguage group API.
+ *
+ * Users can be part of zero or multiple groups.
+ *
+ * @see https://itslanguage.github.io/itslanguage-docs/api/groups/index.html
  */
 
 import {authorisedRequest} from './communication';
@@ -13,6 +17,8 @@ const url = '/groups';
  * Create a new group.
  *
  * @param {Object} group - The group to create.
+ * @param {string} [group.id] - A unique identifier. If none is given, one is generated.
+ * @param {Array} group.name - The name of the group.
  *
  * @returns {Promise} - The group creation promise.
  */
