@@ -1,6 +1,3 @@
-const istanbul = require('browserify-istanbul');
-
-
 module.exports = config => {
   const configuration = {
     frameworks: [
@@ -53,7 +50,12 @@ module.exports = config => {
         {
           type: 'json'
         }
-      ]
+      ],
+      instrumenterOptions: {
+        istanbul: {
+          noCompact: true
+        }
+      }
     },
     preprocessors: {
       'test/**/*.js': ['browserify'],
@@ -63,7 +65,6 @@ module.exports = config => {
       entries: 'src/index.js',
       debug: true,
       transform: [
-        istanbul({instrumenter: require('isparta')}),
         'babelify'
       ]
     }

@@ -5,7 +5,7 @@
 
 import * as communication from './index';
 
-const TEST_API_URL = 'https://www.example.com';
+const TEST_API_URL = 'https://api.itslanguage.nl';
 
 
 describe('settings', () => {

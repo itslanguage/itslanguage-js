@@ -335,11 +335,11 @@ describe('Connection', () => {
 
   describe('getOauth2Token', () => {
     it('should return a rejected error if the request went wrong', done => {
-      const requestSpy = spyOn(communication, 'request');
+      const requestSpy = spyOn(communication, 'authorisedRequest');
       requestSpy.and.returnValue(Promise.reject('418: I\'m a teapot'));
 
       api.getOauth2Token()
-        .then(fail, done);
+        .then(done.fail, done);
     });
 
     it('should make an authentication request', done => {
