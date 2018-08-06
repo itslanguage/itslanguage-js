@@ -24,8 +24,9 @@ export default class AudioRecorder {
     this.userMediaApproval = false;
 
     /**
-     *
-     * @type {WebAudioRecorder|MediaRecorder} The specific recorder type.
+     * The specific recorder type.
+     * @type {WebAudioRecorder|MediaRecorder}
+     * @private
      */
     this._recorder = null;
 
@@ -44,7 +45,7 @@ export default class AudioRecorder {
   /**
    * Get the audio context or create one.
    *
-   * @return {AudioContext} The AudioContext created will be returned
+   * @return {AudioContext} The AudioContext created will be returned.
    */
   createAudioContext() {
     if (!window.ItslAudioContext) {

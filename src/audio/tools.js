@@ -9,7 +9,6 @@
 const ee = require('event-emitter');
 
 /**
-@module Tools
 ITSLanguage helper tools.
 */
 

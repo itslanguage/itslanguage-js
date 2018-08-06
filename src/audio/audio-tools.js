@@ -2,7 +2,7 @@
  new-cap
  */
 /**
- * @title ITSLanguage Javascript Audio
+ * ITSLanguage Javascript Audio
  * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.
  * @copyright (c) 2014 ITSLanguage
  * @license MIT
@@ -11,7 +11,6 @@
 
 
 /**
-@module its.Audio.Tools
 ITSLanguage Audio tools.
 */
 

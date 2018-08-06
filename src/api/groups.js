@@ -4,7 +4,7 @@
  *
  * Users can be part of zero or multiple groups.
  *
- * @see https://itslanguage.github.io/itslanguage-docs/api/groups/index.html
+ * @see {@link https://itslanguage.github.io/itslanguage-docs/api/groups/index.html}
  */
 
 import {authorisedRequest} from './communication';

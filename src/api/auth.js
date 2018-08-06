@@ -1,5 +1,7 @@
 /**
  * This file contains a set of functions which makes authentication easier.
+ *
+ * @module api/authentication
  */
 
 import {authorisedRequest, request, updateSettings} from './communication';
@@ -13,7 +15,7 @@ import {authorisedRequest, request, updateSettings} from './communication';
  *
  * Keep in mind that in order to specify the user, the scope also needs to be specified.
  *
- * @see: https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation
+ * @see {@link https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation}
  *
  * @param {string} [tenant] - The ID of the tenant which is requesting this scope.
  * @param {string} [organisation] - The ID of the organisation which is requesting this scope.
@@ -62,14 +64,13 @@ export function assembleScope(tenant, organisation, user) {
  * tenant user can impersonate an organisation, or an user in an organisation. But an user can't
  * impersonate.
  *
- * @see: https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation
+ * @see {@link https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html#impersonation}
  *
  * @param {string} [scope] - The scope of the impersonation. Omitting this value will cause the API
- *                           to return a token for the current user.
+ * to return a token for the current user.
  *
  * @returns {Promise} - A promise which will resolve if the authentication concluded successfully,
- *                      it'll reject in any other case. It resolves with the response body of the
- *                      token request.
+ * it'll reject in any other case. It resolves with the response body of the token request.
  */
 export function impersonate(scope) {
   const body = new URLSearchParams();
@@ -96,11 +97,10 @@ export function impersonate(scope) {
  * @param {string} username - The username to authenticate with.
  * @param {string} password - The password to authenticate with.
  * @param {string} [scope] - The scope of the authentication. Omitting this
- *                           value will cause the API to infer the scope.
+ * value will cause the API to infer the scope.
  *
  * @returns {Promise} - A promise which will resolve if the authentication concluded successfully,
- *                      it'll reject in any other case. It resolves with the response body of the
- *                      token request.
+ * it'll reject in any other case. It resolves with the response body of the token request.
  */
 export function authenticate(username, password, scope) {
   const body = new URLSearchParams();

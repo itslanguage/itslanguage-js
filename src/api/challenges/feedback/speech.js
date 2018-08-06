@@ -74,7 +74,7 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
  * Feedback can be paused. This will stop the backend from processing the audio stream and returning
  * feedback.
  *
- * Important note: pausing the feedback will not stop the feedback. Also make sure to stop sending
+ * Important note: Pausing the feedback will not stop the feedback. Also make sure to stop sending
  *                 data from the recorder to the backend.
  *
  * @param {string} feedbackId - The ID of the feedback to pause.

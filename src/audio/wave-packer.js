@@ -87,10 +87,10 @@ export default class WavePacker {
   /**
    * Wrap the raw audio in a header to make it a WAVE format.
    *
-   * Specs: {@link https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}.
+   * @see {@link https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}.
    *
-   * @todo: This function should use the {@link createWAVEHeader} function for creating the header.
-   * @param {[]} interleaved - Array of interleaved audio.
+   * @todo This function should use the {@link createWAVEHeader} function for creating the header.
+   * @param {Array} interleaved - Array of interleaved audio.
    */
   encodeWAV(interleaved) {
     const buffer = new ArrayBuffer(44 + interleaved.length * 2);

@@ -5,7 +5,7 @@
  * Roles are named groups of permissions. A role is typically assigned to a user
  * to grant a user permissions.
  *
- * @see https://itslanguage.github.io/itslanguage-docs/api/roles/index.html
+ * @see {@link https://itslanguage.github.io/itslanguage-docs/api/roles/index.html}
  */
 
 import {authorisedRequest} from './communication';

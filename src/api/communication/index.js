@@ -1,6 +1,8 @@
 /**
  * This file contains the settings and the communication mechanism for the
  * ITSLanguage REST API.
+ *
+ * @module api/communication
  */
 
 // Headers
@@ -46,7 +48,7 @@ export function updateSettings(newSettings) {
  *
  * @param {Response} response - The response to parse.
  *
- * @throws {Promise.<String>} - When the requets was not okay and the contents
+ * @throws {Promise<string>} - When the requets was not okay and the contents
  *                              of the response isn't json.
  * @throws {Promise.<Object>} - When the requets was not okay and the contents
  *                              of the response is json.

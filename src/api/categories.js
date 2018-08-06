@@ -4,7 +4,8 @@
  *
  * Categorize Speech Challenges or categories.
  *
- * @see https://itslanguage.github.io/itslanguage-docs/api/categories/index.html
+ * @see {@link https://itslanguage.github.io/itslanguage-docs/api/categories/index.html}
+ *
  */
 
 import {authorisedRequest} from './communication';
@@ -36,6 +37,26 @@ export function create(category) {
 
 
 /**
+ * Update one or more properties of an existing category.
+ *
+ * @param {string} id - The category identified.
+ * @param {Object} properties - The properties of the category to update.
+ * @param {string} [properties.parent] - Identifier of the parent category.
+ * @param {string} [properties.name] - A name for the category.
+ * @param {string} [properties.description] - A possible more verbose description about the category.
+ * @param {string} [properties.color] - A color, preferably in RGB format.
+ * @param {blob} [properties.image] - An image to show with the category.
+ * @param {blob} [properties.icon] - An icon to show with the category.
+ * @param {Array} [properties.speechChallenges] - An array of Speech Challenges identifiers categorized in the category.
+ *
+ * @returns {Promise} - The category update promise.
+ */
+export function update(id, properties) {
+  return authorisedRequest('PUT', `${url}/${id}`, properties);
+}
+
+
+/**
  * Get a single category by its ID.
  *
  * @param {string} id - The ID of the desired category.
@@ -51,7 +72,7 @@ export function getById(id) {
  * Get a all top level categories.
  * Top level categories are categories without a parent category.
  *
- * By default all categories are fetched though it is allowed to pass filters.
+ * By default all categories are fetched though it is allowed to pass filters
  * as a `URLSearchParams` object.
  *
  * @param {URLSearchParams} [filters] - The filters to apply to the category

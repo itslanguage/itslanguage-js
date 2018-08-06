@@ -54,7 +54,9 @@ export default class AudioPlayer {
       }
     };
     /**
-     * @type {WebAudioPlayer} player - Specific audio player.
+     * Specific audio player.
+     * @type {WebAudioPlayer}
+     * @private
      */
     this._player = this._getPlayer(callbacks);
     this._emitter = ee({});

@@ -1,7 +1,7 @@
 /**
  * This file contains the readily availbile functions which interact with the ITSLanguage user API.
  *
- * @see https://itslanguage.github.io/itslanguage-docs/api/users/index.html
+ * @see {@link https://itslanguage.github.io/itslanguage-docs/api/users/index.html}
  */
 
 import {authorisedRequest} from './communication';
