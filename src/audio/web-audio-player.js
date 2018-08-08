@@ -84,26 +84,29 @@ export default class WebAudioPlayer {
       }
     });
 
-    this.sound.addEventListener('error', e => {
+    this.sound.addEventListener('error', (e) => {
       switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
           console.error('You aborted the playback.');
           break;
         case e.target.error.MEDIA_ERR_NETWORK:
           console.error(
-            'A network error caused the audio download to fail.');
+            'A network error caused the audio download to fail.',
+          );
           break;
         case e.target.error.MEDIA_ERR_DECODE:
           console.error(
-            'The audio playback was aborted due to a corruption ' +
-          'problem or because the media used features your ' +
-          'browser did not support.');
+            'The audio playback was aborted due to a corruption '
+          + 'problem or because the media used features your '
+          + 'browser did not support.',
+          );
           break;
         case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
           console.error(
-            'The audio could not be loaded, either because the ' +
-          'server or network failed or because the format is ' +
-          'not supported.');
+            'The audio could not be loaded, either because the '
+          + 'server or network failed or because the format is '
+          + 'not supported.',
+          );
           break;
         default:
           console.error('An unknown error occurred.');
@@ -144,8 +147,8 @@ export default class WebAudioPlayer {
     const self = this;
     if (loadedCb) {
       this.sound.addEventListener('durationchange', () => {
-        console.log('Duration change for ' + url + ' to : ' +
-          self.sound.duration);
+        console.log(`Duration change for ${url} to : ${
+          self.sound.duration}`);
         loadedCb(self.sound);
       });
     }
@@ -164,15 +167,15 @@ export default class WebAudioPlayer {
       if (this.sound.readyState < this.sound.HAVE_METADATA) {
         // In case the audio wasn't already preloaded, do it now.
         this.sound.preload = 'auto';
-        console.warn('Playing from a given position is not possible. ' +
-          'Audio was not yet loaded. Try again.');
+        console.warn('Playing from a given position is not possible. '
+          + 'Audio was not yet loaded. Try again.');
       } else {
-        console.debug('Scrub position to: ' + position);
+        console.debug(`Scrub position to: ${position}`);
         this.sound.currentTime = position;
       }
     }
     this.sound.play();
-    console.debug('Start playing from position: ' + this.sound.currentTime);
+    console.debug(`Start playing from position: ${this.sound.currentTime}`);
   }
 
   /**
@@ -221,14 +224,14 @@ export default class WebAudioPlayer {
     // In case the audio wasn't already preloaded, do it now.
     if (this.sound.readyState < this.sound.HAVE_METADATA) {
       this.preload();
-      console.warn('Scrubbing not possible. Audio was not yet loaded. ' +
-        'Try again.');
+      console.warn('Scrubbing not possible. Audio was not yet loaded. '
+        + 'Try again.');
       return;
     }
 
     const newTime = this.sound.duration / 100 * percentage;
-    console.log('Moving audio position to: ' + percentage + '%: ' +
-      newTime + 's of total playing time: ' + this.sound.duration);
+    console.log(`Moving audio position to: ${percentage}%: ${
+      newTime}s of total playing time: ${this.sound.duration}`);
     this.sound.currentTime = newTime;
   }
 
@@ -238,8 +241,8 @@ export default class WebAudioPlayer {
    * @returns {number} Percentage of buffer fill.
    */
   getBufferFill() {
-    if (this.sound.buffered === undefined ||
-      this.sound.buffered.length === 0) {
+    if (this.sound.buffered === undefined
+      || this.sound.buffered.length === 0) {
       // Nothing buffered yet.
       return 0;
     }
@@ -269,7 +272,7 @@ export default class WebAudioPlayer {
     // Round up,so the buffer won't get stuck on 99% when
     // duration and buffer are equal, except for some far decimal.
     const loaded = Math.round(probableEnd * 100 / this.sound.duration);
-    console.log('Buffer filled to ' + loaded + '%');
+    console.log(`Buffer filled to ${loaded}%`);
     return loaded;
   }
 
@@ -322,8 +325,8 @@ export default class WebAudioPlayer {
   canPlay() {
     // Either the player is in a valid readyState (preloaded), or
     // the player has a source attached and doesn't show any loading error (non-preloaded).
-    return this.sound.readyState >= this.sound.HAVE_METADATA ||
-      this.sound.src && !this.sound.error;
+    return this.sound.readyState >= this.sound.HAVE_METADATA
+      || this.sound.src && !this.sound.error;
   }
 
   setAudioVolume(volume) {

@@ -7,14 +7,14 @@ import * as communication from '../../communication';
 
 
 describe('createChoiceChallenge', () => {
-  it('should make an authorised request', done => {
+  it('should make an authorised request', (done) => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+    authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-    choice.createChoiceChallenge({question: 'poes?'})
+    choice.createChoiceChallenge({ question: 'poes?' })
       .then(() => {
         const createRequest = authorisedRequestSpy.calls.mostRecent();
-        expect(createRequest.args).toEqual(['POST', '/challenges/choice', {question: 'poes?'}]);
+        expect(createRequest.args).toEqual(['POST', '/challenges/choice', { question: 'poes?' }]);
         done();
       }, fail);
   });
@@ -22,9 +22,9 @@ describe('createChoiceChallenge', () => {
 
 
 describe('getChoiceChallengeByID', () => {
-  it('should make an authorised request', done => {
+  it('should make an authorised request', (done) => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+    authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
     choice.getChoiceChallengeByID('c4t')
       .then(() => {
@@ -37,9 +37,9 @@ describe('getChoiceChallengeByID', () => {
 
 
 describe('getAllChoiceChallenges', () => {
-  it('should make an authorised request', done => {
+  it('should make an authorised request', (done) => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+    authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
     choice.getAllChoiceChallenges()
       .then(() => {
@@ -49,9 +49,9 @@ describe('getAllChoiceChallenges', () => {
       }, fail);
   });
 
-  it('should allow filters if they are a URLSearchParams object', done => {
+  it('should allow filters if they are a URLSearchParams object', (done) => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+    authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
     const filters = new URLSearchParams();
     filters.set('theme', 'm30w');
@@ -64,7 +64,7 @@ describe('getAllChoiceChallenges', () => {
       }, fail);
   });
 
-  it('should reject when something other than URLSearchParams is given as the filters', done => {
+  it('should reject when something other than URLSearchParams is given as the filters', (done) => {
     choice.getAllChoiceChallenges('this is not an instance of URLSearchParams')
       .then(fail, done);
   });

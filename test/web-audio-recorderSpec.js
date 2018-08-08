@@ -11,25 +11,25 @@ describe('WebAudioRecorder', () => {
 
   beforeEach(() => {
     mockRecorder = {
-      connect: jasmine.createSpy()
+      connect: jasmine.createSpy(),
     };
     source = {
       context: {
         sampleRate: 48000,
         destination: 'destination',
-        createScriptProcessor: jasmine.createSpy().and.returnValue(mockRecorder)
+        createScriptProcessor: jasmine.createSpy().and.returnValue(mockRecorder),
       },
-      connect: jasmine.createSpy()
+      connect: jasmine.createSpy(),
     };
     packerMock = {
       init: jasmine.createSpy(),
       record: jasmine.createSpy(),
-      recordStreaming: jasmine.createSpy()
+      recordStreaming: jasmine.createSpy(),
     };
     mockEvent = {
       inputBuffer: {
-        getChannelData: jasmine.createSpy().and.returnValue([10])
-      }
+        getChannelData: jasmine.createSpy().and.returnValue([10]),
+      },
     };
     f32array = new Float32Array([10]);
     cb = jasmine.createSpy();
@@ -125,4 +125,3 @@ describe('WebAudioRecorder', () => {
     expect(isRecording).toBeFalsy();
   });
 });
-

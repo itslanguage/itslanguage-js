@@ -25,11 +25,11 @@ export default class MediaRecorder {
   constructor(mediaStream) {
     const self = this;
     this.mediaRecorder = new window.MediaRecorder(mediaStream);
-    this.mediaRecorder.ondataavailable = function(e) {
+    this.mediaRecorder.ondataavailable = function (e) {
       self.recordedBlob = new Blob([e.data], {
-        type: 'audio/ogg'
+        type: 'audio/ogg',
       });
-      console.log('Recorded audio/ogg Blob size: ' + self.recordedBlob.size);
+      console.log(`Recorded audio/ogg Blob size: ${self.recordedBlob.size}`);
       if (self.callback) {
         self.callback(self.recordedBlob);
         self.callback = null;

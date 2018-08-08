@@ -4,7 +4,7 @@
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/progress/index.html}
  */
 
-import {authorisedRequest} from '../communication';
+import { authorisedRequest } from '../communication';
 
 /**
  * The URL for the category handler(s) to query for progress.
@@ -29,7 +29,7 @@ export function getById(id, groups = [], role = '') {
 
   if (groups.length) {
     // If we have groups, add them to the searchParams!
-    groups.forEach(group => {
+    groups.forEach((group) => {
       searchParams.append('group', group);
     });
   }

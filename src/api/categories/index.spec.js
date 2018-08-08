@@ -8,28 +8,28 @@ import * as communication from '../communication';
 
 describe('categories', () => {
   describe('create', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      categories.create({name: 'poes'})
+      categories.create({ name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['POST', '/categories', {name: 'poes'}]);
+          expect(createRequest.args).toEqual(['POST', '/categories', { name: 'poes' }]);
           done();
         }, fail);
     });
   });
 
   describe('update', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      categories.update('c4t', {name: 'poes'})
+      categories.update('c4t', { name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['PUT', '/categories/c4t', {name: 'poes'}]);
+          expect(createRequest.args).toEqual(['PUT', '/categories/c4t', { name: 'poes' }]);
           done();
         }, fail);
     });
@@ -37,9 +37,9 @@ describe('categories', () => {
 
 
   describe('getById', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       categories.getById('c4t')
         .then(() => {
@@ -52,9 +52,9 @@ describe('categories', () => {
 
 
   describe('getAll', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       categories.getAll()
         .then(() => {
@@ -64,9 +64,9 @@ describe('categories', () => {
         }, fail);
     });
 
-    it('should allow filters if they are a URLSearchParams object', done => {
+    it('should allow filters if they are a URLSearchParams object', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
@@ -79,16 +79,16 @@ describe('categories', () => {
         }, fail);
     });
 
-    it('should reject when something other than URLSearchParams is given as the filters', done => {
+    it('should reject when something other than URLSearchParams is given as the filters', (done) => {
       categories.getAll('this is not an instance of URLSearchParams')
         .then(fail, done);
     });
   });
 
   describe('getAllWithParentId', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       categories.getAllWithParentId('poes')
         .then(() => {

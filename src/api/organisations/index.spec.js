@@ -8,14 +8,14 @@ import * as organisations from './index';
 
 describe('organisations', () => {
   describe('create', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      organisations.create({name: 'poes'})
+      organisations.create({ name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['POST', '/organisations', {name: 'poes'}]);
+          expect(createRequest.args).toEqual(['POST', '/organisations', { name: 'poes' }]);
           done();
         }, fail);
     });
@@ -23,9 +23,9 @@ describe('organisations', () => {
 
 
   describe('getById', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       organisations.getById('c4t')
         .then(() => {
@@ -38,9 +38,9 @@ describe('organisations', () => {
 
 
   describe('getAll', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       organisations.getAll()
         .then(() => {
@@ -50,9 +50,9 @@ describe('organisations', () => {
         }, fail);
     });
 
-    it('should allow filters if they are a URLSearchParams object', done => {
+    it('should allow filters if they are a URLSearchParams object', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
@@ -65,7 +65,7 @@ describe('organisations', () => {
         }, fail);
     });
 
-    it('should reject when something other than URLSearchParams is given as the filters', done => {
+    it('should reject when something other than URLSearchParams is given as the filters', (done) => {
       organisations.getAll('this is not an instance of URLSearchParams')
         .then(fail, done);
     });

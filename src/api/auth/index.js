@@ -4,7 +4,7 @@
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html}
  */
 
-import {authorisedRequest, request, updateSettings} from '../communication';
+import { authorisedRequest, request, updateSettings } from '../communication';
 
 
 /**
@@ -82,8 +82,8 @@ export function impersonate(scope) {
   }
 
   return authorisedRequest('POST', '/tokens', body)
-    .then(result => {
-      updateSettings({authorizationToken: result.access_token});
+    .then((result) => {
+      updateSettings({ authorizationToken: result.access_token });
       return result;
     });
 }
@@ -114,8 +114,8 @@ export function authenticate(username, password, scope) {
   }
 
   return request('POST', '/tokens', body)
-    .then(result => {
-      updateSettings({authorizationToken: result.access_token});
+    .then((result) => {
+      updateSettings({ authorizationToken: result.access_token });
       return result;
     });
 }

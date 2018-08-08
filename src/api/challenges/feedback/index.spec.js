@@ -7,19 +7,19 @@ import * as feedback from './index';
 
 
 describe('createFeedback', () => {
-  it('should make an authorised request', done => {
+  it('should make an authorised request', (done) => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+    authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
     feedback.createFeedback({
       challengeId: 'challenge12',
-      errors: 1337
+      errors: 1337,
     })
       .then(() => {
         const createRequest = authorisedRequestSpy.calls.mostRecent();
         expect(createRequest.args).toEqual(['POST', '/feedback', {
           challengeId: 'challenge12',
-          errors: 1337
+          errors: 1337,
         }]);
         done();
       }, fail);
@@ -28,9 +28,9 @@ describe('createFeedback', () => {
 
 
 describe('getFeedbackById', () => {
-  it('should make an authorised request', done => {
+  it('should make an authorised request', (done) => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+    authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
     feedback.getFeedbackById('c4t')
       .then(() => {
@@ -43,9 +43,9 @@ describe('getFeedbackById', () => {
 
 
 describe('getAllFeedback', () => {
-  it('should make an authorised request', done => {
+  it('should make an authorised request', (done) => {
     const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-    authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+    authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
     feedback.getAllFeedback()
       .then(() => {

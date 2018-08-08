@@ -86,7 +86,7 @@ export default class AudioContext {
    */
   removeEventListener(...args) {
     // First, try to find the event in our list.
-    const itemIndex = this.eventListeners.findIndex(item => {
+    const itemIndex = this.eventListeners.findIndex((item) => {
       // If the count of items doesn't equal, it's definitely not the
       // listener we want to remove.
       if (item.length !== args.length) {
@@ -110,7 +110,7 @@ export default class AudioContext {
   }
 
   removeAllEventListeners() {
-    this.eventListeners.forEach(listener => {
+    this.eventListeners.forEach((listener) => {
       this.removeEventListener(...listener);
     });
     this.eventListeners = [];
@@ -127,7 +127,7 @@ export default class AudioContext {
     if (!eventName) {
       return;
     }
-    const customEvent = new CustomEvent(eventName, {detail: data});
+    const customEvent = new CustomEvent(eventName, { detail: data });
     this.audioContext.dispatchEvent(customEvent);
   }
 
@@ -138,8 +138,7 @@ export default class AudioContext {
    */
   createAudioContext() {
     if (!window.ItslAudioContext) {
-      window.AudioContext =
-        window.AudioContext || window.webkitAudioContext;
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
       window.ItslAudioContext = new window.AudioContext();
     }
     return window.ItslAudioContext;

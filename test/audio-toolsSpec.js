@@ -1,4 +1,4 @@
-import VolumeMeter, {generateWaveSample} from '../src/audio/audio-tools';
+import VolumeMeter, { generateWaveSample } from '../src/audio/audio-tools';
 
 describe('Audio tools', () => {
   it('should construct', () => {
@@ -11,13 +11,13 @@ describe('Audio tools', () => {
 
   it('should analyze an audio stream', () => {
     const fakeAnalyzer = {
-      fftSize: null
+      fftSize: null,
     };
     const context = {
-      createAnalyser: jasmine.createSpy().and.returnValue(fakeAnalyzer)
+      createAnalyser: jasmine.createSpy().and.returnValue(fakeAnalyzer),
     };
     const inputstream = {
-      connect: jasmine.createSpy()
+      connect: jasmine.createSpy(),
     };
     const meter = new VolumeMeter(context, inputstream);
     spyOn(meter, '_updateAnalysers');
@@ -40,13 +40,13 @@ describe('Audio tools', () => {
 
   it('should analyze an audio stream with a different callback type', () => {
     const fakeAnalyzer = {
-      fftSize: null
+      fftSize: null,
     };
     const context = {
-      createAnalyser: jasmine.createSpy().and.returnValue(fakeAnalyzer)
+      createAnalyser: jasmine.createSpy().and.returnValue(fakeAnalyzer),
     };
     const inputstream = {
-      connect: jasmine.createSpy()
+      connect: jasmine.createSpy(),
     };
     const meter = new VolumeMeter(context, inputstream);
     spyOn(meter, '_updateAnalysers');
@@ -81,7 +81,7 @@ describe('Audio tools', () => {
     const meter = new VolumeMeter();
     meter.analyserNode = {
       frequencyBinCount: 0,
-      getByteFrequencyData: jasmine.createSpy()
+      getByteFrequencyData: jasmine.createSpy(),
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
@@ -99,7 +99,7 @@ describe('Audio tools', () => {
     const meter = new VolumeMeter();
     meter.analyserNode = {
       frequencyBinCount: 0,
-      getByteFrequencyData: jasmine.createSpy()
+      getByteFrequencyData: jasmine.createSpy(),
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
@@ -120,7 +120,7 @@ describe('Audio tools', () => {
     const meter = new VolumeMeter();
     meter.analyserNode = {
       frequencyBinCount: 0,
-      getByteFrequencyData: jasmine.createSpy()
+      getByteFrequencyData: jasmine.createSpy(),
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
@@ -142,7 +142,7 @@ describe('Audio tools', () => {
     const meter = new VolumeMeter();
     meter.analyserNode = {
       frequencyBinCount: 0,
-      getByteFrequencyData: jasmine.createSpy()
+      getByteFrequencyData: jasmine.createSpy(),
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
@@ -165,12 +165,12 @@ describe('Audio tools', () => {
     const meter = new VolumeMeter();
     meter.analyserNode = {
       frequencyBinCount: 0,
-      getByteFrequencyData: jasmine.createSpy()
+      getByteFrequencyData: jasmine.createSpy(),
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
     spyOn(VolumeMeter, '_getAverageVolume').and.returnValue(5);
-    spyOn(window, 'requestAnimationFrame').and.callFake(animloop => {
+    spyOn(window, 'requestAnimationFrame').and.callFake((animloop) => {
       meter.willAnimate = false;
       if (meter.willAnimate === false) {
         animloop();

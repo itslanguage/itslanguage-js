@@ -11,10 +11,10 @@
 
 import {
   registerStreamForRecorder,
-  waitForUserMediaApproval
+  waitForUserMediaApproval,
 } from '../../utils/audio-over-socket';
-import {authorisedRequest} from '../../communication';
-import {makeWebsocketCall} from '../../communication/websocket';
+import { authorisedRequest } from '../../communication';
+import { makeWebsocketCall } from '../../communication/websocket';
 
 const url = challengeId => `/challenges/choice/${challengeId}/recognitions`;
 
@@ -59,8 +59,8 @@ export function createChoiceRecognition(challengeId, audio, recognised, recognit
     `${url(challengeId)}/${recognitionId && recognitionId}`,
     {
       audio,
-      recognised
-    }
+      recognised,
+    },
   );
 }
 
@@ -91,7 +91,7 @@ export function prepareChoiceRecognition() {
  * @returns {Promise} - If succesful the promise returns nothing. On error, there will be an error.
  */
 export function prepareChoiceRecognitionChallenge(recognitionId, challengeId) {
-  return makeWebsocketCall('choice.init_challenge', {args: [recognitionId, challengeId]});
+  return makeWebsocketCall('choice.init_challenge', { args: [recognitionId, challengeId] });
 }
 
 /**
@@ -109,7 +109,7 @@ export function recogniseAudioStream(recognitionId, recorder) {
   return registerStreamForRecorder(recorder, rpcNameToRegister)
     // We don't use rpcNameToRegister here because it lacks some namespacing info. The
     // registration.procedure does have the needed information.
-    .then(registration => makeWebsocketCall('choice.recognise', {args: [recognitionId, registration.procedure]}));
+    .then(registration => makeWebsocketCall('choice.recognise', { args: [recognitionId, registration.procedure] }));
 }
 
 /**
@@ -124,7 +124,7 @@ export function recogniseAudioStream(recognitionId, recorder) {
 export function recognise(challengeId, recorder) {
   let recognitionId;
   return prepareChoiceRecognition()
-    .then(rId => {
+    .then((rId) => {
       recognitionId = rId;
       return waitForUserMediaApproval(recognitionId, recorder);
     })

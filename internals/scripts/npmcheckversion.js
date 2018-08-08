@@ -22,7 +22,7 @@ const MINIMAL_NPM = 5.0;
  * @param {Error,Array} errors - Error or array with Error's to display.
  */
 function logErrors(errors) {
-  [].concat(errors).forEach(error => {
+  [].concat(errors).forEach((error) => {
     console.error(error);
     console.log('\n');
   });
@@ -40,7 +40,7 @@ async function checkVersionFor(program = null) {
     logErrors(new Error('You need to specify a program to check the version for'));
   }
 
-  const {err, stdout} = await exec(`${program} --version`);
+  const { err, stdout } = await exec(`${program} --version`);
 
   if (err) {
     logErrors(err);

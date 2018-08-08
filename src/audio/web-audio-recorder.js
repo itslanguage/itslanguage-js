@@ -26,13 +26,13 @@ export default class WebAudioRecorder {
     // Sheffield determined the minimum to be 16000hz, so /4 is too low.
     this.sampleRate = this.recordedSampleRate / 2;
     // Streaming doesn't yet downsample: #1302.
-    this.sampleRate = streamingCallback ? this.recordedSampleRate :
-      this.sampleRate;
+    this.sampleRate = streamingCallback ? this.recordedSampleRate
+      : this.sampleRate;
 
     // Always record audio in mono.
     this.channels = 1;
-    console.log('Recording at: ' +
-                  this.getAudioSpecs().audioParameters.sampleRate);
+    console.log(`Recording at: ${
+      this.getAudioSpecs().audioParameters.sampleRate}`);
 
     this.packer = packer;
     this.packer.init(this.recordedSampleRate, this.sampleRate, this.channels);
@@ -52,7 +52,7 @@ export default class WebAudioRecorder {
     this._recorder = recorder;
 
     const self = this;
-    recorder.onaudioprocess = function(audioProcessing) {
+    recorder.onaudioprocess = function (audioProcessing) {
       if (!self.recording) {
         return;
       }
@@ -87,8 +87,8 @@ export default class WebAudioRecorder {
         channels: this.channels,
         sampleWidth: 16,
         frameRate: this.sampleRate,
-        sampleRate: this.sampleRate
-      }
+        sampleRate: this.sampleRate,
+      },
     };
   }
 

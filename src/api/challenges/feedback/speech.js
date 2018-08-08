@@ -20,9 +20,9 @@
 
 import {
   registerStreamForRecorder,
-  waitForUserMediaApproval
+  waitForUserMediaApproval,
 } from '../../utils/audio-over-socket';
-import {makeWebsocketCall} from '../../communication/websocket';
+import { makeWebsocketCall } from '../../communication/websocket';
 
 /**
  * Prepare a new Speech Feedback.
@@ -33,7 +33,7 @@ import {makeWebsocketCall} from '../../communication/websocket';
  * @returns {Promise} - The ID of the Speech Feedback.
  */
 export function prepareFeedback(challengeId) {
-  return makeWebsocketCall('feedback.prepare', {args: [challengeId]});
+  return makeWebsocketCall('feedback.prepare', { args: [challengeId] });
 }
 
 /**
@@ -59,15 +59,13 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
   // Below we use registration.procedure instead of rpcNameToRegister. This is because the later
   // lacks some namespacing information that we do need.
   return registerStreamForRecorder(recorder, rpcNameToRegister)
-    .then(registration =>
-      makeWebsocketCall(
-        'feedback.listen_and_reply',
-        {
-          args: [feedbackId, registration.procedure],
-          progressCb: progressCb.bind(null, feedbackId)
-        }
-      )
-    );
+    .then(registration => makeWebsocketCall(
+      'feedback.listen_and_reply',
+      {
+        args: [feedbackId, registration.procedure],
+        progressCb: progressCb.bind(null, feedbackId),
+      },
+    ));
 }
 
 /**
@@ -81,7 +79,7 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
  * @returns {Promise} - An error if something went wrong.
  */
 export function pause(feedbackId) {
-  return makeWebsocketCall('feedback.pause', {args: [feedbackId]});
+  return makeWebsocketCall('feedback.pause', { args: [feedbackId] });
 }
 
 /**
@@ -93,7 +91,7 @@ export function pause(feedbackId) {
  * @returns {Promise} - An error if something went wrong.
  */
 export function resume(feedbackId, sentenceId = 0) {
-  return makeWebsocketCall('feedback.resume', {args: [feedbackId, sentenceId]});
+  return makeWebsocketCall('feedback.resume', { args: [feedbackId, sentenceId] });
 }
 
 /**

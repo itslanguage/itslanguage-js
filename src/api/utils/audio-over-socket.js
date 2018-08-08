@@ -2,11 +2,11 @@
  * This file contains some re-usable parts for websocket audio communication.
  */
 
-import {getWebsocketConnection, makeWebsocketCall} from '../communication/websocket';
 import autobahn from 'autobahn';
+import { getWebsocketConnection, makeWebsocketCall } from '../communication/websocket';
 import broadcaster from '../broadcaster';
-import {createWAVEHeader} from '../../audio/wave-packer';
-import {dataToBase64} from './index';
+import { createWAVEHeader } from '../../audio/wave-packer';
+import { dataToBase64 } from './index';
 
 
 /**
@@ -22,9 +22,9 @@ export function encodeAndSendAudioOnDataAvailible(id, recorder, rpc) {
   return new Promise((resolve, reject) => {
     // When the audio is done recording: encode the data, send it to the
     // websocket server and continue with the chain.
-    recorder.addEventListener('dataavailable', chunk => {
+    recorder.addEventListener('dataavailable', (chunk) => {
       const encoded = dataToBase64(chunk);
-      makeWebsocketCall(rpc, {args: [id, encoded, 'base64']})
+      makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
         .then(resolve, reject);
     });
   });
@@ -74,14 +74,14 @@ export function registerStreamForRecorder(recorder, rpcName) {
   function sendAudioChunks(args, kwargs, details) {
     // eslint-disable-next-line new-cap
     const defer = new autobahn.when.defer();
-    const {audioParameters: {channels, sampleRate}} = recorder.getAudioSpecs();
+    const { audioParameters: { channels, sampleRate } } = recorder.getAudioSpecs();
     const headerArrBuff = createWAVEHeader(channels, sampleRate);
     const header = Array.from(new Uint8Array(headerArrBuff));
     let sendHeader = true;
 
     if (details.progress) {
       // Listen for recording events.
-      recorder.addEventListener('dataavailable', chuck => {
+      recorder.addEventListener('dataavailable', (chuck) => {
         if (sendHeader) {
           // Sent the empty wave header first, this is needed
           // for containerized WAVE files.
@@ -115,9 +115,9 @@ export function registerStreamForRecorder(recorder, rpcName) {
 
   // Start registering a RPC call. As a result, this function will return a promise with the
   // registration of the RPC as result.
-  return new Promise(resolve => {
-    getWebsocketConnection().then(connection => {
-      connection.session.register(rpc, sendAudioChunks).then(registration => {
+  return new Promise((resolve) => {
+    getWebsocketConnection().then((connection) => {
+      connection.session.register(rpc, sendAudioChunks).then((registration) => {
         // Registering done. Save it so we can un-register later on.
         rpcRegistration = registration;
         // We've prepped the websocket server, now it can receive audio. Broadcast
@@ -148,8 +148,8 @@ export function registerStreamForRecorder(recorder, rpcName) {
  *                      is ready for the audio.
  */
 export function prepareServerForAudio(id, recorder, rpc) {
-  const {audioFormat, audioParameters} = recorder.getAudioSpecs();
-  return makeWebsocketCall(rpc, {args: [id, audioFormat], kwargs: audioParameters})
+  const { audioFormat, audioParameters } = recorder.getAudioSpecs();
+  return makeWebsocketCall(rpc, { args: [id, audioFormat], kwargs: audioParameters })
     .then(() => {
       // We've prepped the websocket server, now it can receive audio. Broadcast
       // that it is allowed to record.
@@ -172,7 +172,7 @@ export function prepareServerForAudio(id, recorder, rpc) {
  *                      to record them.
  */
 export function waitForUserMediaApproval(id, recorder) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     // We need the user's permission in order to record the audio. Wait for
     // it if we don't have it already.
     if (recorder.hasUserMediaApproval()) {

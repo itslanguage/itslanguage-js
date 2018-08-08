@@ -15,7 +15,7 @@ describe('Stopwatch', () => {
     }).toThrowError('tickCb parameter required');
   });
 
-  it('should start ticking', done => {
+  it('should start ticking', (done) => {
     const cb = jasmine.createSpy();
     const stopwatch = new Stopwatch(cb);
     spyOn(stopwatch, 'update').and.callThrough();
@@ -27,7 +27,7 @@ describe('Stopwatch', () => {
     }, 1000);
   });
 
-  it('should stop ticking', done => {
+  it('should stop ticking', (done) => {
     const cb = jasmine.createSpy();
     const stopwatch = new Stopwatch(cb);
     spyOn(stopwatch, 'update').and.callThrough();
@@ -42,7 +42,7 @@ describe('Stopwatch', () => {
     }, 300);
   });
 
-  it('should reset count', done => {
+  it('should reset count', (done) => {
     const cb = jasmine.createSpy();
     const stopwatch = new Stopwatch(cb);
     stopwatch.start();

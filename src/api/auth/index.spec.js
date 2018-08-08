@@ -48,9 +48,9 @@ describe('impersonate', () => {
     updateSettingsSpy = spyOn(communication, 'updateSettings');
   });
 
-  it('should make a post request and update the settings', done => {
+  it('should make a post request and update the settings', (done) => {
     // eslint-disable-next-line camelcase
-    authorisedRequestSpy.and.returnValue(Promise.resolve({access_token: 'token'}));
+    authorisedRequestSpy.and.returnValue(Promise.resolve({ access_token: 'token' }));
 
     const expectedBody = new URLSearchParams();
     expectedBody.set('grant_type', 'client_credentials');
@@ -60,14 +60,14 @@ describe('impersonate', () => {
       .then(() => {
         const requestCall = authorisedRequestSpy.calls.mostRecent();
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
-        expect(updateSettingsSpy).toHaveBeenCalledWith({authorizationToken: 'token'});
+        expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
       }, fail);
   });
 
-  it('should not require a scope', done => {
+  it('should not require a scope', (done) => {
     // eslint-disable-next-line camelcase
-    authorisedRequestSpy.and.returnValue(Promise.resolve({access_token: 'token'}));
+    authorisedRequestSpy.and.returnValue(Promise.resolve({ access_token: 'token' }));
 
     const expectedBody = new URLSearchParams();
     expectedBody.set('grant_type', 'credentials');
@@ -76,12 +76,12 @@ describe('impersonate', () => {
       .then(() => {
         const requestCall = authorisedRequestSpy.calls.mostRecent();
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
-        expect(updateSettingsSpy).toHaveBeenCalledWith({authorizationToken: 'token'});
+        expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
       }, fail);
   });
 
-  it('should return a rejected promise if the request went wrong', done => {
+  it('should return a rejected promise if the request went wrong', (done) => {
     authorisedRequestSpy.and.returnValue(Promise.reject('418: I am a teapot'));
 
     auth.impersonate('foo')
@@ -98,8 +98,8 @@ describe('authenticate', () => {
     updateSettingsSpy = spyOn(communication, 'updateSettings');
   });
 
-  it('should make a post request and update the settings', done => {
-    requestSpy.and.returnValue(Promise.resolve({access_token: 'token'})); // eslint-disable-line camelcase
+  it('should make a post request and update the settings', (done) => {
+    requestSpy.and.returnValue(Promise.resolve({ access_token: 'token' })); // eslint-disable-line camelcase
 
     const expectedBody = new URLSearchParams();
     expectedBody.set('grant_type', 'password');
@@ -111,13 +111,13 @@ describe('authenticate', () => {
       .then(() => {
         const requestCall = requestSpy.calls.mostRecent();
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
-        expect(updateSettingsSpy).toHaveBeenCalledWith({authorizationToken: 'token'});
+        expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
       }, fail);
   });
 
-  it('should not require a scope', done => {
-    requestSpy.and.returnValue(Promise.resolve({access_token: 'token'})); // eslint-disable-line camelcase
+  it('should not require a scope', (done) => {
+    requestSpy.and.returnValue(Promise.resolve({ access_token: 'token' })); // eslint-disable-line camelcase
 
     const expectedBody = new URLSearchParams();
     expectedBody.set('grant_type', 'password');
@@ -128,12 +128,12 @@ describe('authenticate', () => {
       .then(() => {
         const requestCall = requestSpy.calls.mostRecent();
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
-        expect(updateSettingsSpy).toHaveBeenCalledWith({authorizationToken: 'token'});
+        expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
       }, fail);
   });
 
-  it('should return a rejected promise if the request went wrong', done => {
+  it('should return a rejected promise if the request went wrong', (done) => {
     requestSpy.and.returnValue(Promise.reject('418: I am a teapot'));
 
     auth.authenticate('foo', 'bar')

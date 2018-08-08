@@ -9,10 +9,10 @@
 
 import {
   encodeAndSendAudioOnDataAvailible,
-  prepareServerForAudio
+  prepareServerForAudio,
 } from '../../utils/audio-over-socket';
-import {authorisedRequest} from '../../communication';
-import {makeWebsocketCall} from '../../communication/websocket';
+import { authorisedRequest } from '../../communication';
+import { makeWebsocketCall } from '../../communication/websocket';
 
 const url = challenge => `/challenges/pronunciation/${challenge}/analyses`;
 
@@ -44,7 +44,7 @@ export function preparePronunciationAnalysis() {
  * @returns {Promise.<*>} - Promise with the result of the init_challenge call.
  */
 export function prepareAnalysisChallenge(analysisId, challengeId) {
-  return makeWebsocketCall('pronunciation.init_challenge', {args: [analysisId, challengeId]});
+  return makeWebsocketCall('pronunciation.init_challenge', { args: [analysisId, challengeId] });
 }
 
 /**
@@ -56,7 +56,7 @@ export function prepareAnalysisChallenge(analysisId, challengeId) {
  * @returns {Promise.<*>} - The alignment.
  */
 export function performAlignmentOnChallenge(analysisId) {
-  return makeWebsocketCall('pronunciation.alignment', {args: [analysisId]});
+  return makeWebsocketCall('pronunciation.alignment', { args: [analysisId] });
 }
 
 /**
@@ -90,5 +90,5 @@ export function streamAudioForPronunciationAnalysis(analyseId, recorder) {
  * @returns {Promise.<*>} - The result will return the analysis.
  */
 export function endStreamAudioForPronunciationAnalysis(analyseId, progressCb) {
-  return makeWebsocketCall('pronunciation.analyse', {args: [analyseId], progressCb});
+  return makeWebsocketCall('pronunciation.analyse', { args: [analyseId], progressCb });
 }

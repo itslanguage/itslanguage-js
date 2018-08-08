@@ -1,9 +1,9 @@
-import Stopwatch from './tools';
-import WavePacker from './wave-packer';
-import WebAudioRecorder from './web-audio-recorder';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
 import uuid from 'uuid';
+import Stopwatch from './tools';
+import WavePacker from './wave-packer';
+import WebAudioRecorder from './web-audio-recorder';
 
 /**
  * Audio recording component.
@@ -49,8 +49,7 @@ export default class AudioRecorder {
    */
   createAudioContext() {
     if (!window.ItslAudioContext) {
-      window.AudioContext =
-        window.AudioContext || window.webkitAudioContext;
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
       window.ItslAudioContext = new window.AudioContext();
     }
     return window.ItslAudioContext;
@@ -113,16 +112,17 @@ export default class AudioRecorder {
     // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/mediaDevices.getUserMedia
     this.canMediaDevicesGetUserMedia = false;
     if (navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
-        navigator.mediaDevices.webkitGetUserMedia ||
-        navigator.mediaDevices.mozGetUserMedia;
+      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia
+        || navigator.mediaDevices.webkitGetUserMedia
+        || navigator.mediaDevices.mozGetUserMedia;
       this.canMediaDevicesGetUserMedia = Boolean(navigator.mediaDevices.getUserMedia);
     }
     console.log('Native navigator.mediaDevices.getUserMedia API capability:', this.canMediaDevicesGetUserMedia);
 
     if (!this.canGetUserMedia && !this.canMediaDevicesGetUserMedia) {
       throw new Error(
-        'Some form of audio recording capability is required');
+        'Some form of audio recording capability is required',
+      );
     }
 
     window.URL = window.URL || window.webkitURL;
@@ -130,7 +130,8 @@ export default class AudioRecorder {
     console.log('Native window.URL capability:', hasWindowURL);
     if (!hasWindowURL) {
       throw new Error(
-        'No window.URL blob conversion capabilities');
+        'No window.URL blob conversion capabilities',
+      );
     }
   }
 
@@ -146,7 +147,7 @@ export default class AudioRecorder {
    *  promise is rejected with PermissionDeniedError or NotFoundError respectively.
    */
   requestUserMedia() {
-    const readyForStream = stream => {
+    const readyForStream = (stream) => {
       // Modify state of userMediaApproval now access is granted.
       this.userMediaApproval = true;
 
@@ -154,12 +155,12 @@ export default class AudioRecorder {
       this.fireEvent('ready', [this.audioContext, micInputGain]);
     };
 
-    const userCanceled = error => {
+    const userCanceled = (error) => {
       console.error(error);
       throw new Error('No live audio input available or permitted');
     };
 
-    return navigator.mediaDevices.getUserMedia({audio: true})
+    return navigator.mediaDevices.getUserMedia({ audio: true })
       .then(readyForStream)
       .catch(userCanceled);
   }
@@ -201,7 +202,7 @@ export default class AudioRecorder {
    * @private
    */
   _getBestRecorder(micInputGain) {
-    return new WebAudioRecorder(micInputGain, this.audioContext, data => {
+    return new WebAudioRecorder(micInputGain, this.audioContext, (data) => {
       this.streamCallback(data);
     }, new WavePacker(), false);
   }
@@ -276,7 +277,7 @@ export default class AudioRecorder {
       if (!this.activeRecordingId) {
         this.startRecordingSession();
       }
-      console.log('Recording as id: ' + this.activeRecordingId);
+      console.log(`Recording as id: ${this.activeRecordingId}`);
 
       this.fireEvent('recording', [this.activeRecordingId]);
     }, delay);
@@ -298,11 +299,11 @@ export default class AudioRecorder {
     if (this._stopwatch) {
       this._stopwatch.stop();
     }
-    console.log('Stopped recording for id: ' + this.activeRecordingId);
+    console.log(`Stopped recording for id: ${this.activeRecordingId}`);
 
     const self = this;
-    this._recorder.getEncodedAudio(blob => {
-      console.log('Received encoded audio of type: ' + blob.type);
+    this._recorder.getEncodedAudio((blob) => {
+      console.log(`Received encoded audio of type: ${blob.type}`);
       // Allow direct playback from local blob.
       self.fireEvent('recorded', [self.activeRecordingId, blob, Boolean(forced)]);
     });
@@ -316,7 +317,7 @@ export default class AudioRecorder {
     if (this._stopwatch) {
       this._stopwatch.stop();
     }
-    console.log('paused recording for id: ' + this.activeRecordingId);
+    console.log(`paused recording for id: ${this.activeRecordingId}`);
     this.fireEvent('paused', [self.activeRecordingId]);
   }
 

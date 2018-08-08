@@ -1,7 +1,7 @@
-import Stopwatch from './tools';
-import WebAudioPlayer from './web-audio-player';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
+import Stopwatch from './tools';
+import WebAudioPlayer from './web-audio-player';
 /**
  * ITSLanguage AudioPlayer non-graphical component.
  */
@@ -51,7 +51,7 @@ export default class AudioPlayer {
       },
       errorCb() {
         self._emitter.emit('error', []);
-      }
+      },
     };
     /**
      * Specific audio player.
@@ -108,24 +108,30 @@ export default class AudioPlayer {
 
     if (!this.canUseAudio) {
       throw new Error(
-        'Some form of audio playback capability is required');
+        'Some form of audio playback capability is required',
+      );
     }
     if (this.canUseAudio) {
       const _audio = new Audio();
       if (!(_audio.canPlayType && _audio.canPlayType instanceof Function)) {
         throw new Error(
-          'Unable to detect audio playback capabilities');
+          'Unable to detect audio playback capabilities',
+        );
       }
       const canPlayOggVorbis = _audio.canPlayType(
-        'audio/ogg; codecs="vorbis"') !== '';
+        'audio/ogg; codecs="vorbis"',
+      ) !== '';
       const canPlayOggOpus = _audio.canPlayType(
-        'audio/ogg; codecs="opus"') !== '';
+        'audio/ogg; codecs="opus"',
+      ) !== '';
       const canPlayWave = _audio.canPlayType('audio/wav') !== '';
       const canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
       const canPlayAAC = _audio.canPlayType(
-        'audio/mp4; codecs="mp4a.40.2"') !== '';
+        'audio/mp4; codecs="mp4a.40.2"',
+      ) !== '';
       const canPlay3GPP = _audio.canPlayType(
-        'audio/3gpp; codecs="samr"') !== '';
+        'audio/3gpp; codecs="samr"',
+      ) !== '';
 
       console.log('Native Vorbis audio in Ogg container playback capability:', canPlayOggVorbis);
       console.log('Native Opus audio in Ogg container playback capability:', canPlayOggOpus);
@@ -136,7 +142,8 @@ export default class AudioPlayer {
 
       if (!(canPlayWave || canPlayMP3)) {
         throw new Error(
-          'Native Wave or MP3 playback is required');
+          'Native Wave or MP3 playback is required',
+        );
       }
     }
   }
@@ -349,7 +356,7 @@ export default class AudioPlayer {
    * @returns {Stopwatch} New Stopwatch object.
    */
   bindStopwatch(tickCb) {
-    this._stopwatch = new Stopwatch(time => {
+    this._stopwatch = new Stopwatch((time) => {
       const duration = this.getDuration() * 10 / this._player.sound.playbackRate;
       if (time > duration) {
         tickCb(duration);

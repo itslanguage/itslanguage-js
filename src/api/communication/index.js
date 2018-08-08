@@ -19,7 +19,7 @@ const APPLICATION_JSON = 'application/json';
 export const settings = {
   apiUrl: 'https://api.itslanguage.nl',
   wsUrl: null,
-  authorizationToken: null
+  authorizationToken: null,
 };
 
 
@@ -62,7 +62,7 @@ function handleResponse(response) {
 
   // The ITSLanguage API should return JSON. If t
   if (responseContentType && responseContentType.includes(APPLICATION_JSON)) {
-    return response.json().then(json => {
+    return response.json().then((json) => {
       if (response.ok) {
         return json;
       }
@@ -115,7 +115,7 @@ export function request(method, url, body, headers) {
   const requestOptions = {
     method,
     headers: requestHeaders,
-    body: requestBody
+    body: requestBody,
   };
 
   return fetch(requestURL, requestOptions).then(handleResponse);

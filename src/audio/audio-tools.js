@@ -30,9 +30,10 @@ export function generateWaveSample(duration) {
   const loops = duration * sampleRate;
   for (let i = 0; i < loops; i++) {
     effect[i] = 64 + Math.round(
-      32 * (Math.cos(i * i / 2000) + Math.sin(i * i / 4000)));
+      32 * (Math.cos(i * i / 2000) + Math.sin(i * i / 4000)),
+    );
   }
-  const wave = new pcm({channels: 1, rate: 22000, depth: 8}).toWav(effect);
+  const wave = new pcm({ channels: 1, rate: 22000, depth: 8 }).toWav(effect);
   return wave.encode();
 }
 
@@ -114,10 +115,10 @@ export default class VolumeMeter {
        * takes as an argument a callback to be invoked before
        * the repaint.
        */
-      const requestAnimationFrame = window.requestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.msRequestAnimationFrame;
+      const requestAnimationFrame = window.requestAnimationFrame
+        || window.mozRequestAnimationFrame
+        || window.webkitRequestAnimationFrame
+        || window.msRequestAnimationFrame;
 
       const freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
 
@@ -134,8 +135,8 @@ export default class VolumeMeter {
 
       // Callback only on substantial changes.
       const minDiff = 1;
-      if (parseInt(averageVolume) >= lastVolume - minDiff &&
-        parseInt(averageVolume) <= lastVolume + minDiff) {
+      if (parseInt(averageVolume) >= lastVolume - minDiff
+        && parseInt(averageVolume) <= lastVolume + minDiff) {
         // console.log('Skip same average: ' + lastVolume);
         return true;
       }
@@ -145,7 +146,7 @@ export default class VolumeMeter {
 
       const args = [averageVolume].concat(volumeIndicationCallbackArgs);
       // Fire all callbacks.
-      volumeIndicationCallback.forEach(cb => {
+      volumeIndicationCallback.forEach((cb) => {
         // This kludge prevents firing an averageVolume of zero
         // right away. The buffer probably needs filling before useful
         // values become available. 5 seems to be the magic number.

@@ -8,16 +8,16 @@ import * as roles from './index';
 
 describe('roles', () => {
   describe('create', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      roles.create({id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST']})
+      roles.create({ id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST'] })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
           expect(createRequest.args).toEqual(['POST', '/roles', {
             id: 'Student',
-            permissions: ['SPEECH_CHALLENGE_LIST']
+            permissions: ['SPEECH_CHALLENGE_LIST'],
           }]);
           done();
         }, fail);
@@ -25,9 +25,9 @@ describe('roles', () => {
   });
 
   describe('getById', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       roles.getById('c4t')
         .then(() => {
@@ -40,9 +40,9 @@ describe('roles', () => {
 
 
   describe('getAll', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       roles.getAll()
         .then(() => {
@@ -52,9 +52,9 @@ describe('roles', () => {
         }, fail);
     });
 
-    it('should allow filters if they are a URLSearchParams object', done => {
+    it('should allow filters if they are a URLSearchParams object', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
@@ -67,7 +67,7 @@ describe('roles', () => {
         }, fail);
     });
 
-    it('should reject when something other than URLSearchParams is given as the filters', done => {
+    it('should reject when something other than URLSearchParams is given as the filters', (done) => {
       roles.getAll('this is not an instance of URLSearchParams')
         .then(fail, done);
     });

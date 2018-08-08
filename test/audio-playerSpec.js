@@ -57,7 +57,7 @@ describe('Audio player', () => {
 
     it('should recognize playback compatibility when all are available', () => {
       window.Audio.and.returnValue({
-        canPlayType: () => 1
+        canPlayType: () => 1,
       });
       const player = new AudioPlayer();
       player._playbackCompatibility.and.callThrough();
@@ -68,7 +68,7 @@ describe('Audio player', () => {
     it('should recognize playback compatibility when only HTML5 is available', () => {
       window.Media = undefined;
       window.Audio.and.returnValue({
-        canPlayType: () => 1
+        canPlayType: () => 1,
       });
       const player = new AudioPlayer();
       player._playbackCompatibility.and.callThrough();
@@ -79,7 +79,7 @@ describe('Audio player', () => {
     it('should recognize playback compatibility when only HTML5 is available, but has no methods.', () => {
       window.Media = undefined;
       window.Audio.and.returnValue({
-        canPlayType: 'Error'
+        canPlayType: 'Error',
       });
       const player = new AudioPlayer();
       player._playbackCompatibility.and.callThrough();
@@ -101,7 +101,7 @@ describe('Audio player', () => {
     it('should recognize playback compatibility when neither wave nor mp3 can be played', () => {
       window.Media = undefined;
       window.Audio.and.returnValue({
-        canPlayType: () => ''
+        canPlayType: () => '',
       });
       const player = new AudioPlayer();
       player._playbackCompatibility.and.callThrough();
@@ -114,7 +114,7 @@ describe('Audio player', () => {
   it('should get the best player when it can use HTML5', () => {
     const oldAudio_ = window.Audio;
     window.Audio = jasmine.createSpy().and.returnValue({
-      canPlayType: () => 1
+      canPlayType: () => 1,
     });
     spyOn(WebAudioPlayer.prototype, '_initPlayer');
     const player = new AudioPlayer();
@@ -293,12 +293,12 @@ describe('Audio player', () => {
     const player = new AudioPlayer();
     player._player = {
       sound: {
-        playbackRate: 1
-      }
+        playbackRate: 1,
+      },
     };
     const cb = jasmine.createSpy();
     const fakeWatch = jasmine.createSpy();
-    spyOn(Stopwatch, 'default').and.callFake(callback => {
+    spyOn(Stopwatch, 'default').and.callFake((callback) => {
       fakeWatch._tickCb = callback;
       callback(10);
       return fakeWatch;
@@ -315,7 +315,7 @@ describe('Audio player', () => {
     spyOn(player, 'getDuration').and.returnValue(1);
     player._player = jasmine.createSpyObj('player', ['bindStopwatch']);
     player._player.sound = {
-      playbackRate: 1
+      playbackRate: 1,
     };
     player.bindStopwatch(cb);
     expect(cb).toHaveBeenCalledWith(10);
@@ -485,4 +485,3 @@ describe('Audio player', () => {
     expect(player._player.setAudioVolume).toHaveBeenCalledWith(1);
   });
 });
-

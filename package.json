@@ -26,7 +26,10 @@
     "clean:all": "npm run build:clean && npm run esdoc:clean && npm run test:clean"
   },
   "lint-staged": {
-    "*.js": ["eslint --ignore-path .gitignore --fix", "git add"]
+    "*.js": [
+      "eslint --ignore-path .gitignore --fix",
+      "git add"
+    ]
   },
   "pre-commit": "lint:staged",
   "author": "ITSLanguage (https://www.itslanguage.nl) <support@d-centralize.nl>",

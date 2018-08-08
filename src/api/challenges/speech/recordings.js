@@ -10,10 +10,10 @@
 import {
   encodeAndSendAudioOnDataAvailible,
   prepareServerForAudio,
-  waitForUserMediaApproval
+  waitForUserMediaApproval,
 } from '../../utils/audio-over-socket';
-import {authorisedRequest} from '../../communication';
-import {makeWebsocketCall} from '../../communication/websocket';
+import { authorisedRequest } from '../../communication';
+import { makeWebsocketCall } from '../../communication/websocket';
 
 // The URL for the speech recording handler(s).
 const url = challenge => `/challenges/speech/${challenge}/recordings`;
@@ -83,7 +83,7 @@ export function createSpeechRecording(challenge, recorder) {
   return makeWebsocketCall('recording.init_recording')
     // Initializeing the recording ought to give us an ID for the recording we
     // are creating right now.
-    .then(recording => makeWebsocketCall('recording.init_challenge', {args: [recording, challenge]}))
+    .then(recording => makeWebsocketCall('recording.init_challenge', { args: [recording, challenge] }))
     // We've linked it to the speech challenge now. We also should have
     // received the recording ID once again.
     .then(recording => waitForUserMediaApproval(recording, recorder))
@@ -94,5 +94,5 @@ export function createSpeechRecording(challenge, recorder) {
     // using and all the extra floof that comes with it.
     .then(recording => encodeAndSendAudioOnDataAvailible(recording, recorder, 'recording.write'))
     // When we are done; close the connection.
-    .then(recording => makeWebsocketCall('recording.close', {args: [recording]}));
+    .then(recording => makeWebsocketCall('recording.close', { args: [recording] }));
 }

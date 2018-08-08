@@ -24,7 +24,7 @@ describe('updateSettings', () => {
     const newSettings = {
       fi: 'fi',
       fa: 'fa',
-      fo: 'fo'
+      fo: 'fo',
     };
 
     expect(() => communication.updateSettings(newSettings)).not.toThrowError();
@@ -49,29 +49,29 @@ describe('request', () => {
 
   beforeEach(() => {
     fetchSpy = spyOn(global, 'fetch');
-    communication.updateSettings({apiUrl: TEST_API_URL});
+    communication.updateSettings({ apiUrl: TEST_API_URL });
   });
 
-  it('should make the request for the given params and handle its response', done => {
+  it('should make the request for the given params and handle its response', (done) => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const responseBody = {location: 'South East Asia'};
-    const response = new Response(JSON.stringify(responseBody), {headers});
+    const responseBody = { location: 'South East Asia' };
+    const response = new Response(JSON.stringify(responseBody), { headers });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
-    const requestBody = {packed: 'suitcase'};
+    const requestBody = { packed: 'suitcase' };
 
     communication.request('POST', '/lets/go/somewhere', requestBody)
-      .then(result => {
+      .then((result) => {
         const request = fetchSpy.calls.mostRecent();
         expect(request.args).toEqual([
           `${TEST_API_URL}/lets/go/somewhere`,
           {
             method: 'POST',
             headers,
-            body: JSON.stringify(requestBody)
-          }
+            body: JSON.stringify(requestBody),
+          },
         ]);
 
         expect(result).toEqual(responseBody);
@@ -79,27 +79,27 @@ describe('request', () => {
       }, fail);
   });
 
-  it('should keep a URLSearchParams body as URLSearchParams', done => {
+  it('should keep a URLSearchParams body as URLSearchParams', (done) => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const responseBody = {location: 'South East Asia'};
-    const response = new Response(JSON.stringify(responseBody), {headers});
+    const responseBody = { location: 'South East Asia' };
+    const response = new Response(JSON.stringify(responseBody), { headers });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     const requestBody = new URLSearchParams();
     requestBody.set('packed', 'suitcase');
 
     communication.request('POST', '/lets/go/somewhere', requestBody)
-      .then(result => {
+      .then((result) => {
         const request = fetchSpy.calls.mostRecent();
         expect(request.args).toEqual([
           `${TEST_API_URL}/lets/go/somewhere`,
           {
             method: 'POST',
             headers,
-            body: requestBody
-          }
+            body: requestBody,
+          },
         ]);
 
         expect(result).toEqual(responseBody);
@@ -107,27 +107,27 @@ describe('request', () => {
       }, fail);
   });
 
-  it('should keep a FormData body as FormData', done => {
+  it('should keep a FormData body as FormData', (done) => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
-    const responseBody = {location: 'South East Asia'};
-    const response = new Response(JSON.stringify(responseBody), {headers});
+    const responseBody = { location: 'South East Asia' };
+    const response = new Response(JSON.stringify(responseBody), { headers });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     const requestBody = new FormData();
     requestBody.set('memory', new Blob(), 'a nice pictrue taken on the journey');
 
     communication.request('POST', '/lets/go/somewhere', requestBody)
-      .then(result => {
+      .then((result) => {
         const request = fetchSpy.calls.mostRecent();
         expect(request.args).toEqual([
           `${TEST_API_URL}/lets/go/somewhere`,
           {
             method: 'POST',
             headers,
-            body: requestBody
-          }
+            body: requestBody,
+          },
         ]);
 
         expect(result).toEqual(responseBody);
@@ -135,46 +135,46 @@ describe('request', () => {
       }, fail);
   });
 
-  it('should reject with the custom JSON errors from the API', done => {
+  it('should reject with the custom JSON errors from the API', (done) => {
     const responseHeaders = new Headers();
     responseHeaders.set('Content-Type', 'application/json');
     const responseBody = {
-      unexpected_error: 'The Spanish Inquisition' // eslint-disable-line camelcase
+      unexpected_error: 'The Spanish Inquisition', // eslint-disable-line camelcase
     };
 
     const response = new Response(JSON.stringify(responseBody), {
       status: 500,
-      headers: responseHeaders
+      headers: responseHeaders,
     });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     communication.request('GET', '/give/me/coffee')
-      .then(fail, result => {
+      .then(fail, (result) => {
         expect(result).toEqual(responseBody);
         done();
       });
   });
 
-  it('should reject with the plain HTTP error status if the response does have a JSON body', done => {
+  it('should reject with the plain HTTP error status if the response does have a JSON body', (done) => {
     const response = new Response('I am a teapot', {
       status: 418,
-      statusText: 'I am a teapot'
+      statusText: 'I am a teapot',
     });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     communication.request('GET', '/give/me/coffee')
-      .then(fail, message => {
+      .then(fail, (message) => {
         expect(message).toEqual(`${response.status}: ${response.statusText}`);
         done();
       });
   });
 
-  it('should return the response if it is an OK response, but doesn\'t have a JSON body', done => {
+  it('should return the response if it is an OK response, but doesn\'t have a JSON body', (done) => {
     const response = new Response('I wish I was a teapot');
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     communication.request('GET', '/give/me/coffee')
-      .then(result => {
+      .then((result) => {
         expect(result).toBe(response);
         done();
       }, fail);
@@ -189,34 +189,34 @@ describe('authorisedRequest', () => {
     fetchSpy = spyOn(window, 'fetch');
     communication.updateSettings({
       apiUrl: TEST_API_URL,
-      authorizationToken: 'token'
+      authorizationToken: 'token',
     });
   });
 
-  it('should only allow relative urls', done => {
-    communication.authorisedRequest('PUT', 'https://domain.ext/path', {foo: 'bar'})
-      .then(fail, message => {
+  it('should only allow relative urls', (done) => {
+    communication.authorisedRequest('PUT', 'https://domain.ext/path', { foo: 'bar' })
+      .then(fail, (message) => {
         expect(message).toEqual('Only relative ITSLanguage API URLs are allowed.');
         done();
       });
   });
 
-  it('should reject when there is no authorizationToken set in the settings', done => {
-    communication.updateSettings({authorizationToken: null});
-    communication.authorisedRequest('PUT', '/path', {foo: 'bar'})
-      .then(fail, message => {
+  it('should reject when there is no authorizationToken set in the settings', (done) => {
+    communication.updateSettings({ authorizationToken: null });
+    communication.authorisedRequest('PUT', '/path', { foo: 'bar' })
+      .then(fail, (message) => {
         expect(message).toEqual('Please authenticate first.');
         done();
       });
   });
 
-  it('should set the Authorization header with the authorizationToken as a bearer token', done => {
+  it('should set the Authorization header with the authorizationToken as a bearer token', (done) => {
     const responseHeaders = new Headers();
     responseHeaders.set('Content-Type', 'application/json');
 
-    const responseBody = {location: 'South East Asia'};
+    const responseBody = { location: 'South East Asia' };
     const response = new Response(JSON.stringify(responseBody), {
-      headers: responseHeaders
+      headers: responseHeaders,
     });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
@@ -224,15 +224,15 @@ describe('authorisedRequest', () => {
     expectedRequestHeaders.set('Authorization', 'Bearer token');
 
     communication.authorisedRequest('GET', '/foo')
-      .then(result => {
+      .then((result) => {
         const request = fetchSpy.calls.mostRecent();
         expect(request.args).toEqual([
           `${TEST_API_URL}/foo`,
           {
             method: 'GET',
             headers: expectedRequestHeaders,
-            body: undefined
-          }
+            body: undefined,
+          },
         ]);
 
         expect(result).toEqual(responseBody);

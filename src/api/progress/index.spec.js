@@ -8,9 +8,9 @@ import * as progress from './index';
 
 describe('progress', () => {
   describe('getById', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       progress.getById('c4t')
         .then(() => {
@@ -20,9 +20,9 @@ describe('progress', () => {
         }, fail);
     });
 
-    it('should add one group to the authorised request', done => {
+    it('should add one group to the authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       progress.getById('c4t', ['fish'])
         .then(() => {
@@ -32,9 +32,9 @@ describe('progress', () => {
         }, fail);
     });
 
-    it('should add multiple groups to the authorised request', done => {
+    it('should add multiple groups to the authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       progress.getById('c4t', ['fish', 'fork', 'net'])
         .then(() => {
@@ -44,9 +44,9 @@ describe('progress', () => {
         }, fail);
     });
 
-    it('should add a role to the authorised request', done => {
+    it('should add a role to the authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       progress.getById('c4t', [], 'CAPTAIN_AMERICA')
         .then(() => {
@@ -56,9 +56,9 @@ describe('progress', () => {
         }, fail);
     });
 
-    it('should add a group and a role to the authorised request', done => {
+    it('should add a group and a role to the authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       progress.getById('c4t', ['fish'], 'CAPTAIN_AMERICA')
         .then(() => {
@@ -68,9 +68,9 @@ describe('progress', () => {
         }, fail);
     });
 
-    it('should add multiple groups and a role to the authorised request', done => {
+    it('should add multiple groups and a role to the authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       progress.getById('c4t', ['fish', 'fork', 'net'], 'CAPTAIN_AMERICA')
         .then(() => {

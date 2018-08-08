@@ -3,7 +3,7 @@
  * the ITSLanguage Feedback API.
  */
 
-import {authorisedRequest} from '../../communication';
+import { authorisedRequest } from '../../communication';
 
 // The URL for the feedback challenge handler(s).
 const url = '/feedback';

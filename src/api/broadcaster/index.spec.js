@@ -2,8 +2,8 @@
  * The tests for the acompanying `broadcaster.js` file.
  */
 
-import broadcaster from './index';
 import ee from 'event-emitter';
+import broadcaster from './index';
 
 
 describe('broadcaster', () => {

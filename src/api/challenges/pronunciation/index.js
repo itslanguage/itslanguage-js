@@ -3,7 +3,7 @@
  * ITSLanguage pronunciation challenge API.
  */
 
-import {authorisedRequest} from '../../communication';
+import { authorisedRequest } from '../../communication';
 
 // The URL for the pronunciation challenge handler(s).
 const url = '/challenges/pronunciation';

@@ -15,18 +15,20 @@ export default class WavePacker {
     this.recordingSampleRate = recordingSampleRate;
     if ([48000, 44100].indexOf(this.recordingSampleRate) === -1) {
       throw new Error(
-        '48000 or 44100 are the only supported recordingSampleRates');
+        '48000 or 44100 are the only supported recordingSampleRates',
+      );
     }
 
     this.sampleRate = sampleRate;
     if ([
       this.recordingSampleRate,
       this.recordingSampleRate / 2,
-      this.recordingSampleRate / 4
+      this.recordingSampleRate / 4,
     ].indexOf(this.sampleRate) === -1) {
       throw new Error(
-        'sampleRate must be equal, half or a quarter of the ' +
-        'recording sample rate');
+        'sampleRate must be equal, half or a quarter of the '
+        + 'recording sample rate',
+      );
     }
 
     this.channels = channels;
@@ -69,7 +71,7 @@ export default class WavePacker {
     const interleaved = this.interleave(bufferL, bufferR);
     const dataview = this.encodeWAV(interleaved);
     const audioBlob = new Blob([dataview], {
-      type: 'audio/wav'
+      type: 'audio/wav',
     });
     callback(audioBlob);
   }
@@ -79,7 +81,7 @@ export default class WavePacker {
     const bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
     const dataview = this.encodeWAV(bufferL, true);
     const audioBlob = new Blob([dataview], {
-      type: 'audio/wav'
+      type: 'audio/wav',
     });
     callback(audioBlob);
   }
@@ -133,9 +135,9 @@ export default class WavePacker {
 
     // Wrap in HTML5 Blob for transport
     const blob = new Blob([view], {
-      type: 'audio/wav'
+      type: 'audio/wav',
     });
-    console.log('Recorded audio/wav Blob size: ' + blob.size);
+    console.log(`Recorded audio/wav Blob size: ${blob.size}`);
     return blob;
   }
 

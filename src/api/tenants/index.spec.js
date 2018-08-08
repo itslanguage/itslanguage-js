@@ -8,16 +8,16 @@ import * as tenants from './index';
 
 describe('tenants', () => {
   describe('create', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      tenants.create({id: 'demo', name: 'DEMO'})
+      tenants.create({ id: 'demo', name: 'DEMO' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
           expect(createRequest.args).toEqual(['POST', '/tenants', {
             id: 'demo',
-            name: 'DEMO'
+            name: 'DEMO',
           }]);
           done();
         }, fail);
@@ -25,9 +25,9 @@ describe('tenants', () => {
   });
 
   describe('getById', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
       tenants.getById('c4t')
         .then(() => {
@@ -40,9 +40,9 @@ describe('tenants', () => {
 
 
   describe('getAll', () => {
-    it('should make an authorised request', done => {
+    it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       tenants.getAll()
         .then(() => {
