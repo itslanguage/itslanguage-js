@@ -21,6 +21,20 @@ describe('categories', () => {
     });
   });
 
+  describe('update', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+
+      categories.update('c4t', {name: 'poes'})
+        .then(() => {
+          const createRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(createRequest.args).toEqual(['PUT', '/categories/c4t', {name: 'poes'}]);
+          done();
+        }, fail);
+    });
+  });
+
 
   describe('getById', () => {
     it('should make an authorised request', done => {
