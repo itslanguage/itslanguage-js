@@ -1,6 +1,6 @@
 root: true
 
-extends: d-centralize/es6
+extends: airbnb-base
 parser: babel-eslint
 
 env:
@@ -10,25 +10,7 @@ env:
   jasmine: true
 
 plugins:
-  ["jsdoc", "async-await"]
-
-parserOptions:
-  ecmaVersion: 2017
-  ecmaFeatures:
-    classes: true
+  ["jsdoc"]
 
 rules:
   no-console: 0  # This project purposely uses console.
-  prefer-reflect: 0
-  jsdoc/check-param-names: 1
-  jsdoc/check-types: 1
-  jsdoc/newline-after-description: 1
-  jsdoc/require-description-complete-sentence: 1
-  jsdoc/require-hyphen-before-param-description: 1
-  jsdoc/require-param: 1
-  jsdoc/require-param-description: 1
-  jsdoc/require-param-type: 1
-  jsdoc/require-returns-description: 1
-  jsdoc/require-returns-type: 1
-  async-await/space-after-async: 2
-  async-await/space-after-await: 2
