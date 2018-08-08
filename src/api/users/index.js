@@ -4,7 +4,7 @@
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/users/index.html}
  */
 
-import {authorisedRequest} from './communication';
+import {authorisedRequest} from '../communication';
 
 // The URL for the user handler(s).
 const url = '/users';

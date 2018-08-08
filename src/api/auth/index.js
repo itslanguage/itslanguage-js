@@ -4,7 +4,7 @@
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html}
  */
 
-import {authorisedRequest, request, updateSettings} from './communication';
+import {authorisedRequest, request, updateSettings} from '../communication';
 
 
 /**

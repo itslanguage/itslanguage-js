@@ -2,8 +2,8 @@
  * The unittests for the exported functions from `basicauth.js`.
  */
 
-import * as basicauth from './basicauth';
-import * as communication from './communication';
+import * as basicauth from './index';
+import * as communication from '../communication';
 
 
 describe('basicauth', () => {

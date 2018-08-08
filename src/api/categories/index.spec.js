@@ -1,21 +1,35 @@
 /**
- * The unittests for the exported functions from `groups.js`.
+ * The unittests for the exported functions from `categories.js`.
  */
 
-import * as communication from './communication';
-import * as groups from './groups';
+import * as categories from './index';
+import * as communication from '../communication';
 
 
-describe('groups', () => {
+describe('categories', () => {
   describe('create', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      groups.create({name: 'poes'})
+      categories.create({name: 'poes'})
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['POST', '/groups', {name: 'poes'}]);
+          expect(createRequest.args).toEqual(['POST', '/categories', {name: 'poes'}]);
+          done();
+        }, fail);
+    });
+  });
+
+  describe('update', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+
+      categories.update('c4t', {name: 'poes'})
+        .then(() => {
+          const createRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(createRequest.args).toEqual(['PUT', '/categories/c4t', {name: 'poes'}]);
           done();
         }, fail);
     });
@@ -27,10 +41,10 @@ describe('groups', () => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      groups.getById('c4t')
+      categories.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/groups/c4t']);
+          expect(getRequest.args).toEqual(['GET', '/categories/c4t']);
           done();
         }, fail);
     });
@@ -42,10 +56,10 @@ describe('groups', () => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
 
-      groups.getAll()
+      categories.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/groups']);
+          expect(getRequest.args).toEqual(['GET', '/categories']);
           done();
         }, fail);
     });
@@ -57,17 +71,31 @@ describe('groups', () => {
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
 
-      groups.getAll(filters)
+      categories.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/groups?parent=d4ddyc4t']);
+          expect(getRequest.args).toEqual(['GET', '/categories?parent=d4ddyc4t']);
           done();
         }, fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', done => {
-      groups.getAll('this is not an instance of URLSearchParams')
+      categories.getAll('this is not an instance of URLSearchParams')
         .then(fail, done);
+    });
+  });
+
+  describe('getAllWithParentId', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
+
+      categories.getAllWithParentId('poes')
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(getRequest.args).toEqual(['GET', '/categories/poes/categories']);
+          done();
+        }, fail);
     });
   });
 });

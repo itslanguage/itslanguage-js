@@ -4,7 +4,7 @@
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/progress/index.html}
  */
 
-import {authorisedRequest} from './communication';
+import {authorisedRequest} from '../communication';
 
 /**
  * The URL for the category handler(s) to query for progress.

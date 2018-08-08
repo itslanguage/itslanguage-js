@@ -3,7 +3,7 @@
  * ITSLanguage organisation API.
  */
 
-import {authorisedRequest} from './communication';
+import {authorisedRequest} from '../communication';
 
 // The URL for the organisation handler(s).
 const url = '/organisations';

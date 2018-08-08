@@ -3,8 +3,8 @@
  * acompanying `auth.js` file.
  */
 
-import * as auth from './auth';
-import * as communication from './communication';
+import * as auth from './index';
+import * as communication from '../communication';
 
 
 describe('assembleScope', () => {

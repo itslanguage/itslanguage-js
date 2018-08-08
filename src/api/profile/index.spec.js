@@ -2,8 +2,8 @@
  * The unittests for the exported functions from `users.js`.
  */
 
-import * as communication from './communication';
-import * as profile from './profile';
+import * as communication from '../communication';
+import * as profile from './index';
 
 
 describe('profile', () => {

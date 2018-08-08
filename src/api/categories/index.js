@@ -8,7 +8,7 @@
  *
  */
 
-import {authorisedRequest} from './communication';
+import {authorisedRequest} from '../communication';
 
 // The URL for the category handler(s).
 const url = '/categories';

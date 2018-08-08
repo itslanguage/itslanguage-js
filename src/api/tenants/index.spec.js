@@ -2,8 +2,8 @@
  * The unittests for the exported functions from `roles.js`.
  */
 
-import * as communication from './communication';
-import * as tenants from './tenants';
+import * as communication from '../communication';
+import * as tenants from './index';
 
 
 describe('tenants', () => {

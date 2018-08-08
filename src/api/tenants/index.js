@@ -6,7 +6,7 @@
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/tenants/index.html}
  */
 
-import {authorisedRequest} from './communication';
+import {authorisedRequest} from '../communication';
 
 /**
  * The URL for the tenant handler(s).

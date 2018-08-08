@@ -1,36 +1,49 @@
 /**
- * The unittests for the exported functions from `organisations.js`.
+ * The unittests for the exported functions from `users.js`.
  */
 
-import * as communication from './communication';
-import * as organisations from './organisations';
+import * as communication from '../communication';
+import * as users from './index';
 
 
-describe('organisations', () => {
+describe('user', () => {
   describe('create', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      organisations.create({name: 'poes'})
+      users.create({name: 'poes'})
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['POST', '/organisations', {name: 'poes'}]);
+          expect(createRequest.args).toEqual(['POST', '/users', {name: 'poes'}]);
           done();
         }, fail);
     });
   });
 
+  describe('getCurrent', () => {
+    it('should make an authorised request', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
+
+      users.getCurrent()
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+          expect(getRequest.args).toEqual(['GET', '/user']);
+          done();
+        }, fail);
+    });
+  });
 
   describe('getById', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      organisations.getById('c4t')
+      users.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/organisations/c4t']);
+          expect(getRequest.args).toEqual(['GET', '/users/c4t']);
           done();
         }, fail);
     });
@@ -42,10 +55,10 @@ describe('organisations', () => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
 
-      organisations.getAll()
+      users.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/organisations']);
+          expect(getRequest.args).toEqual(['GET', '/users']);
           done();
         }, fail);
     });
@@ -57,16 +70,16 @@ describe('organisations', () => {
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
 
-      organisations.getAll(filters)
+      users.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/organisations?parent=d4ddyc4t']);
+          expect(getRequest.args).toEqual(['GET', '/users?parent=d4ddyc4t']);
           done();
         }, fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', done => {
-      organisations.getAll('this is not an instance of URLSearchParams')
+      users.getAll('this is not an instance of URLSearchParams')
         .then(fail, done);
     });
   });

@@ -2,8 +2,8 @@
  * The unittests for the exported functions from `progress.js`.
  */
 
-import * as communication from './communication';
-import * as progress from './progress';
+import * as communication from '../communication';
+import * as progress from './index';
 
 
 describe('progress', () => {

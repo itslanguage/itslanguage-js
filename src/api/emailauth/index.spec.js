@@ -2,8 +2,8 @@
  * The unittests for the exported functions from `emailauth.js`.
  */
 
-import * as communication from './communication';
-import * as emailauth from './emailauth';
+import * as communication from '../communication';
+import * as emailauth from './index';
 
 
 describe('emailauth', () => {

@@ -1,50 +1,38 @@
 /**
- * The unittests for the exported functions from `categories.js`.
+ * The unittests for the exported functions from `roles.js`.
  */
 
-import * as categories from './categories';
-import * as communication from './communication';
+import * as communication from '../communication';
+import * as roles from './index';
 
 
-describe('categories', () => {
+describe('roles', () => {
   describe('create', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      categories.create({name: 'poes'})
+      roles.create({id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST']})
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['POST', '/categories', {name: 'poes'}]);
+          expect(createRequest.args).toEqual(['POST', '/roles', {
+            id: 'Student',
+            permissions: ['SPEECH_CHALLENGE_LIST']
+          }]);
           done();
         }, fail);
     });
   });
-
-  describe('update', () => {
-    it('should make an authorised request', done => {
-      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
-
-      categories.update('c4t', {name: 'poes'})
-        .then(() => {
-          const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['PUT', '/categories/c4t', {name: 'poes'}]);
-          done();
-        }, fail);
-    });
-  });
-
 
   describe('getById', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      categories.getById('c4t')
+      roles.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/categories/c4t']);
+          expect(getRequest.args).toEqual(['GET', '/roles/c4t']);
           done();
         }, fail);
     });
@@ -56,10 +44,10 @@ describe('categories', () => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
 
-      categories.getAll()
+      roles.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/categories']);
+          expect(getRequest.args).toEqual(['GET', '/roles']);
           done();
         }, fail);
     });
@@ -71,31 +59,17 @@ describe('categories', () => {
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
 
-      categories.getAll(filters)
+      roles.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/categories?parent=d4ddyc4t']);
+          expect(getRequest.args).toEqual(['GET', '/roles?parent=d4ddyc4t']);
           done();
         }, fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', done => {
-      categories.getAll('this is not an instance of URLSearchParams')
+      roles.getAll('this is not an instance of URLSearchParams')
         .then(fail, done);
-    });
-  });
-
-  describe('getAllWithParentId', () => {
-    it('should make an authorised request', done => {
-      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
-      authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
-
-      categories.getAllWithParentId('poes')
-        .then(() => {
-          const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/categories/poes/categories']);
-          done();
-        }, fail);
     });
   });
 });

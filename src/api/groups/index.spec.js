@@ -1,38 +1,36 @@
 /**
- * The unittests for the exported functions from `roles.js`.
+ * The unittests for the exported functions from `groups.js`.
  */
 
-import * as communication from './communication';
-import * as roles from './roles';
+import * as communication from '../communication';
+import * as groups from './index';
 
 
-describe('roles', () => {
+describe('groups', () => {
   describe('create', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      roles.create({id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST']})
+      groups.create({name: 'poes'})
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(createRequest.args).toEqual(['POST', '/roles', {
-            id: 'Student',
-            permissions: ['SPEECH_CHALLENGE_LIST']
-          }]);
+          expect(createRequest.args).toEqual(['POST', '/groups', {name: 'poes'}]);
           done();
         }, fail);
     });
   });
+
 
   describe('getById', () => {
     it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({id: 'c4t'}));
 
-      roles.getById('c4t')
+      groups.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/roles/c4t']);
+          expect(getRequest.args).toEqual(['GET', '/groups/c4t']);
           done();
         }, fail);
     });
@@ -44,10 +42,10 @@ describe('roles', () => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{id: 'c4t'}]));
 
-      roles.getAll()
+      groups.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/roles']);
+          expect(getRequest.args).toEqual(['GET', '/groups']);
           done();
         }, fail);
     });
@@ -59,16 +57,16 @@ describe('roles', () => {
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
 
-      roles.getAll(filters)
+      groups.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
-          expect(getRequest.args).toEqual(['GET', '/roles?parent=d4ddyc4t']);
+          expect(getRequest.args).toEqual(['GET', '/groups?parent=d4ddyc4t']);
           done();
         }, fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', done => {
-      roles.getAll('this is not an instance of URLSearchParams')
+      groups.getAll('this is not an instance of URLSearchParams')
         .then(fail, done);
     });
   });
