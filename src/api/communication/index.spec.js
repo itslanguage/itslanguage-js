@@ -163,7 +163,8 @@ describe('request', () => {
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     communication.request('GET', '/give/me/coffee')
-      .then(fail, (message) => {
+      .then(done.fail)
+      .catch(({ message }) => {
         expect(message).toEqual(`${response.status}: ${response.statusText}`);
         done();
       });
@@ -195,7 +196,8 @@ describe('authorisedRequest', () => {
 
   it('should only allow relative urls', (done) => {
     communication.authorisedRequest('PUT', 'https://domain.ext/path', { foo: 'bar' })
-      .then(fail, (message) => {
+      .then(fail)
+      .catch(({ message }) => {
         expect(message).toEqual('Only relative ITSLanguage API URLs are allowed.');
         done();
       });
@@ -204,7 +206,8 @@ describe('authorisedRequest', () => {
   it('should reject when there is no authorizationToken set in the settings', (done) => {
     communication.updateSettings({ authorizationToken: null });
     communication.authorisedRequest('PUT', '/path', { foo: 'bar' })
-      .then(fail, (message) => {
+      .then(fail)
+      .catch(({ message }) => {
         expect(message).toEqual('Please authenticate first.');
         done();
       });

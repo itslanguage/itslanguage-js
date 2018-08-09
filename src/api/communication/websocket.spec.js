@@ -19,14 +19,16 @@ describe('handleWebsocketAuthorisationChallenge', () => {
    * constructor options parameter can be triggered through the instance of the
    * connection using its "internal/private" _options property.
    */
-  let onchallenge;
+  let onchallengeOption;
 
   beforeEach((done) => {
     spyOn(autobahn.Connection.prototype, 'close');
     const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-    connectionOpenSpy.and.callFake(function () {
+    // We cannot use arrow functions because of this scope.
+    connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
       // Get a reference to the thing we actually want to test.
-      onchallenge = this._options.onchallenge;
+      // eslint-disable-next-line no-underscore-dangle
+      onchallengeOption = this._options.onchallenge;
       this.onopen();
     });
     websocket.openWebsocketConnection()
@@ -42,14 +44,14 @@ describe('handleWebsocketAuthorisationChallenge', () => {
   it('should return the `authorizationToken` when the ticket method is used', () => {
     communication.updateSettings({ authorizationToken: 'much_secure' });
     const session = {};
-    expect(onchallenge(session, 'ticket')).toEqual('much_secure');
+    expect(onchallengeOption(session, 'ticket')).toEqual('much_secure');
   });
 
   it('should throw a Error when a unsupported method is used', () => {
     const session = {};
     const errorMessage = 'The websocket server tried to use the unknown '
                          + 'authentication challenge: "unsupported method"';
-    expect(() => onchallenge(session, 'unsupported method')).toThrowError(Error, errorMessage);
+    expect(() => onchallengeOption(session, 'unsupported method')).toThrowError(Error, errorMessage);
   });
 });
 
@@ -63,7 +65,8 @@ describe('openWebsocketConnection', () => {
 
   it('should open a connection if there isn\'t one already', (done) => {
     const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-    connectionOpenSpy.and.callFake(function () {
+    // We cannot use arrow functions because of this scope.
+    connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
       this.onopen();
     });
 
@@ -103,7 +106,8 @@ describe('closeWebsocketConnection', () => {
   beforeEach(() => {
     connectionCloseSpy = spyOn(autobahn.Connection.prototype, 'close');
     connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-    connectionOpenSpy.and.callFake(function () {
+    // We cannot use arrow functions because of this scope.
+    connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
       this.onopen();
     });
   });
@@ -178,11 +182,12 @@ describe('makeWebsocketCall', () => {
       return defer.promise;
     });
 
-    connectionOpenSpy.and.callFake(function () {
+    // We cannot use arrow functions because of this scope.
+    connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
       // This property is returned through the session "property" of a
       // conncection instance. Sadly only the get is defined with the
       // `Object.defineProperty` which forces us to mock the internals.
-      this._session = connectionSessionStub;
+      this._session = connectionSessionStub; // eslint-disable-line no-underscore-dangle
       this.onopen();
     });
   });

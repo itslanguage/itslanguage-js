@@ -72,7 +72,7 @@ function handleResponse(response) {
   }
 
   if (!response.ok) {
-    return Promise.reject(`${response.status}: ${response.statusText}`);
+    return Promise.reject(new Error(`${response.status}: ${response.statusText}`));
   }
 
   return response;
@@ -162,7 +162,7 @@ export function authorisedRequest(method, url, body, headers) {
   // a complete url by themselves using the "private" settings object of their
   // connection reference.
   if (url && (!url.startsWith('/') && !url.startsWith(settings.apiUrl))) {
-    return Promise.reject('Only relative ITSLanguage API URLs are allowed.');
+    return Promise.reject(new Error('Only relative ITSLanguage API URLs are allowed.'));
   }
 
   try {
@@ -171,6 +171,6 @@ export function authorisedRequest(method, url, body, headers) {
 
     return request(method, url, body, requestHeaders);
   } catch (unauthorised) {
-    return Promise.reject(unauthorised.message);
+    return Promise.reject(new Error(unauthorised.message));
   }
 }

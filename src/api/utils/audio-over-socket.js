@@ -98,7 +98,8 @@ export function registerStreamForRecorder(recorder, rpcName) {
       recorder.addEventListener('recorded', () => {
         defer.resolve();
         if (rpcRegistration) {
-          getWebsocketConnection().then(connection => connection.session.unregister(rpcRegistration));
+          getWebsocketConnection()
+            .then(connection => connection.session.unregister(rpcRegistration));
         }
         recorder.removeAllEventListeners();
       });

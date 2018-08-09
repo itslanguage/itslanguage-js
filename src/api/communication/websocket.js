@@ -98,6 +98,37 @@ function establishNewBundesbahn() {
   });
 }
 
+/**
+ * Close the current websocket connection.
+ *
+ * @returns {Promise.<string>} - A promise which will resolve as soon as the
+ *                               connection was successfully closed.
+ */
+export function closeWebsocketConnection() {
+  if (!bundesautobahn) {
+    return Promise.resolve('There is no websocket connection to close.');
+  }
+
+  return bundesautobahn
+    .then((bahn) => {
+      try {
+        bahn.close();
+        bundesautobahn = null;
+        const message = 'The websocket connection has been closed successfully.';
+        log(message);
+        return message;
+      } catch (reason) {
+        // `autobahn.Connection.close()` throws a string when the connection is
+        // already closed. The connection is not exposed and therefore cannot be
+        // closed by anyone using the SDK. Regardless, when it happens just
+        // return a resolved promise.
+        bundesautobahn = null;
+        const message = 'The websocket connection has already been closed.';
+        error(message);
+        return message;
+      }
+    });
+}
 
 /**
  * Open a new websocket connection.
@@ -135,47 +166,12 @@ export function getWebsocketConnection() {
 
 
 /**
- * Close the current websocket connection.
- *
- * @returns {Promise.<string>} - A promise which will resolve as soon as the
- *                               connection was successfully closed.
- */
-export function closeWebsocketConnection() {
-  if (!bundesautobahn) {
-    return Promise.resolve('There is no websocket connection to close.');
-  }
-
-  return bundesautobahn
-    .then((bahn) => {
-      try {
-        bahn.close();
-        bundesautobahn = null;
-        const message = 'The websocket connection has been closed successfully.';
-        log(message);
-        return message;
-      } catch (reason) {
-        // `autobahn.Connection.close()` throws a string when the connection is
-        // already closed. The connection is not exposed and therefore cannot be
-        // closed by anyone using the SDK. Regardless, when it happens just
-        // return a resolved promise.
-        bundesautobahn = null;
-        const message = 'The websocket connection has already been closed.';
-        error(message);
-        return message;
-      }
-    });
-}
-
-
-/**
  * Make a rpc call to the ITSLanguage websocket server.
  *
- * This method will try to establish a websocket connection if there isn't one
- * already.
+ * This method will try to establish a websocket connection if there isn't one already.
  *
- * @param {string} rpc - The RPC to make. This be prepended by `nl.itslanguage`
- *                       as the websocket server only handles websocket calls
- *                       when the RPC starts with that prefix.
+ * @param {string} rpc - The RPC to make. This be prepended by `nl.itslanguage` as the websocket
+ * server only handles websocket calls when the RPC starts with that prefix.
  * @param {Object} [options] - Destructured object with options to pass to the websocket server.
  * @param {Array} [options.args] - An array with arguments to pass to the RPC.
  * @param {Object} [options.kwargs] - An object (dictionary) with arguments to pass to the RPC.
@@ -204,10 +200,10 @@ export function makeWebsocketCall(rpc, {
       error(result);
 
       // Return a slightly simplistic version of the error that occurred
-      return Promise.reject({
+      return Promise.reject(new Error({
         error: wssError,
         ...wssKwargs,
         args: [...wssArgs],
-      });
+      }));
     });
 }

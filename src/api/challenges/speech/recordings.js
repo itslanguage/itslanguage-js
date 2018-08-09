@@ -54,7 +54,7 @@ export function getAllSpeechRecordings(challenge, filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject('The filters should be a `URLSearchParams` object.');
+      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
     }
 
     urlWithFilters += `?${filters.toString()}`;

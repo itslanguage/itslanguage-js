@@ -81,7 +81,10 @@ describe('categories', () => {
 
     it('should reject when something other than URLSearchParams is given as the filters', (done) => {
       categories.getAll('this is not an instance of URLSearchParams')
-        .then(fail, done);
+        .then(done.fail)
+        .catch(() => {
+          done();
+        });
     });
   });
 

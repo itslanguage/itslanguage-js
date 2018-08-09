@@ -13,7 +13,7 @@ const url = '/organisations';
  * Create a new organisation.
  *
  * @param {Object} organisation - The organisation to create.
- * @param {string} [organisation.id] - The organisation identifier. If none is given, one is generated.
+ * @param {string} [organisation.id] - The organisation id. If none is given, one is generated.
  * @param {Array} organisation.name - The name of the organisation.
  *
  * @returns {Promise} - The organisation creation promise.
@@ -54,7 +54,7 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject('The filters should be a `URLSearchParams` object.');
+      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
     }
 
     urlWithFilters += `?${filters.toString()}`;

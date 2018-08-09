@@ -1,4 +1,4 @@
-import { default as VolumeMeter, generateWaveSample } from './audio/audio-tools';
+import VolumeMeter, { generateWaveSample } from './audio/audio-tools';
 import AudioPlayer from './audio/audio-player';
 import AudioRecorder from './audio/audio-recorder';
 import Player from './WebAudio/Player';

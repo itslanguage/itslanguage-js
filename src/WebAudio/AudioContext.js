@@ -136,7 +136,7 @@ export default class AudioContext {
    *
    * @return {AudioContext} The AudioContext created will be returned.
    */
-  createAudioContext() {
+  static createAudioContext() {
     if (!window.ItslAudioContext) {
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
       window.ItslAudioContext = new window.AudioContext();

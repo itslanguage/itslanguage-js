@@ -1,7 +1,8 @@
 /**
  * This file contains the readily available functions which interact with the ITSLanguage role API.
  *
- * Tenants can be managed using the REST API. Only users with administrative powers can perform these calls.
+ * Tenants can be managed using the REST API.
+ * Only users with administrative powers can perform these calls.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/tenants/index.html}
  */

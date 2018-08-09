@@ -51,7 +51,10 @@ describe('getAllrecordingsRecordings', () => {
 
   it('should reject when something other than URLSearchParams is given as the filters', (done) => {
     recordings.getAllSpeechRecordings('ch4', 'this is not an instance of URLSearchParams')
-      .then(fail, done);
+      .then(done.fail)
+      .catch(() => {
+        done();
+      });
   });
 });
 

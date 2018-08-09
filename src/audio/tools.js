@@ -13,12 +13,13 @@ ITSLanguage helper tools.
 */
 
 /**
- * A simple stopwatch that ticks every 100 ms. It can be bound to an {@link AudioPlayer} or {@link AudioRecorder}
- * which binds the stop and playing functionality to the stopping and starting of the Watch.
- * It can also be listened to by other entities.
- * @experimental When binding to an Audio Recorder, the stopwatch is not always synced properly.
- * A difference of 0.1s or 0.2s too high may occur when counting. When binding to an Audio Player however, the timer
- * will sync properly and show the correct duration of the loaded audio file.
+ * A simple stopwatch that ticks every 100 ms. It can be bound to an {@link AudioPlayer} or
+ * {@link AudioRecorder} which binds the stop and playing functionality to the stopping and starting
+ * of the Watch. It can also be listened to by other entities.
+ *
+ * @experimental When binding to an Audio Recorder, the stopwatch is not always synced properly. A
+ * difference of 0.1s or 0.2s too high may occur when counting. When binding to an Audio Player
+ * however, the timer will sync properly and show the correct duration of the loaded audio file.
  */
 export default class Stopwatch {
   /**
@@ -29,10 +30,30 @@ export default class Stopwatch {
     if (!tickCb) {
       throw new Error('tickCb parameter required');
     }
-    this._interval = null;
-    this._value = 0;
-    this._tickCb = tickCb;
-    this._emitter = ee({});
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.interval = null;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.value = 0;
+
+    /**
+     * @type {Function}
+     * @private
+     */
+    this.tickCb = tickCb;
+
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.emitter = ee({});
   }
 
   /**
@@ -42,7 +63,7 @@ export default class Stopwatch {
     console.debug('Start counting');
     // Tick every 100ms (0.1s)
     const self = this;
-    this._interval = setInterval(() => {
+    this.interval = setInterval(() => {
       self.update();
     }, 100);
   }
@@ -52,9 +73,9 @@ export default class Stopwatch {
    */
   stop() {
     console.debug('Stop counting');
-    clearInterval(this._interval);
+    clearInterval(this.interval);
     this.tick();
-    this._interval = null;
+    this.interval = null;
   }
 
   /**
@@ -62,7 +83,7 @@ export default class Stopwatch {
    */
   reset() {
     console.debug('Reset count');
-    this._value = 0;
+    this.value = 0;
     this.tick();
   }
 
@@ -71,22 +92,22 @@ export default class Stopwatch {
    */
   update() {
     this.tick();
-    this._value++;
+    this.value += 1;
   }
 
   /**
    * Invoke the tick callback with the current value.
    */
   tick() {
-    this._tickCb(this._value);
-    this._emitter.emit('tick', this._value);
+    this.tickCb(this.value);
+    this.emitter.emit('tick', this.value);
   }
 
   registerListener(tickCb) {
-    this._emitter.on('tick', tickCb);
+    this.emitter.on('tick', tickCb);
   }
 
   stopListening(tickCb) {
-    this._emitter.off('tick', tickCb);
+    this.emitter.off('tick', tickCb);
   }
 }

@@ -17,7 +17,8 @@ const url = '/categories';
 /**
  * Create a new category.
  *
- * The most convenient way to pas a category to this create function is to make use of the FormData object.
+ * The most convenient way to pas a category to this create function is to make use of the FormData
+ * object.
  *
  * @param {Object} category - The category to create.
  * @param {string} [category.id] - The category identifier. If none is given, one is generated.
@@ -27,7 +28,8 @@ const url = '/categories';
  * @param {string} [category.color] - A color, preferably in RGB format.
  * @param {blob} [category.image] - An image to show with the category.
  * @param {blob} [category.icon] - An icon to show with the category.
- * @param {string} [category.speechChallenges] - Speech Challenge identifiers categorized in the category.
+ * @param {string} [category.speechChallenges] - Speech Challenge identifiers categorized in the
+ * category.
  *
  * @returns {Promise} - The category creation promise.
  */
@@ -43,11 +45,12 @@ export function create(category) {
  * @param {Object} properties - The properties of the category to update.
  * @param {string} [properties.parent] - Identifier of the parent category.
  * @param {string} [properties.name] - A name for the category.
- * @param {string} [properties.description] - A possible more verbose description about the category.
+ * @param {string} [properties.description] - A more verbose description about the category.
  * @param {string} [properties.color] - A color, preferably in RGB format.
  * @param {blob} [properties.image] - An image to show with the category.
  * @param {blob} [properties.icon] - An icon to show with the category.
- * @param {Array} [properties.speechChallenges] - An array of Speech Challenges identifiers categorized in the category.
+ * @param {Array} [properties.speechChallenges] - An array of Speech Challenges identifiers
+ * categorized in the category.
  *
  * @returns {Promise} - The category update promise.
  */
@@ -88,7 +91,7 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject('The filters should be a `URLSearchParams` object.');
+      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
     }
 
     urlWithFilters += `?${filters.toString()}`;

@@ -25,8 +25,8 @@ export default class MediaRecorder {
   constructor(mediaStream) {
     const self = this;
     this.mediaRecorder = new window.MediaRecorder(mediaStream);
-    this.mediaRecorder.ondataavailable = function (e) {
-      self.recordedBlob = new Blob([e.data], {
+    this.mediaRecorder.ondataavailable = (event) => {
+      self.recordedBlob = new Blob([event.data], {
         type: 'audio/ogg',
       });
       console.log(`Recorded audio/ogg Blob size: ${self.recordedBlob.size}`);
@@ -68,7 +68,8 @@ export default class MediaRecorder {
   /**
    * Request encoded audio to be returned through callback.
    *
-   * @param {Function} callback - The callback to use when returning the audio as a blob in Ogg Opus format.
+   * @param {Function} callback - The callback to use when returning the audio as a blob in Ogg Opus
+   * format.
    */
   getEncodedAudio(callback) {
     if (this.recordedBlob) {

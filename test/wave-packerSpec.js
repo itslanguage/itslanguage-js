@@ -22,7 +22,7 @@ describe('WavePacker', () => {
     const rightChannel = [1, 3, 5, 7, 9, 11];
     const result = wavePacker.interleave(leftChannel, rightChannel);
     expect(result.length).toEqual(leftChannel.length + rightChannel.length);
-    for (let i = 0; i < result.length; i++) {
+    for (let i = 0; i < result.length; i += 1) {
       expect(result[i]).toEqual(i);
     }
   });
@@ -34,7 +34,7 @@ describe('WavePacker', () => {
     const rightChannel = [1, 3, 5, 7, 9, 11];
     const result = wavePacker.interleave(leftChannel, rightChannel);
     expect(result.length).toEqual(leftChannel.length);
-    for (let i = 0; i < result.length; i++) {
+    for (let i = 0; i < result.length; i += 1) {
       const average = Math.round((leftChannel[i] + rightChannel[i]) / 2 * 100) / 100;
       expect(result[i]).toEqual(average);
     }
@@ -87,12 +87,12 @@ describe('WavePacker', () => {
   it('should record small data', () => {
     const wavePacker = new WavePacker();
     wavePacker.clear();
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i += 1) {
       wavePacker.record([1], [1]);
     }
     expect(wavePacker.recBuffersL).length = 10;
     expect(wavePacker.recBuffersR).length = 10;
-    for (let i = 0; i < wavePacker.recBuffersL.length; i++) {
+    for (let i = 0; i < wavePacker.recBuffersL.length; i += 1) {
       expect(wavePacker.recBuffersL[i]).toEqual([1]);
       expect(wavePacker.recBuffersR[i]).toEqual([1]);
     }
@@ -102,12 +102,12 @@ describe('WavePacker', () => {
   it('should record big data', () => {
     const wavePacker = new WavePacker();
     wavePacker.clear();
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i += 1) {
       wavePacker.record([100, 50, 25], [200, 25, 75]);
     }
     expect(wavePacker.recBuffersL).length = 30;
     expect(wavePacker.recBuffersR).length = 30;
-    for (let i = 0; i < wavePacker.recBuffersL.length; i++) {
+    for (let i = 0; i < wavePacker.recBuffersL.length; i += 1) {
       expect(wavePacker.recBuffersL[i]).toEqual([100, 50, 25]);
       expect(wavePacker.recBuffersR[i]).toEqual([200, 25, 75]);
     }
@@ -120,7 +120,7 @@ describe('WavePacker', () => {
     wavePacker.clear();
     wavePacker.recordStreaming([0.3453], [0], cb);
     expect(cb).toHaveBeenCalledTimes(1);
-    const args = cb.calls.mostRecent().args;
+    const { args } = cb.calls.mostRecent();
     expect(args.length).toEqual(1);
     expect(args[0]).toEqual(jasmine.any(ArrayBuffer));
   });
@@ -131,7 +131,7 @@ describe('WavePacker', () => {
     wavePacker.clear();
     wavePacker.recordStreaming([0.99, -0.99, 0.543, 0.3453], 0, cb);
     expect(cb).toHaveBeenCalledTimes(1);
-    const args = cb.calls.mostRecent().args;
+    const { args } = cb.calls.mostRecent();
     expect(args.length).toEqual(1);
     expect(args[0]).toEqual(jasmine.any(ArrayBuffer));
   });
@@ -164,7 +164,7 @@ describe('WavePacker', () => {
     wavePacker.record([100, 50, 25], [200, 25, 75]);
     wavePacker.exportWAV(cb);
     expect(cb).toHaveBeenCalledTimes(1);
-    const args = cb.calls.mostRecent().args;
+    const { args } = cb.calls.mostRecent();
     expect(args.length).toEqual(1);
     const result = args[0];
     expect(result).toEqual(jasmine.any(Blob));
@@ -178,7 +178,7 @@ describe('WavePacker', () => {
     wavePacker.record([100, 50, 25], [200, 25, 75]);
     wavePacker.exportMonoWAV(cb);
     expect(cb).toHaveBeenCalledTimes(1);
-    const args = cb.calls.mostRecent().args;
+    const { args } = cb.calls.mostRecent();
     expect(args.length).toEqual(1);
     const result = args[0];
     expect(result).toEqual(jasmine.any(Blob));

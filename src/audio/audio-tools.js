@@ -28,7 +28,7 @@ export function generateWaveSample(duration) {
   const effect = [];
   const sampleRate = 22000;
   const loops = duration * sampleRate;
-  for (let i = 0; i < loops; i++) {
+  for (let i = 0; i < loops; i += 1) {
     effect[i] = 64 + Math.round(
       32 * (Math.cos(i * i / 2000) + Math.sin(i * i / 4000)),
     );
@@ -55,57 +55,58 @@ export default class VolumeMeter {
   /**
    * Start analysing the audio stream and provide updates to the specified callback function.
    *
-   * @param {Function} callback - This function is called when there's a new volume reading is available.
+   * @param {Function} callback - This function is called when there's a new volume reading is
+   * available.
    * First parameter is the volume.
-   * @param {?Array} args - Optional array of parameters to pass to the callback after the volume parameter.
+   * @param {?Array} args - Optional array of parameters to pass to the callback after the volume
+   * parameter.
    */
   getVolumeIndication(callback, args) {
     if (!callback) {
       throw new Error('Callback parameter unspecified.');
     }
 
+    let callbackArray;
+
     // Convert single callback to Array of callbacks
     if (!(callback instanceof Array)) {
-      callback = [callback];
+      callbackArray = [callback];
+    } else {
+      callbackArray = [...callback];
     }
 
-    this.volumeIndicationCallback = callback;
+    this.volumeIndicationCallback = callbackArray;
     this.volumeIndicationCallbackArgs = args || [];
 
     this.analyserNode = this.audioContext.createAnalyser();
     this.analyserNode.fftSize = 2048;
     this.stream.connect(this.analyserNode);
 
-    this._updateAnalysers();
+    this.updateAnalysers();
   }
 
-  static _getAverageVolume(array) {
-    let values = 0;
-
-    const length = array.length;
-
-    // Get all the frequency amplitudes
-    for (let i = 0; i < length; i++) {
-      values += array[i];
-    }
-
-    const average = values / length;
-    return average;
+  /**
+   * Get average volume from a list of frequency amplitudes.
+   *
+   * @param {Array<number>} amplitudes - Array with frequency amplitudes.
+   * @returns {number} - The average volume
+   * @private
+   */
+  static getAverageVolume(amplitudes = []) {
+    return (
+      amplitudes.reduce((sum, amplitude) => sum + amplitude) / amplitudes.length
+    );
   }
 
   /**
    * Calculate the volume, inform listeners by executing the callback.
    * Repeat indefinitely.
    */
-  _updateAnalysers() {
-    const volumeIndicationCallback = this.volumeIndicationCallback;
-    const volumeIndicationCallbackArgs = this.volumeIndicationCallbackArgs;
-    const analyserNode = this.analyserNode;
+  updateAnalysers() {
+    const { volumeIndicationCallback, volumeIndicationCallbackArgs, analyserNode } = this;
     const volumeMeter = this;
     let skippedCallbacks = 0;
     let lastVolume = -1;
-
-    animloop();
 
     function animloop() {
       /* The Window.requestAnimationFrame() method tells the
@@ -123,7 +124,7 @@ export default class VolumeMeter {
       const freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
 
       analyserNode.getByteFrequencyData(freqByteData);
-      let averageVolume = VolumeMeter._getAverageVolume(freqByteData);
+      let averageVolume = VolumeMeter.getAverageVolume(freqByteData);
 
       if (volumeMeter.willAnimate) {
         requestAnimationFrame(animloop);
@@ -135,14 +136,14 @@ export default class VolumeMeter {
 
       // Callback only on substantial changes.
       const minDiff = 1;
-      if (parseInt(averageVolume) >= lastVolume - minDiff
-        && parseInt(averageVolume) <= lastVolume + minDiff) {
+      if (parseInt(averageVolume, 10) >= lastVolume - minDiff
+        && parseInt(averageVolume, 10) <= lastVolume + minDiff) {
         // console.log('Skip same average: ' + lastVolume);
         return true;
       }
       // console.log('Got new volume: ' + parseInt(averageVolume) +
       // ' (old: ' + lastVolume + ')');
-      lastVolume = parseInt(averageVolume);
+      lastVolume = parseInt(averageVolume, 10);
 
       const args = [averageVolume].concat(volumeIndicationCallbackArgs);
       // Fire all callbacks.
@@ -156,7 +157,11 @@ export default class VolumeMeter {
         }
         return cb(args);
       });
+
+      return true;
     }
+
+    animloop();
   }
 
   /**

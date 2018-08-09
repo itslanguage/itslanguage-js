@@ -27,11 +27,12 @@ const url = userId => `/user${userId ? `/${userId}` : ''}/emailauths`;
  *
  * @param {string} emailAuth - The Id of the user to create or overwrite a profile for.
  * @param {string} emailAuth.email - A unique email address.
- * @param {string} [emailAuth.password] - A secure password, if none is given, one will be generated.
+ * @param {string} [emailAuth.password] - A secure password, if none is given, it will be generated.
  * @param {string} [userId=null] - The Id of the user to create an emailAuth for.
  *
  * @returns {Promise} - The emailAuth creation promise.
  */
+// eslint-disable-next-line import/prefer-default-export
 export function create(emailAuth, userId = null) {
   return authorisedRequest('POST', url(userId), emailAuth);
 }

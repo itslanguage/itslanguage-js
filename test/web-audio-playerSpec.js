@@ -63,11 +63,11 @@ describe('WebAudioPlayer', () => {
         'errorCb',
       ]);
       webAudioPlayer = new WebAudioPlayer(options);
-      webAudioPlayer._pauseIsStop = true;
+      webAudioPlayer.pauseIsStop = true;
       audioMock.firePausedEvent();
 
-      expect(webAudioPlayer._settings).toEqual(options);
-      expect(webAudioPlayer._pauseIsStop).toBeFalsy();
+      expect(webAudioPlayer.settings).toEqual(options);
+      expect(webAudioPlayer.pauseIsStop).toBeFalsy();
       expect(options.playingCb).toHaveBeenCalledTimes(1);
       expect(options.timeupdateCb).toHaveBeenCalledTimes(1);
       expect(options.durationchangeCb).toHaveBeenCalledTimes(1);
@@ -107,10 +107,10 @@ describe('WebAudioPlayer', () => {
         }
       };
       webAudioPlayer = new WebAudioPlayer(null);
-      webAudioPlayer._pauseIsStop = true;
+      webAudioPlayer.pauseIsStop = true;
       audioMock.firePausedEvent();
-      expect(webAudioPlayer._settings).toEqual({});
-      expect(webAudioPlayer._pauseIsStop).toBeFalsy();
+      expect(webAudioPlayer.settings).toEqual({});
+      expect(webAudioPlayer.pauseIsStop).toBeFalsy();
     });
   });
 
@@ -215,10 +215,10 @@ describe('WebAudioPlayer', () => {
 
   it('should unload audio', () => {
     webAudioPlayer = new WebAudioPlayer();
-    spyOn(webAudioPlayer, '_initPlayer');
+    spyOn(webAudioPlayer, 'initPlayer');
     webAudioPlayer.reset();
 
-    expect(webAudioPlayer._initPlayer).toHaveBeenCalledTimes(1);
+    expect(webAudioPlayer.initPlayer).toHaveBeenCalledTimes(1);
   });
 
   it('should stop playing audio', () => {
@@ -229,7 +229,7 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.stop();
 
-    expect(webAudioPlayer._pauseIsStop).toEqual(false);
+    expect(webAudioPlayer.pauseIsStop).toEqual(false);
     expect(audioMock.currentTime).toEqual(0);
     expect(audioMock.pause).toHaveBeenCalledTimes(1);
   });
@@ -242,7 +242,7 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.pause();
 
-    expect(webAudioPlayer._pauseIsStop).toEqual(true);
+    expect(webAudioPlayer.pauseIsStop).toEqual(true);
     expect(audioMock.currentTime).toEqual(10);
     expect(audioMock.pause).toHaveBeenCalledTimes(1);
   });

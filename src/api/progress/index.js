@@ -23,6 +23,7 @@ const url = '/categories';
  *
  * @returns {Promise} - The promise for the organisation.
  */
+// eslint-disable-next-line import/prefer-default-export
 export function getById(id, groups = [], role = '') {
   let filters = '';
   const searchParams = new URLSearchParams();

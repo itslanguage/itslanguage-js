@@ -20,7 +20,7 @@ describe('Audio tools', () => {
       connect: jasmine.createSpy(),
     };
     const meter = new VolumeMeter(context, inputstream);
-    spyOn(meter, '_updateAnalysers');
+    spyOn(meter, 'updateAnalysers');
     const cb = jasmine.createSpy();
     meter.getVolumeIndication(cb);
     expect(meter.volumeIndicationCallback).toEqual([cb]);
@@ -28,7 +28,7 @@ describe('Audio tools', () => {
     expect(meter.analyserNode).toEqual(fakeAnalyzer);
     expect(fakeAnalyzer.fftSize).toEqual(2048);
     expect(inputstream.connect).toHaveBeenCalledWith(fakeAnalyzer);
-    expect(meter._updateAnalysers).toHaveBeenCalledTimes(1);
+    expect(meter.updateAnalysers).toHaveBeenCalledTimes(1);
   });
 
   it('should not analyze an audio stream without callback', () => {
@@ -49,7 +49,7 @@ describe('Audio tools', () => {
       connect: jasmine.createSpy(),
     };
     const meter = new VolumeMeter(context, inputstream);
-    spyOn(meter, '_updateAnalysers');
+    spyOn(meter, 'updateAnalysers');
     let cb = jasmine.createSpy();
     cb = [cb];
     meter.getVolumeIndication(cb);
@@ -58,20 +58,20 @@ describe('Audio tools', () => {
     expect(meter.analyserNode).toEqual(fakeAnalyzer);
     expect(fakeAnalyzer.fftSize).toEqual(2048);
     expect(inputstream.connect).toHaveBeenCalledWith(fakeAnalyzer);
-    expect(meter._updateAnalysers).toHaveBeenCalledTimes(1);
+    expect(meter.updateAnalysers).toHaveBeenCalledTimes(1);
   });
 
   it('should get average volume', () => {
     let input = [0, 10];
-    let average = VolumeMeter._getAverageVolume(input);
+    let average = VolumeMeter.getAverageVolume(input);
     expect(average).toEqual(5);
 
     input = [0, 10, 20];
-    average = VolumeMeter._getAverageVolume(input);
+    average = VolumeMeter.getAverageVolume(input);
     expect(average).toEqual(10);
 
     input = [5];
-    average = VolumeMeter._getAverageVolume(input);
+    average = VolumeMeter.getAverageVolume(input);
     expect(average).toEqual(5);
   });
 
@@ -85,9 +85,9 @@ describe('Audio tools', () => {
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
-    spyOn(VolumeMeter, '_getAverageVolume').and.returnValue(5);
+    spyOn(VolumeMeter, 'getAverageVolume').and.returnValue(5);
     spyOn(window, 'requestAnimationFrame');
-    meter._updateAnalysers();
+    meter.updateAnalysers();
     args = [5].concat(args);
     expect(cb).toHaveBeenCalledWith(args);
     expect(cb).toHaveBeenCalledTimes(1);
@@ -103,11 +103,11 @@ describe('Audio tools', () => {
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
-    spyOn(VolumeMeter, '_getAverageVolume').and.returnValue(5);
+    spyOn(VolumeMeter, 'getAverageVolume').and.returnValue(5);
     const oldReqAnimFrame = window.requestAnimationFrame;
     delete window.requestAnimationFrame;
     window.mozRequestAnimationFrame = jasmine.createSpy();
-    meter._updateAnalysers();
+    meter.updateAnalysers();
     args = [5].concat(args);
     expect(cb).toHaveBeenCalledWith(args);
     expect(cb).toHaveBeenCalledTimes(1);
@@ -124,12 +124,12 @@ describe('Audio tools', () => {
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
-    spyOn(VolumeMeter, '_getAverageVolume').and.returnValue(5);
+    spyOn(VolumeMeter, 'getAverageVolume').and.returnValue(5);
     const oldReqAnimFrame = window.requestAnimationFrame;
     delete window.requestAnimationFrame;
     delete window.mozRequestAnimationFrame;
     window.webkitRequestAnimationFrame = jasmine.createSpy();
-    meter._updateAnalysers();
+    meter.updateAnalysers();
     args = [5].concat(args);
     expect(cb).toHaveBeenCalledWith(args);
     expect(cb).toHaveBeenCalledTimes(1);
@@ -146,13 +146,13 @@ describe('Audio tools', () => {
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
-    spyOn(VolumeMeter, '_getAverageVolume').and.returnValue(5);
+    spyOn(VolumeMeter, 'getAverageVolume').and.returnValue(5);
     const oldReqAnimFrame = window.requestAnimationFrame;
     delete window.requestAnimationFrame;
     delete window.mozRequestAnimationFrame;
     delete window.webkitRequestAnimationFrame;
     window.msRequestAnimationFrame = jasmine.createSpy();
-    meter._updateAnalysers();
+    meter.updateAnalysers();
     args = [5].concat(args);
     expect(cb).toHaveBeenCalledWith(args);
     expect(cb).toHaveBeenCalledTimes(1);
@@ -169,14 +169,14 @@ describe('Audio tools', () => {
     };
     meter.volumeIndicationCallbackArgs = args;
     meter.volumeIndicationCallback = [cb, cb, cb, cb, cb, cb];
-    spyOn(VolumeMeter, '_getAverageVolume').and.returnValue(5);
+    spyOn(VolumeMeter, 'getAverageVolume').and.returnValue(5);
     spyOn(window, 'requestAnimationFrame').and.callFake((animloop) => {
       meter.willAnimate = false;
       if (meter.willAnimate === false) {
         animloop();
       }
     });
-    meter._updateAnalysers();
+    meter.updateAnalysers();
     args = [5].concat(args);
     expect(cb).toHaveBeenCalledWith(args);
     expect(cb).toHaveBeenCalledTimes(1);

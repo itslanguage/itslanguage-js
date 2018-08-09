@@ -25,6 +25,7 @@ const url = '/user/basicauths';
  *
  * @returns {Promise} - The basicauth creation promise.
  */
+// eslint-disable-next-line import/prefer-default-export
 export function create(basicAuth) {
   return authorisedRequest('POST', url, basicAuth);
 }

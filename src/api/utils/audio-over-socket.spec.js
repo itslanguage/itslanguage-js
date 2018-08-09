@@ -46,14 +46,16 @@ describe('encodeAndSendAudioOnDataAvailible', () => {
 
   it('should reject if the `makeWebsocketCall` rejected', (done) => {
     dataToBase64Spy.and.returnValue('There\'s vomit on his sweater already, mom\'s spaghetti');
-    makeWebsocketCallSpy.and.returnValue(Promise.reject('Websocket server has received and rejected the call.'));
+    makeWebsocketCallSpy.and.returnValue(Promise.reject((
+      new Error('Websocket server has received and rejected the call.')
+    )));
     recorderStub.addEventListener.and.callFake((event, callback) => {
       // Pretend as if the event has been fired and thus call the callback.
       callback('Knees weak, arms are heavy.');
     });
 
     aos.encodeAndSendAudioOnDataAvailible('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
-      .then(fail, (result) => {
+      .then(fail, ({ message }) => {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'his.palms.are.sweaty',
           {
@@ -64,7 +66,7 @@ describe('encodeAndSendAudioOnDataAvailible', () => {
             ],
           },
         );
-        expect(result).toBe('Websocket server has received and rejected the call.');
+        expect(message).toBe('Websocket server has received and rejected the call.');
         done();
       }, fail);
   });
@@ -89,7 +91,9 @@ describe('prepareServerForAudio', () => {
         bitrate: 9001,
       },
     });
-    makeWebsocketCallSpy.and.returnValue(Promise.resolve('Websocket server has received and handled the call.'));
+    makeWebsocketCallSpy.and.returnValue((
+      Promise.resolve('Websocket server has received and handled the call.')
+    ));
 
     aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo')
       .then((result) => {
@@ -115,7 +119,9 @@ describe('prepareServerForAudio', () => {
         bitrate: 9001,
       },
     });
-    makeWebsocketCallSpy.and.returnValue(Promise.reject('Websocket server has received and rejected the call.'));
+    makeWebsocketCallSpy.and.returnValue(Promise.reject((
+      new Error('Websocket server has received and rejected the call.')
+    )));
 
     aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo')
       .then(fail, () => {

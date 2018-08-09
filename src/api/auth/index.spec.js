@@ -82,7 +82,7 @@ describe('impersonate', () => {
   });
 
   it('should return a rejected promise if the request went wrong', (done) => {
-    authorisedRequestSpy.and.returnValue(Promise.reject('418: I am a teapot'));
+    authorisedRequestSpy.and.returnValue(Promise.reject());
 
     auth.impersonate('foo')
       .then(fail, done);
@@ -134,7 +134,7 @@ describe('authenticate', () => {
   });
 
   it('should return a rejected promise if the request went wrong', (done) => {
-    requestSpy.and.returnValue(Promise.reject('418: I am a teapot'));
+    requestSpy.and.returnValue(Promise.reject());
 
     auth.authenticate('foo', 'bar')
       .then(fail, done);
