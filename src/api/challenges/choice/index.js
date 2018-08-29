@@ -5,7 +5,10 @@
 
 import { authorisedRequest } from '../../communication';
 
-// The URL for the choice challenge handler(s).
+/**
+ * The URL for the choice challenge handler(s).
+ * @type {string}
+ */
 const url = '/challenges/choice';
 
 
@@ -16,7 +19,7 @@ const url = '/challenges/choice';
  *
  * @returns {Promise} - The challenge creation promise.
  */
-export function createChoiceChallenge(challenge) {
+export function create(challenge) {
   return authorisedRequest('POST', url, challenge);
 }
 
@@ -28,7 +31,7 @@ export function createChoiceChallenge(challenge) {
  *
  * @returns {Promise} - The promise for the choice challenge.
  */
-export function getChoiceChallengeByID(id) {
+export function getByID(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -47,7 +50,7 @@ export function getChoiceChallengeByID(id) {
  *
  * @returns {Promise} - The promise for the choice challenges.
  */
-export function getAllChoiceChallenges(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
