@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `basicauth.js`.
+ * The unit tests for the exported functions from `basicauth.js`.
  */
 
 import * as basicauth from './index';

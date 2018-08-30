@@ -1,14 +1,13 @@
 /**
- * This file contains the readily availbile functions which interact with the
- * ITSLanguage speech recordings API.
+ * This file contains the readily available functions which interact with the ITSLanguage speech
+ * recordings API.
  *
- * Note that this is one of the "nested" or "composite" APIs; You can only
- * obtain the data if you provide a reference to the challenge for which you
- * want a recording.
+ * Note that this is one of the "nested" or "composite" APIs; You can only obtain the data if you
+ * provide a reference to the challenge for which you want a recording.
  */
 
 import {
-  encodeAndSendAudioOnDataAvailible,
+  encodeAndSendAudioOnDataAvailable,
   prepareServerForAudio,
   waitForUserMediaApproval,
 } from '../../utils/audio-over-socket';
@@ -46,7 +45,7 @@ export function getById(challenge, id) {
  * @param {string} challenge - The ID of the challenge for which the recording was made.
  * @param {URLSearchParams} [filters] - The filters to apply to the category list.
  *
- * @throws {Promise.<string>} - If the given optional filters are not an instance of
+ * @throws {Promise<string>} - If the given optional filters are not an instance of
  * `URLSearchParams`.
  *
  * @returns {Promise} - The promise for the speech recordings.
@@ -91,7 +90,7 @@ export function record(challenge, recorder) {
     .then(recording => prepareServerForAudio(recording, recorder, 'recording.init_audio'))
     // We've prepped the websocket server so it knows what audio format we are
     // using and all the extra floof that comes with it.
-    .then(recording => encodeAndSendAudioOnDataAvailible(recording, recorder, 'recording.write'))
+    .then(recording => encodeAndSendAudioOnDataAvailable(recording, recorder, 'recording.write'))
     // When we are done; close the connection.
     .then(recording => makeWebsocketCall('recording.close', { args: [recording] }));
 }

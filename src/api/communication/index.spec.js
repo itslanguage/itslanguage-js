@@ -1,6 +1,6 @@
 /**
- * This file contains the unittests for all exported functions in the
- * acompanying `index.js` file.
+ * This file contains the unit tests for all exported functions in the
+ * accompanying `index.js` file.
  */
 
 import * as communication from './index';
@@ -28,7 +28,7 @@ describe('updateSettings', () => {
     };
 
     expect(() => communication.updateSettings(newSettings)).not.toThrowError();
-    // Expect that all these separatly because there might be more in the
+    // Expect that all these separately because there might be more in the
     // settings object due to it being used in multiple tests.
     expect(communication.settings.fi).toEqual('fi');
     expect(communication.settings.fa).toEqual('fa');

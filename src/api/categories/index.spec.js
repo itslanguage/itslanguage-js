@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `categories.js`.
+ * The unit tests for the exported functions from `categories.js`.
  */
 
 import * as categories from './index';

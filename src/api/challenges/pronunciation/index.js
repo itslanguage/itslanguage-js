@@ -1,5 +1,5 @@
 /**
- * This file contains the readily availbile functions which interact with the
+ * This file contains the readily available functions which interact with the
  * ITSLanguage pronunciation challenge API.
  */
 
@@ -42,11 +42,10 @@ export function getById(id) {
  * By default all pronunciation challenges are fetched though it is allowed to pass
  * filters as a `URLSearchParams` object.
  *
- * @param {URLSearchParams} [filters] - The filters to apply to the category
- *                                      list.
+ * @param {URLSearchParams} [filters] - The filters to apply to the category list.
  *
- * @throws {Promise.<string>} - If the given optional filters are not an
- *                              instance of `URLSearchParams`.
+ * @throws {Promise<string>} - If the given optional filters are not an instance of
+ * `URLSearchParams`.
  *
  * @returns {Promise} - The promise for the pronunciation challenges.
  */
@@ -68,7 +67,7 @@ export function getAll(filters) {
 /**
  * Delete the pronunciation challenge with the given ID.
  *
- * @param {string} id - The ID of the pronunciation challeng to delete.
+ * @param {string} id - The ID of the pronunciation challenge to delete.
  *
  * @returns {Promise} - The pronunciation delete promise.
  */

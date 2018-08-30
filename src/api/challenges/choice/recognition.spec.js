@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `recognition.js`.
+ * The unit tests for the exported functions from `recognition.js`.
  */
 
 import * as recognition from './recognition';

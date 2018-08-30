@@ -248,7 +248,7 @@ export default class WebAudioPlayer {
     }
 
     // The fact that there's not one buffer segment is ignored here.
-    // Truely representing the buffered state requires multiple
+    // Truly representing the buffered state requires multiple
     // loading bars.
     // Usually, when user didn't seek yet, there are two segments:
     // Got segment from: 0 to: 187.63999938964844

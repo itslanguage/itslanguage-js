@@ -1,6 +1,5 @@
 /**
- * This file contains the readily availbile functions which interact with the
- * ITSLanguage group API.
+ * This file contains the readily available functions which interact with the ITSLanguage group API.
  *
  * Users can be part of zero or multiple groups.
  *
@@ -9,7 +8,10 @@
 
 import { authorisedRequest } from '../communication';
 
-// The URL for the group handler(s).
+/**
+ * The URL for the group handler(s).
+ * @type {string}
+ */
 const url = '/groups';
 
 
@@ -42,14 +44,13 @@ export function getById(id) {
 /**
  * Get a all groups.
  *
- * By default all groups are fetched though it is allowed to pass
- * filters as a `URLSearchParams` object.
+ * By default all groups are fetched though it is allowed to pass filters as a `URLSearchParams`
+ * object.
  *
- * @param {URLSearchParams} [filters] - The filters to apply to the category
- *                                      list.
+ * @param {URLSearchParams} [filters] - The filters to apply to the category list.
  *
- * @throws {Promise.<string>} - If the given optional filters are not an
- *                              instance of `URLSearchParams`.
+ * @throws {Promise<string>} - If the given optional filters are not an instance of
+ * `URLSearchParams`.
  *
  * @returns {Promise} - The promise for the groups.
  */

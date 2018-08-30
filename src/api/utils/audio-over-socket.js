@@ -16,9 +16,9 @@ import { dataToBase64 } from './index';
  * @param {MediaRecorder|Recorder} recorder - The recorder to use to get the recording.
  * @param {string} rpc - The RPC to use to store the data.
  *
- * @returns {Promise.<*>} - The response of the given RPC.
+ * @returns {Promise<*>} - The response of the given RPC.
  */
-export function encodeAndSendAudioOnDataAvailible(id, recorder, rpc) {
+export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
   return new Promise((resolve, reject) => {
     // When the audio is done recording: encode the data, send it to the
     // websocket server and continue with the chain.
@@ -38,11 +38,11 @@ export function encodeAndSendAudioOnDataAvailible(id, recorder, rpc) {
  * When the recording ends we un-register the rpc.
  *
  * @todo make the unregistering more solid. It can break way to easy now. One way could be, for
- *       example, to keep a list of registered RPC's and set a timer to unregister them.
+ * example, to keep a list of registered RPC's and set a timer to unregister them.
  *
  * @param {Recorder} recorder - Audio recorder instance.
  * @param {string} rpcName - Name of the RPC to register. This name will be prepended with
- *                           nl.itslanguage for better consistency.
+ * nl.itslanguage for better consistency.
  * @returns {Promise<any>} - It returns a promise with the service registration as result.
  */
 export function registerStreamForRecorder(recorder, rpcName) {
@@ -69,7 +69,7 @@ export function registerStreamForRecorder(recorder, rpcName) {
    * @param {Object} kwargs - Key-valued argument list.
    * @param {Object} details - Details, just as the progress function.
    * @returns {Promise} - A promise that can be resolved to end the asynchronous behaviour of this
-   *                      registered RCP.
+   * registered RCP.
    */
   function sendAudioChunks(args, kwargs, details) {
     // eslint-disable-next-line new-cap
@@ -133,20 +133,16 @@ export function registerStreamForRecorder(recorder, rpcName) {
 /**
  * Send the recorder settings to the websocket server to initialize it.
  *
- * The reserved ID (passed in the parameters) is returned once the promise is
- * resolved.
+ * The reserved ID (passed in the parameters) is returned once the promise is resolved.
  *
  * @param {string} id - The reserved ID for the audio.
- * @param {MediaRecorder|Recorder} recorder - The recorder which has been set up to
- *                                   record.
+ * @param {MediaRecorder|Recorder} recorder - The recorder which has been set up to record.
  * @param {string} rpc - The RPC to use to initialize the websocket server.
  *
- * @emits {websocketserverreadyforaudio} - When the websocket server has been
- *                                         prepared for and is ready to receive
- *                                         the audio.
+ * @emits {websocketserverreadyforaudio} - When the websocket server has been prepared for and is
+ * ready to receive the audio.
  *
- * @returns {Promise} - The promise which resolves when the websocket server
- *                      is ready for the audio.
+ * @returns {Promise} - The promise which resolves when the websocket server is ready for the audio.
  */
 export function prepareServerForAudio(id, recorder, rpc) {
   const { audioFormat, audioParameters } = recorder.getAudioSpecs();
@@ -163,14 +159,12 @@ export function prepareServerForAudio(id, recorder, rpc) {
 /**
  * Wait for the recorder to get the permission for user media.
  *
- * The reserved ID (passed in the parameters) is returned once the promise is
- * resolved.
+ * The reserved ID (passed in the parameters) is returned once the promise is resolved.
  *
  * @param {string} id - The reserved ID for the audio.
  * @param {MediaRecorder|Recorder} recorder - The recorder for which to wait.
  *
- * @returns {Promise} - The promise which resolves if the user has allowed us
- *                      to record them.
+ * @returns {Promise} - The promise which resolves if the user has allowed us to record them.
  */
 export function waitForUserMediaApproval(id, recorder) {
   return new Promise((resolve) => {

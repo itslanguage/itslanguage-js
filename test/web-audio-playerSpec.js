@@ -24,7 +24,7 @@ describe('WebAudioPlayer', () => {
       spyOn(console, 'error');
     });
 
-    it('should construct and call the appropiate event listeners', () => {
+    it('should construct and call the appropriate event listeners', () => {
       const errorCodes = [0, 1, 2, 3, 4];
       audioMock.addEventListener = (name, handler) => {
         if (name === 'pause') {

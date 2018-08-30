@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `recordings.js`.
+ * The unit tests for the exported functions from `recordings.js`.
  */
 
 import * as communication from '../../communication';

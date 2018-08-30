@@ -56,7 +56,7 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
   const rpcNameToRegister = `feedback.stream.${Math.floor(Date.now() / 1000)}`;
 
   // Below we use registration.procedure instead of rpcNameToRegister. This is because the later
-  // lacks some namespacing information that we do need.
+  // lacks some namespace information that we do need.
   return registerStreamForRecorder(recorder, rpcNameToRegister)
     .then(registration => makeWebsocketCall(
       'feedback.listen_and_reply',
@@ -98,7 +98,7 @@ export function resume(feedbackId, sentenceId = 0) {
  * required backend flow is backed up.
  *
  * It will call the following functions (and more important, in the correct order):
- *  - {@link prepareFeedback}.
+ *  - {@link prepare}.
  *  - {@link waitForUserMediaApproval}.
  *  - {@link listenAndReply}.
  *

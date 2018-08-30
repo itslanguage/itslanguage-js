@@ -33,7 +33,7 @@ function logErrors(errors) {
  * Given a program, ask for its version, and return that.
  *
  * @param {string} program - Program to get version for.
- * @returns {Promise.<*>} - Version of the program you asked for.
+ * @returns {Promise<*>} - Version of the program you asked for.
  */
 async function checkVersionFor(program = null) {
   if (!program) {

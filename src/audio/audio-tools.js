@@ -1,19 +1,10 @@
-/* eslint-disable
- new-cap
- */
 /**
- * ITSLanguage Javascript Audio
+ * ITSLanguage Javascript Audio tools.
  * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.
  * @copyright (c) 2014 ITSLanguage
  * @license MIT
  * @author d-centralize
  */
-
-
-/**
-ITSLanguage Audio tools.
-*/
-
 
 import pcm from 'pcmjs';
 
@@ -33,6 +24,7 @@ export function generateWaveSample(duration) {
       32 * (Math.cos(i * i / 2000) + Math.sin(i * i / 4000)),
     );
   }
+  // eslint-disable-next-line new-cap
   const wave = new pcm({ channels: 1, rate: 22000, depth: 8 }).toWav(effect);
   return wave.encode();
 }
@@ -56,8 +48,7 @@ export default class VolumeMeter {
    * Start analysing the audio stream and provide updates to the specified callback function.
    *
    * @param {Function} callback - This function is called when there's a new volume reading is
-   * available.
-   * First parameter is the volume.
+   * available. First parameter is the volume.
    * @param {?Array} args - Optional array of parameters to pass to the callback after the volume
    * parameter.
    */

@@ -1,6 +1,6 @@
 /**
- * This file contains the unittests for all exported functions in the
- * acompanying `websocket.js` file.
+ * This file contains the unit tests for all exported functions in the
+ * accompanying `websocket.js` file.
  */
 
 import autobahn from 'autobahn';
@@ -185,7 +185,7 @@ describe('makeWebsocketCall', () => {
     // We cannot use arrow functions because of this scope.
     connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
       // This property is returned through the session "property" of a
-      // conncection instance. Sadly only the get is defined with the
+      // connection instance. Sadly only the get is defined with the
       // `Object.defineProperty` which forces us to mock the internals.
       this._session = connectionSessionStub; // eslint-disable-line no-underscore-dangle
       this.onopen();

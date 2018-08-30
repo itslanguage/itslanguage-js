@@ -1,5 +1,5 @@
 /**
- * @title ITSLanguage Javascript
+ * ITSLanguage Javascript helper tools.
  * @overview This is part of the ITSLanguage Javascript SDK to perform helper functions.
  * @copyright (c) 2014 ITSLanguage
  * @license MIT
@@ -7,10 +7,6 @@
  */
 
 const ee = require('event-emitter');
-
-/**
-ITSLanguage helper tools.
-*/
 
 /**
  * A simple stopwatch that ticks every 100 ms. It can be bound to an {@link AudioPlayer} or

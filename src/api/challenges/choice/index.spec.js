@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `index.js`.
+ * The unit tests for the exported functions from `index.js`.
  */
 
 import * as choice from './index';

@@ -1,5 +1,5 @@
 /**
- * The tests for the acompanying `broadcaster.js` file.
+ * The tests for the accompanying `broadcaster.js` file.
  */
 
 import ee from 'event-emitter';

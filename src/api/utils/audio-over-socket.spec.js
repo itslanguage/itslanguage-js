@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `audio-over-socket.js`.
+ * The unit tests for the exported functions from `audio-over-socket.js`.
  */
 
 import * as aos from './audio-over-socket';
@@ -8,7 +8,7 @@ import * as utils from './index';
 import broadcaster from '../broadcaster';
 
 
-describe('encodeAndSendAudioOnDataAvailible', () => {
+describe('encodeAndSendAudioOnDataAvailable', () => {
   let recorderStub;
   let makeWebsocketCallSpy;
   let dataToBase64Spy;
@@ -27,7 +27,7 @@ describe('encodeAndSendAudioOnDataAvailible', () => {
       callback('Knees weak, arms are heavy.');
     });
 
-    aos.encodeAndSendAudioOnDataAvailible('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
+    aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
       .then((result) => {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'his.palms.are.sweaty',
@@ -54,7 +54,7 @@ describe('encodeAndSendAudioOnDataAvailible', () => {
       callback('Knees weak, arms are heavy.');
     });
 
-    aos.encodeAndSendAudioOnDataAvailible('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
+    aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
       .then(fail, ({ message }) => {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'his.palms.are.sweaty',
@@ -84,7 +84,7 @@ describe('prepareServerForAudio', () => {
     broadcasterSpy = spyOn(broadcaster, 'emit');
   });
 
-  it('should broadcast when the websocket server has successfully been preped and resolve in the reserved ID', (done) => {
+  it('should broadcast when the websocket server has successfully been prepped and resolve in the reserved ID', (done) => {
     recorderStub.getAudioSpecs.and.returnValue({
       audioFormat: 'audio/ogg',
       audioParameters: {
@@ -147,7 +147,7 @@ describe('waitForUserMediaApproval', () => {
     recorderStub = jasmine.createSpyObj('Recorder', ['hasUserMediaApproval', 'addEventListener']);
   });
 
-  it('should resolve with the reserved ID when the recorder already has user aproval', (done) => {
+  it('should resolve with the reserved ID when the recorder already has user approval', (done) => {
     recorderStub.hasUserMediaApproval.and.returnValue(true);
 
     aos.waitForUserMediaApproval('r353rv3d1d', recorderStub)
@@ -157,7 +157,7 @@ describe('waitForUserMediaApproval', () => {
       }, fail);
   });
 
-  it('should await the user\'s aproval', (done) => {
+  it('should await the user\'s approval', (done) => {
     recorderStub.hasUserMediaApproval.and.returnValue(false);
     recorderStub.addEventListener.and.callFake((event, callback) => {
       // Pretend as if the event has been fired and thus call the callback.

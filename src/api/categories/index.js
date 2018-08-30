@@ -1,5 +1,5 @@
 /**
- * This file contains the readily availbile functions which interact with the
+ * This file contains the readily available functions which interact with the
  * ITSLanguage categories API.
  *
  * Categorize Speech Challenges or categories.
@@ -78,14 +78,13 @@ export function getById(id) {
  * Get a all top level categories.
  * Top level categories are categories without a parent category.
  *
- * By default all categories are fetched though it is allowed to pass filters
- * as a `URLSearchParams` object.
+ * By default all categories are fetched though it is allowed to pass filters as a
+ * `URLSearchParams` object.
  *
- * @param {URLSearchParams} [filters] - The filters to apply to the category
- *                                      list.
+ * @param {URLSearchParams} [filters] - The filters to apply to the category list.
  *
- * @throws {Promise.<string>} - If the given optional filters are not an
- *                              instance of `URLSearchParams`.
+ * @throws {Promise<string>} - If the given optional filters are not an instance of
+ * `URLSearchParams`.
  *
  * @returns {Promise} - The promise for the categories.
  */

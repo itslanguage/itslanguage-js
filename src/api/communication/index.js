@@ -1,15 +1,23 @@
 /**
- * This file contains the settings and the communication mechanism for the
- * ITSLanguage REST API.
- *
- * @module api/communication
+ * This file contains the settings and the communication mechanism for the ITSLanguage REST API.
  */
 
-// Headers
+/**
+ * Content-Type HTTP Header key.
+ * @type {string}
+ */
 const CONTENT_TYPE = 'Content-Type';
+
+/**
+ * Authorization HTTP Header key.
+ * @type {string}
+ */
 const AUTHORIZATION = 'Authorization';
 
-// Content-Types
+/**
+ * Content-Type HTTP Header value.
+ * @type {string}
+ */
 const APPLICATION_JSON = 'application/json';
 
 
@@ -28,8 +36,7 @@ export const settings = {
  *
  * @param {Object} newSettings - The settings to inject/update.
  *
- * @throws {Error} - When the given `newSettings` is something other than a
- *                   object.
+ * @throws {Error} - When the given `newSettings` is something other than a object.
  */
 export function updateSettings(newSettings) {
   if (!newSettings || !(newSettings instanceof Object)) {
@@ -43,19 +50,16 @@ export function updateSettings(newSettings) {
 /**
  * Parse the response of a fetch request.
  *
- * Try to parse the given response body as JSON, if it isn't Leave the
- * response as is.
+ * Try to parse the given response body as JSON, if it isn't Leave the response as is.
  *
  * @param {Response} response - The response to parse.
  *
- * @throws {Promise<string>} - When the requets was not okay and the contents
- *                              of the response isn't json.
- * @throws {Promise.<Object>} - When the requets was not okay and the contents
- *                              of the response is json.
+ * @throws {Promise<string>} - When the request wasn't okay and the contents of the response isn't
+ * json.
+ * @throws {Promise<Error>} - When the request wasn't okay and the contents of the response is json.
  *
- * @returns {Promise.<Object>} - The contents of a JSON response or the
- *                               response itself if the body is something other
- *                               than JSON.
+ * @returns {Promise|Response} - The contents of a JSON response or the response itself if the body
+ * is something other than JSON.
  */
 function handleResponse(response) {
   const responseContentType = response.headers.get(CONTENT_TYPE);
@@ -82,19 +86,18 @@ function handleResponse(response) {
 /**
  * Perform an HTTP request for the given method, url, body, and headers.
  *
- * In case the given url is a partial url, meaning it starts with a `/`, the
- * base URL to the ITSLanguage API is prepended.
+ * In case the given url is a partial url, meaning it starts with a `/`, the base URL to the
+ * ITSLanguage API is prepended.
  *
- * When a Object instance is provided as body, it'll be transformed into JSON.
- * Unless it is either a `URLSearchParams` or a `FormData` object. Anything
- * else is sent as plain text.
+ * When a Object instance is provided as body, it'll be transformed into JSON. Unless it is either a
+ * `URLSearchParams` or a `FormData` object. Anything else is sent as plain text.
  *
  * @param {string} method - The request METHOD ('GET', 'POST', 'PUT', 'DELETE').
  * @param {string} url - The location to send the request to.
  * @param {*} [body] - Anything which needs to be sent somewhere.
  * @param {Headers} [headers] - Extra headers to send with the request.
  *
- * @returns {Promise.<Object>} The response of the made request.
+ * @returns {Promise<Object>} The response of the made request.
  */
 export function request(method, url, body, headers) {
   const requestHeaders = headers || new Headers();
@@ -139,8 +142,8 @@ function getBearerToken() {
 
 
 /**
- * Perform an HTTP request with the desired method, body, and headers to the
- * given partial ITSLanguage API URL.
+ * Perform an HTTP request with the desired method, body, and headers to the given partial
+ * ITSLanguage API URL.
  *
  * This request will add the ``Authorization`` header to the request.
  *
@@ -151,11 +154,10 @@ function getBearerToken() {
  * @param {*} [body] - Anything which needs to be sent somewhere.
  * @param {Headers} [headers] - Extra headers to send with the request.
  *
- * @throws {Promise.<string>} - When the given `url` param is not a partial
- *                              URL, or when there is no authorisation token
- *                              availible.
+ * @throws {Promise<string>} - When the given `url` param is not a partial URL, or when there is no
+ * authorisation token available.
  *
- * @returns {Promise.<Object>} - The response from the ITSLanguage API.
+ * @returns {Promise<Object>} - The response from the ITSLanguage API.
  */
 export function authorisedRequest(method, url, body, headers) {
   // XXX remove the URL truthy check when all parts of the SDK no longer build

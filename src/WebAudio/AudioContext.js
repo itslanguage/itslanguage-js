@@ -59,7 +59,7 @@ export default class AudioContext {
 
   /**
    * Wraps the addEventListener which is available on the AudioContext node.
-   * Note that it is requierd to pass a named function to actually be able
+   * Note that it is required to pass a named function to actually be able
    * to remove an event listeners. This is just how the EventTarget.removeEventListener
    * works. There are no extra checks for.
    *
@@ -76,7 +76,7 @@ export default class AudioContext {
 
   /**
    * Wraps the removeEventListener which is available on the AudioContext node.
-   * Make sure to call with the same arguments as the addEventListner.
+   * Make sure to call with the same arguments as the addEventListener.
    *
    * If you didn't call the addEventListener with a named function, please note
    * that you won't be able to remove the eventListener.

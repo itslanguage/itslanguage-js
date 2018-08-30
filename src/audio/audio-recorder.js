@@ -194,7 +194,7 @@ export default class AudioRecorder {
   /**
    * Get a recorder object that performs audio compression, when available.
    *
-   * Using the Media Stream Recording API for recording is the prefered
+   * Using the Media Stream Recording API for recording is the preferred
    * solution. It allows recording compressed audio which makes it quicker to
    * submit. If not available, use a default createScriptProcessor is used.
    *

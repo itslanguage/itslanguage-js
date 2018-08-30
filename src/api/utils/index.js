@@ -1,5 +1,5 @@
 /**
- * Some allround re-usable utilities.
+ * Some all-round re-usable utilities.
  */
 
 /**

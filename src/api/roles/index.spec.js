@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `roles.js`.
+ * The unit tests for the exported functions from `roles.js`.
  */
 
 import * as communication from '../communication';

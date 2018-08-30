@@ -1,13 +1,21 @@
 /**
- * This file contains the readily availbile functions which interact with the ITSLanguage user API.
+ * This file contains the readily available functions which interact with the ITSLanguage user API.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/users/index.html}
  */
 
 import { authorisedRequest } from '../communication';
 
-// The URL for the user handler(s).
+/**
+ * The URL for the user handler(s).
+ * @type {string}
+ */
 const url = '/users';
+
+/**
+ * The URL for a single user handler.
+ * @type {string}
+ */
 const singleUserUrl = '/user';
 
 
@@ -53,14 +61,13 @@ export function getById(id) {
 /**
  * Get a all users.
  *
- * By default all users are fetched though it is allowed to pass
- * filters as a `URLSearchParams` object.
+ * By default all users are fetched though it is allowed to pass filters as a `URLSearchParams`
+ * object.
  *
- * @param {URLSearchParams} [filters] - The filters to apply to the category
- *                                      list.
+ * @param {URLSearchParams} [filters] - The filters to apply to the category list.
  *
- * @throws {Promise.<string>} - If the given optional filters are not an
- *                              instance of `URLSearchParams`.
+ * @throws {Promise<string>} - If the given optional filters are not an instance of
+ * `URLSearchParams`.
  *
  * @returns {Promise} - The promise for the users.
  */

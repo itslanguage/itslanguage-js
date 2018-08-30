@@ -1,5 +1,5 @@
 /**
- * The unittests for the exported functions from `groups.js`.
+ * The unit tests for the exported functions from `groups.js`.
  */
 
 import * as communication from '../communication';

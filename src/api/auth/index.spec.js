@@ -1,6 +1,6 @@
 /**
- * This file contains the unittests for the exported function in the
- * acompanying `auth.js` file.
+ * This file contains the unit tests for the exported function in the
+ * accompanying `auth.js` file.
  */
 
 import * as auth from './index';

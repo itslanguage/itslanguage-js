@@ -19,4 +19,4 @@ npm version minor
 npm publish
 ```
 This will upload the build artifacts to NPM. Be sure to also update the version number in the master branch and,
-if neccessary, flag a release version.
+if necessary, flag a release version.

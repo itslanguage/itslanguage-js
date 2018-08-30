@@ -1,6 +1,6 @@
 /*
  * Use the Media Stream Recording API for recording and encoding. Ogg Opus
- * (audio/ogg) is the prefered output format.
+ * (audio/ogg) is the preferred output format.
  *
  * The Media Stream Recording API is W3C standard in the making:
  * https://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/RecordingProposal.html
