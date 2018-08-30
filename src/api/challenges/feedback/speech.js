@@ -32,7 +32,7 @@ import { makeWebsocketCall } from '../../communication/websocket';
  * @param {string} challengeId - The ID of the challenge to prepare.
  * @returns {Promise} - The ID of the Speech Feedback.
  */
-export function prepareFeedback(challengeId) {
+export function prepare(challengeId) {
   return makeWebsocketCall('feedback.prepare', { args: [challengeId] });
 }
 
@@ -48,9 +48,8 @@ export function prepareFeedback(challengeId) {
  * @param {Function} progressCb - A callback which will be used to receive progress on.
  * @param {Recorder} recorder - Audio recorder instance.
  * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This
- *                      feedback will be given through the progressiveResultsCb function. When the
- *                      rpc is done, the promise will return an recording with the appropriate
- *                      feedback per sentence.
+ * feedback will be given through the progressiveResultsCb function. When the rpc is done, the
+ * promise will return an recording with the appropriate feedback per sentence.
  */
 export function listenAndReply(feedbackId, progressCb, recorder) {
   // Generate a somewhat unique RPC name
@@ -73,7 +72,7 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
  * feedback.
  *
  * Important note: Pausing the feedback will not stop the feedback. Also make sure to stop sending
- *                 data from the recorder to the backend.
+ * data from the recorder to the backend.
  *
  * @param {string} feedbackId - The ID of the feedback to pause.
  * @returns {Promise} - An error if something went wrong.
@@ -107,12 +106,11 @@ export function resume(feedbackId, sentenceId = 0) {
  * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.
  * @param {Recorder} recorder - Audio recorder instance.
  * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This
- *                      feedback will be given through the progressiveResultsCb function. When the
- *                      rpc is done, the promise will return an recording with the appropriate
- *                      feedback per sentence.
+ * feedback will be given through the progressiveResultsCb function. When the rpc is done, the
+ * promise will return an recording with the appropriate feedback per sentence.
  */
 export function feedback(challengeId, progressiveResultsCb, recorder) {
-  return prepareFeedback(challengeId)
+  return prepare(challengeId)
     .then(feedbackId => waitForUserMediaApproval(feedbackId, recorder))
     .then(feedbackId => listenAndReply(feedbackId, progressiveResultsCb, recorder));
 }

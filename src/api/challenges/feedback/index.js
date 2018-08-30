@@ -5,8 +5,12 @@
 
 import { authorisedRequest } from '../../communication';
 
-// The URL for the feedback challenge handler(s).
+/**
+ * The URL for the feedback challenge handler(s).
+ * @type {string}
+ */
 const url = '/feedback';
+
 
 /**
  * Create new feedback.
@@ -15,9 +19,10 @@ const url = '/feedback';
  *
  * @returns {Promise} - The feedback creation promise.
  */
-export function createFeedback(feedback) {
+export function create(feedback) {
   return authorisedRequest('POST', url, feedback);
 }
+
 
 /**
  * Get a single feedback challenge by its ID.
@@ -29,9 +34,10 @@ export function createFeedback(feedback) {
  *
  * @returns {Promise} - The promise for the feedback challenge.
  */
-export function getFeedbackById(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
+
 
 /**
  * Get all feedback. It will only return feedback that the user may see.
@@ -39,6 +45,6 @@ export function getFeedbackById(id) {
  *
  * @returns {Promise} - The promise for the feedback challenges.
  */
-export function getAllFeedback() {
+export function getAll() {
   return authorisedRequest('GET', url);
 }

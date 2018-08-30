@@ -1,8 +1,14 @@
 import * as choiceApi from './choice';
 import * as recognition from './choice/recognition';
+import * as feedbackApi from './feedback';
+import * as speech from './feedback/speech';
 
-// eslint-disable-next-line import/prefer-default-export
 export const choice = {
   choice: choiceApi,
   recognition,
+};
+
+export const feedback = {
+  feedback: feedbackApi,
+  speech,
 };
