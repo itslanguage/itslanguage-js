@@ -5,7 +5,10 @@
 
 import { authorisedRequest } from '../../communication';
 
-// The URL for the speech challenge handler(s).
+/**
+ * The URL for the speech challenge handler(s).
+ * @type {string}
+ */
 const url = '/challenges/speech';
 
 
@@ -16,7 +19,7 @@ const url = '/challenges/speech';
  *
  * @returns {Promise} - The challenge creation promise.
  */
-export function createSpeechChallenge(challenge) {
+export function create(challenge) {
   return authorisedRequest('POST', url, challenge);
 }
 
@@ -28,7 +31,7 @@ export function createSpeechChallenge(challenge) {
  *
  * @returns {Promise} - The promise for the speech challenge.
  */
-export function getSpeechChallengeByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -47,7 +50,7 @@ export function getSpeechChallengeByID(id) {
  *
  * @returns {Promise} - The promise for the speech challenges.
  */
-export function getAllSpeechChallenges(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
