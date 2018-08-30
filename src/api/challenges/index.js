@@ -7,15 +7,14 @@ import * as analysis from './pronunciation/analysis';
 import * as speechApi from './speech';
 import * as recording from './speech/recordings';
 
+
 /**
  * Interface to the Choice Challenge API (both REST and streaming).
  *
  * @type {{
- *   choice: {
- *     create?,
- *     getById?,
- *     getAll?
- *   },
+ *   create?,
+ *   getById?,
+ *   getAll?,
  *   recognition: {
  *     create?,
  *     getAll?,
@@ -28,7 +27,7 @@ import * as recording from './speech/recordings';
  * }}
  */
 export const choice = {
-  choice: choiceApi,
+  ...choiceApi,
   recognition,
 };
 
@@ -36,35 +35,29 @@ export const choice = {
  * Interface to the Feedback API (both REST and streaming).
  *
  * @type {{
- *   feedback: {
- *     create?,
- *     getById?,
- *     getAll?
- *   },
- *   speech: {
- *     prepare?,
- *     resume?,
- *     listenAndReply?,
- *     feedback?,
- *     pause?
- *   }
+ *   create?,
+ *   getById?,
+ *   getAll?,
+ *   prepare?,
+ *   resume?,
+ *   listenAndReply?,
+ *   feedback?,
+ *   pause?
  * }}
  */
 export const feedback = {
-  feedback: feedbackApi,
-  speech: speechFeedback,
+  ...feedbackApi,
+  ...speechFeedback,
 };
 
 /**
  * Interface to the Pronunciation Challenge API (both REST and streaming).
  *
  * @type {{
- *   pronunciation: {
- *     create?,
- *     getAll?,
- *     getById?,
- *     deleteChallenge?
- *   },
+ *   create?,
+ *   getAll?,
+ *   getById?,
+ *   deleteChallenge?,
  *   analysis: {
  *     prepare?,
  *     alignChallenge?,
@@ -77,7 +70,7 @@ export const feedback = {
  * }}
  */
 export const pronunciation = {
-  pronunciation: pronunciationApi,
+  ...pronunciationApi,
   analysis,
 };
 
@@ -85,11 +78,9 @@ export const pronunciation = {
  * Interface to the Speech Challenge API (both REST and streaming).
  *
  * @type {{
- *   speech: {
- *     create?,
- *     getById?,
- *     getAll?
- *   },
+ *   create?,
+ *   getById?,
+ *   getAll?,
  *   recording: {
  *     getAll?,
  *     getById?,
@@ -98,6 +89,6 @@ export const pronunciation = {
  * }}
  */
 export const speech = {
-  speech: speechApi,
+  ...speechApi,
   recording,
 };
