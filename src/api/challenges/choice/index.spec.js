@@ -22,12 +22,12 @@ describe('Choice Challenge API', () => {
   });
 
 
-  describe('getByID', () => {
+  describe('getById', () => {
     it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      choice.getByID('c4t')
+      choice.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t']);
@@ -37,7 +37,7 @@ describe('Choice Challenge API', () => {
   });
 
 
-  describe('getAlls', () => {
+  describe('getAll', () => {
     it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));

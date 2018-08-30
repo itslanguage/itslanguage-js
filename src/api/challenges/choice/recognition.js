@@ -34,17 +34,23 @@ const url = challengeId => `/challenges/choice/${challengeId}/recognitions`;
  * @param {Blob} audio - The actual audio.
  * @param {string} recognised - The recognised string.
  * @param {string} [recognitionId=null] - Unique identifier for the recognition. If none is given,
- *                                        one is generated.
+ * one is generated.
  * @returns {Promise} - The created recognition with an url to download the audio if needed.
  */
 export function create(challengeId, audio, recognised, recognitionId = null) {
+  const recognition = {
+    audio,
+    recognised,
+  };
+
+  if (recognitionId) {
+    recognition.id = recognitionId;
+  }
+
   return authorisedRequest(
     'POST',
-    `${url(challengeId)}/${recognitionId && recognitionId}`,
-    {
-      audio,
-      recognised,
-    },
+    `${url(challengeId)}`,
+    recognition,
   );
 }
 
@@ -57,7 +63,7 @@ export function create(challengeId, audio, recognised, recognitionId = null) {
  * @param {string} id - ID of the choice recognition to get.
  * @returns {Promise} - Promise with the Choice Recognition as result if successful.
  */
-export function getByID(challengeId, id) {
+export function getById(challengeId, id) {
   return authorisedRequest('GET', `${url(challengeId)}/${id}`);
 }
 
@@ -132,7 +138,7 @@ export function recogniseAudioStream(recognitionId, recorder) {
  * @param {string} challengeId - The ID of the challenge to take the recognition for.
  * @param {Recorder} recorder - Audio recorder instance.
  * @returns {Promise<*>} - If all good it returns the actual recognition. If not, any error can be
- *                         expected to be returned.
+ * expected to be returned.
  */
 export function recognise(challengeId, recorder) {
   let recognitionId;
