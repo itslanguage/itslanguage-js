@@ -48,19 +48,29 @@ export default class Recorder extends AudioContext {
     this.sampleWidth = sampleWidth;
   }
 
-  async createStream() {
-    try {
-      this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  createStream() {
+    return navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      this.stream = stream;
       this.fireEvent('ready');
-    } catch ({ name, message }) {
+    }).catch(({ name, message }) => {
       this.error(`${name}: ${message}`);
+    });
+  }
+
+  startRecording() {
+    if (!this.stream) {
+      this.createStream().then(() => {
+        this.createAndConnect();
+      });
+    } else {
+      this.createAndConnect();
     }
   }
 
-  async startRecording() {
-    if (!this.stream) {
-      await this.createStream();
-    }
+  /**
+   * @private
+   */
+  createAndConnect() {
     this.mediaStreamSource = this.audioContext.createMediaStreamSource(this.stream);
     this.mediaStreamSource.connect(this.audioContext.destination);
     this.fireEvent('recording');
