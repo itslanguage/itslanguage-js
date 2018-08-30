@@ -5,7 +5,10 @@
 
 import { authorisedRequest } from '../../communication';
 
-// The URL for the pronunciation challenge handler(s).
+/**
+ * The URL for the pronunciation challenge handler(s).
+ * @type {string}
+ */
 const url = '/challenges/pronunciation';
 
 
@@ -16,7 +19,7 @@ const url = '/challenges/pronunciation';
  *
  * @returns {Promise} - The pronunciation challenge creation promise.
  */
-export function createPronunciationChallenge(challenge) {
+export function create(challenge) {
   return authorisedRequest('POST', url, challenge);
 }
 
@@ -28,7 +31,7 @@ export function createPronunciationChallenge(challenge) {
  *
  * @returns {Promise} - The promise for the pronunciation challenge.
  */
-export function getPronunciationChallengeByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -47,7 +50,7 @@ export function getPronunciationChallengeByID(id) {
  *
  * @returns {Promise} - The promise for the pronunciation challenges.
  */
-export function getAllPronunciationChallenges(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
@@ -69,6 +72,6 @@ export function getAllPronunciationChallenges(filters) {
  *
  * @returns {Promise} - The pronunciation delete promise.
  */
-export function deletePronunciationChallenge(id) {
+export function deleteChallenge(id) {
   return authorisedRequest('DELETE', `${url}/${id}`);
 }
