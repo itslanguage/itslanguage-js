@@ -10,7 +10,10 @@
 
 import { authorisedRequest } from '../communication';
 
-// The URL for the category handler(s).
+/**
+ * The URL for the category handler(s).
+ * @type {string}
+ */
 const url = '/categories';
 
 
