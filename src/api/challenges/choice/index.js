@@ -31,7 +31,7 @@ export function create(challenge) {
  *
  * @returns {Promise} - The promise for the choice challenge.
  */
-export function getByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
