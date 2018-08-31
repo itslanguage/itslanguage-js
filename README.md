@@ -1,70 +1,21 @@
 # ITSLanguage JavaScript SDK
 
-> Build JavaScript applications for the ITSLanguage platform.
+Speech technology for language education.
 
-| branch | build status |
-| ------ | ------------ |
-| master | [![Build Status][master build logo]][travis] |
-| next   | [![Build Status][next build logo]][travis] |
+[![Build Status][build logo]][travis]
 
-## Getting started
+This JavaScript SDK aims to help our customers to build applications for the [ITSLanguage] platform.
+It provides an easy interface to communicate with our [REST and WebSocket API]. For that purpose we
+made use of many ES2015 features. Also Promises notation is used a lot to help dealing with
+asynchronous code.
 
-Adding ITSLanguage into your JavaScript project is as easy as:
+## Requirements
 
-```shell
-npm install --save @itslanguage/sdk
-```
-
-This will install the latest stable version of the SDK to your project. If you want to live on the
-edge you can also try and install our `@next` version. It's just as easy as installing the stable
-release, just add the `@next` tag to the install option:
-
-```shell
-npm install --save @itslanguage/sdk@next
-```
-
-**note**: for existing users, the v3.0.0 release was a scoped release. This means that you can only
-install this version by also updating all references to ITSLangauge SDK. An `import { Player } from
-'itslanguage';` should be refactored to `import { Player } from '@itslanguage/sdk';`.
-The reason for this change is fairly simple: we want our users to be sure they install our software
-and using scopes gives us the opportunity to say so. Only we can push new versions to this scope.
-
-**note**: if you're using npm >= 5 in your project you can omit the `--save` flag. That is assumed
-by default.
-
-**note**: the ITSLanguage SDK is build with using [yarn] in favor of NPM. For using the SDK in your
-own project this is not an requirement.
-
-**Warning**: this will install the ITSLanguage Javascript SDK as a beta package to your project.
-Things might not work as expected. For instance the SDK might require a specific backend version
-to be able to function with this version to work on. So make sure you now what you're doing when
-installing the next branch to your project. Breaking changes will occur.
-
-### Usage
-
-The API docs are released with every version from v3.0.0 and onwards. On our GitHub pages we also
-host the latest version available (current master status). For more information on how to use the
-SDK the docs are the best place to look. It is an esdoc generated website, which also shows how
-one can import that is needed. To import the default audio player you can just do this in your
-project:
-
-```js
-
-import { Player } from '@itslanguage/sdk';
-
-```
-
-So, for more usage and examples read our documentation on our github pages.
-For the master version look at [the master GitHub pages website]. For our `@next` branch look at
-the documentation that is included in the packages (the docs folder).
-
-### Dependencies
-
-This SDK was build with the browser in mind. However any JavaScript project can use this SDK to
-build applications for the ITSLanguage platform. There are, however, a few things to keep in mind;
-mostly the dependencies. Our development on the SDK is based on browser usage. We don't extensively
-test on other platforms. Do let us know if something is not working. And of course, we accept pull
-requests!
+The JavaScript SDK was build with the browser in mind. However any JavaScript project can use this
+SDK to build applications for the ITSLanguage platform. There are of course a few things to keep in
+mind when not developing for the browser. Our own development on the SDK is based on browser usage.
+We don't extensively test on other platforms. Do let us know if something is not working by using
+the issue tracker here. And of course, we accept pull requests!
 
 ITSLanguage JavaScript SDK uses:
 
@@ -73,68 +24,167 @@ ITSLanguage JavaScript SDK uses:
 1. [FormData][MDN FormData]
 1. [WebSocket][MDN WebSocket]
 
-It is expected that these are accessible through their `global` accessors (i.e.
-by simply calling `new FormData()`, `fetch(...)`, etc.).
+It is expected that these are accessible through their `global` accessors (i.e. by simply calling
+`new FormData()`, `fetch(...)`, etc.).
 
-Modern browsers support these (at least to the capacity we use it). Older
-browsers as well as `Node` don't necessarily support these because the are, as
-of writing this, still seen as experimental (browser) features. They are living
-standards and therefore expected to be implemented in the future.
+Modern browsers support these (at least to the capacity we use it). Older browsers as well as `Node`
+don't necessarily support these because the are, as of writing this, still seen as experimental 
+(browser) features. They are living standards and therefore expected to be implemented in the 
+future.
 
-In the mean time; you might want to look at a few libraries which will add
-these APIs to your environment. Here are a few we found useful.
+In the mean time; you might want to look at a few libraries which will add these APIs to your
+environment. Here are a few we found useful.
 
-#### Browsers
+### Browser
 
-1. [whatwg-fetch][NPM whatwg-fetch]
-1. [url-search-params-polyfill][NPM url-search-params-polyfill]
+- [whatwg-fetch][NPM whatwg-fetch]
+- [url-search-params-polyfill][NPM url-search-params-polyfill]
 
-#### Node
+### Node.js
 
-1. [node-fetch][NPM node-fetch]
-1. [url-search-params][NPM url-search-params]
-1. [form-data][NPM form-data]
+- [node-fetch][NPM node-fetch]
+- [url-search-params][NPM url-search-params]
+- [form-data][NPM form-data]
 
 #### Both
 
-1. [isomorphic-fetch][NPM isomorphic-fetch]
+- [isomorphic-fetch][NPM isomorphic-fetch]
 
-We appreciate any contribution to extend/update these lists. Feel free to contact us on our GitHub
-page or drop us a line at support@itslanguage.nl
+## Installation
 
-## The Next Branch
+The ITSLanguage Javascript SDK will be distributed as a [npm package]. Package managers that can
+read this registry (like [npm] and [yarn]) can be used to add the SDK to your project's package.json
+file. For simplicity this readme assumes [npm] as package manager.
+ 
+Adding ITSLanguage into your project is as easy as instructing [npm] to do so. This will
+automatically add an entry in your package.json file. If not, you are probably using an older [npm]
+version (< 5.x). Consider upgrading to at least > 5.x. 
 
-Our `next` branch can be used to try out new features that are coming out in the near future.
-Important to keep in mind is that this version possibly does not work on your ITSLanguage
-backend environment due to breaking changes. If not sure, drop us a line to find out.
+```shell
+npm install @itslanguage/sdk
+```
 
-### Current status of next branch
+**note**: While we describe SDK usage through [npm], the ITSLanguage SDK itself is build with usage
+of [yarn] in favor of [npm]. For using the SDK in your project [yarn] is not an requirement. You can
+use the package manager which is most comfortable for you and your project.
 
-These are the items currently we are currently developing on for the `@next` dist-tag which is
-available on npm.
+## Usage
 
-- Add support for streaming audio
-- Improve our CI/CD flow for better releases
-- Improve communication/authentication mechanism
-- Improve websocket communication mechanism
-- Improve safari support (macOS and iOS)
+At its highest level one can import a factory method to instantiate the SDK. The object created can
+then be used to access all other SDK functions. For us this has been found the most common use case.
+It is possible of course to import specific features at your own need.
 
-[master build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master
-[next build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next
+So the next code snippet will demonstrate all you need to import to get started.
+
+```js
+// Import the SDK
+import { createItslSdk } from '@itslanguage/sdk';
+
+// Instantiate the SDK object
+const itslSdk = createItslSdk();
+```
+
+### Pre-requirements
+
+To be able to communicate with our backend servers it is (obviously) required to know the url's to
+connect to. As part of a user registration we will provide you with the details to get started with.
+For demonstration purposes we use the following details:
+
+Connection details
+- REST API url: https://api.itslanguage.io (not real)
+- WebSocket API url: wss://ws.itslanguage.io (not real)
+
+Authentication details
+- Tenant: `demo-tenant`
+- Organisation: `demo-school`
+- Student user: `student`
+- Student password: `student`
+
+### Example: authenticate as a student
+
+Authentication to our backend means you need to get an access token. This token can then be used to
+perform certain actions, based on the permission a certain role has. Each user has one or more
+roles.
+
+For more information about [roles], [permissions] and or [access tokens] consult our API docs.
+
+You can use the SDK to obtain the access token, or you can pass the access token yourself to the
+factory function. In the next example we will instruct the SDK to get the token for us. The SDK will
+then store the token so next requests will automatically use the previously obtained token. 
+
+```js
+
+import { createItslSdk } from '@itslanguage/sdk';
+
+// Prepare the options
+const options = {
+  apiUrl: 'https://api.itslanguage.io',
+  wsUrl: 'wss://ws.itslanguage.io',
+};
+
+// Instantiate the SDK object
+const itslSdk = createItslSdk(options);
+
+// Prepare a user scope
+const scope = itslSdk.authentication.assembleScope('demo-tenant', 'demo-school', 'student');
+
+// Authenticate to our backend, returns a promise
+const auth = itslSdk.authentication.authenticate('student', 'student-password', scope);
+
+auth.then((authResult) => {
+  console.log(authResult); // Will output the token, user and scope for the user obtained.
+});
+
+```
+
+### Example: get current user details
+
+As said in the previous example, it is also possible to pass a previously obtained token to the SDK.
+Lets get the current user details from the server.
+
+For more information about the [current user] consult our API docs. 
+
+The following example presumes the token to use is `wubbaLubbaDubDub-token`. This token is already
+valid for a user with a valid scope. 
+
+```js
+
+import { createItslSdk } from '@itslanguage/sdk';
+
+// Prepare the options
+const options = {
+  apiUrl: 'https://api.itslanguage.io',
+  wsUrl: 'wss://ws.itslanguage.io',
+  authorizationToken: 'wubbaLubbaDubDub-token',
+};
+
+// Instantiate the SDK object
+const itslSdk = createItslSdk(options);
+
+itslSdk.users.getCurrent().then((currentUser) => {
+  console.log(currentUser); // Will output the details of the current user.
+});
+
+```
+
+[build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master
 [travis]: https://travis-ci.org/itslanguage/itslanguage-js
-
-[the master GitHub pages website]: https://itslanguage.github.io/itslanguage-js/master
-
+[ITSLanguage]: https://www.itslanguage.nl
+[REST and WebSocket API]: https://itslanguage.github.io/itslanguage-docs
+[npm]: https://www.npmjs.com/get-npm
 [yarn]: https://yarnpkg.com
-
+[npm package]: https://npmjs.org/package/@itslanguage/sdk
 [MDN fetch]: https://developer.mozilla.org/en/docs/Web/API/Fetch_API
 [MDN URLSearchParams]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
 [MDN FormData]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
 [MDN WebSocket]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
-
 [NPM isomorphic-fetch]: https://www.npmjs.com/package/isomorphic-fetch
 [NPM form-data]: https://www.npmjs.com/package/form-data
 [NPM node-fetch]: https://www.npmjs.com/package/node-fetch
 [NPM url-search-params]: https://www.npmjs.com/package/url-search-params
 [NPM whatwg-fetch]: https://www.npmjs.com/package/whatwg-fetch
 [NPM url-search-params-polyfill]: https://www.npmjs.com/package/url-search-params-polyfill
+[roles]: https://itslanguage.github.io/itslanguage-docs/api/roles/index.html
+[permissions]: https://itslanguage.github.io/itslanguage-docs/api/permissions/index.html
+[access tokens]: https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html
+[current user]: https://itslanguage.github.io/itslanguage-docs/api/users/index.html#get-current-user
