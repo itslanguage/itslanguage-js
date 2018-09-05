@@ -32,10 +32,10 @@ module.exports = (config) => {
           lines: 0,
         },
         global: {
-          statements: 90,
-          branches: 90,
-          functions: 90,
-          lines: 90,
+          statements: 50,
+          branches: 50,
+          functions: 50,
+          lines: 50,
         },
       },
       reporters: [
