@@ -1,19 +1,24 @@
 /**
- * This file contains the readily available functions which interact with the
- * ITSLanguage pronunciation analysis API.
+ * This file contains the readily available functions which interact with the ITSLanguage
+ * pronunciation analysis API.
  *
- * Note that this is one of the "nested" or "composite" APIs; You can only
- * obtain the data if you provide a reference to the challenge for which you
- * want a recording.
+ * Note that this is one of the "nested" or "composite" APIs; You can only obtain the data if you
+ * provide a reference to the challenge for which you want a recording.
  */
 
 import {
-  encodeAndSendAudioOnDataAvailible,
-  prepareServerForAudio
+  encodeAndSendAudioOnDataAvailable,
+  prepareServerForAudio,
 } from '../../utils/audio-over-socket';
-import {authorisedRequest} from '../../communication';
-import {makeWebsocketCall} from '../../communication/websocket';
+import { authorisedRequest } from '../../communication';
+import { makeWebsocketCall } from '../../communication/websocket';
 
+/**
+ * The URL for the Pronunciation Analysis handler(s).
+ *
+ * @param challenge
+ * @returns {string}
+ */
 const url = challenge => `/challenges/pronunciation/${challenge}/analyses`;
 
 /**
@@ -21,18 +26,18 @@ const url = challenge => `/challenges/pronunciation/${challenge}/analyses`;
  *
  * @param {string} challengeId - The ID of the corresponding challenge.
  * @param {string} analysisId - The ID of the analysis you want result for.
- * @returns {Promise.<Object>} - The Pronunciation Analysis.
+ * @returns {Promise<Object>} - The Pronunciation Analysis.
  */
-export function getPronunciationAnalysisById(challengeId, analysisId) {
+export function getById(challengeId, analysisId) {
   return authorisedRequest('GET', `${url(challengeId)}/${analysisId}`);
 }
 
 /**
  * Create a new analysis and return the ID.
  *
- * @returns {Promise|Promise.<*>} - The result will hold the ID for the analysis.
+ * @returns {Promise|Promise<*>} - The result will hold the ID for the analysis.
  */
-export function preparePronunciationAnalysis() {
+export function prepare() {
   return makeWebsocketCall('pronunciation.init_analysis');
 }
 
@@ -41,22 +46,21 @@ export function preparePronunciationAnalysis() {
  *
  * @param {string} analysisId - The ID of the analysis to attache the challenge to.
  * @param {string} challengeId - The ID of the challenge that belongs to a specific analysis.
- * @returns {Promise.<*>} - Promise with the result of the init_challenge call.
+ * @returns {Promise<*>} - Promise with the result of the init_challenge call.
  */
-export function prepareAnalysisChallenge(analysisId, challengeId) {
-  return makeWebsocketCall('pronunciation.init_challenge', {args: [analysisId, challengeId]});
+export function prepareChallenge(analysisId, challengeId) {
+  return makeWebsocketCall('pronunciation.init_challenge', { args: [analysisId, challengeId] });
 }
 
 /**
- * A Pronunciaion Challange could hold an alignment allready. If not so
- * this function will instruct the backend to create the alignment and
- * return it to the client.
+ * A Pronunciation Challenge could hold an alignment already. If not so this function will instruct
+ * the backend to create the alignment and return it to the client.
  *
  * @param {string} analysisId - The ID of the analysis to create the alignment for.
- * @returns {Promise.<*>} - The alignment.
+ * @returns {Promise<*>} - The alignment.
  */
-export function performAlignmentOnChallenge(analysisId) {
-  return makeWebsocketCall('pronunciation.alignment', {args: [analysisId]});
+export function alignChallenge(analysisId) {
+  return makeWebsocketCall('pronunciation.alignment', { args: [analysisId] });
 }
 
 /**
@@ -66,7 +70,7 @@ export function performAlignmentOnChallenge(analysisId) {
  * @param {Recorder} recorder - The recorder to get specs from.
  * @returns {Promise} - Result of preparing the audio.
  */
-export function prepareAudioForPronuncationAnalysis(analyseId, recorder) {
+export function prepareAudio(analyseId, recorder) {
   return prepareServerForAudio(analyseId, recorder, 'pronunciation.init_audio');
 }
 
@@ -77,8 +81,8 @@ export function prepareAudioForPronuncationAnalysis(analyseId, recorder) {
  * @param {Recorder} recorder - Instance of an Recorder.
  * @returns {Promise} - Stream result.
  */
-export function streamAudioForPronunciationAnalysis(analyseId, recorder) {
-  return encodeAndSendAudioOnDataAvailible(analyseId, recorder, 'pronunciation.write');
+export function streamAudio(analyseId, recorder) {
+  return encodeAndSendAudioOnDataAvailable(analyseId, recorder, 'pronunciation.write');
 }
 
 /**
@@ -87,8 +91,8 @@ export function streamAudioForPronunciationAnalysis(analyseId, recorder) {
  *
  * @param {string} analyseId - The ID of the Analysis to analyse on.
  * @param {Function} [progressCb] - A callback which will be used to receive progress on.
- * @returns {Promise.<*>} - The result will return the analysis.
+ * @returns {Promise<*>} - The result will return the analysis.
  */
-export function endStreamAudioForPronunciationAnalysis(analyseId, progressCb) {
-  return makeWebsocketCall('pronunciation.analyse', {args: [analyseId], progressCb});
+export function endStreamAudio(analyseId, progressCb) {
+  return makeWebsocketCall('pronunciation.analyse', { args: [analyseId], progressCb });
 }

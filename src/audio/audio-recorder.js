@@ -1,9 +1,9 @@
-import Stopwatch from './tools';
-import WavePacker from './wave-packer';
-import WebAudioRecorder from './web-audio-recorder';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
 import uuid from 'uuid';
+import Stopwatch from './tools';
+import WavePacker from './wave-packer';
+import WebAudioRecorder from './web-audio-recorder';
 
 /**
  * Audio recording component.
@@ -17,26 +17,27 @@ export default class AudioRecorder {
    *
    */
   constructor(options = {}) {
-    this._settings = Object.assign({}, options);
+    this.settings = Object.assign({}, options);
 
-    this._recordingCompatibility();
+    this.recordingCompatibility();
 
     this.userMediaApproval = false;
 
     /**
-     *
-     * @type {WebAudioRecorder|MediaRecorder} The specific recorder type.
+     * The specific recorder type.
+     * @type {WebAudioRecorder|MediaRecorder}
+     * @private
      */
-    this._recorder = null;
+    this.recorder = null;
 
-    this._emitter = ee({});
+    this.emitter = ee({});
 
-    this._stopwatch = null;
+    this.stopwatch = null;
 
     if (options.audioContext) {
       this.audioContext = options.audioContext;
     } else {
-      this.audioContext = this.createAudioContext();
+      this.audioContext = AudioRecorder.createAudioContext();
     }
   }
 
@@ -44,12 +45,11 @@ export default class AudioRecorder {
   /**
    * Get the audio context or create one.
    *
-   * @return {AudioContext} The AudioContext created will be returned
+   * @return {AudioContext} The AudioContext created will be returned.
    */
-  createAudioContext() {
+  static createAudioContext() {
     if (!window.ItslAudioContext) {
-      window.AudioContext =
-        window.AudioContext || window.webkitAudioContext;
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
       window.ItslAudioContext = new window.AudioContext();
     }
     return window.ItslAudioContext;
@@ -59,7 +59,7 @@ export default class AudioRecorder {
    * Turn off all event listeners for this recorder.
    */
   removeAllEventListeners() {
-    allOff(this._emitter);
+    allOff(this.emitter);
   }
 
   /**
@@ -69,7 +69,7 @@ export default class AudioRecorder {
    * @param {Function} handler - Handler function to add.
    */
   addEventListener(name, handler) {
-    this._emitter.on(name, handler);
+    this.emitter.on(name, handler);
   }
 
   /**
@@ -79,7 +79,7 @@ export default class AudioRecorder {
    * @param {Function} handler - Handler function to remove.
    */
   removeEventListener(name, handler) {
-    this._emitter.off(name, handler);
+    this.emitter.off(name, handler);
   }
 
   /**
@@ -90,7 +90,7 @@ export default class AudioRecorder {
    * @private
    */
   fireEvent(name, args = []) {
-    this._emitter.emit(name, ...args);
+    this.emitter.emit(name, ...args);
   }
 
   /**
@@ -108,20 +108,21 @@ export default class AudioRecorder {
    *
    * @private
    */
-  _recordingCompatibility/* istanbul ignore next */() {
+  recordingCompatibility/* istanbul ignore next */() {
     // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/mediaDevices.getUserMedia
     this.canMediaDevicesGetUserMedia = false;
     if (navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
-        navigator.mediaDevices.webkitGetUserMedia ||
-        navigator.mediaDevices.mozGetUserMedia;
+      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia
+        || navigator.mediaDevices.webkitGetUserMedia
+        || navigator.mediaDevices.mozGetUserMedia;
       this.canMediaDevicesGetUserMedia = Boolean(navigator.mediaDevices.getUserMedia);
     }
     console.log('Native navigator.mediaDevices.getUserMedia API capability:', this.canMediaDevicesGetUserMedia);
 
     if (!this.canGetUserMedia && !this.canMediaDevicesGetUserMedia) {
       throw new Error(
-        'Some form of audio recording capability is required');
+        'Some form of audio recording capability is required',
+      );
     }
 
     window.URL = window.URL || window.webkitURL;
@@ -129,7 +130,8 @@ export default class AudioRecorder {
     console.log('Native window.URL capability:', hasWindowURL);
     if (!hasWindowURL) {
       throw new Error(
-        'No window.URL blob conversion capabilities');
+        'No window.URL blob conversion capabilities',
+      );
     }
   }
 
@@ -145,20 +147,20 @@ export default class AudioRecorder {
    *  promise is rejected with PermissionDeniedError or NotFoundError respectively.
    */
   requestUserMedia() {
-    const readyForStream = stream => {
+    const readyForStream = (stream) => {
       // Modify state of userMediaApproval now access is granted.
       this.userMediaApproval = true;
 
-      const micInputGain = this._startUserMedia(stream);
+      const micInputGain = this.startUserMedia(stream);
       this.fireEvent('ready', [this.audioContext, micInputGain]);
     };
 
-    const userCanceled = error => {
+    const userCanceled = (error) => {
       console.error(error);
       throw new Error('No live audio input available or permitted');
     };
 
-    return navigator.mediaDevices.getUserMedia({audio: true})
+    return navigator.mediaDevices.getUserMedia({ audio: true })
       .then(readyForStream)
       .catch(userCanceled);
   }
@@ -169,7 +171,7 @@ export default class AudioRecorder {
    * @param {MediaStream} stream - Media Stream.
    * @private
    */
-  _startUserMedia(stream) {
+  startUserMedia(stream) {
     // Creates an audio node from the microphone incoming stream.
     const micInput = this.audioContext.createMediaStreamSource(stream);
 
@@ -184,7 +186,7 @@ export default class AudioRecorder {
     // Connect the microphone source to a gain node.
     micInput.connect(micInputGain);
 
-    this._recorder = this._getBestRecorder(micInputGain);
+    this.recorder = this.getBestRecorder(micInputGain);
 
     return micInputGain;
   }
@@ -192,15 +194,15 @@ export default class AudioRecorder {
   /**
    * Get a recorder object that performs audio compression, when available.
    *
-   * Using the Media Stream Recording API for recording is the prefered
+   * Using the Media Stream Recording API for recording is the preferred
    * solution. It allows recording compressed audio which makes it quicker to
    * submit. If not available, use a default createScriptProcessor is used.
    *
    * @param {GainNode} micInputGain - The GainNode to analyze.
    * @private
    */
-  _getBestRecorder(micInputGain) {
-    return new WebAudioRecorder(micInputGain, this.audioContext, data => {
+  getBestRecorder(micInputGain) {
+    return new WebAudioRecorder(micInputGain, this.audioContext, (data) => {
       this.streamCallback(data);
     }, new WavePacker(), false);
   }
@@ -218,9 +220,10 @@ export default class AudioRecorder {
    * Throw an error if the user is not yet logged in.
    *
    * @returns {boolean} True when permission was already granted. False otherwise.
+   * @private
    */
-  _requireGetUserMedia() {
-    if (this._recorder) {
+  requireGetUserMedia() {
+    if (this.recorder) {
       return true;
     }
     console.log('Requesting getUserMedia permission first.');
@@ -237,23 +240,21 @@ export default class AudioRecorder {
    */
   startRecordingSession(id) {
     // Generate a uuid to remember this recording by (locally).
-    const uuid_ = id === undefined ? uuid.v4() : id;
-    this.activeRecordingId = uuid_;
-    return uuid_;
+    const newUuid = id === undefined ? uuid.v4() : id;
+    this.activeRecordingId = newUuid;
+    return newUuid;
   }
 
   /**
    * Start recording microphone input until stopped. By default the actual recording will start
    * a small delay of 100ms. Set disableDelay to true to disable this delay.
    *
-   * @param {?Function} cb - The callback that provides a piece of raw audio when
-   * it becomes available. It may be used for streaming.
    * @param {boolean} disableDelay - If set to true it will disable the delay before the actual
    * recording starts.
    * @emits {Event} 'recording' With arguments: [recording ID].
    */
-  record(cb, disableDelay = false) {
-    if (!this._requireGetUserMedia()) {
+  record(disableDelay = false) {
+    if (!this.requireGetUserMedia()) {
       return;
     }
 
@@ -266,57 +267,56 @@ export default class AudioRecorder {
     window.setTimeout(() => {
       this.audioContext.resume();
 
-      this._recorder.record();
-      if (this._stopwatch) {
-        this._stopwatch._value = 0;
-        this._stopwatch.start();
+      this.recorder.record();
+      if (this.stopwatch) {
+        this.stopwatch.value = 0;
+        this.stopwatch.start();
       }
 
       if (!this.activeRecordingId) {
         this.startRecordingSession();
       }
-      console.log('Recording as id: ' + this.activeRecordingId);
+      console.log(`Recording as id: ${this.activeRecordingId}`);
 
       this.fireEvent('recording', [this.activeRecordingId]);
     }, delay);
-
-    return cb;
   }
 
   /**
    * Stop recording microphone input.
    *
-   * @param {boolean} [forced=false] - Set whether to force the microphone to stop recording or let it end normally.
+   * @param {boolean} [forced=false] - Set whether to force the microphone to stop recording or let
+   * it end normally.
    * @emits {Event} 'recorded' With arguments: [recording ID, audio Blob, forced].
    */
   stop(forced) {
-    if (!this._recorder.isPaused() && !this._recorder.isRecording()) {
+    if (!this.recorder.isPaused() && !this.recorder.isRecording()) {
       return;
     }
-    this._recorder.stop();
-    if (this._stopwatch) {
-      this._stopwatch.stop();
+    this.recorder.stop();
+    if (this.stopwatch) {
+      this.stopwatch.stop();
     }
-    console.log('Stopped recording for id: ' + this.activeRecordingId);
+    console.log(`Stopped recording for id: ${this.activeRecordingId}`);
 
     const self = this;
-    this._recorder.getEncodedAudio(blob => {
-      console.log('Received encoded audio of type: ' + blob.type);
+    this.recorder.getEncodedAudio((blob) => {
+      console.log(`Received encoded audio of type: ${blob.type}`);
       // Allow direct playback from local blob.
       self.fireEvent('recorded', [self.activeRecordingId, blob, Boolean(forced)]);
     });
   }
 
   pause() {
-    if (!this._recorder.isPaused() && !this._recorder.isRecording()) {
+    if (!this.recorder.isPaused() && !this.recorder.isRecording()) {
       return;
     }
-    this._recorder.pause();
-    if (this._stopwatch) {
-      this._stopwatch.stop();
+    this.recorder.pause();
+    if (this.stopwatch) {
+      this.stopwatch.stop();
     }
-    console.log('paused recording for id: ' + this.activeRecordingId);
-    this.fireEvent('paused', [self.activeRecordingId]);
+    console.log(`paused recording for id: ${this.activeRecordingId}`);
+    this.fireEvent('paused', [this.activeRecordingId]);
   }
 
   /**
@@ -325,10 +325,10 @@ export default class AudioRecorder {
    * @returns {boolean} True if user is currently recording audio. False` otherwise.
    */
   isRecording() {
-    if (!this._recorder) {
+    if (!this.recorder) {
       return false;
     }
-    return this._recorder.isRecording();
+    return this.recorder.isRecording();
   }
 
   /**
@@ -337,10 +337,10 @@ export default class AudioRecorder {
    * @returns {boolean} True if the recorder is paused. False` otherwise.
    */
   isPaused() {
-    if (!this._recorder) {
+    if (!this.recorder) {
       return false;
     }
-    return this._recorder.isPaused();
+    return this.recorder.isPaused();
   }
 
   /**
@@ -360,18 +360,18 @@ export default class AudioRecorder {
    * @returns {Object} Containing audioFormat and audioParameters describing the format.
    */
   getAudioSpecs() {
-    return this._recorder.getAudioSpecs();
+    return this.recorder.getAudioSpecs();
   }
 
   /**
    * Bind a stopwatch to sync with the playing and stopping functionality of the recorder.
    *
    * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
-   * @throws {Error} If _tickCb is null.
+   * @throws {Error} If tickCb is null.
    * @returns {Stopwatch} New Stopwatch object.
    */
   bindStopwatch(tickCb) {
-    this._stopwatch = new Stopwatch(tickCb);
-    return this._stopwatch;
+    this.stopwatch = new Stopwatch(tickCb);
+    return this.stopwatch;
   }
 }

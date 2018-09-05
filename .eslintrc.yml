@@ -1,0 +1,16 @@
+root: true
+
+extends: airbnb-base
+parser: babel-eslint
+
+env:
+  browser: true
+  es6: true
+  node: true
+  jasmine: true
+
+plugins:
+  ["jsdoc"]
+
+rules:
+  no-console: 0  # This project purposely uses console.

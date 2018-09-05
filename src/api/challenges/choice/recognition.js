@@ -11,35 +11,19 @@
 
 import {
   registerStreamForRecorder,
-  waitForUserMediaApproval
+  waitForUserMediaApproval,
 } from '../../utils/audio-over-socket';
-import {authorisedRequest} from '../../communication';
-import {makeWebsocketCall} from '../../communication/websocket';
+import { authorisedRequest } from '../../communication';
+import { makeWebsocketCall } from '../../communication/websocket';
 
+/**
+ * The URL for the choice recognition challenge handler(s).
+ *
+ * @param challengeId
+ * @returns {string}
+ */
 const url = challengeId => `/challenges/choice/${challengeId}/recognitions`;
 
-/**
- * Get all Choice Recognitions for a specific Choice Challenge.
- *
- * @see https://itslanguage.github.io/itslanguage-docs/api/recognitions/index.html#list-choice-recognitions
- * @param {string} challengeId - ID of the Choice Challenge to get all the recognitions for.
- * @returns {Promise} - Promise with the Choice Recognitions as result if successful.
- */
-export function getAllChoiceRecognitions(challengeId) {
-  return authorisedRequest('GET', `${url(challengeId)}`);
-}
-
-/**
- * Get a single ChoiceRecognition by its ID.
- *
- * @see https://itslanguage.github.io/itslanguage-docs/api/recognitions/index.html#get-a-single-choice-recognition
- * @param {string} challengeId - ID of the Choice Challenge to get all the recognitions for.
- * @param {string} id - ID of the choice recognition to get.
- * @returns {Promise} - Promise with the Choice Recognition as result if successful.
- */
-export function getChoiceRecognitionByID(challengeId, id) {
-  return authorisedRequest('GET', `${url(challengeId)}/${id}`);
-}
 
 /**
  * Submit an audio fragment for recognition. The recognition is created for the current
@@ -50,19 +34,51 @@ export function getChoiceRecognitionByID(challengeId, id) {
  * @param {Blob} audio - The actual audio.
  * @param {string} recognised - The recognised string.
  * @param {string} [recognitionId=null] - Unique identifier for the recognition. If none is given,
- *                                        one is generated.
+ * one is generated.
  * @returns {Promise} - The created recognition with an url to download the audio if needed.
  */
-export function createChoiceRecognition(challengeId, audio, recognised, recognitionId = null) {
+export function create(challengeId, audio, recognised, recognitionId = null) {
+  const recognition = {
+    audio,
+    recognised,
+  };
+
+  if (recognitionId) {
+    recognition.id = recognitionId;
+  }
+
   return authorisedRequest(
     'POST',
-    `${url(challengeId)}/${recognitionId && recognitionId}`,
-    {
-      audio,
-      recognised
-    }
+    `${url(challengeId)}`,
+    recognition,
   );
 }
+
+
+/**
+ * Get a single ChoiceRecognition by its ID.
+ *
+ * @see https://itslanguage.github.io/itslanguage-docs/api/recognitions/index.html#get-a-single-choice-recognition
+ * @param {string} challengeId - ID of the Choice Challenge to get all the recognitions for.
+ * @param {string} id - ID of the choice recognition to get.
+ * @returns {Promise} - Promise with the Choice Recognition as result if successful.
+ */
+export function getById(challengeId, id) {
+  return authorisedRequest('GET', `${url(challengeId)}/${id}`);
+}
+
+
+/**
+ * Get all Choice Recognitions for a specific Choice Challenge.
+ *
+ * @see https://itslanguage.github.io/itslanguage-docs/api/recognitions/index.html#list-choice-recognitions
+ * @param {string} challengeId - ID of the Choice Challenge to get all the recognitions for.
+ * @returns {Promise} - Promise with the Choice Recognitions as result if successful.
+ */
+export function getAll(challengeId) {
+  return authorisedRequest('GET', `${url(challengeId)}`);
+}
+
 
 /**
  * This is the starting point for a choice recognition. A unique recognition id is generated,
@@ -75,9 +91,10 @@ export function createChoiceRecognition(challengeId, audio, recognised, recognit
  * @see https://itslanguage.github.io/itslanguage-docs/websocket/choice_recognitions/index.html#initialising-a-choice-recognition
  * @returns {Promise} - Returns a promise. When successfully the ID of the recognition is returned.
  */
-export function prepareChoiceRecognition() {
+export function prepare() {
   return makeWebsocketCall('choice.init_recognition');
 }
+
 
 /**
  * Before performing the recognition, a WFST needs to be prepared for the challenge. When the RPC is
@@ -90,9 +107,10 @@ export function prepareChoiceRecognition() {
  * @param {string} challengeId - The ID of the challenge to prepare.
  * @returns {Promise} - If succesful the promise returns nothing. On error, there will be an error.
  */
-export function prepareChoiceRecognitionChallenge(recognitionId, challengeId) {
-  return makeWebsocketCall('choice.init_challenge', {args: [recognitionId, challengeId]});
+export function prepareChallenge(recognitionId, challengeId) {
+  return makeWebsocketCall('choice.init_challenge', { args: [recognitionId, challengeId] });
 }
+
 
 /**
  * Based on a recognitionId and a recorder register a RPC call that will be used to send the audio
@@ -109,8 +127,9 @@ export function recogniseAudioStream(recognitionId, recorder) {
   return registerStreamForRecorder(recorder, rpcNameToRegister)
     // We don't use rpcNameToRegister here because it lacks some namespacing info. The
     // registration.procedure does have the needed information.
-    .then(registration => makeWebsocketCall('choice.recognise', {args: [recognitionId, registration.procedure]}));
+    .then(registration => makeWebsocketCall('choice.recognise', { args: [recognitionId, registration.procedure] }));
 }
+
 
 /**
  * Easy function to do a recognition in one go. This is the "dance of the RPC's" that needs to be
@@ -119,15 +138,15 @@ export function recogniseAudioStream(recognitionId, recorder) {
  * @param {string} challengeId - The ID of the challenge to take the recognition for.
  * @param {Recorder} recorder - Audio recorder instance.
  * @returns {Promise<*>} - If all good it returns the actual recognition. If not, any error can be
- *                         expected to be returned.
+ * expected to be returned.
  */
 export function recognise(challengeId, recorder) {
   let recognitionId;
-  return prepareChoiceRecognition()
-    .then(rId => {
+  return prepare()
+    .then((rId) => {
       recognitionId = rId;
       return waitForUserMediaApproval(recognitionId, recorder);
     })
-    .then(() => prepareChoiceRecognitionChallenge(recognitionId, challengeId))
+    .then(() => prepareChallenge(recognitionId, challengeId))
     .then(() => recogniseAudioStream(recognitionId, recorder).then(result => result));
 }

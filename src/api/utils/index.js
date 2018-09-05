@@ -1,5 +1,5 @@
 /**
- * Some allround re-usable utilities.
+ * Some all-round re-usable utilities.
  */
 
 /**
@@ -9,11 +9,11 @@
  *
  * @returns {string} - The base64 encoded data.
  */
-export function dataToBase64(data) {
+export function dataToBase64(data) { // eslint-disable-line import/prefer-default-export
   let binary = '';
   const bytes = new Uint8Array(data);
   const len = bytes.byteLength;
-  for (let i = 0; i < len; i++) {
+  for (let i = 0; i < len; i += 1) {
     binary += String.fromCharCode(bytes[i]);
   }
   return window.btoa(binary);

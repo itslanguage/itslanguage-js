@@ -1,4 +1,4 @@
-import {authorisedRequest, request} from '../api/communication';
+import { authorisedRequest, request } from '../api/communication';
 import AudioContext from './AudioContext';
 
 /**
@@ -124,15 +124,15 @@ export default class Player extends AudioContext {
 
     // Determine whether to ask authorized, or not.
     const requestMethod = withItslToken ? authorisedRequest : request;
-    const {audioContext} = this;
+    const { audioContext } = this;
 
     requestMethod('GET', url)
       .then(response => response.arrayBuffer())
-      .then(audioData => audioContext.decodeAudioData(audioData, decodedAudio => {
+      .then(audioData => audioContext.decodeAudioData(audioData, (decodedAudio) => {
         this.audioBuffer = decodedAudio;
         this.createBufferSource();
       }))
-      .catch(error => {
+      .catch((error) => {
         this.error(`${error.name}: ${error.message}`);
       });
   }

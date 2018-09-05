@@ -1,11 +1,14 @@
 /**
- * This file contains the readily availbile functions which interact with the
+ * This file contains the readily available functions which interact with the
  * ITSLanguage choice challenge API.
  */
 
-import {authorisedRequest} from '../../communication';
+import { authorisedRequest } from '../../communication';
 
-// The URL for the choice challenge handler(s).
+/**
+ * The URL for the choice challenge handler(s).
+ * @type {string}
+ */
 const url = '/challenges/choice';
 
 
@@ -16,7 +19,7 @@ const url = '/challenges/choice';
  *
  * @returns {Promise} - The challenge creation promise.
  */
-export function createChoiceChallenge(challenge) {
+export function create(challenge) {
   return authorisedRequest('POST', url, challenge);
 }
 
@@ -28,7 +31,7 @@ export function createChoiceChallenge(challenge) {
  *
  * @returns {Promise} - The promise for the choice challenge.
  */
-export function getChoiceChallengeByID(id) {
+export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
@@ -36,23 +39,22 @@ export function getChoiceChallengeByID(id) {
 /**
  * Get a all choice challenges.
  *
- * By default all choice challenges are fetched though it is allowed to pass
- * filters as a `URLSearchParams` object.
+ * By default all choice challenges are fetched though it is allowed to pass filters as a
+ * `URLSearchParams` object.
  *
- * @param {URLSearchParams} [filters] - The filters to apply to the category
- *                                      list.
+ * @param {URLSearchParams} [filters] - The filters to apply to the category list.
  *
- * @throws {Promise.<string>} - If the given optional filters are not an
- *                              instance of `URLSearchParams`.
+ * @throws {Promise<string>} - If the given optional filters are not an instance of
+ * `URLSearchParams`.
  *
  * @returns {Promise} - The promise for the choice challenges.
  */
-export function getAllChoiceChallenges(filters) {
+export function getAll(filters) {
   let urlWithFilters = url;
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject('The filters should be a `URLSearchParams` object.');
+      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
     }
 
     urlWithFilters += `?${filters.toString()}`;

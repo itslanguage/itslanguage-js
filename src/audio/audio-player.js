@@ -1,7 +1,7 @@
-import Stopwatch from './tools';
-import WebAudioPlayer from './web-audio-player';
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
+import Stopwatch from './tools';
+import WebAudioPlayer from './web-audio-player';
 /**
  * ITSLanguage AudioPlayer non-graphical component.
  */
@@ -14,60 +14,86 @@ export default class AudioPlayer {
    * @emits {Event} All events the HTML5 Audio also fires. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
    */
   constructor(options) {
-    this._settings = Object.assign({}, options);
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.settings = Object.assign({}, options);
 
-    this._playbackCompatibility();
+    this.playbackCompatibility();
     const self = this;
     const callbacks = {
       playingCb() {
-        self._emitter.emit('playing', []);
+        self.emitter.emit('playing', []);
       },
       timeupdateCb() {
-        self._emitter.emit('timeupdate', []);
+        self.emitter.emit('timeupdate', []);
       },
       durationchangeCb() {
-        self._emitter.emit('durationchange', []);
+        self.emitter.emit('durationchange', []);
       },
       canplayCb() {
-        self._emitter.emit('canplay', []);
+        self.emitter.emit('canplay', []);
       },
       endedCb() {
-        self._emitter.emit('ended', []);
+        self.emitter.emit('ended', []);
       },
       pauseCb() {
-        self._emitter.emit('pause', []);
+        self.emitter.emit('pause', []);
       },
       stoppedCb() {
-        self._emitter.emit('stopped', []);
+        self.emitter.emit('stopped', []);
       },
       playbackStoppedCb() {
-        self._emitter.emit('playbackstopped', []);
-        if (self._stopwatch) {
-          self._stopwatch.stop();
+        self.emitter.emit('playbackstopped', []);
+        if (self.stopwatch) {
+          self.stopwatch.stop();
         }
       },
       progressCb() {
-        self._emitter.emit('progress', []);
+        self.emitter.emit('progress', []);
       },
       errorCb() {
-        self._emitter.emit('error', []);
-      }
+        self.emitter.emit('error', []);
+      },
     };
     /**
-     * @type {WebAudioPlayer} player - Specific audio player.
+     * Specific audio player.
+     * @type {WebAudioPlayer}
+     * @private
      */
-    this._player = this._getPlayer(callbacks);
-    this._emitter = ee({});
-    this._stopwatch = null;
-    this._audioLevel = 1;
-    this._audioMuted = false;
+    this.player = this.getPlayer(callbacks);
+
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.emitter = ee({});
+
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.stopwatch = null;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.audioLevel = 1;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.audioMuted = false;
   }
 
   /**
    * Turn off all event listeners for this player.
    */
   resetEventListeners() {
-    allOff(this._emitter);
+    allOff(this.emitter);
   }
 
   /**
@@ -77,7 +103,7 @@ export default class AudioPlayer {
    * @param {Function} handler - Handler function to add.
    */
   addEventListener(name, handler) {
-    this._emitter.on(name, handler);
+    this.emitter.on(name, handler);
   }
 
   /**
@@ -87,7 +113,7 @@ export default class AudioPlayer {
    * @param {Function} handler - Handler function to remove.
    */
   removeEventListener(name, handler) {
-    this._emitter.off(name, handler);
+    this.emitter.off(name, handler);
   }
 
   /**
@@ -95,8 +121,9 @@ export default class AudioPlayer {
    * Logs detailed browser compatibilities related to for audio playback.
    *
    * @throws {Error} If no native wave or MP3 playback is available.
+   * @private
    */
-  _playbackCompatibility() {
+  playbackCompatibility() {
     // Detect audio playback capabilities.
 
     // Detect HTML5 Audio playback.
@@ -106,24 +133,30 @@ export default class AudioPlayer {
 
     if (!this.canUseAudio) {
       throw new Error(
-        'Some form of audio playback capability is required');
+        'Some form of audio playback capability is required',
+      );
     }
     if (this.canUseAudio) {
-      const _audio = new Audio();
-      if (!(_audio.canPlayType && _audio.canPlayType instanceof Function)) {
+      const audio = new Audio();
+      if (!(audio.canPlayType && audio.canPlayType instanceof Function)) {
         throw new Error(
-          'Unable to detect audio playback capabilities');
+          'Unable to detect audio playback capabilities',
+        );
       }
-      const canPlayOggVorbis = _audio.canPlayType(
-        'audio/ogg; codecs="vorbis"') !== '';
-      const canPlayOggOpus = _audio.canPlayType(
-        'audio/ogg; codecs="opus"') !== '';
-      const canPlayWave = _audio.canPlayType('audio/wav') !== '';
-      const canPlayMP3 = _audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
-      const canPlayAAC = _audio.canPlayType(
-        'audio/mp4; codecs="mp4a.40.2"') !== '';
-      const canPlay3GPP = _audio.canPlayType(
-        'audio/3gpp; codecs="samr"') !== '';
+      const canPlayOggVorbis = audio.canPlayType(
+        'audio/ogg; codecs="vorbis"',
+      ) !== '';
+      const canPlayOggOpus = audio.canPlayType(
+        'audio/ogg; codecs="opus"',
+      ) !== '';
+      const canPlayWave = audio.canPlayType('audio/wav') !== '';
+      const canPlayMP3 = audio.canPlayType('audio/mpeg; codecs="mp3"') !== '';
+      const canPlayAAC = audio.canPlayType(
+        'audio/mp4; codecs="mp4a.40.2"',
+      ) !== '';
+      const canPlay3GPP = audio.canPlayType(
+        'audio/3gpp; codecs="samr"',
+      ) !== '';
 
       console.log('Native Vorbis audio in Ogg container playback capability:', canPlayOggVorbis);
       console.log('Native Opus audio in Ogg container playback capability:', canPlayOggOpus);
@@ -134,7 +167,8 @@ export default class AudioPlayer {
 
       if (!(canPlayWave || canPlayMP3)) {
         throw new Error(
-          'Native Wave or MP3 playback is required');
+          'Native Wave or MP3 playback is required',
+        );
       }
     }
   }
@@ -149,7 +183,7 @@ export default class AudioPlayer {
    * @param {Function} callbacks - Callbacks to add to the chosen player.
    * @private
    */
-  _getPlayer(callbacks) {
+  getPlayer(callbacks) {
     let player = null;
 
     if (this.canUseAudio) {
@@ -166,21 +200,21 @@ export default class AudioPlayer {
    * Preload audio from an URL.
    *
    * @param {string} url - The URL that contains the audio.
-   * @param {boolean} [preload=true] - Try preloading metadata and possible some audio. Set to false to not download
-   * anything until playing.
+   * @param {boolean} [preload=true] - Try preloading metadata and possible some audio. Set to false
+   * to not download anything until playing.
    * @param {?Function} loadedCb - The callback that is invoked when the duration of the audio file
    * is first known.
    * @emits {Event} 'canplay' When the player is ready to play.
    */
   load(url, preload, loadedCb) {
     this.reset();
-    this._player.load(url, preload, loadedCb);
-    this._audioLevel = 1;
+    this.player.load(url, preload, loadedCb);
+    this.audioLevel = 1;
 
     // If preloading is disabled, the 'canplay' event won't be triggered.
     // In that case, fire it manually.
     if (!preload) {
-      this._emitter.emit('canplay', []);
+      this.emitter.emit('canplay', []);
     }
   }
 
@@ -191,8 +225,8 @@ export default class AudioPlayer {
    */
   reset() {
     this.stop();
-    this._player.reset();
-    this._emitter.emit('unloaded', []);
+    this.player.reset();
+    this.emitter.emit('unloaded', []);
   }
 
   /**
@@ -201,14 +235,14 @@ export default class AudioPlayer {
    * @param {?number} position - When position is given, start playing from this position (seconds).
    */
   play(position) {
-    if (this._player.isPlaying()) {
+    if (this.player.isPlaying()) {
       return;
     }
-    this._player.play(position);
-    if (this._stopwatch) {
-      const time = Math.round(this._player.getCurrentTime() * 10);
-      this._stopwatch._value = time;
-      this._stopwatch.start();
+    this.player.play(position);
+    if (this.stopwatch) {
+      const time = Math.round(this.player.getCurrentTime() * 10);
+      this.stopwatch.value = time;
+      this.stopwatch.start();
     }
   }
 
@@ -216,28 +250,28 @@ export default class AudioPlayer {
    * Stop playback of audio. Stops and resets the stopwatch.
    */
   stop() {
-    if (this._stopwatch) {
-      this._stopwatch.reset();
-      this._stopwatch.stop();
+    if (this.stopwatch) {
+      this.stopwatch.reset();
+      this.stopwatch.stop();
     }
-    this._player.stop();
+    this.player.stop();
   }
 
   /**
    * Pause playback of audio. Stops the stopwatch.
    */
   pause() {
-    if (this._stopwatch) {
-      this._stopwatch.stop();
+    if (this.stopwatch) {
+      this.stopwatch.stop();
     }
-    this._player.pause();
+    this.player.pause();
   }
 
   /**
    * Toggle audio playback. Switch from playing to paused state and back.
    */
   togglePlayback() {
-    if (this._player.isPlaying()) {
+    if (this.player.isPlaying()) {
       this.pause();
     } else {
       this.play();
@@ -248,24 +282,25 @@ export default class AudioPlayer {
    * Start preloading audio.
    */
   preload() {
-    this._player.preload();
+    this.player.preload();
   }
 
   /**
-   * Start playing audio at the given offset. Corrects a percentage under 0 or above 100 to the respective values.
+   * Start playing audio at the given offset. Corrects a percentage under 0 or above 100 to the
+   * respective values.
    *
    * @param {number} percentage - Start at this percentage (0..100) of the audio stream.
    */
   scrub(percentage) {
     if (percentage < 0) {
-      this._player.scrub(0);
+      this.player.scrub(0);
     } else if (percentage > 100) {
-      this._player.scrub(100);
+      this.player.scrub(100);
     } else {
-      this._player.scrub(percentage);
+      this.player.scrub(percentage);
     }
-    if (this._stopwatch) {
-      this._stopwatch._value = Math.round(this._player.getCurrentTime() * 10);
+    if (this.stopwatch) {
+      this.stopwatch.value = Math.round(this.player.getCurrentTime() * 10);
     }
   }
 
@@ -275,7 +310,7 @@ export default class AudioPlayer {
    * @returns {number} Percentage of buffer fill.
    */
   getBufferFill() {
-    return this._player.getBufferFill();
+    return this.player.getBufferFill();
   }
 
   /**
@@ -284,7 +319,7 @@ export default class AudioPlayer {
    * @returns {number} Time in seconds as offset from the start.
    */
   getCurrentTime() {
-    return this._player.getCurrentTime();
+    return this.player.getCurrentTime();
   }
 
   /**
@@ -293,7 +328,7 @@ export default class AudioPlayer {
    * @returns {number} Time in seconds of fragment duration.
    */
   getDuration() {
-    return this._player.getDuration();
+    return this.player.getDuration();
   }
 
   /**
@@ -302,17 +337,17 @@ export default class AudioPlayer {
    * @returns {boolean} True if user is currently playing audio. False otherwise.
    */
   isPlaying() {
-    return this._player.isPlaying();
+    return this.player.isPlaying();
   }
 
   /**
    * Returns ready state of the player.
    *
-   * @returns {boolean} True when player is ready to start loading data or play. False when no audio is loaded
-   * or the player is preparing.
+   * @returns {boolean} True when player is ready to start loading data or play. False when no audio
+   * is loaded or the player is preparing.
    */
   canPlay() {
-    return this._player.canPlay();
+    return this.player.canPlay();
   }
 
   /**
@@ -327,7 +362,7 @@ export default class AudioPlayer {
    * @param {number} rate - Rate at which to change the audio playback.
    */
   setPlaybackRate(rate) {
-    this._player.setPlaybackRate(rate);
+    this.player.setPlaybackRate(rate);
   }
 
   /**
@@ -336,26 +371,26 @@ export default class AudioPlayer {
    * @returns {number} Playback rate of the audio.
    */
   getPlaybackRate() {
-    return this._player.getPlaybackRate();
+    return this.player.getPlaybackRate();
   }
 
   /**
    * Bind a stopwatch to sync with the playing and stopping functionality of the player.
    *
    * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
-   * @throws {Error} If _tickCb is null.
+   * @throws {Error} If tickCb is null.
    * @returns {Stopwatch} New Stopwatch object.
    */
   bindStopwatch(tickCb) {
-    this._stopwatch = new Stopwatch(time => {
-      const duration = this.getDuration() * 10 / this._player.sound.playbackRate;
+    this.stopwatch = new Stopwatch((time) => {
+      const duration = this.getDuration() * 10 / this.player.sound.playbackRate;
       if (time > duration) {
         tickCb(duration);
       } else {
         tickCb(time);
       }
     });
-    return this._stopwatch;
+    return this.stopwatch;
   }
 
   /**
@@ -365,12 +400,12 @@ export default class AudioPlayer {
    */
   setAudioVolume(volume) {
     if (volume !== 0) {
-      this._audioMuted = false;
+      this.audioMuted = false;
     }
     if (volume === 0) {
-      this._audioMuted = true;
+      this.audioMuted = true;
     }
-    this._player.setAudioVolume(volume);
+    this.player.setAudioVolume(volume);
   }
 
   /**
@@ -379,15 +414,15 @@ export default class AudioPlayer {
    * @returns {number} Volume level of the current loaded audio.
    */
   getAudioVolume() {
-    return this._player.getAudioVolume();
+    return this.player.getAudioVolume();
   }
 
   /**
-   * Toggle the current playing audio to be muted or not. If the audio will be muted, the current audio level
-   * is remembered and can be unmuted to continue at this same audio level.
+   * Toggle the current playing audio to be muted or not. If the audio will be muted, the current
+   * audio level is remembered and can be unmuted to continue at this same audio level.
    */
   toggleAudioMute() {
-    this.setAudioMute(!this._audioMuted);
+    this.setAudioMute(!this.audioMuted);
   }
 
   /**
@@ -397,10 +432,10 @@ export default class AudioPlayer {
    */
   setAudioMute(shouldMute) {
     if (shouldMute) {
-      this._audioLevel = this.getAudioVolume();
+      this.audioLevel = this.getAudioVolume();
       this.setAudioVolume(0);
     } else {
-      this.setAudioVolume(this._audioLevel);
+      this.setAudioVolume(this.audioLevel);
     }
   }
 
@@ -410,6 +445,6 @@ export default class AudioPlayer {
    * @returns {boolean} The muted state of the current loaded audio.
    */
   isAudioMuted() {
-    return this._audioMuted;
+    return this.audioMuted;
   }
 }

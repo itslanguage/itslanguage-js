@@ -9,7 +9,7 @@ describe('WebAudioPlayer', () => {
       constructor() {
       },
       addEventListener: () => {
-      }
+      },
     };
 
     spyOn(window, 'Audio').and.returnValue(audioMock);
@@ -24,26 +24,25 @@ describe('WebAudioPlayer', () => {
       spyOn(console, 'error');
     });
 
-    it('should construct and call the appropiate event listeners', () => {
+    it('should construct and call the appropriate event listeners', () => {
       const errorCodes = [0, 1, 2, 3, 4];
       audioMock.addEventListener = (name, handler) => {
         if (name === 'pause') {
           audioMock.pausedHandler = handler;
         }
         if (name === 'error') {
-          const parameter =
-            {
-              target: {
-                error: {
-                  code: null,
-                  MEDIA_ERR_ABORTED: 1,
-                  MEDIA_ERR_NETWORK: 2,
-                  MEDIA_ERR_DECODE: 3,
-                  MEDIA_ERR_SRC_NOT_SUPPORTED: 4
-                }
-              }
-            };
-          errorCodes.forEach(code => {
+          const parameter = {
+            target: {
+              error: {
+                code: null,
+                MEDIA_ERR_ABORTED: 1,
+                MEDIA_ERR_NETWORK: 2,
+                MEDIA_ERR_DECODE: 3,
+                MEDIA_ERR_SRC_NOT_SUPPORTED: 4,
+              },
+            },
+          };
+          errorCodes.forEach((code) => {
             parameter.target.error.code = code;
             handler(parameter);
           });
@@ -61,14 +60,14 @@ describe('WebAudioPlayer', () => {
         'stoppedCb',
         'playbackStoppedCb',
         'progressCb',
-        'errorCb'
+        'errorCb',
       ]);
       webAudioPlayer = new WebAudioPlayer(options);
-      webAudioPlayer._pauseIsStop = true;
+      webAudioPlayer.pauseIsStop = true;
       audioMock.firePausedEvent();
 
-      expect(webAudioPlayer._settings).toEqual(options);
-      expect(webAudioPlayer._pauseIsStop).toBeFalsy();
+      expect(webAudioPlayer.settings).toEqual(options);
+      expect(webAudioPlayer.pauseIsStop).toBeFalsy();
       expect(options.playingCb).toHaveBeenCalledTimes(1);
       expect(options.timeupdateCb).toHaveBeenCalledTimes(1);
       expect(options.durationchangeCb).toHaveBeenCalledTimes(1);
@@ -82,10 +81,10 @@ describe('WebAudioPlayer', () => {
       expect(console.error).toHaveBeenCalledTimes(5);
       expect(console.error).toHaveBeenCalledWith('You aborted the playback.');
       expect(console.error).toHaveBeenCalledWith('A network error caused the audio download to fail.');
-      expect(console.error).toHaveBeenCalledWith('The audio playback was aborted due to a corruption ' +
-        'problem or because the media used features your browser did not support.');
-      expect(console.error).toHaveBeenCalledWith('The audio could not be loaded, either because the ' +
-        'server or network failed or because the format is not supported.');
+      expect(console.error).toHaveBeenCalledWith('The audio playback was aborted due to a corruption '
+        + 'problem or because the media used features your browser did not support.');
+      expect(console.error).toHaveBeenCalledWith('The audio could not be loaded, either because the '
+        + 'server or network failed or because the format is not supported.');
       expect(console.error).toHaveBeenCalledWith('An unknown error occurred.');
     });
 
@@ -95,24 +94,23 @@ describe('WebAudioPlayer', () => {
           audioMock.pausedHandler = handler;
         }
         if (name === 'error') {
-          const parameter =
-            {
-              target: {
-                error: {
-                  code: null
-                }
-              }
-            };
+          const parameter = {
+            target: {
+              error: {
+                code: null,
+              },
+            },
+          };
           handler(parameter);
         } else {
           handler();
         }
       };
       webAudioPlayer = new WebAudioPlayer(null);
-      webAudioPlayer._pauseIsStop = true;
+      webAudioPlayer.pauseIsStop = true;
       audioMock.firePausedEvent();
-      expect(webAudioPlayer._settings).toEqual({});
-      expect(webAudioPlayer._pauseIsStop).toBeFalsy();
+      expect(webAudioPlayer.settings).toEqual({});
+      expect(webAudioPlayer.pauseIsStop).toBeFalsy();
     });
   });
 
@@ -191,7 +189,7 @@ describe('WebAudioPlayer', () => {
     it('should play audio from the start', () => {
       webAudioPlayer.play();
       expect(audioMock.play).toHaveBeenCalledTimes(1);
-      expect(console.debug).toHaveBeenCalledWith('Start playing from position: ' + audioMock.currentTime);
+      expect(console.debug).toHaveBeenCalledWith(`Start playing from position: ${audioMock.currentTime}`);
     });
 
     it('should play audio from a position', () => {
@@ -199,9 +197,9 @@ describe('WebAudioPlayer', () => {
       webAudioPlayer.play(2);
       expect(audioMock.play).toHaveBeenCalledTimes(1);
       expect(audioMock.preload).toEqual('auto');
-      expect(console.warn).toHaveBeenCalledWith('Playing from a given position' +
-        ' is not possible. Audio was not yet loaded. Try again.');
-      expect(console.debug).toHaveBeenCalledWith('Start playing from position: ' + audioMock.currentTime);
+      expect(console.warn).toHaveBeenCalledWith('Playing from a given position'
+        + ' is not possible. Audio was not yet loaded. Try again.');
+      expect(console.debug).toHaveBeenCalledWith(`Start playing from position: ${audioMock.currentTime}`);
     });
 
     it('should play and preload audio from a position', () => {
@@ -210,17 +208,17 @@ describe('WebAudioPlayer', () => {
       webAudioPlayer.play(startTime);
       expect(audioMock.play).toHaveBeenCalledTimes(1);
       expect(audioMock.currentTime).toEqual(startTime);
-      expect(console.debug).toHaveBeenCalledWith('Scrub position to: ' + startTime);
-      expect(console.debug).toHaveBeenCalledWith('Start playing from position: ' + startTime);
+      expect(console.debug).toHaveBeenCalledWith(`Scrub position to: ${startTime}`);
+      expect(console.debug).toHaveBeenCalledWith(`Start playing from position: ${startTime}`);
     });
   });
 
   it('should unload audio', () => {
     webAudioPlayer = new WebAudioPlayer();
-    spyOn(webAudioPlayer, '_initPlayer');
+    spyOn(webAudioPlayer, 'initPlayer');
     webAudioPlayer.reset();
 
-    expect(webAudioPlayer._initPlayer).toHaveBeenCalledTimes(1);
+    expect(webAudioPlayer.initPlayer).toHaveBeenCalledTimes(1);
   });
 
   it('should stop playing audio', () => {
@@ -231,7 +229,7 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.stop();
 
-    expect(webAudioPlayer._pauseIsStop).toEqual(false);
+    expect(webAudioPlayer.pauseIsStop).toEqual(false);
     expect(audioMock.currentTime).toEqual(0);
     expect(audioMock.pause).toHaveBeenCalledTimes(1);
   });
@@ -244,7 +242,7 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.pause();
 
-    expect(webAudioPlayer._pauseIsStop).toEqual(true);
+    expect(webAudioPlayer.pauseIsStop).toEqual(true);
     expect(audioMock.currentTime).toEqual(10);
     expect(audioMock.pause).toHaveBeenCalledTimes(1);
   });
@@ -259,8 +257,8 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer.scrub(10);
 
     expect(webAudioPlayer.preload).toHaveBeenCalledTimes(1);
-    expect(console.warn).toHaveBeenCalledWith('Scrubbing not possible. ' +
-      'Audio was not yet loaded. Try again.');
+    expect(console.warn).toHaveBeenCalledWith('Scrubbing not possible. '
+      + 'Audio was not yet loaded. Try again.');
   });
 
   it('should scrub audio', () => {
@@ -278,8 +276,8 @@ describe('WebAudioPlayer', () => {
 
     webAudioPlayer.scrub(percentage);
 
-    expect(console.log).toHaveBeenCalledWith('Moving audio position to: ' +
-      percentage + '%: ' + expectedNewTime + 's of total playing time: ' + duration);
+    expect(console.log).toHaveBeenCalledWith(`Moving audio position to: ${
+      percentage}%: ${expectedNewTime}s of total playing time: ${duration}`);
     expect(audioMock.currentTime).toEqual(expectedNewTime);
 
     duration = 50;
@@ -289,8 +287,8 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.scrub(percentage);
 
-    expect(console.log).toHaveBeenCalledWith('Moving audio position to: ' +
-      percentage + '%: ' + expectedNewTime + 's of total playing time: ' + duration);
+    expect(console.log).toHaveBeenCalledWith(`Moving audio position to: ${
+      percentage}%: ${expectedNewTime}s of total playing time: ${duration}`);
     expect(audioMock.currentTime).toEqual(expectedNewTime);
 
     duration = 20;
@@ -300,8 +298,8 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.scrub(percentage);
 
-    expect(console.log).toHaveBeenCalledWith('Moving audio position to: ' +
-      percentage + '%: ' + expectedNewTime + 's of total playing time: ' + duration);
+    expect(console.log).toHaveBeenCalledWith(`Moving audio position to: ${
+      percentage}%: ${expectedNewTime}s of total playing time: ${duration}`);
     expect(audioMock.currentTime).toEqual(expectedNewTime);
 
     duration = 50;
@@ -311,8 +309,8 @@ describe('WebAudioPlayer', () => {
     webAudioPlayer = new WebAudioPlayer();
     webAudioPlayer.scrub(percentage);
 
-    expect(console.log).toHaveBeenCalledWith('Moving audio position to: ' +
-      percentage + '%: ' + expectedNewTime + 's of total playing time: ' + duration);
+    expect(console.log).toHaveBeenCalledWith(`Moving audio position to: ${
+      percentage}%: ${expectedNewTime}s of total playing time: ${duration}`);
     expect(audioMock.currentTime).toEqual(expectedNewTime);
   });
 

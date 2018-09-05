@@ -26,13 +26,13 @@ export default class WebAudioRecorder {
     // Sheffield determined the minimum to be 16000hz, so /4 is too low.
     this.sampleRate = this.recordedSampleRate / 2;
     // Streaming doesn't yet downsample: #1302.
-    this.sampleRate = streamingCallback ? this.recordedSampleRate :
-      this.sampleRate;
+    this.sampleRate = streamingCallback ? this.recordedSampleRate
+      : this.sampleRate;
 
     // Always record audio in mono.
     this.channels = 1;
-    console.log('Recording at: ' +
-                  this.getAudioSpecs().audioParameters.sampleRate);
+    console.log(`Recording at: ${
+      this.getAudioSpecs().audioParameters.sampleRate}`);
 
     this.packer = packer;
     this.packer.init(this.recordedSampleRate, this.sampleRate, this.channels);
@@ -49,10 +49,10 @@ export default class WebAudioRecorder {
     // This is a workaround for a bug in Chrome that would otherwise lead to
     // the recorder being garbage collected before it even recorded anything.
     // https://bugs.webkit.org/show_bug.cgi?id=112521
-    this._recorder = recorder;
+    this.recorder = recorder;
 
     const self = this;
-    recorder.onaudioprocess = function(audioProcessing) {
+    recorder.onaudioprocess = (audioProcessing) => {
       if (!self.recording) {
         return;
       }
@@ -87,8 +87,8 @@ export default class WebAudioRecorder {
         channels: this.channels,
         sampleWidth: 16,
         frameRate: this.sampleRate,
-        sampleRate: this.sampleRate
-      }
+        sampleRate: this.sampleRate,
+      },
     };
   }
 
@@ -105,7 +105,8 @@ export default class WebAudioRecorder {
   /**
    * Request encoded audio to be returned through callback.
    *
-   * @param {Function} callback - The callback to use when returning the audio as a blob in Wave format.
+   * @param {Function} callback - The callback to use when returning the audio as a blob in Wave
+   * format.
    */
   getEncodedAudio(callback) {
     this.packer.exportWAV(callback);

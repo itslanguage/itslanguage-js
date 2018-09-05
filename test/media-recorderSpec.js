@@ -9,7 +9,7 @@ describe('Mediarecorder', () => {
     const fakeRecorder = jasmine.createSpyObj('mediaRecorder', ['ondataavailable']);
     const cb = jasmine.createSpy();
     const fakeData = {
-      data: '1234567890'
+      data: '1234567890',
     };
     const expectedBlob = new Blob([fakeData.data]);
     window.MediaRecorder.and.returnValue(fakeRecorder);
@@ -25,7 +25,7 @@ describe('Mediarecorder', () => {
   it('should construct without callback', () => {
     const fakeRecorder = jasmine.createSpyObj('mediaRecorder', ['ondataavailable']);
     const fakeData = {
-      data: '1234567890'
+      data: '1234567890',
     };
     window.MediaRecorder.and.returnValue(fakeRecorder);
     const recorder = new MediaRecorder();
@@ -47,7 +47,7 @@ describe('Mediarecorder', () => {
   it('should get recording state when recording', () => {
     const recorder = new MediaRecorder();
     recorder.mediaRecorder = {
-      state: 'recording'
+      state: 'recording',
     };
     const result = recorder.isRecording();
     expect(result).toBeTruthy();
@@ -56,7 +56,7 @@ describe('Mediarecorder', () => {
   it('should get recording state when not recording', () => {
     const recorder = new MediaRecorder();
     recorder.mediaRecorder = {
-      state: 'not recording'
+      state: 'not recording',
     };
     const result = recorder.isRecording();
     expect(result).toBeFalsy();
@@ -97,7 +97,7 @@ describe('Mediarecorder', () => {
 
   it('should deliver audio when callback is registered later', () => {
     const fakeData = {
-      data: '1234567890'
+      data: '1234567890',
     };
     const expectedBlob = new Blob([fakeData.data]);
     const cb = jasmine.createSpy();

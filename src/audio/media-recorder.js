@@ -1,6 +1,6 @@
 /*
  * Use the Media Stream Recording API for recording and encoding. Ogg Opus
- * (audio/ogg) is the prefered output format.
+ * (audio/ogg) is the preferred output format.
  *
  * The Media Stream Recording API is W3C standard in the making:
  * https://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/RecordingProposal.html
@@ -25,11 +25,11 @@ export default class MediaRecorder {
   constructor(mediaStream) {
     const self = this;
     this.mediaRecorder = new window.MediaRecorder(mediaStream);
-    this.mediaRecorder.ondataavailable = function(e) {
-      self.recordedBlob = new Blob([e.data], {
-        type: 'audio/ogg'
+    this.mediaRecorder.ondataavailable = (event) => {
+      self.recordedBlob = new Blob([event.data], {
+        type: 'audio/ogg',
       });
-      console.log('Recorded audio/ogg Blob size: ' + self.recordedBlob.size);
+      console.log(`Recorded audio/ogg Blob size: ${self.recordedBlob.size}`);
       if (self.callback) {
         self.callback(self.recordedBlob);
         self.callback = null;
@@ -68,7 +68,8 @@ export default class MediaRecorder {
   /**
    * Request encoded audio to be returned through callback.
    *
-   * @param {Function} callback - The callback to use when returning the audio as a blob in Ogg Opus format.
+   * @param {Function} callback - The callback to use when returning the audio as a blob in Ogg Opus
+   * format.
    */
   getEncodedAudio(callback) {
     if (this.recordedBlob) {

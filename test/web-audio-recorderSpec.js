@@ -11,25 +11,25 @@ describe('WebAudioRecorder', () => {
 
   beforeEach(() => {
     mockRecorder = {
-      connect: jasmine.createSpy()
+      connect: jasmine.createSpy(),
     };
     source = {
       context: {
         sampleRate: 48000,
         destination: 'destination',
-        createScriptProcessor: jasmine.createSpy().and.returnValue(mockRecorder)
+        createScriptProcessor: jasmine.createSpy().and.returnValue(mockRecorder),
       },
-      connect: jasmine.createSpy()
+      connect: jasmine.createSpy(),
     };
     packerMock = {
       init: jasmine.createSpy(),
       record: jasmine.createSpy(),
-      recordStreaming: jasmine.createSpy()
+      recordStreaming: jasmine.createSpy(),
     };
     mockEvent = {
       inputBuffer: {
-        getChannelData: jasmine.createSpy().and.returnValue([10])
-      }
+        getChannelData: jasmine.createSpy().and.returnValue([10]),
+      },
     };
     f32array = new Float32Array([10]);
     cb = jasmine.createSpy();
@@ -44,7 +44,7 @@ describe('WebAudioRecorder', () => {
       expect(webAudioRecorder.sampleRate).toEqual(24000);
       expect(webAudioRecorder.channels).toEqual(1);
       expect(webAudioRecorder.packer).toEqual(packerMock);
-      expect(webAudioRecorder._recorder).toEqual(mockRecorder);
+      expect(webAudioRecorder.recorder).toEqual(mockRecorder);
       expect(source.connect).toHaveBeenCalledTimes(1);
       expect(source.connect).toHaveBeenCalledWith(mockRecorder);
       expect(mockRecorder.onaudioprocess).toBeDefined();
@@ -61,7 +61,7 @@ describe('WebAudioRecorder', () => {
       expect(webAudioRecorder.sampleRate).toEqual(48000);
       expect(webAudioRecorder.channels).toEqual(1);
       expect(webAudioRecorder.packer).toEqual(packerMock);
-      expect(webAudioRecorder._recorder).toEqual(mockRecorder);
+      expect(webAudioRecorder.recorder).toEqual(mockRecorder);
       expect(source.connect).toHaveBeenCalledTimes(1);
       expect(source.connect).toHaveBeenCalledWith(mockRecorder);
       expect(mockRecorder.onaudioprocess).toBeDefined();
@@ -125,4 +125,3 @@ describe('WebAudioRecorder', () => {
     expect(isRecording).toBeFalsy();
   });
 });
-

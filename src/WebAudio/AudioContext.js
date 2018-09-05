@@ -6,43 +6,39 @@ import debug from 'debug';
  */
 export default class AudioContext {
   /**
-   * Private object to hold AudioContext node.
-   * @type {AudioContext}
-   * @inherit
-   */
-  audioContext = null;
-
-  /**
-   * This will be the log function.
-   * Will output to stdout.
-   * @type {Function}
-   * @inherit
-   */
-  log = null;
-
-  /**
-   * This will be the error function.
-   * Will output to stderr.
-   * @type {Function}
-   * @inherit
-   */
-  error = null;
-
-  /**
-   * Keep a list of all registered event listeners.
-   * This way, we could conveniently remove all the listeners at once.
-   * @type {Array}
-   * @private
-   */
-  eventListeners = [];
-
-  /**
    * Construct the Player.
    *
    * @param {Object} audioContext - Allow to provide custom/own audioContext object.
    * @param {string} debugNameSpace - Name to be used for debugging.
    */
   constructor(audioContext = null, debugNameSpace = 'AudioContext') {
+    /**
+     * Private object to hold AudioContext node.
+     * @type {AudioContext}
+     */
+    this.audioContext = null;
+
+    /**
+     * This will be the log function.
+     * Will output to stdout.
+     * @type {Function}
+     */
+    this.log = null;
+
+    /**
+     * This will be the error function.
+     * Will output to stderr.
+     * @type {Function}
+     */
+    this.error = null;
+
+    /**
+     * Keep a list of all registered event listeners.
+     * This way, we could conveniently remove all the listeners at once.
+     * @type {Array}
+     */
+    this.eventListeners = [];
+
     // Provide AudioContext object. If not passed the
     // default window.AudioContext will be used.
     if (audioContext) {
@@ -63,7 +59,7 @@ export default class AudioContext {
 
   /**
    * Wraps the addEventListener which is available on the AudioContext node.
-   * Note that it is requierd to pass a named function to actually be able
+   * Note that it is required to pass a named function to actually be able
    * to remove an event listeners. This is just how the EventTarget.removeEventListener
    * works. There are no extra checks for.
    *
@@ -80,7 +76,7 @@ export default class AudioContext {
 
   /**
    * Wraps the removeEventListener which is available on the AudioContext node.
-   * Make sure to call with the same arguments as the addEventListner.
+   * Make sure to call with the same arguments as the addEventListener.
    *
    * If you didn't call the addEventListener with a named function, please note
    * that you won't be able to remove the eventListener.
@@ -90,7 +86,7 @@ export default class AudioContext {
    */
   removeEventListener(...args) {
     // First, try to find the event in our list.
-    const itemIndex = this.eventListeners.findIndex(item => {
+    const itemIndex = this.eventListeners.findIndex((item) => {
       // If the count of items doesn't equal, it's definitely not the
       // listener we want to remove.
       if (item.length !== args.length) {
@@ -114,7 +110,7 @@ export default class AudioContext {
   }
 
   removeAllEventListeners() {
-    this.eventListeners.forEach(listener => {
+    this.eventListeners.forEach((listener) => {
       this.removeEventListener(...listener);
     });
     this.eventListeners = [];
@@ -126,25 +122,23 @@ export default class AudioContext {
    *
    * @param {string} eventName - Event to fire.
    * @param {Object} data - Data to pass as detail.
-   * @inherit
    */
   fireEvent(eventName, data = null) {
     if (!eventName) {
       return;
     }
-    const customEvent = new CustomEvent(eventName, {detail: data});
+    const customEvent = new CustomEvent(eventName, { detail: data });
     this.audioContext.dispatchEvent(customEvent);
   }
 
   /**
    * Get the audio context or create one.
    *
-   * @return {AudioContext} The AudioContext created will be returned
+   * @return {AudioContext} The AudioContext created will be returned.
    */
-  createAudioContext() {
+  static createAudioContext() {
     if (!window.ItslAudioContext) {
-      window.AudioContext =
-        window.AudioContext || window.webkitAudioContext;
+      window.AudioContext = window.AudioContext || window.webkitAudioContext;
       window.ItslAudioContext = new window.AudioContext();
     }
     return window.ItslAudioContext;

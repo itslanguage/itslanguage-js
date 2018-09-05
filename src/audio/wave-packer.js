@@ -8,25 +8,27 @@ export default class WavePacker {
    * Stop recording audio.
    *
    * @param {number} recordingSampleRate - Sample rate of recording. Must be either 48000 or 44100.
-   * @param {number} sampleRate - Sample rate. Must be half or a quarter of the recording sample rate.
+   * @param {number} sampleRate - Sample rate. Must be half or quarter of the recording sample rate.
    * @param {number} channels - Amount of audio channels. 1 or 2.
    */
   init(recordingSampleRate, sampleRate, channels) {
     this.recordingSampleRate = recordingSampleRate;
     if ([48000, 44100].indexOf(this.recordingSampleRate) === -1) {
       throw new Error(
-        '48000 or 44100 are the only supported recordingSampleRates');
+        '48000 or 44100 are the only supported recordingSampleRates',
+      );
     }
 
     this.sampleRate = sampleRate;
     if ([
       this.recordingSampleRate,
       this.recordingSampleRate / 2,
-      this.recordingSampleRate / 4
+      this.recordingSampleRate / 4,
     ].indexOf(this.sampleRate) === -1) {
       throw new Error(
-        'sampleRate must be equal, half or a quarter of the ' +
-        'recording sample rate');
+        'sampleRate must be equal, half or a quarter of the '
+        + 'recording sample rate',
+      );
     }
 
     this.channels = channels;
@@ -45,12 +47,13 @@ export default class WavePacker {
     this.recLength += left.length;
   }
 
-  recordStreaming(left, right, callback) {
+  recordStreaming(left, right, callback) { // eslint-disable-line class-methods-use-this
     function convertFloat32ToInt16(buffer) {
       let l = buffer.length;
       const buf = new Int16Array(l);
-      while (l--) {
+      while (l) {
         buf[l] = Math.min(1, buffer[l]) * 0x7FFF;
+        l -= 1;
       }
       return buf.buffer;
     }
@@ -69,7 +72,7 @@ export default class WavePacker {
     const interleaved = this.interleave(bufferL, bufferR);
     const dataview = this.encodeWAV(interleaved);
     const audioBlob = new Blob([dataview], {
-      type: 'audio/wav'
+      type: 'audio/wav',
     });
     callback(audioBlob);
   }
@@ -79,7 +82,7 @@ export default class WavePacker {
     const bufferL = WavePacker.mergeBuffers(this.recBuffersL, this.recLength);
     const dataview = this.encodeWAV(bufferL, true);
     const audioBlob = new Blob([dataview], {
-      type: 'audio/wav'
+      type: 'audio/wav',
     });
     callback(audioBlob);
   }
@@ -87,10 +90,10 @@ export default class WavePacker {
   /**
    * Wrap the raw audio in a header to make it a WAVE format.
    *
-   * Specs: {@link https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}.
+   * @see {@link https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}.
    *
-   * @todo: This function should use the {@link createWAVEHeader} function for creating the header.
-   * @param {[]} interleaved - Array of interleaved audio.
+   * @todo This function should use the {@link createWAVEHeader} function for creating the header.
+   * @param {Array} interleaved - Array of interleaved audio.
    */
   encodeWAV(interleaved) {
     const buffer = new ArrayBuffer(44 + interleaved.length * 2);
@@ -126,41 +129,41 @@ export default class WavePacker {
     const lng = interleaved.length;
     let index = 44;
     const volume = 1;
-    for (let i = 0; i < lng; i++) {
+    for (let i = 0; i < lng; i += 1) {
       view.setInt16(index, interleaved[i] * (0x7FFF * volume), true);
       index += 2;
     }
 
     // Wrap in HTML5 Blob for transport
     const blob = new Blob([view], {
-      type: 'audio/wav'
+      type: 'audio/wav',
     });
-    console.log('Recorded audio/wav Blob size: ' + blob.size);
+    console.log(`Recorded audio/wav Blob size: ${blob.size}`);
     return blob;
   }
 
   interleave(leftChannel, rightChannel) {
+    let channelLength = 0;
+    let inputIndex = 0;
     let result = null;
-    let length = null;
-    let i = null;
-    let inputIndex = null;
+    let i = 0;
+
     if (this.channels === 1) {
       // Keep both right and left input channels, but "pan" them both
       // in the center (to the single mono channel)
-      length = leftChannel.length;
-      result = new Float32Array(length);
-      for (i = 0; i < leftChannel.length; ++i) {
+      channelLength = leftChannel.length;
+      result = new Float32Array(channelLength);
+      for (i = 0; i < leftChannel.length; i += 1) {
         result[i] = 0.5 * (leftChannel[i] + rightChannel[i]);
       }
     } else {
-      length = leftChannel.length + rightChannel.length;
-      result = new Float32Array(length);
+      channelLength = leftChannel.length + rightChannel.length;
+      result = new Float32Array(channelLength);
 
-      inputIndex = 0;
-      for (i = 0; i < length;) {
-        result[i++] = leftChannel[inputIndex];
-        result[i++] = rightChannel[inputIndex];
-        inputIndex++;
+      for (i = 0; i < channelLength; i += 2) {
+        result[i] = leftChannel[inputIndex];
+        result[i + 1] = rightChannel[inputIndex];
+        inputIndex += 1;
       }
     }
 
@@ -168,15 +171,16 @@ export default class WavePacker {
     if (this.recordingSampleRate !== this.sampleRate) {
       // E.g. 44100/11025 = 4
       const reduceBy = this.recordingSampleRate / this.sampleRate;
-      const resampledResult = new Float32Array(length / reduceBy);
+      const resampledResult = new Float32Array(channelLength / reduceBy);
 
       inputIndex = 0;
-      for (i = 0; i < length;) {
+      for (i = 0; i < channelLength; i += 1) {
         let value = 0;
-        for (let j = 0; j < reduceBy; j++) {
-          value += result[inputIndex++];
+        for (let j = 0; j < reduceBy; j += 1) {
+          value += result[inputIndex];
+          inputIndex += 1;
         }
-        resampledResult[i++] = 1 / reduceBy * value;
+        resampledResult[i] = 1 / reduceBy * value;
       }
       return resampledResult;
     }
@@ -187,7 +191,7 @@ export default class WavePacker {
     const result = new Float32Array(recordingLength);
     let offset = 0;
     const lng = channelBuffer.length;
-    for (let i = 0; i < lng; i++) {
+    for (let i = 0; i < lng; i += 1) {
       const buffer = channelBuffer[i];
       result.set(buffer, offset);
       offset += buffer.length;
@@ -207,10 +211,29 @@ export default class WavePacker {
    */
   static writeUTFBytes(view, offset, string) {
     const lng = string.length;
-    for (let i = 0; i < lng; i++) {
+    for (let i = 0; i < lng; i += 1) {
       view.setUint8(offset + i, string.charCodeAt(i));
     }
   }
+}
+
+/**
+ * Get an TypedArray (an Uint8Array to be more precise) that
+ * represents a string.
+ *
+ * @param {string} word - The word to convert.
+ * @returns {Uint8Array} - The converted word as Uint8Array.
+ */
+export function wordToUTF8ByteArray(word) {
+  const intArray = [];
+  const { length } = word;
+  let count = 0;
+
+  for (count; count < length; count += 1) {
+    intArray.push(word.charCodeAt(count));
+  }
+
+  return Uint8Array.from(intArray);
 }
 
 /**
@@ -274,20 +297,4 @@ export function createWAVEHeader(channels, sampleRate) {
 
   // Return the ArrayBuffer of the header.
   return header.buffer;
-}
-
-/**
- * Get an TypedArray (an Uint8Array to be more precise) that
- * represents a string.
- *
- * @param {string} word - The word to convert.
- * @returns {Uint8Array} - The converted word as Uint8Array.
- */
-export function wordToUTF8ByteArray(word) {
-  const buffer = new ArrayBuffer(word.length);
-  const bufferView = new Uint8Array(buffer);
-  bufferView.map((item, index, array) => {
-    array[index] = word.charCodeAt(index);
-  });
-  return bufferView;
 }
