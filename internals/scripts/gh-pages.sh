@@ -4,7 +4,7 @@
 # Inspiration from https://gist.github.com/domenic/ec8b0fc8ab45f39403dd
 #
 # The script should potentially do two things. It should either update
-# the esdocs for master, or add a version to it.
+# the documentation for master, or add a version to it.
 #
 # NOTE:
 # Travis has a convenient "pages" provider. This provider works awesome
@@ -30,7 +30,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" ] ||
     exit 0
 fi
 
-#Save some useful information
+# Save some useful information
 REPO_URL="https://$GITHUB_TOKEN@github.com/$TRAVIS_REPO_SLUG.git"
 SHA=`git rev-parse --verify HEAD`
 
