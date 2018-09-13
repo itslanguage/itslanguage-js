@@ -66,6 +66,7 @@ promise = promise.then(() => {
   // Set some keys for access
   pkg.publishConfig = {
     access: 'public',
+    tag: 'next',
   };
 
   // Set the correct paths to the files
