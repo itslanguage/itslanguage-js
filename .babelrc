@@ -1,7 +1,9 @@
 {
   "presets": [
     [
-      "@babel/preset-env"
+      "@babel/preset-env", {
+        "modules": false
+      }
     ]
   ],
   "plugins": [
@@ -10,6 +12,9 @@
   ],
   "env": {
     "test": {
+      "presets": [
+        "@babel/preset-env"
+      ],
       "plugins": [
         [
           "istanbul", {
