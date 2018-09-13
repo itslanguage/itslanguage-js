@@ -1,0 +1,284 @@
+{
+  "coverage": "77.2%",
+  "expectCount": 351,
+  "actualCount": 271,
+  "files": {
+    "src/WebAudio/AudioContext.js": {
+      "expectCount": 13,
+      "actualCount": 12,
+      "undocumentLines": [
+        112
+      ]
+    },
+    "src/WebAudio/Player.js": {
+      "expectCount": 24,
+      "actualCount": 24,
+      "undocumentLines": []
+    },
+    "src/WebAudio/Recorder.js": {
+      "expectCount": 17,
+      "actualCount": 7,
+      "undocumentLines": [
+        3,
+        4,
+        5,
+        6,
+        33,
+        35,
+        51,
+        60,
+        79,
+        88
+      ]
+    },
+    "src/api/auth/index.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/api/basicauth/index.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/api/broadcaster/index.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/api/categories/index.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/api/challenges/choice/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/challenges/choice/recognition.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/api/challenges/feedback/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/challenges/feedback/speech.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/api/challenges/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/challenges/pronunciation/analysis.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/api/challenges/pronunciation/index.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/api/challenges/speech/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/challenges/speech/recordings.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/communication/index.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/api/communication/websocket.js": {
+      "expectCount": 8,
+      "actualCount": 6,
+      "undocumentLines": [
+        9,
+        10
+      ]
+    },
+    "src/api/emailauth/index.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/api/groups/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/organisations/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/profile/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/progress/index.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/api/roles/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/tenants/index.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/users/index.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/api/utils/audio-over-socket.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/api/utils/index.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/audio/audio-player.js": {
+      "expectCount": 35,
+      "actualCount": 34,
+      "undocumentLines": [
+        131
+      ]
+    },
+    "src/audio/audio-recorder.js": {
+      "expectCount": 32,
+      "actualCount": 23,
+      "undocumentLines": [
+        20,
+        24,
+        33,
+        35,
+        38,
+        113,
+        182,
+        244,
+        310
+      ]
+    },
+    "src/audio/audio-tools.js": {
+      "expectCount": 14,
+      "actualCount": 7,
+      "undocumentLines": [
+        33,
+        41,
+        42,
+        43,
+        69,
+        70,
+        72
+      ]
+    },
+    "src/audio/media-recorder.js": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        27,
+        44,
+        45
+      ]
+    },
+    "src/audio/tools.js": {
+      "expectCount": 14,
+      "actualCount": 12,
+      "undocumentLines": [
+        102,
+        106
+      ]
+    },
+    "src/audio/wave-packer.js": {
+      "expectCount": 20,
+      "actualCount": 6,
+      "undocumentLines": [
+        15,
+        22,
+        34,
+        35,
+        38,
+        39,
+        40,
+        41,
+        44,
+        50,
+        69,
+        81,
+        145,
+        190
+      ]
+    },
+    "src/audio/web-audio-player.js": {
+      "expectCount": 22,
+      "actualCount": 14,
+      "undocumentLines": [
+        23,
+        28,
+        29,
+        30,
+        311,
+        315,
+        334,
+        338
+      ]
+    },
+    "src/audio/web-audio-recorder.js": {
+      "expectCount": 16,
+      "actualCount": 8,
+      "undocumentLines": [
+        18,
+        19,
+        23,
+        27,
+        33,
+        37,
+        52,
+        124
+      ]
+    },
+    "src/index.js": {
+      "expectCount": 25,
+      "actualCount": 10,
+      "undocumentLines": [
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        65
+      ]
+    }
+  }
+}
