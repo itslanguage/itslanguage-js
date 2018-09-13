@@ -18,10 +18,8 @@
   "scripts": {
     "npmcheckversion": "node ./internals/scripts/npmcheckversion.js",
     "preinstall": "npm run npmcheckversion",
-    "prebuild": "npm run build:clean",
-    "build": "babel src --ignore '**/*.spec.js' --out-dir build --source-maps inline",
-    "postbuild": "npm run esdoc && ncp ./packages/itslanguage ./build/ && ncp ./esdoc ./build/docs",
-    "build:clean": "rimraf ./build/",
+    "build": "node ./internals/scripts/build.js",
+    "postbuild": "npm run esdoc && ncp ./esdoc ./build/docs",
     "esdoc": "esdoc -c esdoc.json",
     "esdoc:clean": "rimraf ./esdoc",
     "lint": "npm run lint:js",
