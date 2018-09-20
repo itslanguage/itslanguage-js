@@ -174,7 +174,7 @@ const externalConfig = {
     external: externalConfig[format.substring(0, 3)].external,
     plugins: [
       progress({
-        clearLine: true,
+        clearLine: false,
       }),
       format.startsWith('umd') && builtins(),
       format.startsWith('umd') && json(),
