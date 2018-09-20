@@ -23,7 +23,7 @@ import Stopwatch from './audio/tools';
  * Document the version number of the ITSLanguage SDK.
  * @type {string}
  */
-const VERSION = '4.0.0-beta-6';
+const VERSION = '4.0.0-beta-8';
 
 
 /**
