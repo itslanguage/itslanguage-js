@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/audio/audio-player.js | @itslanguage/sdk</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The core JavaScript SDK for ITSLanguage."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@itslanguage/sdk"><meta property="twitter:description" content="The core JavaScript SDK for ITSLanguage."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/itslanguage/itslanguage-js"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/index.js~Itslanguage.html">Itslanguage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createAudioPlayer">createAudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createAudioRecorder">createAudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createItslSdk">createItslSdk</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createPlayer">createPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createStopwatch">createStopwatch</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createVolumeMeter">createVolumeMeter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#webaudio">WebAudio</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/AudioContext.js~AudioContext.html">AudioContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/Player.js~Player.html">Player</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/WebAudio/Recorder.js~Recorder.html">Recorder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-auth">api/auth</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-assembleScope">assembleScope</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authenticate">authenticate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-impersonate">impersonate</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-basicauth">api/basicauth</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-broadcaster">api/broadcaster</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-broadcaster">broadcaster</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-categories">api/categories</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllWithParentId">getAllWithParentId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-update">update</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges">api/challenges</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-choice">choice</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-feedback">feedback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pronunciation">pronunciation</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-speech">speech</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-choice">api/challenges/choice</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepare">prepare</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareChallenge">prepareChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recognise">recognise</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-recogniseAudioStream">recogniseAudioStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-feedback">api/challenges/feedback</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-feedback">feedback</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-listenAndReply">listenAndReply</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pause">pause</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepare">prepare</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resume">resume</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-pronunciation">api/challenges/pronunciation</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-alignChallenge">alignChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-endStreamAudio">endStreamAudio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepare">prepare</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareAudio">prepareAudio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareChallenge">prepareChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-streamAudio">streamAudio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deleteChallenge">deleteChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-challenges-speech">api/challenges/speech</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-record">record</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-communication">api/communication</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-authorisedRequest">authorisedRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-request">request</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateSettings">updateSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-closeWebsocketConnection">closeWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getWebsocketConnection">getWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-makeWebsocketCall">makeWebsocketCall</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-openWebsocketConnection">openWebsocketConnection</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-settings">settings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-emailauth">api/emailauth</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-groups">api/groups</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-organisations">api/organisations</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-profile">api/profile</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCurrent">getCurrent</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-progress">api/progress</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-roles">api/roles</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-tenants">api/tenants</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-users">api/users</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-create">create</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAll">getAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getById">getById</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getCurrent">getCurrent</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#api-utils">api/utils</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeAndSendAudioOnDataAvailable">encodeAndSendAudioOnDataAvailable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-prepareServerForAudio">prepareServerForAudio</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerStreamForRecorder">registerStreamForRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitForUserMediaApproval">waitForUserMediaApproval</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dataToBase64">dataToBase64</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#audio">audio</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-player.js~AudioPlayer.html">AudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-recorder.js~AudioRecorder.html">AudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/audio-tools.js~VolumeMeter.html">VolumeMeter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/media-recorder.js~MediaRecorder.html">MediaRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/tools.js~Stopwatch.html">Stopwatch</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/wave-packer.js~WavePacker.html">WavePacker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-player.js~WebAudioPlayer.html">WebAudioPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/audio/web-audio-recorder.js~WebAudioRecorder.html">WebAudioRecorder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-generateWaveSample">generateWaveSample</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createWAVEHeader">createWAVEHeader</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-wordToUTF8ByteArray">wordToUTF8ByteArray</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/audio/audio-player.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import allOff from &apos;event-emitter/all-off&apos;;
+import ee from &apos;event-emitter&apos;;
+import Stopwatch from &apos;./tools&apos;;
+import WebAudioPlayer from &apos;./web-audio-player&apos;;
+/**
+ * ITSLanguage AudioPlayer non-graphical component.
+ */
+export default class AudioPlayer {
+  /**
+   * Construct an AudioPlayer for playing .wav or .mp3 files.
+   *
+   * @param {?Object} options - Override any of the default settings.
+   * @emits {Event} &apos;playbackstopped&apos; When playback has ended, been stopped or been paused.
+   * @emits {Event} All events the HTML5 Audio also fires. {@link http://www.w3schools.com/tags/ref_av_dom.asp}
+   */
+  constructor(options) {
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.settings = Object.assign({}, options);
+
+    this.playbackCompatibility();
+    const self = this;
+    const callbacks = {
+      playingCb() {
+        self.emitter.emit(&apos;playing&apos;, []);
+      },
+      timeupdateCb() {
+        self.emitter.emit(&apos;timeupdate&apos;, []);
+      },
+      durationchangeCb() {
+        self.emitter.emit(&apos;durationchange&apos;, []);
+      },
+      canplayCb() {
+        self.emitter.emit(&apos;canplay&apos;, []);
+      },
+      endedCb() {
+        self.emitter.emit(&apos;ended&apos;, []);
+      },
+      pauseCb() {
+        self.emitter.emit(&apos;pause&apos;, []);
+      },
+      stoppedCb() {
+        self.emitter.emit(&apos;stopped&apos;, []);
+      },
+      playbackStoppedCb() {
+        self.emitter.emit(&apos;playbackstopped&apos;, []);
+        if (self.stopwatch) {
+          self.stopwatch.stop();
+        }
+      },
+      progressCb() {
+        self.emitter.emit(&apos;progress&apos;, []);
+      },
+      errorCb() {
+        self.emitter.emit(&apos;error&apos;, []);
+      },
+    };
+    /**
+     * Specific audio player.
+     * @type {WebAudioPlayer}
+     * @private
+     */
+    this.player = this.getPlayer(callbacks);
+
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.emitter = ee({});
+
+    /**
+     * @type {Object}
+     * @private
+     */
+    this.stopwatch = null;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.audioLevel = 1;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.audioMuted = false;
+  }
+
+  /**
+   * Turn off all event listeners for this player.
+   */
+  resetEventListeners() {
+    allOff(this.emitter);
+  }
+
+  /**
+   * Add an event listener. Listens to events emitted from the player.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to add.
+   */
+  addEventListener(name, handler) {
+    this.emitter.on(name, handler);
+  }
+
+  /**
+   * Remove an event listener of the player.
+   *
+   * @param {string} name - Name of the event.
+   * @param {Function} handler - Handler function to remove.
+   */
+  removeEventListener(name, handler) {
+    this.emitter.off(name, handler);
+  }
+
+  /**
+   * Check for mandatory browser compatibility.
+   * Logs detailed browser compatibilities related to for audio playback.
+   *
+   * @throws {Error} If no native wave or MP3 playback is available.
+   * @private
+   */
+  playbackCompatibility() {
+    // Detect audio playback capabilities.
+
+    // Detect HTML5 Audio playback.
+    // http://caniuse.com/#feat=audio
+    this.canUseAudio = Boolean(Audio);
+    console.log(&apos;Native HTML5 Audio playback capability:&apos;, this.canUseAudio);
+
+    if (!this.canUseAudio) {
+      throw new Error(
+        &apos;Some form of audio playback capability is required&apos;,
+      );
+    }
+    if (this.canUseAudio) {
+      const audio = new Audio();
+      if (!(audio.canPlayType &amp;&amp; audio.canPlayType instanceof Function)) {
+        throw new Error(
+          &apos;Unable to detect audio playback capabilities&apos;,
+        );
+      }
+      const canPlayOggVorbis = audio.canPlayType(
+        &apos;audio/ogg; codecs=&quot;vorbis&quot;&apos;,
+      ) !== &apos;&apos;;
+      const canPlayOggOpus = audio.canPlayType(
+        &apos;audio/ogg; codecs=&quot;opus&quot;&apos;,
+      ) !== &apos;&apos;;
+      const canPlayWave = audio.canPlayType(&apos;audio/wav&apos;) !== &apos;&apos;;
+      const canPlayMP3 = audio.canPlayType(&apos;audio/mpeg; codecs=&quot;mp3&quot;&apos;) !== &apos;&apos;;
+      const canPlayAAC = audio.canPlayType(
+        &apos;audio/mp4; codecs=&quot;mp4a.40.2&quot;&apos;,
+      ) !== &apos;&apos;;
+      const canPlay3GPP = audio.canPlayType(
+        &apos;audio/3gpp; codecs=&quot;samr&quot;&apos;,
+      ) !== &apos;&apos;;
+
+      console.log(&apos;Native Vorbis audio in Ogg container playback capability:&apos;, canPlayOggVorbis);
+      console.log(&apos;Native Opus audio in Ogg container playback capability:&apos;, canPlayOggOpus);
+      console.log(&apos;Native PCM audio in Waveform Audio File Format (WAVE) playback capability:&apos;, canPlayWave);
+      console.log(&apos;Native MPEG Audio Layer 3 (MP3) playback capability:&apos;, canPlayMP3);
+      console.log(&apos;Native Low-Complexity AAC audio in MP4 container playback capability:&apos;, canPlayAAC);
+      console.log(&apos;Native AMR audio in 3GPP container playback capability:&apos;, canPlay3GPP);
+
+      if (!(canPlayWave || canPlayMP3)) {
+        throw new Error(
+          &apos;Native Wave or MP3 playback is required&apos;,
+        );
+      }
+    }
+  }
+
+  /**
+   * Get a player object that performs audio compression, when available.
+   *
+   * Using the Media Stream Recording API for recording is the preferred
+   * solution. It allows recording compressed audio which makes it quicker to
+   * submit. If not available, use a default createScriptProcessor is used.
+   *
+   * @param {Function} callbacks - Callbacks to add to the chosen player.
+   * @private
+   */
+  getPlayer(callbacks) {
+    let player = null;
+
+    if (this.canUseAudio) {
+      // Use the recorder with MediaRecorder implementation.
+      player = new WebAudioPlayer(callbacks);
+    } else {
+      throw new Error(&apos;Unable to find a proper player.&apos;);
+    }
+    console.log(&apos;Player initialised.&apos;);
+    return player;
+  }
+
+  /**
+   * Preload audio from an URL.
+   *
+   * @param {string} url - The URL that contains the audio.
+   * @param {boolean} [preload=true] - Try preloading metadata and possible some audio. Set to false
+   * to not download anything until playing.
+   * @param {?Function} loadedCb - The callback that is invoked when the duration of the audio file
+   * is first known.
+   * @emits {Event} &apos;canplay&apos; When the player is ready to play.
+   */
+  load(url, preload, loadedCb) {
+    this.reset();
+    this.player.load(url, preload, loadedCb);
+    this.audioLevel = 1;
+
+    // If preloading is disabled, the &apos;canplay&apos; event won&apos;t be triggered.
+    // In that case, fire it manually.
+    if (!preload) {
+      this.emitter.emit(&apos;canplay&apos;, []);
+    }
+  }
+
+  /**
+   * Unload previously loaded audio. Stops the player and any stopwatch.
+   *
+   * @emits {Event} &apos;unloaded&apos;
+   */
+  reset() {
+    this.stop();
+    this.player.reset();
+    this.emitter.emit(&apos;unloaded&apos;, []);
+  }
+
+  /**
+   * Start or continue playback of audio. Also starts the stopwatch at the given position.
+   *
+   * @param {?number} position - When position is given, start playing from this position (seconds).
+   */
+  play(position) {
+    if (this.player.isPlaying()) {
+      return;
+    }
+    this.player.play(position);
+    if (this.stopwatch) {
+      const time = Math.round(this.player.getCurrentTime() * 10);
+      this.stopwatch.value = time;
+      this.stopwatch.start();
+    }
+  }
+
+  /**
+   * Stop playback of audio. Stops and resets the stopwatch.
+   */
+  stop() {
+    if (this.stopwatch) {
+      this.stopwatch.reset();
+      this.stopwatch.stop();
+    }
+    this.player.stop();
+  }
+
+  /**
+   * Pause playback of audio. Stops the stopwatch.
+   */
+  pause() {
+    if (this.stopwatch) {
+      this.stopwatch.stop();
+    }
+    this.player.pause();
+  }
+
+  /**
+   * Toggle audio playback. Switch from playing to paused state and back.
+   */
+  togglePlayback() {
+    if (this.player.isPlaying()) {
+      this.pause();
+    } else {
+      this.play();
+    }
+  }
+
+  /**
+   * Start preloading audio.
+   */
+  preload() {
+    this.player.preload();
+  }
+
+  /**
+   * Start playing audio at the given offset. Corrects a percentage under 0 or above 100 to the
+   * respective values.
+   *
+   * @param {number} percentage - Start at this percentage (0..100) of the audio stream.
+   */
+  scrub(percentage) {
+    if (percentage &lt; 0) {
+      this.player.scrub(0);
+    } else if (percentage &gt; 100) {
+      this.player.scrub(100);
+    } else {
+      this.player.scrub(percentage);
+    }
+    if (this.stopwatch) {
+      this.stopwatch.value = Math.round(this.player.getCurrentTime() * 10);
+    }
+  }
+
+  /**
+   * Returns the percentage of which the buffer is filled.
+   *
+   * @returns {number} Percentage of buffer fill.
+   */
+  getBufferFill() {
+    return this.player.getBufferFill();
+  }
+
+  /**
+   * Returns the current playing time as offset in seconds from the start.
+   *
+   * @returns {number} Time in seconds as offset from the start.
+   */
+  getCurrentTime() {
+    return this.player.getCurrentTime();
+  }
+
+  /**
+   * Returns the total duration in seconds.
+   *
+   * @returns {number} Time in seconds of fragment duration.
+   */
+  getDuration() {
+    return this.player.getDuration();
+  }
+
+  /**
+   * Check if there is playback in progress.
+   *
+   * @returns {boolean} True if user is currently playing audio. False otherwise.
+   */
+  isPlaying() {
+    return this.player.isPlaying();
+  }
+
+  /**
+   * Returns ready state of the player.
+   *
+   * @returns {boolean} True when player is ready to start loading data or play. False when no audio
+   * is loaded or the player is preparing.
+   */
+  canPlay() {
+    return this.player.canPlay();
+  }
+
+  /**
+   * Set the playback rate of the audio. Values are used according to HTML5 Audio.
+   * Example values:
+   * *1.0 is normal speed.
+   * *0.5 is half speed (slower).
+   * *2.0 is double speed (faster).
+   * *-1.0 is backwards, normal speed.
+   * *-0.5 is backwards, half speed.
+   *
+   * @param {number} rate - Rate at which to change the audio playback.
+   */
+  setPlaybackRate(rate) {
+    this.player.setPlaybackRate(rate);
+  }
+
+  /**
+   * Get the playback rate of the current loaded audio.
+   *
+   * @returns {number} Playback rate of the audio.
+   */
+  getPlaybackRate() {
+    return this.player.getPlaybackRate();
+  }
+
+  /**
+   * Bind a stopwatch to sync with the playing and stopping functionality of the player.
+   *
+   * @param {Function} tickCb - Callback to invoke on every tick. A tick occurs once every 100 ms.
+   * @throws {Error} If tickCb is null.
+   * @returns {Stopwatch} New Stopwatch object.
+   */
+  bindStopwatch(tickCb) {
+    this.stopwatch = new Stopwatch((time) =&gt; {
+      const duration = this.getDuration() * 10 / this.player.sound.playbackRate;
+      if (time &gt; duration) {
+        tickCb(duration);
+      } else {
+        tickCb(time);
+      }
+    });
+    return this.stopwatch;
+  }
+
+  /**
+   * Sets the audio level of the current loaded audio. Valid values are from 0 (0%) to 1 (100%).
+   *
+   * @param {number} volume - Volume value from 0 to 1.
+   */
+  setAudioVolume(volume) {
+    if (volume !== 0) {
+      this.audioMuted = false;
+    }
+    if (volume === 0) {
+      this.audioMuted = true;
+    }
+    this.player.setAudioVolume(volume);
+  }
+
+  /**
+   * Gets the audio level of the current loaded audio. Valid values are from 0 (0%) to 1 (100%).
+   *
+   * @returns {number} Volume level of the current loaded audio.
+   */
+  getAudioVolume() {
+    return this.player.getAudioVolume();
+  }
+
+  /**
+   * Toggle the current playing audio to be muted or not. If the audio will be muted, the current
+   * audio level is remembered and can be unmuted to continue at this same audio level.
+   */
+  toggleAudioMute() {
+    this.setAudioMute(!this.audioMuted);
+  }
+
+  /**
+   * Manually set the muted state of the current loaded audio.
+   *
+   * @param {boolean} shouldMute - Whether the audio should be muted or unmuted.
+   */
+  setAudioMute(shouldMute) {
+    if (shouldMute) {
+      this.audioLevel = this.getAudioVolume();
+      this.setAudioVolume(0);
+    } else {
+      this.setAudioVolume(this.audioLevel);
+    }
+  }
+
+  /**
+   * Return the muted state of the current loaded audio.
+   *
+   * @returns {boolean} The muted state of the current loaded audio.
+   */
+  isAudioMuted() {
+    return this.audioMuted;
+  }
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
