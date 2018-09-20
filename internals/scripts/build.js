@@ -70,7 +70,7 @@ promise = promise.then(() => {
   };
 
   // Set the correct paths to the files
-  pkg.main = 'dist/sdk.umd.js';
+  pkg.main = 'dist/sdk.umd.min.js';
   pkg.modules = 'src/index.esm.js';
 
   // Add dist to the file array, because it wil exist after this script ends.
@@ -167,7 +167,7 @@ const externalConfig = {
 };
 
 // Compile source code into a distributable format with Babel
-['esm', 'esm.production', 'umd', 'umd.production'].forEach((format) => {
+['esm', 'esm.min', 'umd', 'umd.min'].forEach((format) => {
   promise = promise.then(() => rollup.rollup({
     input: 'src/index.js',
     treeshake: format.startsWith('umd'),
@@ -189,7 +189,7 @@ const externalConfig = {
           '@babel/plugin-proposal-object-rest-spread',
         ],
       }),
-      format.endsWith('production') && minify({
+      format.endsWith('.min') && minify({
         comments: false,
       }),
       commonjs(),
