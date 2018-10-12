@@ -130,9 +130,10 @@ promise = promise.then(() => {
 ['umd', 'umd.min'].forEach((format) => {
   promise = promise.then(() => rollup.rollup({
     input: `${OUTPUT_SRC_DIR}/index.js`,
+    treeshake: true,
     plugins: [
       progress({ clearLine: false }), // clearline does not work on travis
-      builtins(),
+      builtins({ crypto: true }), // UUID.v4 needs crypto
       json(),
       rollupBabel({
         babelrc: false,
@@ -152,7 +153,7 @@ promise = promise.then(() => {
       }),
     ],
   }).then(bundle => bundle.write({
-    name: '@itslanguage/sdk',
+    name: 'itslSdk',
     sourceMap: true,
     file: `${OUTPUT_DIST_DIR}/sdk.${format}.js`,
     globals: {
