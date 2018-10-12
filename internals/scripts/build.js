@@ -37,8 +37,8 @@ const pkg = require('../../package.json');
 // Set the output path
 const OUTPUT_DIR = path.resolve('build');
 const SRC_DIR = path.resolve('src');
-const MJS_DIR = path.resolve(path.join(OUTPUT_DIR, 'src'));
-const DIST_DIR = path.resolve(path.join(OUTPUT_DIR, 'dist'));
+const OUTPUT_SRC_DIR = path.resolve(path.join(OUTPUT_DIR, 'src'));
+const OUTPUT_DIST_DIR = path.resolve(path.join(OUTPUT_DIR, 'dist'));
 
 
 // Start the async chain!
@@ -50,8 +50,8 @@ promise = promise.then(() => fs.emptyDirSync(OUTPUT_DIR));
 
 
 // Prepare some directory sturctures
-promise = promise.then(() => fs.ensureDirSync(MJS_DIR));
-promise = promise.then(() => fs.ensureDirSync(DIST_DIR));
+promise = promise.then(() => fs.ensureDirSync(OUTPUT_SRC_DIR));
+promise = promise.then(() => fs.ensureDirSync(OUTPUT_DIST_DIR));
 
 
 // Prepare and write package.json
@@ -68,10 +68,6 @@ promise = promise.then(() => {
     access: 'public',
     tag: 'next',
   };
-
-  // Set the correct paths to the files
-  pkg.main = 'dist/sdk.umd.min.js';
-  pkg.modules = 'src/index.esm.js';
 
   // Add dist to the file array, because it wil exist after this script ends.
   pkg.files.push('dist/');
@@ -117,81 +113,39 @@ promise = promise.then(() => {
   getFileList(SRC_DIR).forEach((file) => {
     let inputFile = fs.readFileSync(file);
     const output = file
-      .replace(SRC_DIR, MJS_DIR)
-      .replace('.js', '.esm.js');
+      .replace(SRC_DIR, OUTPUT_SRC_DIR);
 
     // Make sure the file to output to exists!
     fs.ensureFileSync(output);
 
     // Transpile it
-    inputFile = babel.transformSync(inputFile, {
-      babelrc: true,
-      plugins: [
-        '@babel/plugin-proposal-class-properties',
-        '@babel/plugin-proposal-object-rest-spread',
-      ],
-    }).code;
+    inputFile = babel.transformSync(inputFile, { filename: file, babelrc: true }).code;
 
     // Write it!
     fs.writeFileSync(output, inputFile);
   });
 });
 
-const externalConfig = {
-  umd: {
-    external: [
-      ...Object.keys(pkg.devDependencies),
-    ],
-    externalHelpersWhitelist: [
-      'assertThisInitialized',
-      'classCallCheck',
-      'createClass',
-      'defineProperty',
-      'getPrototypeOf',
-      'inherits',
-      'objectSpread',
-      'possibleConstructorReturn',
-      'toConsumableArray',
-    ],
-  },
-  esm: {
-    external: [
-      ...Object.keys(pkg.dependencies),
-      ...Object.keys(pkg.devDependencies),
-    ],
-    externalHelpersWhitelist: [
-      'defineProperty',
-      'objectSpread',
-    ],
-  },
-};
-
-// Compile source code into a distributable format with Babel
-['esm', 'esm.min', 'umd', 'umd.min'].forEach((format) => {
+// Create an UMD bundle, a "normal" one, and one that has been minified by babel.
+['umd', 'umd.min'].forEach((format) => {
   promise = promise.then(() => rollup.rollup({
-    input: 'src/index.js',
-    treeshake: format.startsWith('umd'),
-    external: externalConfig[format.substring(0, 3)].external,
+    input: `${OUTPUT_SRC_DIR}/index.js`,
     plugins: [
-      progress({
-        clearLine: false,
-      }),
-      format.startsWith('umd') && builtins(),
-      format.startsWith('umd') && json(),
+      progress({ clearLine: true }), // clearline does not work on travis
+      builtins(),
+      json(),
       rollupBabel({
-        babelrc: format.startsWith('umd'),
+        babelrc: false,
+        presets: [[
+          '@babel/preset-env', {
+            modules: false,
+          },
+        ]],
         exclude: ['node_modules/**'],
         runtimeHelpers: false,
         externalHelpers: true,
-        externalHelpersWhitelist: externalConfig[format.substring(0, 3)].externalHelpersWhitelist,
-        plugins: [
-          '@babel/plugin-proposal-class-properties',
-          '@babel/plugin-proposal-object-rest-spread',
-        ],
       }),
-      format.endsWith('.min') && minify({
-        comments: false,
-      }),
+      format.endsWith('.min') && minify({ comments: false }),
       commonjs(),
       resolve({
         preferBuiltins: false,
@@ -200,7 +154,7 @@ const externalConfig = {
   }).then(bundle => bundle.write({
     name: '@itslanguage/sdk',
     sourceMap: true,
-    file: `${DIST_DIR}/sdk.${format}.js`,
+    file: `${OUTPUT_DIST_DIR}/sdk.${format}.js`,
     globals: {
       'event-emitter': 'ee',
       autobahn: 'autobahn',
