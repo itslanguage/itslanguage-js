@@ -131,7 +131,7 @@ promise = promise.then(() => {
   promise = promise.then(() => rollup.rollup({
     input: `${OUTPUT_SRC_DIR}/index.js`,
     plugins: [
-      progress({ clearLine: true }), // clearline does not work on travis
+      progress({ clearLine: false }), // clearline does not work on travis
       builtins(),
       json(),
       rollupBabel({
