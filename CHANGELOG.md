@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - WebAudio Player supports pause now.
 - WebAudio Player supports volume now.
 - Recorder resend header at resume.
+- General cleanup in the project.
+- Removed some obsolete dependencies.
+- Build script that uses rollup to create UMD package.
 
 ### Fixed
 - WebAudio recorder can be stopped from paused state.
