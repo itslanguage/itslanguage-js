@@ -54,12 +54,10 @@
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
   "dependencies": {
     "autobahn": "0.11.2",
-    "client-oauth2": "4.2.1",
     "debug": "4.1.0",
     "event-emitter": "0.3.5",
     "pcmjs": "0.0.2",
-    "uuid": "3.3.2",
-    "when": "3.7.8"
+    "uuid": "3.3.2"
   },
   "devDependencies": {
     "@babel/cli": "7.1.2",
