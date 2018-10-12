@@ -1,6 +1,6 @@
 import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
-import uuid from 'uuid';
+import uuidv4 from 'uuid/v4';
 import Stopwatch from './tools';
 import WavePacker from './wave-packer';
 import WebAudioRecorder from './web-audio-recorder';
@@ -240,7 +240,7 @@ export default class AudioRecorder {
    */
   startRecordingSession(id) {
     // Generate a uuid to remember this recording by (locally).
-    const newUuid = id === undefined ? uuid.v4() : id;
+    const newUuid = id === undefined ? uuidv4() : id;
     this.activeRecordingId = newUuid;
     return newUuid;
   }
