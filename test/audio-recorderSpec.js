@@ -1,4 +1,3 @@
-import uuid from 'uuid';
 import * as WebAudioRecorder from '../src/audio/web-audio-recorder';
 import AudioRecorder from '../src/audio/audio-recorder';
 import Stopwatch from '../src/audio/tools';
@@ -165,12 +164,10 @@ describe('Audio recorder', () => {
 
   it('should set a new recording session id without given id', () => {
     const recorder = new AudioRecorder();
-    spyOn(uuid, 'v4').and.returnValue(1);
     recorder.recorder = jasmine.createSpyObj('recorder', ['record']);
     const result = recorder.startRecordingSession();
-    expect(result).toEqual(1);
-    expect(uuid.v4).toHaveBeenCalledTimes(1);
-    expect(recorder.activeRecordingId).toEqual(1);
+    expect(result).toBeDefined();
+    expect(recorder.activeRecordingId).toBeDefined();
   });
 
   it('should start recording microphone input until stopped', (done) => {
