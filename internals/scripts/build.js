@@ -24,7 +24,6 @@ const fs = require('fs-extra');
 const path = require('path');
 const rollup = require('rollup');
 const babel = require('@babel/core');
-const builtins = require('rollup-plugin-node-builtins');
 const commonjs = require('rollup-plugin-commonjs');
 const json = require('rollup-plugin-json');
 const minify = require('rollup-plugin-babel-minify');
@@ -133,7 +132,6 @@ promise = promise.then(() => {
     treeshake: true,
     plugins: [
       progress({ clearLine: false }), // clearline does not work on travis
-      builtins({ crypto: true }), // UUID.v4 needs crypto
       json(),
       rollupBabel({
         babelrc: false,
@@ -147,10 +145,11 @@ promise = promise.then(() => {
         externalHelpers: true,
       }),
       format.endsWith('.min') && minify({ comments: false }),
-      commonjs(),
       resolve({
+        browser: true,
         preferBuiltins: false,
       }),
+      commonjs(),
     ],
   }).then(bundle => bundle.write({
     name: 'itslSdk',
