@@ -28,7 +28,7 @@ const pkg = require('../../package.json');
 // Set the output path
 const OUTPUT_DIR = path.resolve('build');
 const SRC_DIR = path.resolve('src');
-const OUTPUT_SRC_DIR = path.resolve(path.join(OUTPUT_DIR, 'src'));
+const OUTPUT_SRC_DIR = path.resolve(path.join(OUTPUT_DIR, 'lib'));
 const OUTPUT_DIST_DIR = path.resolve(path.join(OUTPUT_DIR, 'dist'));
 
 
@@ -60,7 +60,15 @@ promise = promise.then(() => {
     tag: 'next',
   };
 
+  // Set the path to the correct src
+  pkg.main = 'lib/index.js';
+  pkg.modules = 'lib/index.js';
+
+  // Remove ./src from the files array
+  pkg.files = pkg.files.filter(file => file !== 'src/');
+
   // Add dist to the file array, because it wil exist after this script ends.
+  pkg.files.push('lib/');
   pkg.files.push('docs/');
   pkg.files.push('dist/');
 
