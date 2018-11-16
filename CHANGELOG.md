@@ -19,15 +19,23 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - WebAudio recorder can be stopped from paused state.
 
 ## [3.1.1]
+
 ### Added
+
 - Delay for the recorder, start recording after 100ms.
 
 ## [3.1.0]
+
 ### Added
+
 - New functions to do proper impersonation, does not require credentials.
+
 ### Fixed
+
 - Run travis tests with sudo enabled.
+
 ### Changed
+
 - Run travis tests on headless chrome.
 - Slack notifications on travis builds.
 - Improve README.md documentation.
