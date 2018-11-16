@@ -487,6 +487,7 @@
                     "column": 21
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -506,7 +507,6 @@
                   "name": "audioFormat",
                   "leadingComments": null
                 },
-                "static": false,
                 "value": {
                   "type": "NullLiteral",
                   "start": 528,
@@ -573,6 +573,7 @@
                     "column": 18
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -592,7 +593,6 @@
                   "name": "channels",
                   "leadingComments": null
                 },
-                "static": false,
                 "value": {
                   "type": "NullLiteral",
                   "start": 565,
@@ -659,6 +659,7 @@
                     "column": 20
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -678,7 +679,6 @@
                   "name": "sampleRate",
                   "leadingComments": null
                 },
-                "static": false,
                 "value": {
                   "type": "NullLiteral",
                   "start": 604,
@@ -745,6 +745,7 @@
                     "column": 21
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -764,7 +765,6 @@
                   "name": "sampleWidth",
                   "leadingComments": null
                 },
-                "static": false,
                 "value": {
                   "type": "NullLiteral",
                   "start": 644,
@@ -831,6 +831,7 @@
                     "column": 16
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -850,7 +851,6 @@
                   "name": "stream",
                   "leadingComments": null
                 },
-                "static": false,
                 "value": {
                   "type": "NullLiteral",
                   "start": 680,
@@ -899,6 +899,7 @@
                     "column": 27
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -917,7 +918,6 @@
                   },
                   "name": "mediaStreamSource"
                 },
-                "static": false,
                 "value": {
                   "type": "NullLiteral",
                   "start": 708,
@@ -948,6 +948,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -966,7 +967,6 @@
                   },
                   "name": "constructor"
                 },
-                "static": false,
                 "kind": "constructor",
                 "id": null,
                 "generator": false,
@@ -1900,6 +1900,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -1918,7 +1919,6 @@
                   },
                   "name": "createStream"
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -2708,6 +2708,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -2726,7 +2727,6 @@
                   },
                   "name": "startRecording"
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -3481,6 +3481,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -3499,7 +3500,6 @@
                   },
                   "name": "stopRecording"
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -4129,6 +4129,7 @@
                     "column": 3
                   }
                 },
+                "static": false,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -4147,7 +4148,6 @@
                   },
                   "name": "getAudioSpecs"
                 },
-                "static": false,
                 "kind": "method",
                 "id": null,
                 "generator": false,
@@ -4737,7 +4737,7 @@
         "label": "import",
         "keyword": "import",
         "beforeExpr": false,
-        "startsExpr": false,
+        "startsExpr": true,
         "rightAssociative": false,
         "isLoop": false,
         "isAssign": false,

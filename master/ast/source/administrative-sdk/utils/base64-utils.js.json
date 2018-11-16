@@ -104,6 +104,7 @@
                     "column": 3
                   }
                 },
+                "static": true,
                 "computed": false,
                 "key": {
                   "type": "Identifier",
@@ -122,7 +123,6 @@
                   },
                   "name": "_arrayBufferToBase64"
                 },
-                "static": true,
                 "kind": "method",
                 "id": null,
                 "generator": false,
