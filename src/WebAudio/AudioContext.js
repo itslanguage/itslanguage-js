@@ -44,7 +44,7 @@ export default class AudioContext {
     if (audioContext) {
       this.audioContext = audioContext;
     } else {
-      this.audioContext = this.createAudioContext();
+      this.audioContext = AudioContext.createAudioContext();
     }
 
     // Prepare the log and error function to be used!
