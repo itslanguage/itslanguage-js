@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
+
 ### Added
+
 - Feedback API.
 - WebAudio Player supports pause now.
 - WebAudio Player supports volume now.
@@ -16,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Build script that uses rollup to create UMD package.
 
 ### Fixed
+
 - WebAudio recorder can be stopped from paused state.
 
 ## [3.1.2]
@@ -49,7 +52,7 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
 
-[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v3.1.2...HEAD
+[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v3.1.2...next
 [3.1.2]: https://github.com/itslanguage/itslanguage-js/compare/v3.1.1...v3.1.2
 [3.1.1]: https://github.com/itslanguage/itslanguage-js/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/itslanguage/itslanguage-js/compare/v3.0.1...v3.1.0
