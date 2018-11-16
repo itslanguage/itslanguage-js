@@ -1,6 +1,6 @@
 {
   "name": "@itslanguage/sdk",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "private": false,
   "description": "The core JavaScript SDK for ITSLanguage.",
   "main": "index.js",
@@ -25,11 +25,11 @@
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
   "dependencies": {
     "autobahn": "0.11.2",
-    "client-oauth2": "4.1.0",
-    "debug": "3.0.1",
+    "client-oauth2": "4.2.1",
+    "debug": "4.1.0",
     "event-emitter": "0.3.5",
     "pcmjs": "0.0.2",
-    "uuid": "3.1.0",
+    "uuid": "3.3.2",
     "when": "3.7.8"
   },
   "publishConfig": {
