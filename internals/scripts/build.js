@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 /**
  *
  * This is the ITSLanguage Javascript SDK build script! It constructs a directory which can be
@@ -20,9 +18,10 @@
  * the .esm.js extension.
  */
 
-const fs = require('fs-extra');
+const fs = require('fs-extra'); // eslint-disable-line import/no-extraneous-dependencies
 const path = require('path');
-const babel = require('@babel/core');
+const babel = require('@babel/core'); // eslint-disable-line import/no-extraneous-dependencies
+const webpack = require('webpack'); // eslint-disable-line import/no-extraneous-dependencies
 const pkg = require('../../package.json');
 
 
@@ -119,6 +118,44 @@ promise = promise.then(() => {
   });
 });
 
+// Build the UMD assets with webpack!
+['development', 'production'].forEach((mode) => {
+  promise = promise.then(() => new Promise((resolve, reject) => {
+    webpack({
+      mode,
+      entry: `${OUTPUT_SRC_DIR}/index.js`,
+      output: {
+        path: OUTPUT_DIST_DIR,
+        filename: `sdk.bundle.${mode === 'development' ? '' : 'min.'}js`,
+        library: 'itslSdk',
+        libraryTarget: 'umd',
+      },
+    }, (err, stats) => {
+      if (err) {
+        reject(err);
+      }
+
+      const info = stats.toJson();
+
+      if (stats.hasErrors()) {
+        reject(info.errors);
+      }
+
+      if (stats.hasWarnings()) {
+        resolve();
+      }
+
+      console.log(stats.toString({
+        chunks: false,
+      }));
+
+      resolve();
+    });
+  }));
+});
 
 // Uh oh, errors!
-promise.catch(err => console.error(err.stack));
+promise.catch((err) => {
+  console.error(err.stack);
+  process.exit(1);
+});
