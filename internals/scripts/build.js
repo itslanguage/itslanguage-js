@@ -22,14 +22,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const rollup = require('rollup');
 const babel = require('@babel/core');
-const commonjs = require('rollup-plugin-commonjs');
-const json = require('rollup-plugin-json');
-const minify = require('rollup-plugin-babel-minify');
-const progress = require('rollup-plugin-progress');
-const resolve = require('rollup-plugin-node-resolve');
-const rollupBabel = require('rollup-plugin-babel');
 const pkg = require('../../package.json');
 
 
@@ -69,6 +62,7 @@ promise = promise.then(() => {
   };
 
   // Add dist to the file array, because it wil exist after this script ends.
+  pkg.files.push('docs/');
   pkg.files.push('dist/');
 
   // Write the file to its desired output location
@@ -125,46 +119,6 @@ promise = promise.then(() => {
   });
 });
 
-// Create an UMD bundle, a "normal" one, and one that has been minified by babel.
-['umd', 'umd.min'].forEach((format) => {
-  promise = promise.then(() => rollup.rollup({
-    input: `${OUTPUT_SRC_DIR}/index.js`,
-    treeshake: true,
-    plugins: [
-      progress({ clearLine: false }), // clearline does not work on travis
-      json(),
-      rollupBabel({
-        babelrc: false,
-        presets: [[
-          '@babel/preset-env', {
-            modules: false,
-          },
-        ]],
-        exclude: ['node_modules/**'],
-        runtimeHelpers: false,
-        externalHelpers: true,
-      }),
-      format.endsWith('.min') && minify({ comments: false }),
-      resolve({
-        browser: true,
-        preferBuiltins: false,
-      }),
-      commonjs(),
-    ],
-  }).then(bundle => bundle.write({
-    name: 'itslSdk',
-    sourceMap: true,
-    file: `${OUTPUT_DIST_DIR}/sdk.${format}.js`,
-    globals: {
-      'event-emitter': 'ee',
-      autobahn: 'autobahn',
-      debug: 'debug',
-      pcmjs: 'pcm',
-      uuid: 'uuid',
-    },
-    format: format.substring(0, 3),
-  })));
-});
 
 // Uh oh, errors!
 promise.catch(err => console.error(err.stack));
