@@ -15,7 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Recorder resend header at resume.
 - General cleanup in the project.
 - Removed some obsolete dependencies.
-- Build script that uses rollup to create UMD package.
+- Build script that outputs to build directory
+  - Prepare and copy the package.json file
+    - Remove not needed entries
+    - Extend and update the files array
+    - Add publishConfig key
+  - Copy readme.md and license file
+  - Run babel on all the source files and output that to the build directory
+  - Run webpack on those sources to create a production and development UMD package
 
 ### Fixed
 
