@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Fixed
+
+- call to this.createAudioContext on AudioContext class needed to call a static member
+
 ### Added
 
 - Feedback API.
