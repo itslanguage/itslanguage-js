@@ -5,7 +5,7 @@ import debug from 'debug';
  * Simple Audio Recorder based on WebAudio technology
  * @module sdk/lib/WebAudio/AudioContext
  */
-export default class AudioContext {
+class AudioContext {
   /**
    * Construct the Player.
    *
@@ -161,3 +161,5 @@ export default class AudioContext {
     }
   }
 }
+
+export default AudioContext;

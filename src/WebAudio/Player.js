@@ -6,7 +6,7 @@ import AudioContext from './AudioContext';
  * Simple Audio Player based on Web Audio API technology
  * @module sdk/lib/WebAudio/Player
  */
-export default class Player extends AudioContext {
+class Player extends AudioContext {
   /**
    * Private object to hold AudioBuffer node.
    * @private
@@ -285,3 +285,5 @@ export default class Player extends AudioContext {
     return this.audioContext;
   }
 }
+
+export default Player;

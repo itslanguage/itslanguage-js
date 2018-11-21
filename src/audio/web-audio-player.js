@@ -10,8 +10,7 @@
  *
  * @private
  */
-
-export default class WebAudioPlayer {
+class WebAudioPlayer {
   /**
    * ITSLanguage WebAudioPlayer non-graphical component.
    *
@@ -339,3 +338,5 @@ export default class WebAudioPlayer {
     return this.sound.volume;
   }
 }
+
+export default WebAudioPlayer;

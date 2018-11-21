@@ -10,8 +10,7 @@ import WebAudioRecorder from './web-audio-recorder';
  *
  * @module sdk/lib/audio/audio-recorder
 */
-
-export default class AudioRecorder {
+class AudioRecorder {
   /**
    * ITSLanguage AudioRecorder.
    *
@@ -377,3 +376,5 @@ export default class AudioRecorder {
     return this.stopwatch;
   }
 }
+
+export default AudioRecorder;

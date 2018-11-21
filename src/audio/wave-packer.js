@@ -7,7 +7,7 @@
  *
  * @private
  */
-export default class WavePacker {
+class WavePacker {
   /**
    * Stop recording audio.
    *
@@ -302,3 +302,5 @@ export function createWAVEHeader(channels, sampleRate) {
   // Return the ArrayBuffer of the header.
   return header.buffer;
 }
+
+export default WavePacker;

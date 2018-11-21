@@ -32,8 +32,10 @@ export function generateWaveSample(duration) {
   return wave.encode();
 }
 
-
-export default class VolumeMeter {
+/**
+ * VolumeMeter
+ */
+class VolumeMeter {
   /**
    * Represents a volume meter.
    *
@@ -172,3 +174,5 @@ export default class VolumeMeter {
     this.willAnimate = true;
   }
 }
+
+export default VolumeMeter;

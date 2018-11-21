@@ -16,7 +16,7 @@
 /**
  * @private
  */
-export default class MediaRecorder {
+class MediaRecorder {
   /**
    * MediaRecorder.
    *
@@ -81,3 +81,5 @@ export default class MediaRecorder {
     this.callback = callback;
   }
 }
+
+export default MediaRecorder;

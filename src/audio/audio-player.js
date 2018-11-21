@@ -7,7 +7,7 @@ import WebAudioPlayer from './web-audio-player';
  * ITSLanguage AudioPlayer non-graphical component.
  * @module sdk/lib/audio/audio-player
  */
-export default class AudioPlayer {
+class AudioPlayer {
   /**
    * Construct an AudioPlayer for playing .wav or .mp3 files.
    *
@@ -450,3 +450,5 @@ export default class AudioPlayer {
     return this.audioMuted;
   }
 }
+
+export default AudioPlayer;
