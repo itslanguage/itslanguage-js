@@ -1,11 +1,3 @@
-/**
- * ITSLanguage Javascript Audio tools.
- * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.
- * @copyright (c) 2014 ITSLanguage
- * @license MIT
- * @author d-centralize
- */
-
 import pcm from 'pcmjs';
 
 /**
