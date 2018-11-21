@@ -1,0 +1,68 @@
+{
+  "tags": {
+    "allowUnknownTags": ["title", "experimental", "todo"],
+    "dictionaries": ["jsdoc"]
+  },
+  "source": {
+    "include": [
+      "src",
+      "./README.md"
+    ],
+    "includePattern": ".js$",
+    "excludePattern": ".spec.js?$"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "opts": {
+    "template": "node_modules/docdash",
+    "encoding": "utf8",
+    "destination": "jsdoc/",
+    "recurse": true,
+    "verbose": true
+  },
+  "templates": {
+    "systemName": "@itslanguage/sdk",
+    "cleverLinks": true,
+    "monospaceLinks": false
+  },
+  "docdash": {
+    "static": true,
+    "sort": true,
+    "sectionOrder": [
+      "Tutorials",
+      "Namespaces",
+      "Modules",
+      "Interfaces",
+      "Classes",
+      "Externals",
+      "Events",
+      "Mixins"
+    ],
+    "search": true,
+    "collapse": false,
+    "typedefs": true,
+    "removeQuotes": "none",
+    "scripts": [],
+    "menu":{
+      "Github repo":{
+        "href":"https://github.com/itslanguage/itslanguage-js",
+        "target":"_blank",
+        "class":"menu-item",
+        "id":"repository"
+      }
+    },
+    "openGraph": {
+      "title": "ITSLanguage JavaScript SDK",
+      "type": "website",
+      "image": "https://avatars0.githubusercontent.com/u/20972344?s=400&u=73936e7fa2d2a1e5c180a11675bf9166d3717a6d&v=4",
+      "site_name": "ITSLanguage JavaScript SDK",
+      "url": "http://itslanguage.github.io/itslanguage-js/"
+    },
+    "meta": {
+      "title": "ITSLanguage JavaScript SDK",
+      "description": "Speech technology for language education. JSDoc 3 website for the JavaScript SDK.",
+      "keyword": "itslangauge, jsdoc, documentation, speech, speech technology"
+    }
+  }
+}

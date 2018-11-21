@@ -1,17 +1,10 @@
 /**
  * ITSLanguage Javascript Audio
- * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.
- * @copyright (c) 2014 ITSLanguage
- * @license MIT
- * @author d-centralize
- *
  * This class fires the same events as the HTML5 Audio does.
  * {@link http://www.w3schools.com/tags/ref_av_dom.asp}
- *
  * @private
  */
-
-export default class WebAudioPlayer {
+class WebAudioPlayer {
   /**
    * ITSLanguage WebAudioPlayer non-graphical component.
    *
@@ -339,3 +332,5 @@ export default class WebAudioPlayer {
     return this.sound.volume;
   }
 }
+
+export default WebAudioPlayer;

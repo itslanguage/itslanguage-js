@@ -1,9 +1,7 @@
 /**
  * ITSLanguage Javascript helper tools.
- * @overview This is part of the ITSLanguage Javascript SDK to perform helper functions.
- * @copyright (c) 2014 ITSLanguage
- * @license MIT
- * @author d-centralize
+ *
+ * @module sdk/lib/audio/tools
  */
 
 const ee = require('event-emitter');
@@ -17,7 +15,7 @@ const ee = require('event-emitter');
  * difference of 0.1s or 0.2s too high may occur when counting. When binding to an Audio Player
  * however, the timer will sync properly and show the correct duration of the loaded audio file.
  */
-export default class Stopwatch {
+class Stopwatch {
   /**
    * @param {Function} tickCb - The callback that is invoked on every tick (every 100ms).
    * @throws {Error} If tickCb is missing.
@@ -107,3 +105,5 @@ export default class Stopwatch {
     this.emitter.off('tick', tickCb);
   }
 }
+
+export default Stopwatch;

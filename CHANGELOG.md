@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- Documentation is now build with JSDoc in stead of esdoc.
+
 ### Fixed
 
 - call to this.createAudioContext on AudioContext class needed to call a static member
+- WebAudio recorder can be stopped from paused state.
 
 ### Added
 
@@ -27,10 +32,6 @@ and this project adheres to [Semantic Versioning](http://semver.org).
   - Copy readme.md and license file
   - Run babel on all the source files and output that to the build directory
   - Run webpack on those sources to create a production and development UMD package
-
-### Fixed
-
-- WebAudio recorder can be stopped from paused state.
 
 ## [3.1.2]
 

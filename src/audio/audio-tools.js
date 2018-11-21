@@ -1,13 +1,8 @@
-/**
- * ITSLanguage Javascript Audio tools.
- * @overview This is part of the ITSLanguage Javascript SDK to perform audio related functions.
- * @copyright (c) 2014 ITSLanguage
- * @license MIT
- * @author d-centralize
- */
-
 import pcm from 'pcmjs';
 
+/**
+ * @module sdk/lib/audio/audio-tools
+ */
 
 /**
  * Generate a dummy Wave file for testing purposes.
@@ -29,8 +24,10 @@ export function generateWaveSample(duration) {
   return wave.encode();
 }
 
-
-export default class VolumeMeter {
+/**
+ * VolumeMeter
+ */
+class VolumeMeter {
   /**
    * Represents a volume meter.
    *
@@ -169,3 +166,5 @@ export default class VolumeMeter {
     this.willAnimate = true;
   }
 }
+
+export default VolumeMeter;

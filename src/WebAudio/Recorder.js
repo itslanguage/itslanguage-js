@@ -13,8 +13,10 @@ const DEFAULT_SAMPLE_RATE = 48000;
  * with some defaults that should work best.
  *
  * If this does not supply in your case, build your own recorder!
+ *
+ * @module sdk/lib/WebAudio/Recorder
  */
-export default class Recorder extends AudioContext {
+class Recorder extends AudioContext {
   /** @private */
   audioFormat = null;
 
@@ -96,3 +98,5 @@ export default class Recorder extends AudioContext {
     };
   }
 }
+
+export default Recorder;

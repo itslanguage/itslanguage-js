@@ -1,3 +1,7 @@
+/**
+ * @module sdk
+ */
+
 import * as authentication from './api/auth';
 import * as basicauth from './api/basicauth';
 import broadcaster from './api/broadcaster';
@@ -18,12 +22,11 @@ import AudioRecorder from './audio/audio-recorder';
 import Player from './WebAudio/Player';
 import Stopwatch from './audio/tools';
 
-
 /**
  * Document the version number of the ITSLanguage SDK.
  * @type {string}
  */
-const VERSION = '4.0.0-beta-8';
+const VERSION = '4.0.0-beta-12';
 
 
 /**
@@ -47,21 +50,79 @@ export class Itslanguage {
      */
     this.version = VERSION;
 
+    /**
+     * @type module:sdk/lib/api/authentication
+     */
     this.authentication = authentication;
+
+    /**
+     * @type module:sdk/lib/api/basicauth
+     */
     this.basicauth = basicauth;
+
+    /**
+     * @type module:sdk/lib/api/broadcaster
+     */
     this.broadcaster = broadcaster;
+
+    /**
+     * @type module:sdk/lib/api/categories
+     */
     this.categories = categories;
+
+    /**
+     * @type module:sdk/lib/api/challenges
+     */
     this.challenges = challenges;
+
+    /**
+     * @type module:sdk/lib/api/communication
+     */
     this.communication = communication;
+
+    /**
+     * @type module:sdk/lib/api/emailauth
+     */
     this.emailauth = emailauth;
+
+    /**
+     * @type module:sdk/lib/api/groups
+     */
     this.groups = groups;
+
+    /**
+     * @type module:sdk/lib/api/organisations
+     */
     this.organisations = organisations;
+
+    /**
+     * @type module:sdk/lib/api/profile
+     */
     this.profile = profile;
+
+    /**
+     * @type module:sdk/lib/api/progress
+     */
     this.progress = progress;
+
+    /**
+     * @type module:sdk/lib/api/roles
+     */
     this.roles = roles;
+
+    /**
+     * @type module:sdk/lib/api/tenants
+     */
     this.tenants = tenants;
+
+    /**
+     * @type module:sdk/lib/api/users
+     */
     this.users = users;
 
+    /**
+     * @type module:sdk/lib/api/utils
+     */
     this.utils = {
       generateWaveSample,
       VolumeMeter,

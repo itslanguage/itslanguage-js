@@ -1,6 +1,8 @@
 /**
  * This file contains the readily available functions which interact with the
  * ITSLanguage pronunciation challenge API.
+ *
+ * @module sdk/lib/api/challenges/pronunciation
  */
 
 import { authorisedRequest } from '../../communication';

@@ -1,6 +1,8 @@
 /**
  * This file contains the functions that are needed to interact with
  * the ITSLanguage Feedback API.
+ *
+ * @module sdk/lib/api/challenges/feedback
  */
 
 import { authorisedRequest } from '../../communication';

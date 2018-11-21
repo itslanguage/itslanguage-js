@@ -16,6 +16,8 @@
  *
  *  To read more on Speech Challenges:
  *  @see https://itslanguage.github.io/itslanguage-docs/api/speech_challenges/index.html
+ *
+ *  @module sdk/lib/api/challenges/feedback/speech
  */
 
 import {

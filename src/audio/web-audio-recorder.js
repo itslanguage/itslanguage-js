@@ -2,7 +2,7 @@
  * WebAudioRecorder.
  * @private
  */
-export default class WebAudioRecorder {
+class WebAudioRecorder {
   /**
    * Use 'low level' processing tooling to record audio and get a Wave
    * (audio/wav) encoded recording.
@@ -141,3 +141,5 @@ export default class WebAudioRecorder {
     this.recording = false;
   }
 }
+
+export default WebAudioRecorder;
