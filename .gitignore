@@ -1,6 +1,7 @@
 /build/
 /coverage/
 /esdoc/
+/jsdoc/
 /node_modules/
 npm-debug.log
 deploy-key
