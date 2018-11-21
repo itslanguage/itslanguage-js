@@ -47,7 +47,8 @@ deploy:
     skip_cleanup: true
     script: "$TRAVIS_BUILD_DIR/internals/scripts/gh-pages.sh"
     on:
-      branch: master
+      all_branches: true
+      condition: $TRAVIS_BRANCH =~ ^master|next
 
   - provider: npm
     skip_cleanup: true
