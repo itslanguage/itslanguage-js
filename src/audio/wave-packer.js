@@ -4,8 +4,6 @@
 
 /**
  * Packer class for audio packing
- *
- * @private
  */
 class WavePacker {
   /**
