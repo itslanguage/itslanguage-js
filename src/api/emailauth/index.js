@@ -4,6 +4,8 @@
  * Only users with administrative powers can perform these calls.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/emailauth/index.html}
+ *
+ * @module sdk/lib/api/emailauth
  */
 
 import { authorisedRequest } from '../communication';

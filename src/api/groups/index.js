@@ -4,6 +4,8 @@
  * Users can be part of zero or multiple groups.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/groups/index.html}
+ *
+ * @module sdk/lib/api/groups
  */
 
 import { authorisedRequest } from '../communication';

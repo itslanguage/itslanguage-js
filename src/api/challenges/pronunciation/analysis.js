@@ -4,6 +4,8 @@
  *
  * Note that this is one of the "nested" or "composite" APIs; You can only obtain the data if you
  * provide a reference to the challenge for which you want a recording.
+ *
+ * @module sdk/lib/api/challenges/pronunciation/analysis
  */
 
 import {

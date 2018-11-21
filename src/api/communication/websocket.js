@@ -1,5 +1,5 @@
 /**
- *
+ * @module sdk/lib/api/communication/websocket
  */
 
 import autobahn from 'autobahn';

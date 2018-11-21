@@ -2,6 +2,8 @@
  * This file contains a set of functions which makes authentication easier.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html}
+ *
+ * @module sdk/lib/api/authentication
  */
 
 import { authorisedRequest, request, updateSettings } from '../communication';

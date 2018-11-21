@@ -4,6 +4,7 @@ import AudioContext from './AudioContext';
 /**
  * Player
  * Simple Audio Player based on Web Audio API technology
+ * @module sdk/lib/WebAudio/Player
  */
 export default class Player extends AudioContext {
   /**

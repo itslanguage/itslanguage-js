@@ -3,6 +3,8 @@
  * Profiles contain information about a User. A User does not need a Profile.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/profiles/index.html}
+ *
+ * @module sdk/lib/api/profile
  */
 
 import { authorisedRequest } from '../communication';

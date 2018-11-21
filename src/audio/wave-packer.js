@@ -1,4 +1,8 @@
 /**
+ * @module sdk/lib/audio/wave-packer
+ */
+
+/**
  * Packer class for audio packing
  *
  * @private

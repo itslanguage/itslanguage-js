@@ -7,6 +7,8 @@ import WebAudioRecorder from './web-audio-recorder';
 
 /**
  * Audio recording component.
+ *
+ * @module sdk/lib/audio/audio-recorder
 */
 
 export default class AudioRecorder {

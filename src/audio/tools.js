@@ -1,9 +1,7 @@
 /**
  * ITSLanguage Javascript helper tools.
- * @overview This is part of the ITSLanguage Javascript SDK to perform helper functions.
- * @copyright (c) 2014 ITSLanguage
- * @license MIT
- * @author d-centralize
+ *
+ * @module sdk/lib/audio/tools
  */
 
 const ee = require('event-emitter');

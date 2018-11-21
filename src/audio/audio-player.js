@@ -2,8 +2,10 @@ import allOff from 'event-emitter/all-off';
 import ee from 'event-emitter';
 import Stopwatch from './tools';
 import WebAudioPlayer from './web-audio-player';
+
 /**
  * ITSLanguage AudioPlayer non-graphical component.
+ * @module sdk/lib/audio/audio-player
  */
 export default class AudioPlayer {
   /**

@@ -2,6 +2,8 @@
  * The progress of a category (or actually, challenges in a category) can be requested by a user.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/progress/index.html}
+ *
+ * @module sdk/lib/api/progress
  */
 
 import { authorisedRequest } from '../communication';

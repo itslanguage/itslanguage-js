@@ -2,6 +2,8 @@
  * This file contains the readily available functions which interact with the ITSLanguage user API.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/users/index.html}
+ *
+ * @module sdk/lib/api/users
  */
 
 import { authorisedRequest } from '../communication';

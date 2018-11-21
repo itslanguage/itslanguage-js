@@ -1,6 +1,8 @@
 /**
  * This file contains the readily available functions which interact with the
  * ITSLanguage speech challenge API.
+ *
+ * @module sdk/lib/api/challenges/speech
  */
 
 import { authorisedRequest } from '../../communication';

@@ -6,6 +6,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/categories/index.html}
  *
+ * @module sdk/lib/api/categories
  */
 
 import { authorisedRequest } from '../communication';

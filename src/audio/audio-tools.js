@@ -8,6 +8,9 @@
 
 import pcm from 'pcmjs';
 
+/**
+ * @module sdk/lib/audio/audio-tools
+ */
 
 /**
  * Generate a dummy Wave file for testing purposes.

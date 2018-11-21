@@ -4,6 +4,8 @@
  * using the REST API. Only users with administrative powers can perform these calls.
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/basicauths/index.html}
+ *
+ * @module sdk/lib/api/basicauth
  */
 
 import { authorisedRequest } from '../communication';
