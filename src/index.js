@@ -1,3 +1,7 @@
+/**
+ * @module sdk
+ */
+
 import * as authentication from './api/auth';
 import * as basicauth from './api/basicauth';
 import broadcaster from './api/broadcaster';
@@ -17,7 +21,6 @@ import AudioPlayer from './audio/audio-player';
 import AudioRecorder from './audio/audio-recorder';
 import Player from './WebAudio/Player';
 import Stopwatch from './audio/tools';
-
 
 /**
  * Document the version number of the ITSLanguage SDK.
