@@ -79,7 +79,7 @@ describe('request', () => {
       }, fail);
   });
 
-  it('should keep a URLSearchParams body as URLSearchParams', (done) => {
+  it('should send URLSearchParams body as x-www-form-urlencoded (i.e. URLSearchParams)', (done) => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -98,7 +98,7 @@ describe('request', () => {
           {
             method: 'POST',
             headers,
-            body: requestBody,
+            body: requestBody.toString(),
           },
         ]);
 
@@ -107,7 +107,7 @@ describe('request', () => {
       }, fail);
   });
 
-  it('should keep a FormData body as FormData', (done) => {
+  it('should send FormData as multipart/form-data (i.e. FormData)', (done) => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 

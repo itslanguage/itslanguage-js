@@ -104,25 +104,42 @@ function handleResponse(response) {
 export function request(method, url, body, headers) {
   const requestHeaders = headers || new Headers();
 
+  // Default to 'text/plain'.
   let requestBody = body;
+  requestHeaders.set('Content-Type', 'text/plain');
+
+  // In case of (any) object-type
   if (!(body instanceof URLSearchParams || body instanceof FormData) && body instanceof Object) {
     requestHeaders.set('Content-Type', 'application/json');
     requestBody = JSON.stringify(body);
   }
 
+  // In case of URLSearchParams
+  if (body instanceof URLSearchParams) {
+    requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
+    requestBody = body.toString();
+  }
+
+  // In case of FormData
+  // Note that we only need to (re)set the content-type!
+  if (body instanceof FormData) {
+    requestHeaders.set('Content-Type', 'multipart/form-data');
+  }
+
+  // Prepend the url with the set url or use it complete when there was no url set.
   let requestURL = url;
-  // XXX remove the URL truthy check when all tests are properly written. Now
-  // it happens way to often that the URL is omitted without any good reason.
-  if (url && url.startsWith('/')) {
+  if (url.startsWith('/') || !url) {
     requestURL = `${settings.apiUrl}${url}`;
   }
 
+  // Gather all the options
   const requestOptions = {
     method,
     headers: requestHeaders,
     body: requestBody,
   };
 
+  // Use fetch to send the request out!
   return fetch(requestURL, requestOptions).then(handleResponse);
 }
 
