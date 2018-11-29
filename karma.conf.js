@@ -66,7 +66,14 @@ module.exports = (config) => {
       entries: 'src/index.js',
       debug: true,
       transform: [
-        'babelify',
+        [
+          'babelify',
+          {
+            presets: [
+              '@babel/preset-env',
+            ],
+          },
+        ],
       ],
     },
   };
