@@ -5,6 +5,7 @@ module.exports = (config) => {
       'jasmine',
     ],
     files: [
+      'packages/**/*.spec.js',
       'test/**/*.js',
       'src/**/*.spec.js',
     ],
@@ -57,6 +58,7 @@ module.exports = (config) => {
       },
     },
     preprocessors: {
+      'packages/**/*.spec.js': ['browserify'],
       'test/**/*.js': ['browserify'],
       'src/**/*.spec.js': ['browserify'],
     },
