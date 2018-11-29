@@ -7,10 +7,10 @@
     "node": "8"
   },
   "scripts": {
-    "npmcheckversion": "node ./internals/scripts/npmcheckversion.js",
+    "npmcheckversion": "node ./scripts/npmcheckversion.js",
     "preinstall": "$npm_execpath run npmcheckversion",
     "prebuild": "$npm_execpath run build:clean",
-    "build": "node ./internals/scripts/build.js",
+    "build": "node ./scripts/build.js",
     "postbuild": "$npm_execpath run jsdoc && ncp ./jsdoc ./build/docs",
     "build:clean": "rimraf ./build",
     "prejsdoc": "$npm_execpath run jsdoc:clean",

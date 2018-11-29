@@ -22,7 +22,7 @@ const fs = require('fs-extra'); // eslint-disable-line import/no-extraneous-depe
 const path = require('path');
 const babel = require('@babel/core'); // eslint-disable-line import/no-extraneous-dependencies
 const webpack = require('webpack'); // eslint-disable-line import/no-extraneous-dependencies
-const pkg = require('../../package.json');
+const pkg = require('../package.json');
 
 
 // Set the output path
