@@ -12,8 +12,7 @@
     "src/"
   ],
   "engines": {
-    "npm": ">=5",
-    "node": ">=8"
+    "node": "8"
   },
   "scripts": {
     "npmcheckversion": "node ./internals/scripts/npmcheckversion.js",
