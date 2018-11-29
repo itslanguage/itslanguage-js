@@ -64,13 +64,15 @@ promise = promise.then(() => {
   pkg.main = 'lib/index.js';
   pkg.modules = 'lib/index.js';
 
-  // Remove ./src from the files array
-  pkg.files = pkg.files.filter(file => file !== 'src/');
-
-  // Add dist to the file array, because it wil exist after this script ends.
-  pkg.files.push('lib/');
-  pkg.files.push('docs/');
-  pkg.files.push('dist/');
+  // Prepare a simple files array
+  pkg.files = [
+    'LICENSE',
+    'package.json',
+    'README.md',
+    'lib/',
+    'docs/',
+    'dist/',
+  ];
 
   // Write the file to its desired output location
   fs.writeFileSync(path.join(OUTPUT_DIR, 'package.json'), JSON.stringify(pkg, null, '  '));
