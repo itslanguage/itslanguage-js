@@ -6,6 +6,9 @@
   "engines": {
     "node": "8"
   },
+  "workspaces" : [
+    "packages/*"
+  ],
   "scripts": {
     "npmcheckversion": "node ./scripts/npmcheckversion.js",
     "preinstall": "$npm_execpath run npmcheckversion",
