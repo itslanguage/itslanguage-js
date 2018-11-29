@@ -2,15 +2,7 @@
   "name": "@itslanguage/sdk",
   "version": "4.0.0-beta-12",
   "private": true,
-  "description": "The core JavaScript SDK for ITSLanguage.",
-  "main": "src/index.js",
-  "modules": "src/index.js",
-  "files": [
-    "LICENSE",
-    "package.json",
-    "README.md",
-    "src/"
-  ],
+  "description": "The JavaScript SDK for ITSLanguage.",
   "engines": {
     "node": "8"
   },
