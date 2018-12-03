@@ -5,8 +5,8 @@ module.exports = (config) => {
       'jasmine',
     ],
     files: [
+      'packages/**/*.spec.js',
       'test/**/*.js',
-      'src/**/*.spec.js',
     ],
     browsers: [
       'ChromeHeadless',
@@ -57,14 +57,20 @@ module.exports = (config) => {
       },
     },
     preprocessors: {
+      'packages/**/*.spec.js': ['browserify'],
       'test/**/*.js': ['browserify'],
-      'src/**/*.spec.js': ['browserify'],
     },
     browserify: {
-      entries: 'src/index.js',
       debug: true,
       transform: [
-        'babelify',
+        [
+          'babelify',
+          {
+            presets: [
+              '@babel/preset-env',
+            ],
+          },
+        ],
       ],
     },
   };

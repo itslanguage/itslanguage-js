@@ -1,4 +1,4 @@
-import MediaRecorder from '../src/audio/media-recorder';
+import MediaRecorder from '../packages/api/audio/media-recorder';
 
 describe('Mediarecorder', () => {
   beforeEach(() => {

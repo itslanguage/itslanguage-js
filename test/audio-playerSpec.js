@@ -1,6 +1,6 @@
-import * as Stopwatch from '../src/audio/tools';
-import AudioPlayer from '../src/audio/audio-player';
-import WebAudioPlayer from '../src/audio/web-audio-player';
+import * as Stopwatch from '../packages/api/audio/tools';
+import AudioPlayer from '../packages/api/audio/audio-player';
+import WebAudioPlayer from '../packages/api/audio/web-audio-player';
 
 describe('Audio player', () => {
   let oldMedia;

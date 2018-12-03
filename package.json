@@ -2,36 +2,25 @@
   "name": "@itslanguage/sdk",
   "version": "4.0.0-beta-12",
   "private": true,
-  "description": "The core JavaScript SDK for ITSLanguage.",
-  "main": "src/index.js",
-  "modules": "src/index.js",
-  "files": [
-    "LICENSE",
-    "package.json",
-    "README.md",
-    "src/"
-  ],
+  "description": "The JavaScript monorepo for ITSLanguage.",
   "engines": {
-    "npm": ">=5",
-    "node": ">=8"
+    "node": "8"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "npmcheckversion": "node ./internals/scripts/npmcheckversion.js",
+    "npmcheckversion": "node ./scripts/npmcheckversion.js",
     "preinstall": "$npm_execpath run npmcheckversion",
-    "prebuild": "$npm_execpath run build:clean",
-    "build": "node ./internals/scripts/build.js",
-    "postbuild": "$npm_execpath run jsdoc && ncp ./jsdoc ./build/docs",
+    "build": "node ./scripts/packer/build.js",
     "build:clean": "rimraf ./build",
-    "prejsdoc": "$npm_execpath run jsdoc:clean",
-    "jsdoc": "jsdoc -c jsdoc.json",
-    "jsdoc:clean": "rimraf ./jsdoc",
     "lint": "$npm_execpath run lint:js",
     "lint:eslint": "eslint --ignore-path .gitignore --fix",
     "lint:js": "$npm_execpath run lint:eslint -- . ",
     "lint:staged": "lint-staged",
     "test": "cross-env NODE_ENV=test karma start --single-run --color",
     "test:clean": "rimraf ./coverage",
-    "clean:all": "$npm_execpath run build:clean && $npm_execpath run jsdoc:clean && $npm_execpath run test:clean"
+    "clean:all": "$npm_execpath run build:clean && $npm_execpath run test:clean"
   },
   "lint-staged": {
     "*.js": [
@@ -55,17 +44,11 @@
     "url": "https://github.com/itslanguage/itslanguage-js/issues"
   },
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
-  "dependencies": {
-    "autobahn": "18.10.2",
-    "debug": "4.1.0",
-    "event-emitter": "0.3.5",
-    "pcmjs": "0.0.2",
-    "uuid": "3.3.2"
-  },
   "devDependencies": {
     "@babel/cli": "7.1.5",
     "@babel/core": "7.1.6",
     "@babel/plugin-proposal-class-properties": "7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0",
     "@babel/preset-env": "7.1.6",
     "babel-eslint": "10.0.1",
     "babel-plugin-istanbul": "5.1.0",

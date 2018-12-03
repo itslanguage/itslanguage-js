@@ -1,6 +1,6 @@
-import * as WebAudioRecorder from '../src/audio/web-audio-recorder';
-import AudioRecorder from '../src/audio/audio-recorder';
-import Stopwatch from '../src/audio/tools';
+import * as WebAudioRecorder from '../packages/api/audio/web-audio-recorder';
+import AudioRecorder from '../packages/api/audio/audio-recorder';
+import Stopwatch from '../packages/api/audio/tools';
 
 describe('Audio recorder', () => {
   beforeEach(() => {

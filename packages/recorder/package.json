@@ -1,0 +1,39 @@
+{
+  "name": "@itslanguage/recorder",
+  "version": "4.0.0-beta-12",
+  "description": "JavaScript Recorder based on MediaRecorder from ITSLanguage.",
+  "author": "ITSLanguage (https://www.itslanguage.nl) <support@itslanguage.nl>",
+  "contributors": [
+    "Jogchum Koerts <jogchum.koerts@itslanguage.nl>"
+  ],
+  "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itslanguage/itslanguage-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/itslanguage/itslanguage-js/issues",
+    "email": "support@itslanguage.nl"
+  },
+  "license": "MIT",
+  "keywords": [
+    "itslanguage",
+    "itslanguage api",
+    "itslanguage sdk",
+    "speech",
+    "speech technology",
+    "recorder",
+    "MediaRecorder"
+  ],
+  "engines": {
+    "node": "8"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "audio-recorder-polyfill": "0.1.3"
+  },
+  "publishConfig" : {
+    "access": "public",
+    "tag": "next"
+  }
+}
