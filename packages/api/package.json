@@ -1,0 +1,43 @@
+{
+  "name": "@itslanguage/api",
+  "version": "4.0.0-beta-12",
+  "description": "The JavaScript API SDK for ITSLanguage.",
+  "author": "ITSLanguage (https://www.itslanguage.nl) <support@itslanguage.nl>",
+  "contributors": [
+    "Jogchum Koerts <jogchum.koerts@itslanguage.nl>",
+    "Mathijs van den Worm <mathijs@d-centralize.nl>"
+  ],
+  "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itslanguage/itslanguage-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/itslanguage/itslanguage-js/issues",
+    "email": "support@itslanguage.nl"
+  },
+  "license": "MIT",
+  "keywords": [
+    "itslanguage",
+    "itslanguage api",
+    "itslanguage sdk",
+    "speech",
+    "speech technology"
+  ],
+  "engines": {
+    "node": "8"
+  },
+  "main": "index.js",
+  "modules": "index.js",
+  "dependencies": {
+    "autobahn": "18.10.2",
+    "debug": "4.1.0",
+    "event-emitter": "0.3.5",
+    "pcmjs": "0.0.2",
+    "uuid": "3.3.2"
+  },
+  "publishConfig" : {
+    "access": "public",
+    "tag": "next"
+  }
+}
