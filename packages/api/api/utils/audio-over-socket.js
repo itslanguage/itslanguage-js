@@ -7,7 +7,6 @@
 import autobahn from 'autobahn';
 import { getWebsocketConnection, makeWebsocketCall } from '../communication/websocket';
 import broadcaster from '../broadcaster';
-import { createWAVEHeader } from '../../audio/wave-packer';
 import { dataToBase64 } from '.';
 
 
@@ -42,7 +41,7 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
  * @todo make the unregistering more solid. It can break way to easy now. One way could be, for
  * example, to keep a list of registered RPC's and set a timer to unregister them.
  *
- * @param {Recorder} recorder - Audio recorder instance.
+ * @param {MediaRecorder} recorder - Audio recorder instance.
  * @param {string} rpcName - Name of the RPC to register. This name will be prepended with
  * nl.itslanguage for better consistency.
  * @returns {Promise<any>} - It returns a promise with the service registration as result.
@@ -76,41 +75,30 @@ export function registerStreamForRecorder(recorder, rpcName) {
   function sendAudioChunks(args, kwargs, details) {
     // eslint-disable-next-line new-cap
     const defer = new autobahn.when.defer();
-    const { audioParameters: { channels, sampleRate } } = recorder.getAudioSpecs();
-    const headerArrBuff = createWAVEHeader(channels, sampleRate);
-    const header = Array.from(new Uint8Array(headerArrBuff));
-    let sendHeader = true;
+
+    const processData = (event) => {
+      // Send the data chunks to the backend! Whoop whoop!
+      const dataToSend = Array.from(new Uint8Array(event.data));
+      details.progress([dataToSend]);
+    };
+
+    const stop = () => {
+      // Recording is done. Resolve and unregister now please!
+
+      defer.resolve();
+      if (rpcRegistration) {
+        getWebsocketConnection()
+          .then(connection => connection.session.unregister(rpcRegistration));
+      }
+
+      recorder.removeEventListener('dataavailable', processData);
+      recorder.removeEventListener('stop', stop);
+    };
 
     if (details.progress) {
       // Listen for recording events.
-      recorder.addEventListener('dataavailable', (chuck) => {
-        if (sendHeader) {
-          // Sent the empty wave header first, this is needed
-          // for containerized WAVE files.
-          details.progress([header]);
-          sendHeader = false;
-        }
-
-        // Send the data chunks to the backend! Whoop whoop!
-        const dataToSend = Array.from(new Uint8Array(chuck));
-        details.progress([dataToSend]);
-      });
-
-      // Recording is done. Resolve and unregister now please!
-      recorder.addEventListener('recorded', () => {
-        defer.resolve();
-        if (rpcRegistration) {
-          getWebsocketConnection()
-            .then(connection => connection.session.unregister(rpcRegistration));
-        }
-        recorder.removeAllEventListeners();
-      });
-
-      // In case of a pause, make sure next chunk of data will
-      // get the header (again).
-      recorder.addEventListener('paused', () => {
-        sendHeader = true;
-      });
+      recorder.addEventListener('dataavailable', processData);
+      recorder.addEventListener('stop', stop);
     }
 
     return defer.promise;
@@ -138,7 +126,7 @@ export function registerStreamForRecorder(recorder, rpcName) {
  * The reserved ID (passed in the parameters) is returned once the promise is resolved.
  *
  * @param {string} id - The reserved ID for the audio.
- * @param {MediaRecorder|Recorder} recorder - The recorder which has been set up to record.
+ * @param {MediaRecorder} recorder - The recorder which has been set up to record.
  * @param {string} rpc - The RPC to use to initialize the websocket server.
  *
  * @emits {websocketserverreadyforaudio} - When the websocket server has been prepared for and is
@@ -155,27 +143,4 @@ export function prepareServerForAudio(id, recorder, rpc) {
       broadcaster.emit('websocketserverreadyforaudio');
       return id;
     });
-}
-
-
-/**
- * Wait for the recorder to get the permission for user media.
- *
- * The reserved ID (passed in the parameters) is returned once the promise is resolved.
- *
- * @param {string} id - The reserved ID for the audio.
- * @param {MediaRecorder|Recorder} recorder - The recorder for which to wait.
- *
- * @returns {Promise} - The promise which resolves if the user has allowed us to record them.
- */
-export function waitForUserMediaApproval(id, recorder) {
-  return new Promise((resolve) => {
-    // We need the user's permission in order to record the audio. Wait for
-    // it if we don't have it already.
-    if (recorder.hasUserMediaApproval()) {
-      resolve();
-    } else {
-      recorder.addEventListener('ready', resolve);
-    }
-  }).then(() => id);
 }
