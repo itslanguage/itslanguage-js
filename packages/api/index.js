@@ -18,7 +18,6 @@ import * as tenants from './api/tenants';
 import * as users from './api/users';
 import VolumeMeter, { generateWaveSample } from './audio/audio-tools';
 import AudioPlayer from './audio/audio-player';
-import AudioRecorder from './audio/audio-recorder';
 import Player from './WebAudio/Player';
 import Stopwatch from './audio/tools';
 
@@ -127,7 +126,6 @@ export class Itslanguage {
       generateWaveSample,
       VolumeMeter,
       AudioPlayer,
-      AudioRecorder,
       Stopwatch,
       Player,
     };
@@ -174,17 +172,6 @@ export function createVolumeMeter(audioContext, inputStream) {
  */
 export function createAudioPlayer(options) {
   return new AudioPlayer(options);
-}
-
-
-/**
- * Factory to create an AudioRecorder object.
- *
- * @param {Object} options - An object to be able to override default settings for the recorder.
- * @returns {AudioRecorder} - An AudioRecorder instance.
- */
-export function createAudioRecorder(options) {
-  return new AudioRecorder(options);
 }
 
 
