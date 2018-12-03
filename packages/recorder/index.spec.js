@@ -3,17 +3,21 @@ import * as mediaRecorder from './index';
 
 const CUSTOM_NS = 'CustomRecorder';
 const STREAM = null;
+let MyOriginalMediaRecorder = null;
+
+const init = () => {
+  // Make a copy of the original MediaRecorder;
+  MyOriginalMediaRecorder = window.MediaRecorder;
+};
 
 const setup = () => {
   // Make sure there is no MediaRecorder, we don't need the default.
-  window.OldMediaRecorder = window.MediaRecorder;
   delete window.MediaRecorder;
 };
 
 const restore = () => {
   // Make sure to restore the old MediaRecorder here!
-  window.MediaRecorder = window.OldMediaRecorder;
-  delete window.OldMediaRecorder;
+  window.MediaRecorder = MyOriginalMediaRecorder;
 };
 
 const teardown = () => {
@@ -24,7 +28,8 @@ const teardown = () => {
 };
 
 describe('MediaRecorder', () => {
-  beforeAll(setup);
+  beforeAll(init);
+  beforeEach(setup);
   afterEach(teardown);
   afterAll(restore);
 
