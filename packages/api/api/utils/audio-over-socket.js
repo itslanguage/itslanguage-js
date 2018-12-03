@@ -14,7 +14,7 @@ import { dataToBase64 } from '.';
  * Encode the audio as base64 and send it to the websocket server.
  *
  * @param {string} id - The reserved ID for the audio.
- * @param {MediaRecorder|Recorder} recorder - The recorder to use to get the recording.
+ * @param {MediaRecorder} recorder - The recorder to use to get the recording.
  * @param {string} rpc - The RPC to use to store the data.
  *
  * @returns {Promise<*>} - The response of the given RPC.
