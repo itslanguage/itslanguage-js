@@ -49,13 +49,6 @@
     "url": "https://github.com/itslanguage/itslanguage-js/issues"
   },
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
-  "dependencies": {
-    "autobahn": "18.10.2",
-    "debug": "4.1.0",
-    "event-emitter": "0.3.5",
-    "pcmjs": "0.0.2",
-    "uuid": "3.3.2"
-  },
   "devDependencies": {
     "@babel/cli": "7.1.5",
     "@babel/core": "7.1.6",
