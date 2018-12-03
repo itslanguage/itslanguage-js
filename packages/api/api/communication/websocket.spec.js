@@ -4,7 +4,7 @@
  */
 
 import autobahn from 'autobahn';
-import * as communication from './index';
+import * as communication from '../..';
 import * as websocket from './websocket';
 
 

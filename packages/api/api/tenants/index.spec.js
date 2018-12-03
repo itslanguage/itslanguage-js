@@ -3,7 +3,7 @@
  */
 
 import * as communication from '../communication';
-import * as tenants from './index';
+import * as tenants from '.';
 
 
 describe('tenants', () => {

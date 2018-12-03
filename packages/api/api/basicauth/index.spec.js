@@ -2,7 +2,7 @@
  * The unit tests for the exported functions from `basicauth.js`.
  */
 
-import * as basicauth from './index';
+import * as basicauth from '.';
 import * as communication from '../communication';
 
 

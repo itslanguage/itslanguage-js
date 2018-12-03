@@ -4,7 +4,7 @@
 
 import * as aos from './audio-over-socket';
 import * as communication from '../communication/websocket';
-import * as utils from './index';
+import * as utils from '.';
 import broadcaster from '../broadcaster';
 
 

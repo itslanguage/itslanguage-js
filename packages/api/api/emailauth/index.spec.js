@@ -3,7 +3,7 @@
  */
 
 import * as communication from '../communication';
-import * as emailauth from './index';
+import * as emailauth from '.';
 
 
 describe('emailauth', () => {

@@ -3,7 +3,7 @@
  */
 
 import * as communication from '../communication';
-import * as groups from './index';
+import * as groups from '.';
 
 
 describe('groups', () => {

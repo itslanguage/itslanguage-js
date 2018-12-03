@@ -3,7 +3,7 @@
  * accompanying `auth.js` file.
  */
 
-import * as auth from './index';
+import * as auth from '.';
 import * as communication from '../communication';
 
 

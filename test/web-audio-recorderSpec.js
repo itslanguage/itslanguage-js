@@ -1,4 +1,4 @@
-import WebAudioRecorder from '../src/audio/web-audio-recorder';
+import WebAudioRecorder from '../packages/api/audio/web-audio-recorder';
 
 describe('WebAudioRecorder', () => {
   let webAudioRecorder;

@@ -3,7 +3,7 @@
  */
 
 
-import * as utils from './index';
+import * as utils from '.';
 
 
 describe('dataToBase64', () => {

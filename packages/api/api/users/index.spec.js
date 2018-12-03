@@ -3,7 +3,7 @@
  */
 
 import * as communication from '../communication';
-import * as users from './index';
+import * as users from '.';
 
 
 describe('user', () => {

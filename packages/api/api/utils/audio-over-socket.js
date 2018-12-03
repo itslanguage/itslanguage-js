@@ -8,7 +8,7 @@ import autobahn from 'autobahn';
 import { getWebsocketConnection, makeWebsocketCall } from '../communication/websocket';
 import broadcaster from '../broadcaster';
 import { createWAVEHeader } from '../../audio/wave-packer';
-import { dataToBase64 } from './index';
+import { dataToBase64 } from '.';
 
 
 /**
