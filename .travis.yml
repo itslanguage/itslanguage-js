@@ -30,6 +30,12 @@ after_success:
 #  # Make sure our script is executable
 #  - chmod +x $TRAVIS_BUILD_DIR/scripts/gh-pages.sh
 
+matrix:
+  include:
+    - name: ITSLanguage API
+      env: PACKAGE_LOCATION=$TRAVIS_BUILD_DIR/build/api
+
+before_deploy: "cd $PACKAGE_LOCATION"
 deploy:
 #  # Deploy to GitHub pages with our Bot user.
 #  # Runs when a tag is made available.
