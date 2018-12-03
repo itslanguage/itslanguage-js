@@ -2,7 +2,7 @@
 /coverage/
 /esdoc/
 /jsdoc/
-/node_modules/
+node_modules/
 npm-debug.log
 deploy-key
 deploy-key.pub

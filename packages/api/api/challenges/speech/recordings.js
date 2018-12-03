@@ -11,7 +11,6 @@
 import {
   encodeAndSendAudioOnDataAvailable,
   prepareServerForAudio,
-  waitForUserMediaApproval,
 } from '../../utils/audio-over-socket';
 import { authorisedRequest } from '../../communication';
 import { makeWebsocketCall } from '../../communication/websocket';
@@ -86,9 +85,6 @@ export function record(challenge, recorder) {
     .then(recording => makeWebsocketCall('recording.init_challenge', { args: [recording, challenge] }))
     // We've linked it to the speech challenge now. We also should have
     // received the recording ID once again.
-    .then(recording => waitForUserMediaApproval(recording, recorder))
-    // Alright, we should have permission to record the user. Time to prep the
-    // websocket server.
     .then(recording => prepareServerForAudio(recording, recorder, 'recording.init_audio'))
     // We've prepped the websocket server so it knows what audio format we are
     // using and all the extra floof that comes with it.

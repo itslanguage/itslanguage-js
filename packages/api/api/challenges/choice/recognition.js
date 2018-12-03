@@ -11,10 +11,7 @@
  * @module sdk/lib/api/challenges/choice/recognition
  */
 
-import {
-  registerStreamForRecorder,
-  waitForUserMediaApproval,
-} from '../../utils/audio-over-socket';
+import { registerStreamForRecorder } from '../../utils/audio-over-socket';
 import { authorisedRequest } from '../../communication';
 import { makeWebsocketCall } from '../../communication/websocket';
 
@@ -120,7 +117,7 @@ export function prepareChallenge(recognitionId, challengeId) {
  * backend needs to call to the 'nl.itslanguage.choice.recognise' function.
  *
  * @param {string} recognitionId - The ID of the recognition to send audio for.
- * @param {Recorder} recorder - Audio recorder instance.
+ * @param {MediaRecorder} recorder - Audio recorder instance.
  * @returns {Promise} - When all good, the result will have the actual recognition.
  */
 export function recogniseAudioStream(recognitionId, recorder) {
@@ -138,7 +135,7 @@ export function recogniseAudioStream(recognitionId, recorder) {
  * done in order to get correct feedback from the backend.
  *
  * @param {string} challengeId - The ID of the challenge to take the recognition for.
- * @param {Recorder} recorder - Audio recorder instance.
+ * @param {MediaRecorder} recorder - Audio recorder instance.
  * @returns {Promise<*>} - If all good it returns the actual recognition. If not, any error can be
  * expected to be returned.
  */
@@ -147,7 +144,7 @@ export function recognise(challengeId, recorder) {
   return prepare()
     .then((rId) => {
       recognitionId = rId;
-      return waitForUserMediaApproval(recognitionId, recorder);
+      return rId;
     })
     .then(() => prepareChallenge(recognitionId, challengeId))
     .then(() => recogniseAudioStream(recognitionId, recorder).then(result => result));

@@ -20,10 +20,7 @@
  *  @module sdk/lib/api/challenges/feedback/speech
  */
 
-import {
-  registerStreamForRecorder,
-  waitForUserMediaApproval,
-} from '../../utils/audio-over-socket';
+import { registerStreamForRecorder } from '../../utils/audio-over-socket';
 import { makeWebsocketCall } from '../../communication/websocket';
 
 /**
@@ -48,7 +45,7 @@ export function prepare(challengeId) {
  *
  * @param {string} feedbackId - The Id of the Feedback Challenge.
  * @param {Function} progressCb - A callback which will be used to receive progress on.
- * @param {Recorder} recorder - Audio recorder instance.
+ * @param MediaRecorder recorder - Audio recorder instance.
  * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This
  * feedback will be given through the progressiveResultsCb function. When the rpc is done, the
  * promise will return an recording with the appropriate feedback per sentence.
@@ -101,18 +98,16 @@ export function resume(feedbackId, sentenceId = 0) {
  *
  * It will call the following functions (and more important, in the correct order):
  *  - {@link prepare}.
- *  - {@link waitForUserMediaApproval}.
  *  - {@link listenAndReply}.
  *
  * @param {string} challengeId - The Id of the Challenge to get feedback on.
  * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.
- * @param {Recorder} recorder - Audio recorder instance.
+ * @param {MediaRecorder} recorder - Audio recorder instance.
  * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This
  * feedback will be given through the progressiveResultsCb function. When the rpc is done, the
  * promise will return an recording with the appropriate feedback per sentence.
  */
 export function feedback(challengeId, progressiveResultsCb, recorder) {
   return prepare(challengeId)
-    .then(feedbackId => waitForUserMediaApproval(feedbackId, recorder))
     .then(feedbackId => listenAndReply(feedbackId, progressiveResultsCb, recorder));
 }

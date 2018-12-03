@@ -69,7 +69,7 @@ export function alignChallenge(analysisId) {
  * Prepare the backend for our audio.
  *
  * @param {string} analyseId - The Analysis that belongs to the audio.
- * @param {Recorder} recorder - The recorder to get specs from.
+ * @param {MediaRecorder} recorder - The recorder to get specs from.
  * @returns {Promise} - Result of preparing the audio.
  */
 export function prepareAudio(analyseId, recorder) {
@@ -80,7 +80,7 @@ export function prepareAudio(analyseId, recorder) {
  * Us the provided recorder to stream/send the recorded audio to the backend.
  *
  * @param {string} analyseId - The ID of the analysis we're receiving audio for.
- * @param {Recorder} recorder - Instance of an Recorder.
+ * @param {MediaRecorder} recorder - Instance of an Recorder.
  * @returns {Promise} - Stream result.
  */
 export function streamAudio(analyseId, recorder) {
