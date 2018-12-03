@@ -12,20 +12,15 @@
   "scripts": {
     "npmcheckversion": "node ./scripts/npmcheckversion.js",
     "preinstall": "$npm_execpath run npmcheckversion",
-    "prebuild": "$npm_execpath run build:clean",
-    "build": "node ./scripts/build.js",
-    "postbuild": "$npm_execpath run jsdoc && ncp ./jsdoc ./build/docs",
+    "build": "node ./scripts/packer/build.js",
     "build:clean": "rimraf ./build",
-    "prejsdoc": "$npm_execpath run jsdoc:clean",
-    "jsdoc": "jsdoc -c jsdoc.json",
-    "jsdoc:clean": "rimraf ./jsdoc",
     "lint": "$npm_execpath run lint:js",
     "lint:eslint": "eslint --ignore-path .gitignore --fix",
     "lint:js": "$npm_execpath run lint:eslint -- . ",
     "lint:staged": "lint-staged",
     "test": "cross-env NODE_ENV=test karma start --single-run --color",
     "test:clean": "rimraf ./coverage",
-    "clean:all": "$npm_execpath run build:clean && $npm_execpath run jsdoc:clean && $npm_execpath run test:clean"
+    "clean:all": "$npm_execpath run build:clean && $npm_execpath run test:clean"
   },
   "lint-staged": {
     "*.js": [
