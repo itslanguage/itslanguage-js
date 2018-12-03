@@ -3,7 +3,7 @@
  */
 
 import * as communication from '../communication';
-import * as progress from '../..';
+import * as progress from './index';
 
 
 describe('progress', () => {
