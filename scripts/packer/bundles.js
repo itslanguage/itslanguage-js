@@ -27,6 +27,13 @@ const bundles = [
       ...defaultFiles,
     ],
   },
+  {
+    entry: 'recorder',
+    library: 'itsl.recorder',
+    files: [
+      ...defaultFiles,
+    ],
+  },
 ];
 
 module.exports = bundles;
