@@ -60,6 +60,11 @@ usage through package installation though.
 
 Consult the package you want to use for more information and documentation.
 
+## Support
+
+To get support on the SDK you can either create a #new issue, or e-mail your question to
+[support](mailto:support@itslangauge.nl)
+
 - [api readme](packages/api/README.md)
 - [recorder readme](packages/recorder/README.md)
 
