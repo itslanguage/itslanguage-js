@@ -4,8 +4,8 @@ The ITSLanguage SDK exposes some packages. Currently this are the packages expos
 
 | Name     | Description |
 | :------- | :---------- |
-| api      | Interface to the ITSLangauge backend and capable of preforming all the needed api calls |
-| recorder | Interface for a ITSlangauge compatible recorder |
+| api      | Interface to the ITSLanguage backend and capable of preforming all the needed api calls |
+| recorder | Interface for a ITSLanguage compatible recorder |
 
 ## API Package
 
