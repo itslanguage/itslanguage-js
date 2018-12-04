@@ -1,7 +1,11 @@
 # ITSLanguage Recorder
 
-Very simple wrapper around a polyfill for the MediaRecorder API.
-We have two reasons to use the polyfill:
+Speech technology for language education.
+
+[![Build Status][build logo]][travis]
+
+This package exposes a very simple wrapper around a polyfill for the MediaRecorder API. We have two
+reasons to use the polyfill:
 
 1. The MediaRecorder API is not available in some browser (like safari). With this
    polyfill it is.
@@ -118,3 +122,6 @@ access the microphone.
 Read more on the MediaStream Recording API on MDN: https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
 
 Read more on the polyfill we used: https://github.com/ai/audio-recorder-polyfill
+
+[build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next
+[travis]: https://travis-ci.org/itslanguage/itslanguage-js
