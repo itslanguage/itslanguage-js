@@ -89,6 +89,7 @@ function pack(sourcePath, entry, library, mode = 'production') {
     webpack({
       mode,
       entry: `${sourcePath}/index.js`,
+      externals: /^@itslanguage\//,
       output: {
         path: `${sourcePath}/dist`,
         filename: `${entry}.${mode === 'development' ? '' : 'min.'}js`,
