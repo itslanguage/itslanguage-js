@@ -243,3 +243,32 @@ describe('authorisedRequest', () => {
       }, fail);
   });
 });
+
+describe('addAccessToken', () => {
+  const fakeToken = 'fake-token';
+  const fakeTokenUrl = `access_token=${fakeToken}`;
+  const fakeUrl = 'https://fake.news/live.wav';
+
+  it('should return the same url if there is no authorisation token known', () => {
+    communication.settings.authorizationToken = null;
+    expect(communication.addAccessToken(fakeUrl)).toEqual(fakeUrl);
+  });
+
+  it('should return the url with access_token if there an authorisation token known', () => {
+    communication.settings.authorizationToken = fakeToken;
+    expect(communication.addAccessToken(fakeUrl).includes(fakeTokenUrl)).toBeTruthy();
+    communication.settings.authorizationToken = null;
+  });
+
+  it('should return the url with access_token with an ? if it is the first queryparam', () => {
+    communication.settings.authorizationToken = fakeToken;
+    expect(communication.addAccessToken(fakeUrl).includes(`?${fakeTokenUrl}`)).toBeTruthy();
+    communication.settings.authorizationToken = null;
+  });
+
+  it('should return the url with access_token with an & if it is not the first queryparam', () => {
+    communication.settings.authorizationToken = fakeToken;
+    expect(communication.addAccessToken(`${fakeUrl}?someParam=x`).includes(`&${fakeTokenUrl}`)).toBeTruthy();
+    communication.settings.authorizationToken = null;
+  });
+});

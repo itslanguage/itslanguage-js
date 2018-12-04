@@ -159,6 +159,23 @@ function getBearerToken() {
   return `Bearer ${settings.authorizationToken}`;
 }
 
+/**
+ * Add an access token to a given URL.
+ *
+ * @param {string} [url=''] - The URL to add an access token to.
+ * @returns {string} An url with the access token appended.
+ */
+export function addAccessToken(url = '') {
+  if (!settings.authorizationToken) {
+    return url;
+  }
+
+  return (
+    `${url}${url.includes('?') ? '&' : '?'}access_token=${
+      encodeURIComponent(settings.authorizationToken)
+    }`
+  );
+}
 
 /**
  * Perform an HTTP request with the desired method, body, and headers to the given partial
