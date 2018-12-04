@@ -17,8 +17,6 @@ import * as roles from './api/roles';
 import * as tenants from './api/tenants';
 import * as users from './api/users';
 import VolumeMeter, { generateWaveSample } from './audio/audio-tools';
-import AudioPlayer from './audio/audio-player';
-import Player from './WebAudio/Player';
 import Stopwatch from './audio/tools';
 
 /**
@@ -125,9 +123,7 @@ export class Itslanguage {
     this.utils = {
       generateWaveSample,
       VolumeMeter,
-      AudioPlayer,
       Stopwatch,
-      Player,
     };
 
     this.communication.updateSettings(options);
@@ -164,18 +160,6 @@ export function createVolumeMeter(audioContext, inputStream) {
 
 
 /**
- * Factory to create an AudioPlayer object.
- * The AudioPlayer object is also available through the ITSLanguage SDK object.
- *
- * @param {Object} options - An object to be able to override default settings for the player.
- * @returns {AudioPlayer} - An AudioPlayer instance.
- */
-export function createAudioPlayer(options) {
-  return new AudioPlayer(options);
-}
-
-
-/**
  * Factory to create a Stopwatch object.
  * The StopWatch object is also available through the ITSLanguage SDK object.
  *
@@ -184,16 +168,4 @@ export function createAudioPlayer(options) {
  */
 export function createStopwatch(tickCb) {
   return new Stopwatch(tickCb);
-}
-
-
-/**
- * Factory to create a Player object. The Player differs from the AudioPlayer in terms that this
- * player uses MediaStream to playback audio instead of the `audio` player.
- * The Player object is also available through the ITSLanguage SDK object.
- *
- * @returns {Player} - An instance of a Player object.
- */
-export function createPlayer() {
-  return new Player();
 }
