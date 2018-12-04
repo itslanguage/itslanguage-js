@@ -1,3 +1,7 @@
+/**
+ * @module player
+ */
+
 import { addAccessToken } from '@itslanguage/api/api/communication';
 
 /**
