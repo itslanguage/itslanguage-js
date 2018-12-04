@@ -12,6 +12,7 @@ packages we deliver.
 | Package name | unpkg.com link | Description |
 | :----------- | :------------- | :---------- |
 | [api]        | [unpkg/@itslanguage/api]      | Implements the interface to the ITSLanguage backend as described in our [API docs] |
+| [player]     | [unpkg/@itslanguage/player]   | ITSLanguage compatible HTMLAudioElement |
 | [recorder]   | [unpkg/@itslanguage/recorder] | ITSLanguage compatible MediaRecorder |
 
 ## Installation
@@ -75,8 +76,10 @@ To get support on the SDK you can either create a [new] [issue], or e-mail your 
 [yarn]: https://yarnpkg.com
 [unpkg.com]: https://unpkg.com
 [api]: https://npmjs.com/package/@itslanguage/api 
+[player]: https://npmjs.com/package/@itslanguage/player
 [recorder]: https://npmjs.com/package/@itslanguage/recorder
 [unpkg/@itslanguage/api]: https://unpkg.com/@itslanguage/api@next/dist/api.min.js 
+[unpkg/@itslanguage/player]: https://unpkg.com/@itslanguage/recorder@next/dist/player.min.js 
 [unpkg/@itslanguage/recorder]: https://unpkg.com/@itslanguage/recorder@next/dist/recorder.min.js 
 [API docs]: https://itslanguage.github.io/itslanguage-docs
 [REST and WebSocket API]: https://itslanguage.github.io/itslanguage-docs
