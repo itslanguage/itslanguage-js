@@ -34,6 +34,13 @@ const bundles = [
       ...defaultFiles,
     ],
   },
+  {
+    entry: 'player',
+    library: 'itsl.player',
+    files: [
+      ...defaultFiles,
+    ],
+  },
 ];
 
 module.exports = bundles;
