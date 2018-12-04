@@ -57,7 +57,7 @@ usage through package installation though.
 
 ## Usage
 
-Consult the package you want to use for more info on usage.
+Consult the package you want to use for more information and documentation.
 
 - [api readme](packages/api/README.md)
 - [recorder readme](packages/recorder/README.md)
