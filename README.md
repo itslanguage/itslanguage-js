@@ -45,7 +45,7 @@ usage through package installation though.
     <title>Some page title</title>
     <script src="https://unpkg.com/@itslanguage/api@next/dist/api.min.js"></script>
     <script>
-      // The api is now availble through global `itsl.api`.
+      // The api is now available through global `itsl.api`.
       itsl.api.createItslSdk();
     </script>
   </head>
