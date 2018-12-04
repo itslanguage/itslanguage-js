@@ -62,7 +62,7 @@ Consult the package you want to use for more information and documentation.
 
 ## Support
 
-To get support on the SDK you can either create a [new](/itslanguage/itslanguage-js/issues/new) issue, or e-mail your question to
+To get support on the SDK you can either create a [new] issue, or e-mail your question to
 [support](mailto:support@itslangauge.nl)
 
 - [api readme](packages/api/README.md)
@@ -80,3 +80,4 @@ To get support on the SDK you can either create a [new](/itslanguage/itslanguage
 [unpkg/@itslanguage/recorder]: https://unpkg.com/@itslanguage/recorder@next/dist/recorder.min.js 
 [API docs]: https://itslanguage.github.io/itslanguage-docs
 [REST and WebSocket API]: https://itslanguage.github.io/itslanguage-docs
+[new]: https://github.com/itslanguage/itslanguage-js/issues/new
