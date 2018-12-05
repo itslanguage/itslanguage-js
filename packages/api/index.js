@@ -18,20 +18,20 @@ import * as tenants from './tenants';
 import * as users from './users';
 
 /**
- * Document the version number of the ITSLanguage SDK.
+ * Document the version number of the ITSLanguage API package.
  * @type {string}
  */
 const VERSION = '4.0.0-beta-12';
 
 
 /**
- * Represents the ITSLanguage SDK.
+ * Represents the ITSLanguage API package.
  * It allows the user to make every call to the API with a single function.
  * @see https://itslanguage.github.io/itslanguage-docs
  */
 export class Itslanguage {
   /**
-   * Create ITSLanguage SDK.
+   * Create ITSLanguage API.
    *
    * @param {Object} options - An object containing options for communication.
    * @param {string} options.apiUrl - The URL of the REST api.
@@ -40,7 +40,7 @@ export class Itslanguage {
    */
   constructor(options) {
     /**
-     * Expose the ITSLanguage SDK version.
+     * Expose the ITSLanguage API package version.
      * @type {string}
      */
     this.version = VERSION;
@@ -120,15 +120,15 @@ export class Itslanguage {
 }
 
 /**
- * Create the ITSLanguage SDK object to interact with the API.
+ * Create the ITSLanguage API object to interact with the API backend.
  *
  * @param {Object} options - An object containing options for communication.
  * @param {string} options.apiUrl - The URL of the REST api.
  * @param {string} options.wsUrl - The URL of the Websocket server.
  * @param {string} options.authorizationToken - An OAuth2 token string.
  *
- * @return {Itslanguage} - The SDK.
+ * @return {Itslanguage} - The API.
  */
-export function createItslSdk(options) {
+export function createItslApi(options) {
   return new Itslanguage(options);
 }

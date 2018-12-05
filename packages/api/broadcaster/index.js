@@ -12,7 +12,7 @@ import ee from 'event-emitter';
 
 
 /**
- * The single event channel used throughout the ITSLanguage SDK.
+ * The single event channel used throughout the ITSLanguage API.
  *
  * @type {event-emitter.EventEmitter}
  */
