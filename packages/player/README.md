@@ -65,7 +65,7 @@ does not follow any best practices (i.e. use at your own risk):
     <script>
       // The api is now available through global `itsl.player`.
       const audioUrl = 'https://ia801605.us.archive.org/5/items/rainbowgold_1705_librivox/rainbowgold_10_various_128kb.mp3';
-      const player = itsl.player.createItslSdk(audioUrl);
+      const player = itsl.player.createPlayer(audioUrl);
       
       // We will use this function as the event handler for the button on the page
       function playAudio() {

@@ -59,7 +59,7 @@ We do recommend usage with a package manager like [npm] or [yarn] though.
     <script src="https://unpkg.com/@itslanguage/api@next/dist/api.min.js"></script>
     <script>
       // The api is now available through global `itsl.api`.
-      itsl.api.createItslSdk();
+      itsl.api.createItslApi();
     </script>
   </head>
   <body>

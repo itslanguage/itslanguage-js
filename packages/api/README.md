@@ -81,7 +81,7 @@ asume you've installed the api package with [npm]
     <script src="https://unpkg.com/@itslanguage/api@next/dist/api.min.js"></script>
     <script>
       // The api is now available through global `itsl.api`.
-      itsl.api.createItslSdk();
+      itsl.api.createItslApi();
     </script>
   </head>
   <body>
