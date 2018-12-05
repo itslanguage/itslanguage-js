@@ -22,21 +22,21 @@ const defaultFiles = [
 const bundles = [
   {
     entry: 'api',
-    library: 'itsl.api',
+    library: 'itslApi',
     files: [
       ...defaultFiles,
     ],
   },
   {
     entry: 'recorder',
-    library: 'itsl.recorder',
+    library: 'itslRecorder',
     files: [
       ...defaultFiles,
     ],
   },
   {
     entry: 'player',
-    library: 'itsl.player',
+    library: 'itslPlayer',
     files: [
       ...defaultFiles,
     ],

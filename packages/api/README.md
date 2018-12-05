@@ -78,10 +78,10 @@ asume you've installed the api package with [npm]
 <html>
   <head>
     <title>Some page title</title>
-    <script src="https://unpkg.com/@itslanguage/api@next/dist/api.min.js"></script>
+    <script src="https://unpkg.com/@itslanguage/api/dist/api.min.js"></script>
     <script>
-      // The api is now available through global `itsl.api`.
-      itsl.api.createItslApi();
+      // The api is now available through global `itslApi`.
+      itslApi.createItslApi();
     </script>
   </head>
   <body>

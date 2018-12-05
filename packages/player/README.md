@@ -53,7 +53,7 @@ More information here: https://developer.mozilla.org/en-US/docs/Web/HTML/Element
 
 Note that it is also possible to use an UMD version that has been made available through unpkg.com.
 You can do so by placing a script tag inside your HTML and your're good to go. The features that
-this library exposes will be set to the global `itsl.player` object. A simplistic example, which
+this library exposes will be set to the global `itslPlayer` object. A simplistic example, which
 does not follow any best practices (i.e. use at your own risk):
 
 ```html
@@ -61,11 +61,11 @@ does not follow any best practices (i.e. use at your own risk):
 <html>
   <head>
     <title>Some page title</title>
-    <script src="https://unpkg.com/@itslanguage/api@next/dist/player.min.js"></script>
+    <script src="https://unpkg.com/@itslanguage/player/dist/player.min.js"></script>
     <script>
-      // The api is now available through global `itsl.player`.
+      // The api is now available through global `itslPlayer`.
       const audioUrl = 'https://ia801605.us.archive.org/5/items/rainbowgold_1705_librivox/rainbowgold_10_various_128kb.mp3';
-      const player = itsl.player.createPlayer(audioUrl);
+      const player = itslPlayer.createPlayer(audioUrl);
       
       // We will use this function as the event handler for the button on the page
       function playAudio() {

@@ -117,6 +117,7 @@ access the microphone.
 
 ## Read more
 
-Read more on the MediaStream Recording API on MDN: https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
+Read more on the MediaStream Recording API on MDN:
+https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder
 
 Read more on the polyfill we used: https://github.com/ai/audio-recorder-polyfill
