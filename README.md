@@ -71,8 +71,8 @@ We do recommend usage with a package manager like [npm] or [yarn] though.
 
 ## Package usage
 
-Consult the package readme for more information and documentation. Consult the table above for links
-to the proper readme files.
+Consult the readme files of the packages for more information and documentation. See the table above
+for links to the proper readme files.
 
 ## Contribute
 
