@@ -1,8 +1,6 @@
-# ITSLanguage Player
+# ITSLanguage Player Package
 
-Speech technology for language education.
-
-[![Build Status][build logo]][travis]
+Speech technology for language education. 📣
 
 This project exposes a small wrapper around the HTMLAudioElement that is available in almost all of
 the browsers nowadays.
@@ -134,6 +132,4 @@ If you find yourself in a situation you want _more_ out of your audio player, do
 contact us but also make sure to read up on the Web Audio API in general on MDN:
 https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
 
-[build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next
-[travis]: https://travis-ci.org/itslanguage/itslanguage-js
 [unpkg.com]: https://www.unpkg.com

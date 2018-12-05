@@ -1,4 +1,4 @@
-# ITSLanguage JavaScript SDK
+# ITSLanguage API Package
 
 Speech technology for language education. 📣
 
