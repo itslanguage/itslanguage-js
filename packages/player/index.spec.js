@@ -1,4 +1,4 @@
-import { settings } from '@itslanguage/api/api/communication';
+import { settings } from '@itslanguage/api/communication';
 import * as audioPlayer from './index';
 
 // Some handy consts for re-usability

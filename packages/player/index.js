@@ -2,7 +2,7 @@
  * @module player
  */
 
-import { addAccessToken } from '@itslanguage/api/api/communication';
+import { addAccessToken } from '@itslanguage/api/communication';
 
 /**
  * Factory function to create a HTMLAudioElement.

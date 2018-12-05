@@ -2,20 +2,20 @@
  * @module sdk
  */
 
-import * as authentication from './api/auth';
-import * as basicauth from './api/basicauth';
-import broadcaster from './api/broadcaster';
-import * as categories from './api/categories';
-import * as challenges from './api/challenges';
-import * as communication from './api/communication';
-import * as emailauth from './api/emailauth';
-import * as groups from './api/groups';
-import * as organisations from './api/organisations';
-import * as profile from './api/profile';
-import * as progress from './api/progress';
-import * as roles from './api/roles';
-import * as tenants from './api/tenants';
-import * as users from './api/users';
+import * as authentication from './auth';
+import * as basicauth from './basicauth';
+import broadcaster from './broadcaster';
+import * as categories from './categories';
+import * as challenges from './challenges';
+import * as communication from './communication';
+import * as emailauth from './emailauth';
+import * as groups from './groups';
+import * as organisations from './organisations';
+import * as profile from './profile';
+import * as progress from './progress';
+import * as roles from './roles';
+import * as tenants from './tenants';
+import * as users from './users';
 
 /**
  * Document the version number of the ITSLanguage SDK.
