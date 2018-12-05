@@ -6,7 +6,6 @@ module.exports = (config) => {
     ],
     files: [
       'packages/**/*.spec.js',
-      'test/**/*.js',
     ],
     browsers: [
       'ChromeHeadless',
@@ -58,7 +57,6 @@ module.exports = (config) => {
     },
     preprocessors: {
       'packages/**/*.spec.js': ['browserify'],
-      'test/**/*.js': ['browserify'],
     },
     browserify: {
       debug: true,

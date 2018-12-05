@@ -27,7 +27,6 @@ module.exports = {
         [
           'istanbul', {
             exclude: [
-              'test/**',
               '**/*.spec.js',
             ],
           },
