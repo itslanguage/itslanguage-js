@@ -2,7 +2,7 @@
  * This file contains the readily available functions which interact with the ITSLanguage
  * organisation API.
  *
- * @module sdk/lib/api/organisations
+ * @module api/organisations
  */
 
 import { authorisedRequest } from '../communication';

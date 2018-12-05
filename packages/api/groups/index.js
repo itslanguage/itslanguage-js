@@ -5,7 +5,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/groups/index.html}
  *
- * @module sdk/lib/api/groups
+ * @module api/groups
  */
 
 import { authorisedRequest } from '../communication';

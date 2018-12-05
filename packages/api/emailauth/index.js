@@ -5,7 +5,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/emailauth/index.html}
  *
- * @module sdk/lib/api/emailauth
+ * @module api/emailauth
  */
 
 import { authorisedRequest } from '../communication';

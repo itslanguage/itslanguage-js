@@ -3,7 +3,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/progress/index.html}
  *
- * @module sdk/lib/api/progress
+ * @module api/progress
  */
 
 import { authorisedRequest } from '../communication';

@@ -1,7 +1,7 @@
 /**
  * Some all-round re-usable utilities.
  *
- * @module sdk/lib/api/utils
+ * @module api/utils
  */
 
 /**

@@ -5,7 +5,7 @@
  *
  * [GitHub event-emitter]: https://github.com/medikoo/event-emitter
  *
- * @module sdk/lib/api/broadcaster
+ * @module api/broadcaster
  */
 
 import ee from 'event-emitter';

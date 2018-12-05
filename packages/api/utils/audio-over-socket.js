@@ -1,7 +1,7 @@
 /**
  * This file contains some re-usable parts for websocket audio communication.
  *
- * @module sdk/lib/api/utils/audio-over-socket
+ * @module api/utils/audio-over-socket
  */
 
 import autobahn from 'autobahn';

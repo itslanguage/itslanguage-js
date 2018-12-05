@@ -1,7 +1,7 @@
 /**
  * This file contains the settings and the communication mechanism for the ITSLanguage REST API.
  *
- * @module sdk/lib/api/communication
+ * @module api/communication
  */
 
 /**

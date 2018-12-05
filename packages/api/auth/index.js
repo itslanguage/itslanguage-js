@@ -3,7 +3,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html}
  *
- * @module sdk/lib/api/authentication
+ * @module api/authentication
  */
 
 import { authorisedRequest, request, updateSettings } from '../communication';

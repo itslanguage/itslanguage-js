@@ -4,7 +4,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/profiles/index.html}
  *
- * @module sdk/lib/api/profile
+ * @module api/profile
  */
 
 import { authorisedRequest } from '../communication';

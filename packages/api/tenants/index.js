@@ -6,7 +6,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/tenants/index.html}
  *
- * @module sdk/lib/api/tenants
+ * @module api/tenants
  */
 
 import { authorisedRequest } from '../communication';

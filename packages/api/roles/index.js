@@ -6,7 +6,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/roles/index.html}
  *
- * @module sdk/lib/api/roles
+ * @module api/roles
  */
 
 import { authorisedRequest } from '../communication';

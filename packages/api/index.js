@@ -1,5 +1,5 @@
 /**
- * @module sdk
+ * @module api
  */
 
 import * as authentication from './auth';
@@ -46,72 +46,72 @@ export class Itslanguage {
     this.version = VERSION;
 
     /**
-     * @type module:sdk/lib/api/authentication
+     * @type module:api/authentication
      */
     this.authentication = authentication;
 
     /**
-     * @type module:sdk/lib/api/basicauth
+     * @type module:api/basicauth
      */
     this.basicauth = basicauth;
 
     /**
-     * @type module:sdk/lib/api/broadcaster
+     * @type module:api/broadcaster
      */
     this.broadcaster = broadcaster;
 
     /**
-     * @type module:sdk/lib/api/categories
+     * @type module:api/categories
      */
     this.categories = categories;
 
     /**
-     * @type module:sdk/lib/api/challenges
+     * @type module:api/challenges
      */
     this.challenges = challenges;
 
     /**
-     * @type module:sdk/lib/api/communication
+     * @type module:api/communication
      */
     this.communication = communication;
 
     /**
-     * @type module:sdk/lib/api/emailauth
+     * @type module:api/emailauth
      */
     this.emailauth = emailauth;
 
     /**
-     * @type module:sdk/lib/api/groups
+     * @type module:api/groups
      */
     this.groups = groups;
 
     /**
-     * @type module:sdk/lib/api/organisations
+     * @type module:api/organisations
      */
     this.organisations = organisations;
 
     /**
-     * @type module:sdk/lib/api/profile
+     * @type module:api/profile
      */
     this.profile = profile;
 
     /**
-     * @type module:sdk/lib/api/progress
+     * @type module:api/progress
      */
     this.progress = progress;
 
     /**
-     * @type module:sdk/lib/api/roles
+     * @type module:api/roles
      */
     this.roles = roles;
 
     /**
-     * @type module:sdk/lib/api/tenants
+     * @type module:api/tenants
      */
     this.tenants = tenants;
 
     /**
-     * @type module:sdk/lib/api/users
+     * @type module:api/users
      */
     this.users = users;
 

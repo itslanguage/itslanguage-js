@@ -3,7 +3,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/users/index.html}
  *
- * @module sdk/lib/api/users
+ * @module api/users
  */
 
 import { authorisedRequest } from '../communication';

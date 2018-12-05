@@ -5,7 +5,7 @@
  *
  * @see {@link https://itslanguage.github.io/itslanguage-docs/api/basicauths/index.html}
  *
- * @module sdk/lib/api/basicauth
+ * @module api/basicauth
  */
 
 import { authorisedRequest } from '../communication';

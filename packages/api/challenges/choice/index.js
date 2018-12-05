@@ -2,7 +2,7 @@
  * This file contains the readily available functions which interact with the
  * ITSLanguage choice challenge API.
  *
- * @module sdk/lib/api/challenges/choice
+ * @module api/challenges/choice
  */
 
 import { authorisedRequest } from '../../communication';

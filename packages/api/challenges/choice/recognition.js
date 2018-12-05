@@ -8,7 +8,7 @@
  * For streaming, note that this is one of the "nested" or "composite" APIs; You can only obtain the
  * data if you provide a reference to the challenge for which you want a recording.
  *
- * @module sdk/lib/api/challenges/choice/recognition
+ * @module api/challenges/choice/recognition
  */
 
 import { registerStreamForRecorder } from '../../utils/audio-over-socket';
