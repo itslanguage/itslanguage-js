@@ -64,6 +64,11 @@ describe('MediaRecorder', () => {
       expect(recorder instanceof MediaRecorder).toBeTruthy();
     });
 
+    it('should return a recorder based on MediaRecorder without passing a stream', () => {
+      const recorder = mediaRecorder.createRecorder();
+      expect(recorder instanceof MediaRecorder).toBeTruthy();
+    });
+
     it('should leave window.MediaRecorder untouched', () => {
       mediaRecorder.createRecorder(STREAM);
       expect(window.MediaRecorder).toBeUndefined();
