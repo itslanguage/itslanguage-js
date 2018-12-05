@@ -74,6 +74,12 @@ We do recommend usage with a package manager like [npm] or [yarn] though.
 Consult the package readme for more information and documentation. Consult the table above for links
 to the proper readme files.
 
+## Contribute
+
+Want to contribute? Nice! Good to hear, we would love to get help!  
+Make sure you read the [code of conduct](CODE_OF_CONDUCT.md) and the
+[contribution guidelines](CONTRIBUTING.md).
+
 ## Support
 
 To get support on the SDK you can either create a [new] [issue], or e-mail your question to
