@@ -90,9 +90,9 @@ To get support on the SDK you can either create a [new] [issue], or e-mail your 
 [@itslanguage/api]: https://npmjs.com/@itslanguage/api
 [@itslanguage/player]: https://npmjs.com/@itslanguage/player
 [@itslanguage/recorder]: https://npmjs.com/@itslanguage/recorder
-[unpkg/@itslanguage/api/dist/]: https://unpkg.com/@itslanguage/api/dist/
-[unpkg/@itslanguage/player/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
-[unpkg/@itslanguage/recorder/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
+[unpkg.com/@itslanguage/api/dist/]: https://unpkg.com/@itslanguage/api/dist/
+[unpkg.com/@itslanguage/player/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
+[unpkg.com/@itslanguage/recorder/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
 [API docs]: https://itslanguage.github.io/itslanguage-docs
 [REST and WebSocket API]: https://itslanguage.github.io/itslanguage-docs
 [new]: https://github.com/itslanguage/itslanguage-js/issues/new
