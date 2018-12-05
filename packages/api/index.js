@@ -16,8 +16,6 @@ import * as progress from './api/progress';
 import * as roles from './api/roles';
 import * as tenants from './api/tenants';
 import * as users from './api/users';
-import VolumeMeter, { generateWaveSample } from './audio/audio-tools';
-import Stopwatch from './audio/tools';
 
 /**
  * Document the version number of the ITSLanguage SDK.
@@ -117,15 +115,6 @@ export class Itslanguage {
      */
     this.users = users;
 
-    /**
-     * @type module:sdk/lib/api/utils
-     */
-    this.utils = {
-      generateWaveSample,
-      VolumeMeter,
-      Stopwatch,
-    };
-
     this.communication.updateSettings(options);
   }
 }
@@ -142,30 +131,4 @@ export class Itslanguage {
  */
 export function createItslSdk(options) {
   return new Itslanguage(options);
-}
-
-
-/**
- * Factory to create a VolumeMeter.
- * The VolumeMeter object is also available through the ITSLanguage SDK object.
- *
- * @param {AudioContext} audioContext - The WebAudio context.
- * @param {MediaStream} inputStream - The MediaStream to analyze.
- *
- * @returns {VolumeMeter} - A VolumeMeter instance.
- */
-export function createVolumeMeter(audioContext, inputStream) {
-  return new VolumeMeter(audioContext, inputStream);
-}
-
-
-/**
- * Factory to create a Stopwatch object.
- * The StopWatch object is also available through the ITSLanguage SDK object.
- *
- * @param {function} tickCb - Callback function to call at every tick.
- * @returns {Stopwatch} - An instance of the StopWatch object.
- */
-export function createStopwatch(tickCb) {
-  return new Stopwatch(tickCb);
 }
