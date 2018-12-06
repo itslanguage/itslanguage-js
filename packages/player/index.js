@@ -29,7 +29,6 @@ export const CORS_MODE = {
  * @throws {Error} If window.Audio does not exist.
  * @returns {HTMLAudioElement}
  */
-// eslint-disable-next-line import/prefer-default-export
 export function createPlayer(audioUrl = null, secureLoad = false, crossOrigin = null) {
   if (!Audio) {
     throw new Error('Your browser is not capable of playing audio.');
