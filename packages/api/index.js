@@ -33,12 +33,12 @@ export class Itslanguage {
   /**
    * Create ITSLanguage API.
    *
-   * @param {Object} options - An object containing options for communication.
+   * @param {Object} [options={}] - An object containing options for communication.
    * @param {string} options.apiUrl - The URL of the REST api.
    * @param {string} options.wsUrl - The URL of the WebSocket server.
    * @param {string} options.authorizationToken - An OAuth2 token string.
    */
-  constructor(options) {
+  constructor(options = {}) {
     /**
      * Expose the ITSLanguage API package version.
      * @type {string}
