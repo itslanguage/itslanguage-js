@@ -26,9 +26,24 @@ describe('player', () => {
       /* eslint-enable no-global-assign */
     });
 
-    it('should have set crossOrigin to "use-credentials"', () => {
+    it('should not have set crossOrigin if not passed', () => {
       const player = audioPlayer.createPlayer();
+      expect(player.crossOrigin).toBeNull();
+    });
+
+    it('should have set crossOrigin to anonymous if that is passed', () => {
+      const player = audioPlayer.createPlayer(fakeUrl, false, 'anonymous');
+      expect(player.crossOrigin).toBe('anonymous');
+    });
+
+    it('should have set crossOrigin to use-credentials if that is passed', () => {
+      const player = audioPlayer.createPlayer(fakeUrl, false, 'use-credentials');
       expect(player.crossOrigin).toBe('use-credentials');
+    });
+
+    it('should throw an error if an invalid crossOrigin mode is passed', () => {
+      expect(() => audioPlayer.createPlayer(fakeUrl, false, 'wubalublub'))
+        .toThrowError(Error, 'Invalid value for crossOrigin passed');
     });
 
     it('should NOT set HTMLAudioElement.src if we don\'t pass an audioUrl', () => {

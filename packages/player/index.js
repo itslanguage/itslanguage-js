@@ -5,6 +5,17 @@
 import { addAccessToken } from '@itslanguage/api/communication';
 
 /**
+ * Enum for available cross origin modes.
+ * @enum {string}
+ * @typedef CorsMode
+ * @readonly
+ */
+export const CORS_MODE = {
+  ANONYMOUS: 'anonymous',
+  USE_CREDENTIALS: 'use-credentials',
+};
+
+/**
  * Factory function to create a HTMLAudioElement.
  * If requested, it is capable of adding "access_token" to the audioUrl. For some audio an user
  * needs to be authenticated to be able to playback some audio.
@@ -14,17 +25,30 @@ import { addAccessToken } from '@itslanguage/api/communication';
  * @param {string} [audioUrl=false] - Provide URL to load.
  * @param {boolean} [secureLoad=false] - If true, add `access_token` to the url. But only if
  * audioUrl was also passed and you have a valid token to communicate with the backend.
+ * @param {CorsMode} [crossOrigin=null] - If passed, set player.crossOrigin to this value.
  * @throws {Error} If window.Audio does not exist.
  * @returns {HTMLAudioElement}
  */
 // eslint-disable-next-line import/prefer-default-export
-export function createPlayer(audioUrl = null, secureLoad = false) {
+export function createPlayer(audioUrl = null, secureLoad = false, crossOrigin = null) {
   if (!Audio) {
     throw new Error('Your browser is not capable of playing audio.');
   }
 
   const audio = new Audio();
-  audio.crossOrigin = 'use-credentials';
+
+  if (crossOrigin) {
+    switch (crossOrigin) {
+      case CORS_MODE.ANONYMOUS:
+        audio.crossOrigin = CORS_MODE.ANONYMOUS;
+        break;
+      case CORS_MODE.USE_CREDENTIALS:
+        audio.crossOrigin = CORS_MODE.USE_CREDENTIALS;
+        break;
+      default:
+        throw new Error('Invalid value for crossOrigin passed');
+    }
+  }
 
   if (audioUrl) {
     audio.src = secureLoad
