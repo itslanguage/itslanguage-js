@@ -21,7 +21,7 @@ import * as users from './users';
  * Document the version number of the ITSLanguage API package.
  * @type {string}
  */
-const VERSION = '4.0.0-beta-14';
+const VERSION = '4.0.0-beta-15';
 
 
 /**
