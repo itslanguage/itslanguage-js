@@ -85,7 +85,7 @@ does not follow any best practices (i.e. use at your own risk):
 ### createPlayer
 
 ```js
-createPlayer([audioUrl=null], [secureLoad=false])
+createPlayer([audioUrl=null], [secureLoad=false], [crossOrigin=null])
 ```
 
 Create a new instance of a HTMLAudioElement (i.e. `new Audio()` or `<audio></audio>`).
@@ -96,6 +96,8 @@ Create a new instance of a HTMLAudioElement (i.e. `new Audio()` or `<audio></aud
 - ```[secureLoad = false: boolean]```: optionally, add an authorization to the request to download
 the audio fragment. This is needed to load audio from the ITSLanguage backend where you need to be
 authorised to listen to. Note that if you don't pass an audioUrl, it will skip this flag.
+- ```[crossOrigin = null: CorsMode]```: optionally pass the crossOrigin mode that needs to be set
+on the audio player. Valid values are defined by the CorsMode object.
 
 ### loadAudioUrl
 
