@@ -12,8 +12,8 @@ import { addAccessToken } from '@itslanguage/api/communication';
  * Keep in mind you need a (valid) token to be able to add it!
  *
  * @param {string} [audioUrl=false] - Provide URL to load.
- * @param {boolean} [secureLoad] - If true, add `access_token` to the url. But only if audioUrl was
- * also passed and you have a valid token to communicate with the backend.
+ * @param {boolean} [secureLoad=false] - If true, add `access_token` to the url. But only if
+ * audioUrl was also passed and you have a valid token to communicate with the backend.
  * @throws {Error} If window.Audio does not exist.
  * @returns {HTMLAudioElement}
  */
