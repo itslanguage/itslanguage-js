@@ -1,6 +1,6 @@
 {
   "name": "@itslanguage/api",
-  "version": "4.0.0-beta-13",
+  "version": "4.0.0-beta-14",
   "description": "The JavaScript API SDK for ITSLanguage.",
   "author": "ITSLanguage (https://www.itslanguage.nl) <support@itslanguage.nl>",
   "contributors": [
