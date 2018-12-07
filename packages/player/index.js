@@ -2,7 +2,7 @@
  * @module player
  */
 
-import { addAccessToken } from '@itslanguage/api/communication';
+import { communication } from '@itslanguage/api';
 
 /**
  * Enum for available cross origin modes.
@@ -51,7 +51,7 @@ export function createPlayer(audioUrl = null, secureLoad = false, crossOrigin = 
 
   if (audioUrl) {
     audio.src = secureLoad
-      ? addAccessToken(audioUrl)
+      ? communication.addAccessToken(audioUrl)
       : audioUrl;
   }
 
@@ -92,7 +92,7 @@ export function loadAudioUrl(player, audioUrl, secureLoad = false) {
 
   // eslint-disable-next-line no-param-reassign
   player.src = secureLoad
-    ? addAccessToken(audioUrl)
+    ? communication.addAccessToken(audioUrl)
     : audioUrl;
 
   return player.src;
