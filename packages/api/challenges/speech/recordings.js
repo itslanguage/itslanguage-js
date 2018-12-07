@@ -79,16 +79,20 @@ export function getAll(challenge, filters) {
  * stored.
  */
 export function record(challenge, recorder) {
+  let recordingId = null;
+
   return makeWebsocketCall('recording.init_recording')
-    // Initializing the recording ought to give us an ID for the recording we
-    // are creating right now.
-    .then(recording => makeWebsocketCall('recording.init_challenge', { args: [recording, challenge] }))
+    // Initializing the recording to give us an ID for the recording we are creating right now.
+    .then((recording) => {
+      recordingId = recording;
+      return makeWebsocketCall('recording.init_challenge', { args: [recordingId, challenge] });
+    })
     // We've linked it to the speech challenge now. We also should have
     // received the recording ID once again.
-    .then(recording => prepareServerForAudio(recording, recorder, 'recording.init_audio'))
+    .then(() => prepareServerForAudio(recordingId, recorder, 'recording.init_audio'))
     // We've prepped the websocket server so it knows what audio format we are
     // using and all the extra floof that comes with it.
-    .then(recording => encodeAndSendAudioOnDataAvailable(recording, recorder, 'recording.write'))
+    .then(() => encodeAndSendAudioOnDataAvailable(recordingId, recorder, 'recording.write'))
     // When we are done; close the connection.
-    .then(recording => makeWebsocketCall('recording.close', { args: [recording] }));
+    .then(() => makeWebsocketCall('recording.close', { args: [recordingId] }));
 }
