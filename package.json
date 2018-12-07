@@ -1,6 +1,6 @@
 {
   "name": "@itslanguage/sdk",
-  "version": "4.0.0-beta-15",
+  "version": "4.0.0-beta-16",
   "private": true,
   "description": "The JavaScript monorepo for ITSLanguage.",
   "engines": {
