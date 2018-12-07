@@ -21,7 +21,7 @@ import * as users from './users';
  * Document the version number of the ITSLanguage API package.
  * @type {string}
  */
-const VERSION = '4.0.0-beta-15';
+export const version = '4.0.0-beta-15';
 
 
 /**
@@ -43,7 +43,7 @@ export class Itslanguage {
      * Expose the ITSLanguage API package version.
      * @type {string}
      */
-    this.version = VERSION;
+    this.version = version;
 
     /**
      * @type module:api/authentication
@@ -132,3 +132,21 @@ export class Itslanguage {
 export function createItslApi(options) {
   return new Itslanguage(options);
 }
+
+/**
+ * Export authentication. It can be used without the need of the Itslanguage object.
+ * @type module:api/authentication
+ */
+export { authentication };
+
+/**
+ * Export broadcaster. It can be used without the need of the Itslanguage object.
+ * @type module:api/broadcaster
+ */
+export { broadcaster };
+
+/**
+ * Export communication. It can be used without the need of the Itslanguage object.
+ * @type module:api/communication
+ */
+export { communication };
