@@ -1,4 +1,4 @@
-import { settings } from '@itslanguage/api/communication';
+import { communication } from '@itslanguage/api';
 import * as audioPlayer from './index';
 
 // Some handy consts for re-usability
@@ -67,16 +67,16 @@ describe('player', () => {
     });
 
     it('should not add "access_token" if we pass secureLoad but have no token', () => {
-      settings.authorizationToken = null;
+      communication.settings.authorizationToken = null;
       const player = audioPlayer.createPlayer(fakeUrl, secureLoad);
       expect(player.src.includes(fakeTokenUrl)).toBeFalsy();
     });
 
     it('should add "access_token" if we pass secureLoad', () => {
-      settings.authorizationToken = fakeToken;
+      communication.settings.authorizationToken = fakeToken;
       const player = audioPlayer.createPlayer(fakeUrl, secureLoad);
       expect(player.src.includes(fakeTokenUrl)).toBeTruthy();
-      settings.authorizationToken = null;
+      communication.settings.authorizationToken = null;
     });
   });
 
@@ -106,11 +106,11 @@ describe('player', () => {
     });
 
     it('should add "access_token" to src if we pass secureLoad', () => {
-      settings.authorizationToken = fakeToken;
+      communication.settings.authorizationToken = fakeToken;
       const player = audioPlayer.createPlayer('somefakeseomthing');
       audioPlayer.loadAudioUrl(player, fakeUrl, secureLoad);
       expect(player.src.includes(fakeTokenUrl)).toBeTruthy();
-      settings.authorizationToken = null;
+      communication.settings.authorizationToken = null;
     });
   });
 });
