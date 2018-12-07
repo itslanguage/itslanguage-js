@@ -86,16 +86,28 @@ async function runJsdoc(srcPath, destPath) {
  */
 function pack(sourcePath, entry, library, mode = 'production') {
   return new Promise((resolve, reject) => {
+    // Generate an externals object from the bundle information
+    const externals = bundles.reduce((acc, bundle) => {
+      acc[`@itslanguage/${bundle.entry}`] = {
+        commonjs: bundle.entry,
+        commonjs2: bundle.entry,
+        amd: bundle.entry,
+        root: bundle.entry,
+      };
+      return acc;
+    }, {});
+
+    // Create the bundle!
     webpack({
       mode,
       entry: `${sourcePath}/index.js`,
-      externals: /^@itslanguage\//,
       output: {
         path: `${sourcePath}/dist`,
         filename: `${entry}.${mode === 'development' ? '' : 'min.'}js`,
         library,
         libraryTarget: 'umd',
       },
+      externals,
     }, (err, stats) => {
       if (err) {
         reject(err);
