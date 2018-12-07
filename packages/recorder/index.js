@@ -4,6 +4,11 @@
 
 import MediaRecorder from 'audio-recorder-polyfill';
 
+export const DEFAULT_AUDIO_FORMAT = 'audio/wave';
+export const DEFAULT_CHANNELS = 1;
+export const DEFAULT_SAMPLE_WIDTH = 16;
+export const DEFAULT_SAMPLE_RATE = 48000;
+
 /**
  * Override or set the MediaRecorder to the window object.
  *
@@ -37,7 +42,20 @@ export function createRecorder(stream = null, setToWindow = false, asObject = 'M
     addAsGlobal(asObject);
   }
 
-  return new MediaRecorder(stream);
+  const recorder = new MediaRecorder(stream);
+
+  // We need to add a function "getAudioSpecs" to be compliant with the itslanguage backend...
+  recorder.getAudioSpecs = () => ({
+    audioFormat: DEFAULT_AUDIO_FORMAT,
+    audioParameters: {
+      channels: DEFAULT_CHANNELS,
+      sampleWidth: DEFAULT_SAMPLE_WIDTH,
+      frameRate: DEFAULT_SAMPLE_RATE,
+      sampleRate: DEFAULT_SAMPLE_RATE,
+    },
+  });
+
+  return recorder;
 }
 
 /**

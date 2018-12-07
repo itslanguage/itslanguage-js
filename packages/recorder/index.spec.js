@@ -88,6 +88,30 @@ describe('MediaRecorder', () => {
       mediaRecorder.createRecorder(STREAM, dontSetWindow, CUSTOM_NS);
       expect(window[CUSTOM_NS]).toBeUndefined();
     });
+
+    it('should have a function getAudioSpecs', () => {
+      const recorder = mediaRecorder.createRecorder(STREAM);
+      expect(recorder.getAudioSpecs).toBeDefined();
+    });
+  });
+
+  describe('getAudioSpecs', () => {
+    it('should return an object with audio specs', () => {
+      const recorder = mediaRecorder.createRecorder(STREAM);
+      const audioSpecs = recorder.getAudioSpecs();
+
+      const specsMock = {
+        audioFormat: mediaRecorder.DEFAULT_AUDIO_FORMAT,
+        audioParameters: {
+          channels: mediaRecorder.DEFAULT_CHANNELS,
+          sampleWidth: mediaRecorder.DEFAULT_SAMPLE_WIDTH,
+          frameRate: mediaRecorder.DEFAULT_SAMPLE_RATE,
+          sampleRate: mediaRecorder.DEFAULT_SAMPLE_RATE,
+        },
+      };
+
+      expect(audioSpecs).toEqual(specsMock);
+    });
   });
 
   describe('createMediaStream', () => {
