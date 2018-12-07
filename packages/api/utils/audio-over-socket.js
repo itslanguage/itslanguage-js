@@ -21,10 +21,20 @@ import { dataToBase64 } from '.';
  */
 export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
   return new Promise((resolve, reject) => {
-    // When the audio is done recording: encode the data, send it to the
-    // websocket server and continue with the chain.
-    recorder.addEventListener('dataavailable', (chunk) => {
-      const encoded = dataToBase64(chunk);
+    // When data is received from the recorder, it will be in Blob format.
+    // To be able to send it to the server, we need to use a FileReader.
+    const fileReader = new FileReader();
+
+    recorder.addEventListener('dataavailable', ({ data }) => {
+      fileReader.readAsArrayBuffer(data);
+    });
+
+    // When we read the data from the Blob element, base64 it and send it to
+    // the websocket server and continue with the chain.
+    // The ArrayBuffer can be read from fileReader.result, OR as we do below
+    // we read it from event.target.result.
+    fileReader.addEventListener('loadend', (event) => {
+      const encoded = dataToBase64(event.target.result);
       makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
         .then(resolve, reject);
     });

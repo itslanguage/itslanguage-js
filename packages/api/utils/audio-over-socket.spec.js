@@ -24,7 +24,12 @@ describe('encodeAndSendAudioOnDataAvailable', () => {
     makeWebsocketCallSpy.and.returnValue(Promise.resolve('He\'s nervous, but on the surface he looks calm and ready'));
     recorderStub.addEventListener.and.callFake((event, callback) => {
       // Pretend as if the event has been fired and thus call the callback.
-      callback('Knees weak, arms are heavy.');
+      callback({
+        data: new Blob(
+          ['Knees weak, arms are heavy.'],
+          { type: 'text/plain' },
+        ),
+      });
     });
 
     aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
@@ -51,7 +56,12 @@ describe('encodeAndSendAudioOnDataAvailable', () => {
     )));
     recorderStub.addEventListener.and.callFake((event, callback) => {
       // Pretend as if the event has been fired and thus call the callback.
-      callback('Knees weak, arms are heavy.');
+      callback({
+        data: new Blob(
+          ['Knees weak, arms are heavy.'],
+          { type: 'text/plain' },
+        ),
+      });
     });
 
     aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
