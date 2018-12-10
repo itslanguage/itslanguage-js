@@ -85,29 +85,47 @@ export function registerStreamForRecorder(recorder, rpcName) {
   function sendAudioChunks(args, kwargs, details) {
     // eslint-disable-next-line new-cap
     const defer = new autobahn.when.defer();
+    const fileReader = new FileReader();
 
+    /**
+     * Everytime we get data, push it through the fileReader
+     * to be able to use it!
+     * @param event
+     */
+    const dataAvailable = (event) => {
+      fileReader.readAsArrayBuffer(event.data);
+    };
+
+    /**
+     * FileReader is done reading. Use the result to send it to the backend!
+     * @param event
+     */
     const processData = (event) => {
       // Send the data chunks to the backend! Whoop whoop!
-      const dataToSend = Array.from(new Uint8Array(event.data));
+      const dataToSend = Array.from(new Uint8Array(event.target.result));
       details.progress([dataToSend]);
     };
 
+    /**
+     * Recording is done. Resolve and unregister now please!
+     */
     const stop = () => {
-      // Recording is done. Resolve and unregister now please!
-
-      defer.resolve();
+      defer.resolve(); // Resolve the defer so autobahn tells wamp its over!
       if (rpcRegistration) {
         getWebsocketConnection()
           .then(connection => connection.session.unregister(rpcRegistration));
       }
 
-      recorder.removeEventListener('dataavailable', processData);
+      // Remove some listeners we don't need anymore now!
+      fileReader.removeEventListener('loadend', processData);
+      recorder.removeEventListener('dataavailable', dataAvailable);
       recorder.removeEventListener('stop', stop);
     };
 
     if (details.progress) {
       // Listen for recording events.
-      recorder.addEventListener('dataavailable', processData);
+      fileReader.addEventListener('loadend', processData);
+      recorder.addEventListener('dataavailable', dataAvailable);
       recorder.addEventListener('stop', stop);
     }
 
