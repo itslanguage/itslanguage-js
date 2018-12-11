@@ -45,7 +45,7 @@ export function prepare(challengeId) {
  *
  * @param {string} feedbackId - The Id of the Feedback Challenge.
  * @param {Function} progressCb - A callback which will be used to receive progress on.
- * @param MediaRecorder recorder - Audio recorder instance.
+ * @param {MediaRecorder} recorder - Audio recorder instance.
  * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This
  * feedback will be given through the progressiveResultsCb function. When the rpc is done, the
  * promise will return an recording with the appropriate feedback per sentence.
