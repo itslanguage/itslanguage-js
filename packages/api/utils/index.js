@@ -20,3 +20,26 @@ export function dataToBase64(data) { // eslint-disable-line import/prefer-defaul
   }
   return window.btoa(binary);
 }
+
+
+/**
+ * Async function to convert a Blob to an ArrayBuffer.
+ * @param {Blob} blob - The blob to read as ArrayBuffer
+ * @returns {Promise}
+ */
+export function asyncBlobToArrayBuffer(blob) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+
+    fileReader.addEventListener('loadend', () => {
+      resolve(fileReader.result);
+    });
+
+    fileReader.addEventListener('error', () => {
+      fileReader.abort();
+      reject(fileReader.error);
+    });
+
+    fileReader.readAsArrayBuffer(blob);
+  });
+}
