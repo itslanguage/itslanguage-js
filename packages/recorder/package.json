@@ -26,7 +26,7 @@
     "MediaRecorder"
   ],
   "engines": {
-    "node": "8"
+    "node": ">= 8"
   },
   "main": "index.js",
   "dependencies": {

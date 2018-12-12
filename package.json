@@ -4,7 +4,7 @@
   "private": true,
   "description": "The JavaScript monorepo for ITSLanguage.",
   "engines": {
-    "node": "8"
+    "node": ">= 8"
   },
   "workspaces": [
     "packages/*"
