@@ -79,6 +79,31 @@ describe('request', () => {
       }, fail);
   });
 
+  it('should leave the url of a request as if', (done) => {
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+
+    const responseBody = { location: 'South East Asia' };
+    const response = new Response(JSON.stringify(responseBody), { headers });
+    fetchSpy.and.returnValue(Promise.resolve(response));
+
+    communication.request('GET', 'https://fake/url')
+      .then((result) => {
+        const request = fetchSpy.calls.mostRecent();
+        expect(request.args).toEqual([
+          'https://fake/url',
+          {
+            method: 'GET',
+            headers,
+            body: undefined,
+          },
+        ]);
+
+        expect(result).toEqual(responseBody);
+        done();
+      }, fail);
+  });
+
   it('should send URLSearchParams body as x-www-form-urlencoded (i.e. URLSearchParams)', (done) => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
@@ -269,6 +294,12 @@ describe('addAccessToken', () => {
   it('should return the url with access_token with an & if it is not the first queryparam', () => {
     communication.settings.authorizationToken = fakeToken;
     expect(communication.addAccessToken(`${fakeUrl}?someParam=x`).includes(`&${fakeTokenUrl}`)).toBeTruthy();
+    communication.settings.authorizationToken = null;
+  });
+
+  it('should add access_token when the url is not passed', () => {
+    communication.settings.authorizationToken = fakeToken;
+    expect(communication.addAccessToken().includes(fakeTokenUrl)).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
 });
