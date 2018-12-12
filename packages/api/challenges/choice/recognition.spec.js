@@ -4,6 +4,8 @@
 
 import * as recognition from './recognition';
 import * as communication from '../../communication';
+import * as websocket from '../../communication/websocket';
+import * as utils from '../../utils/audio-over-socket';
 
 describe('Choice Recognition Challenge API', () => {
   describe('create', () => {
@@ -74,6 +76,87 @@ describe('Choice Recognition Challenge API', () => {
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t/recognitions']);
           done();
         }, fail);
+    });
+  });
+
+
+  describe('prepare', () => {
+    it('should call choice.init_recognition', (done) => {
+      const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
+      makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
+
+      recognition.prepare().then(() => {
+        expect(makeWebsocketCallSpy).toHaveBeenCalledWith('choice.init_recognition');
+        done();
+      });
+    });
+  });
+
+
+  describe('prepareChallenge', () => {
+    it('should call choice.init_challenge with recognitionId and challengeId', (done) => {
+      const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
+      makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
+
+      recognition.prepareChallenge('recognitionId', 'challengeId').then(() => {
+        expect(makeWebsocketCallSpy)
+          .toHaveBeenCalledWith('choice.init_challenge', {
+            args: ['recognitionId', 'challengeId'],
+          });
+        done();
+      });
+    });
+  });
+
+
+  describe('recogniseAudioStream', () => {
+    it('should call choice.recognise', (done) => {
+      const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
+      makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
+
+      const registerStreamForRecorderSpy = spyOn(utils, 'registerStreamForRecorder');
+      registerStreamForRecorderSpy.and.returnValue(new Promise((resolve) => {
+        resolve({
+          procedure: 'fakeProcedure',
+        });
+      }));
+
+      recognition.recogniseAudioStream('recognitionId', 'nothing').then(() => {
+        expect(makeWebsocketCallSpy)
+          .toHaveBeenCalledWith('choice.recognise', { args: ['recognitionId', 'fakeProcedure'] });
+        done();
+      });
+    });
+  });
+
+
+  describe('recognise', () => {
+    let makeWebsocketCallSpy;
+    let registerStreamForRecorderSpy;
+
+    beforeEach(() => {
+      makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
+      makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
+
+      registerStreamForRecorderSpy = spyOn(utils, 'registerStreamForRecorder');
+      registerStreamForRecorderSpy.and.returnValue(new Promise((resolve) => {
+        resolve({
+          procedure: 'fakeProcedure',
+        });
+      }));
+    });
+
+    it('should return a promise', () => {
+      expect(recognition.recognise('', null) instanceof Promise).toBeTruthy();
+    });
+
+    it('should call all the needed functions', (done) => {
+      recognition.recognise('challengeId', 'noRecorder')
+        .then(() => {
+          expect(makeWebsocketCallSpy).toHaveBeenCalledTimes(3);
+          expect(registerStreamForRecorderSpy).toHaveBeenCalledTimes(1);
+          done();
+        });
     });
   });
 });
