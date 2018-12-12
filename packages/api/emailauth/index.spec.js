@@ -20,7 +20,8 @@ describe('emailauth', () => {
             password: 'captain_america_is_cool',
           }]);
           done();
-        }, done.fail);
+        })
+        .catch(done.fail);
     });
 
     it('should make an authorised request and passing userId', (done) => {
@@ -35,7 +36,8 @@ describe('emailauth', () => {
             password: 'captain_america_is_cool',
           }]);
           done();
-        }, done.fail);
+        })
+        .catch(done.fail);
     });
   });
 });

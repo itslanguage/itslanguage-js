@@ -17,7 +17,8 @@ describe('user', () => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
           expect(createRequest.args).toEqual(['POST', '/users', { name: 'poes' }]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -31,7 +32,8 @@ describe('user', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/user']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -45,7 +47,8 @@ describe('user', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/users/c4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -60,7 +63,8 @@ describe('user', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/users']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should allow filters if they are a URLSearchParams object', (done) => {
@@ -75,7 +79,8 @@ describe('user', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/users?parent=d4ddyc4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', (done) => {

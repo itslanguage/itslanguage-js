@@ -17,7 +17,8 @@ describe('Speech Challenge API', () => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
           expect(createRequest.args).toEqual(['POST', '/challenges/speech', { question: 'poes?' }]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -32,7 +33,8 @@ describe('Speech Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/c4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -47,7 +49,8 @@ describe('Speech Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/speech']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should allow filters if they are a URLSearchParams object', (done) => {
@@ -62,7 +65,8 @@ describe('Speech Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/speech?theme=m30w']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', (done) => {

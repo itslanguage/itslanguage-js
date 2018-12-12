@@ -56,18 +56,22 @@ describe('Audio Over socket', () => {
     });
 
     it('should register an RPC call named nl.itslanguage.rpcName', (done) => {
-      aos.registerStreamForRecorder(recorderStub, rpcName).then((result) => {
-        expect(result.rpc).toEqual(`nl.itslanguage.${rpcName}`);
-        done();
-      }, () => done.fail());
+      aos.registerStreamForRecorder(recorderStub, rpcName)
+        .then((result) => {
+          expect(result.rpc).toEqual(`nl.itslanguage.${rpcName}`);
+          done();
+        })
+        .catch(done.fail);
     });
 
     it('should emit websocketserverreadyforaudio when ready to receive audio', (done) => {
       const broadcastSpy = spyOn(broadcaster, 'emit');
-      aos.registerStreamForRecorder(recorderStub, rpcName).then(() => {
-        expect(broadcastSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
-        done();
-      }, () => done.fail());
+      aos.registerStreamForRecorder(recorderStub, rpcName)
+        .then(() => {
+          expect(broadcastSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
+          done();
+        })
+        .catch(done.fail);
     });
 
     it('should stream audio to the backend', (done) => {
@@ -81,13 +85,15 @@ describe('Audio Over socket', () => {
         });
       });
 
-      aos.registerStreamForRecorder(recorderStub, rpcName).then((result) => {
-        const detailsSpy = jasmine.createSpyObj('details', ['progress']);
-        result.callback([], {}, detailsSpy).then(() => {
-          expect(detailsSpy.progress).toHaveBeenCalled();
-        });
-        done();
-      }, () => done.fail());
+      aos.registerStreamForRecorder(recorderStub, rpcName)
+        .then((result) => {
+          const detailsSpy = jasmine.createSpyObj('details', ['progress']);
+          result.callback([], {}, detailsSpy).then(() => {
+            expect(detailsSpy.progress).toHaveBeenCalled();
+          });
+          done();
+        })
+        .catch(done.fail);
     });
 
     it('should not stream audio if the progress function does not exist', (done) => {
@@ -101,13 +107,15 @@ describe('Audio Over socket', () => {
         });
       });
 
-      aos.registerStreamForRecorder(recorderStub, rpcName).then((result) => {
-        const detailsSpy = jasmine.createSpy('details');
-        result.callback([], {}, detailsSpy).then(() => {
-          expect(detailsSpy.progress).not.toHaveBeenCalled();
-        });
-        done();
-      }, () => done.fail());
+      aos.registerStreamForRecorder(recorderStub, rpcName)
+        .then((result) => {
+          const detailsSpy = jasmine.createSpy('details');
+          result.callback([], {}, detailsSpy).then(() => {
+            expect(detailsSpy.progress).not.toHaveBeenCalled();
+          });
+          done();
+        })
+        .catch(done.fail);
     });
 
     it('should only resolve on the last chunk', (done) => {
@@ -133,24 +141,28 @@ describe('Audio Over socket', () => {
         }
       });
 
-      aos.registerStreamForRecorder(recorderStub, rpcName).then((result) => {
-        const detailsSpy = jasmine.createSpyObj('details', ['progress']);
-        result.callback([], {}, detailsSpy).then(() => {
-          expect(detailsSpy.progress).toHaveBeenCalledTimes(2);
-          done();
-        });
+      aos.registerStreamForRecorder(recorderStub, rpcName)
+        .then((result) => {
+          const detailsSpy = jasmine.createSpyObj('details', ['progress']);
+          result.callback([], {}, detailsSpy)
+            .then(() => {
+              expect(detailsSpy.progress).toHaveBeenCalledTimes(2);
+              done();
+            })
+            .catch(done.fail);
 
-        dataavailableCallback(blob);
-
-        // We need to wait a bit before we can send the rest.
-        setTimeout(() => {
-          // Send the stop event
-          stopCallback();
-
-          // Send the final chunk!
           dataavailableCallback(blob);
-        }, 1000);
-      }, () => done.fail());
+
+          // We need to wait a bit before we can send the rest.
+          setTimeout(() => {
+            // Send the stop event
+            stopCallback();
+
+            // Send the final chunk!
+            dataavailableCallback(blob);
+          }, 1000);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -192,7 +204,8 @@ describe('Audio Over socket', () => {
           );
           expect(result).toEqual('He\'s nervous, but on the surface he looks calm and ready');
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should reject if the `makeWebsocketCall` rejected', (done) => {
@@ -211,7 +224,8 @@ describe('Audio Over socket', () => {
       });
 
       aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
-        .then(fail, ({ message }) => {
+        .then(done.fail)
+        .catch(({ message }) => {
           expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
             'his.palms.are.sweaty',
             {
@@ -224,7 +238,8 @@ describe('Audio Over socket', () => {
           );
           expect(message).toBe('Websocket server has received and rejected the call.');
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -264,7 +279,8 @@ describe('Audio Over socket', () => {
           expect(result).toEqual('r353rv3d1d');
           expect(broadcasterSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should reject if the `makeWebsocketCall` rejected', (done) => {
@@ -279,7 +295,8 @@ describe('Audio Over socket', () => {
       )));
 
       aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo')
-        .then(fail, () => {
+        .then(done.fail)
+        .catch(() => {
           expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
             'write.this.down.kiddo',
             {

@@ -20,7 +20,8 @@ describe('basicauth', () => {
             password: 'captain_america_is_cool',
           }]);
           done();
-        }, done.fail);
+        })
+        .catch(done.fail);
     });
   });
 });

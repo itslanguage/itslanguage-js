@@ -76,7 +76,8 @@ describe('request', () => {
 
         expect(result).toEqual(responseBody);
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should leave the url of a request as if', (done) => {
@@ -101,7 +102,8 @@ describe('request', () => {
 
         expect(result).toEqual(responseBody);
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should send URLSearchParams body as x-www-form-urlencoded (i.e. URLSearchParams)', (done) => {
@@ -129,7 +131,8 @@ describe('request', () => {
 
         expect(result).toEqual(responseBody);
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should send FormData as multipart/form-data (i.e. FormData)', (done) => {
@@ -157,7 +160,8 @@ describe('request', () => {
 
         expect(result).toEqual(responseBody);
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should reject with the custom JSON errors from the API', (done) => {
@@ -174,7 +178,8 @@ describe('request', () => {
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     communication.request('GET', '/give/me/coffee')
-      .then(fail, (result) => {
+      .then(done.fail)
+      .catch((result) => {
         expect(result).toEqual(responseBody);
         done();
       });
@@ -203,7 +208,8 @@ describe('request', () => {
       .then((result) => {
         expect(result).toBe(response);
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 });
 
@@ -221,7 +227,7 @@ describe('authorisedRequest', () => {
 
   it('should only allow relative urls', (done) => {
     communication.authorisedRequest('PUT', 'https://domain.ext/path', { foo: 'bar' })
-      .then(fail)
+      .then(done.fail)
       .catch(({ message }) => {
         expect(message).toEqual('Only relative ITSLanguage API URLs are allowed.');
         done();
@@ -231,7 +237,7 @@ describe('authorisedRequest', () => {
   it('should reject when there is no authorizationToken set in the settings', (done) => {
     communication.updateSettings({ authorizationToken: null });
     communication.authorisedRequest('PUT', '/path', { foo: 'bar' })
-      .then(fail)
+      .then(done.fail)
       .catch(({ message }) => {
         expect(message).toEqual('Please authenticate first.');
         done();
@@ -265,7 +271,8 @@ describe('authorisedRequest', () => {
 
         expect(result).toEqual(responseBody);
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 });
 

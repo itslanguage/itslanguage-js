@@ -123,10 +123,12 @@ describe('MediaRecorder', () => {
     it('should reject with an error if getUserMedia is not available', (done) => {
       spyOnProperty(navigator, 'mediaDevices').and.returnValue({});
 
-      mediaRecorder.createMediaStream().catch(({ message }) => {
-        expect(message).toBe('navigator.mediaDevices.getUserMedia not implemented in this browser');
-        done();
-      });
+      mediaRecorder.createMediaStream()
+        .then(done.fail)
+        .catch(({ message }) => {
+          expect(message).toBe('navigator.mediaDevices.getUserMedia not implemented in this browser');
+          done();
+        });
     });
   });
 });

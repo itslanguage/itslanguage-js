@@ -18,7 +18,8 @@ describe('Speech Challenge Recording API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/ch4/recordings/r3c']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -33,7 +34,8 @@ describe('Speech Challenge Recording API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/ch4/recordings']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should allow filters if they are a URLSearchParams object', (done) => {
@@ -48,7 +50,8 @@ describe('Speech Challenge Recording API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/ch4/recordings?theme=m30w']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', (done) => {
@@ -95,7 +98,8 @@ describe('Speech Challenge Recording API', () => {
           expect(prepareServerForAudioSpy).toHaveBeenCalledTimes(1);
           expect(encodeAndSendAudioOnDataAvailableSpy).toHaveBeenCalledTimes(1);
           done();
-        });
+        })
+        .catch(done.fail);
     });
   });
 });

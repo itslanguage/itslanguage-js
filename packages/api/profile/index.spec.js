@@ -17,7 +17,8 @@ describe('profile', () => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
           expect(createRequest.args).toEqual(['POST', '/users/c4t/profile', { firstName: 'Mark' }]);
           done();
-        }, done.fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -31,7 +32,8 @@ describe('profile', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/user/profile']);
           done();
-        }, done.fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -45,7 +47,8 @@ describe('profile', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/users/c4t/profile']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 });

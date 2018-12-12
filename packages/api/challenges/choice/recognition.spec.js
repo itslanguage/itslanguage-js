@@ -25,7 +25,8 @@ describe('Choice Recognition Challenge API', () => {
             },
           ]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should make an authorised request and pass an ID', (done) => {
@@ -45,7 +46,8 @@ describe('Choice Recognition Challenge API', () => {
             },
           ]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -60,7 +62,8 @@ describe('Choice Recognition Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t/recognitions/d0g']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -75,7 +78,8 @@ describe('Choice Recognition Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t/recognitions']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -85,10 +89,12 @@ describe('Choice Recognition Challenge API', () => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      recognition.prepare().then(() => {
-        expect(makeWebsocketCallSpy).toHaveBeenCalledWith('choice.init_recognition');
-        done();
-      });
+      recognition.prepare()
+        .then(() => {
+          expect(makeWebsocketCallSpy).toHaveBeenCalledWith('choice.init_recognition');
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -98,13 +104,15 @@ describe('Choice Recognition Challenge API', () => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      recognition.prepareChallenge('recognitionId', 'challengeId').then(() => {
-        expect(makeWebsocketCallSpy)
-          .toHaveBeenCalledWith('choice.init_challenge', {
-            args: ['recognitionId', 'challengeId'],
-          });
-        done();
-      });
+      recognition.prepareChallenge('recognitionId', 'challengeId')
+        .then(() => {
+          expect(makeWebsocketCallSpy)
+            .toHaveBeenCalledWith('choice.init_challenge', {
+              args: ['recognitionId', 'challengeId'],
+            });
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -121,11 +129,13 @@ describe('Choice Recognition Challenge API', () => {
         });
       }));
 
-      recognition.recogniseAudioStream('recognitionId', 'nothing').then(() => {
-        expect(makeWebsocketCallSpy)
-          .toHaveBeenCalledWith('choice.recognise', { args: ['recognitionId', 'fakeProcedure'] });
-        done();
-      });
+      recognition.recogniseAudioStream('recognitionId', 'nothing')
+        .then(() => {
+          expect(makeWebsocketCallSpy)
+            .toHaveBeenCalledWith('choice.recognise', { args: ['recognitionId', 'fakeProcedure'] });
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -156,7 +166,8 @@ describe('Choice Recognition Challenge API', () => {
           expect(makeWebsocketCallSpy).toHaveBeenCalledTimes(3);
           expect(registerStreamForRecorderSpy).toHaveBeenCalledTimes(1);
           done();
-        });
+        })
+        .catch(done.fail);
     });
   });
 });

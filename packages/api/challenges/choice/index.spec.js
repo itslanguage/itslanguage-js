@@ -17,7 +17,8 @@ describe('Choice Challenge API', () => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
           expect(createRequest.args).toEqual(['POST', '/challenges/choice', { question: 'poes?' }]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -32,7 +33,8 @@ describe('Choice Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -47,7 +49,8 @@ describe('Choice Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/choice']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should allow filters if they are a URLSearchParams object', (done) => {
@@ -62,7 +65,8 @@ describe('Choice Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/choice?theme=m30w']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', (done) => {

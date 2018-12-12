@@ -23,7 +23,8 @@ describe('feedback Challenge API', () => {
             errors: 1337,
           }]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -38,7 +39,8 @@ describe('feedback Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/feedback/c4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -53,7 +55,8 @@ describe('feedback Challenge API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/feedback']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 });

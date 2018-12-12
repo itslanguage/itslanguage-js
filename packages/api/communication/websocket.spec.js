@@ -76,12 +76,13 @@ describe('openWebsocketConnection', () => {
       .then((result) => {
         expect(result).toEqual('Successfully established a websocket connection.');
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should reject if the connection could not be established', (done) => {
     websocket.openWebsocketConnection()
-      .then(fail, (result) => {
+      .then(done.fail, (result) => {
         expect(result).toEqual('The connection is erroneous; check if all '
                                + 'required settings have been injected using '
                                + 'the `updateSettings()` function. If the '
@@ -96,7 +97,7 @@ describe('openWebsocketConnection', () => {
       .then((result) => {
         expect(result).toEqual('There is no websocket connection to close.');
         done();
-      }, fail);
+      }, done.fail);
   });
 });
 
@@ -125,17 +126,19 @@ describe('closeWebsocketConnection', () => {
       .then((result) => {
         expect(result).toEqual('There is no websocket connection to close.');
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should successfully close a open connection', (done) => {
     websocket.openWebsocketConnection()
       // Now we've opened the connection; close it again.
-      .then(() => websocket.closeWebsocketConnection(), fail)
+      .then(() => websocket.closeWebsocketConnection(), done.fail)
       .then((result) => {
         expect(result).toEqual('The websocket connection has been closed successfully.');
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should resolve when the connection was already closed', (done) => {
@@ -145,18 +148,19 @@ describe('closeWebsocketConnection', () => {
 
     websocket.openWebsocketConnection()
       // Now we've opened the connection; close it again.
-      .then(() => websocket.closeWebsocketConnection(), fail)
+      .then(() => websocket.closeWebsocketConnection(), done.fail)
       .then((result) => {
         expect(result).toEqual('The websocket connection has already been closed.');
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should also remove the reference to the connection once it is closed', (done) => {
     websocket.openWebsocketConnection()
       // Now we've opened the connection; close it again.
-      .then(() => websocket.closeWebsocketConnection(), fail)
-      .then(() => websocket.closeWebsocketConnection(), fail)
+      .then(() => websocket.closeWebsocketConnection(), done.fail)
+      .then(() => websocket.closeWebsocketConnection(), done.fail)
       .then((result) => {
         // The internal reference is set to `null` when the connection is
         // closed. The `closeWebsocketConnection` function would therefore not
@@ -164,7 +168,8 @@ describe('closeWebsocketConnection', () => {
         // `it('should resolve if there is no open connection', ...);`
         expect(result).toEqual('There is no websocket connection to close.');
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 });
 
@@ -218,7 +223,8 @@ describe('makeWebsocketCall', () => {
           { option: 'value' },
         );
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should open a websocket connection if there isn\'t one already', (done) => {
@@ -226,16 +232,18 @@ describe('makeWebsocketCall', () => {
       args: ['accept', 'these'],
       kwargs: { kwarg: 'value' },
       options: { option: 'value' },
-    }).then(() => {
-      expect(connectionOpenSpy).toHaveBeenCalled();
-      expect(connectionSessionStub.call).toHaveBeenCalledWith(
-        'nl.itslanguage.do.a.rpc',
-        ['accept', 'these'],
-        { kwarg: 'value' },
-        { option: 'value' },
-      );
-      done();
-    }, fail);
+    })
+      .then(() => {
+        expect(connectionOpenSpy).toHaveBeenCalled();
+        expect(connectionSessionStub.call).toHaveBeenCalledWith(
+          'nl.itslanguage.do.a.rpc',
+          ['accept', 'these'],
+          { kwarg: 'value' },
+          { option: 'value' },
+        );
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('should set receive_progress to true if progress callback is passed', (done) => {
@@ -246,19 +254,21 @@ describe('makeWebsocketCall', () => {
       kwargs: { kwarg: 'value' },
       options: { option: 'value' },
       progressCb,
-    }).then(() => {
-      expect(connectionOpenSpy).toHaveBeenCalled();
-      expect(connectionSessionStub.call).toHaveBeenCalledWith(
-        'nl.itslanguage.do.a.rpc',
-        ['accept', 'these'],
-        { kwarg: 'value' },
-        {
-          option: 'value',
-          receive_progress: true,
-        },
-      );
-      done();
-    }, fail);
+    })
+      .then(() => {
+        expect(connectionOpenSpy).toHaveBeenCalled();
+        expect(connectionSessionStub.call).toHaveBeenCalledWith(
+          'nl.itslanguage.do.a.rpc',
+          ['accept', 'these'],
+          { kwarg: 'value' },
+          {
+            option: 'value',
+            receive_progress: true,
+          },
+        );
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('should catch an error if Session.call fails', (done) => {

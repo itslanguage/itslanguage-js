@@ -18,7 +18,8 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation/ch4/analyses/r3c']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -28,10 +29,12 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      analysis.prepare().then(() => {
-        expect(makeWebsocketCallSpy).toHaveBeenCalledWith('pronunciation.init_analysis');
-        done();
-      });
+      analysis.prepare()
+        .then(() => {
+          expect(makeWebsocketCallSpy).toHaveBeenCalledWith('pronunciation.init_analysis');
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -41,13 +44,15 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      analysis.prepareChallenge('analysisId', 'challengeId').then(() => {
-        expect(makeWebsocketCallSpy)
-          .toHaveBeenCalledWith('pronunciation.init_challenge', {
-            args: ['analysisId', 'challengeId'],
-          });
-        done();
-      });
+      analysis.prepareChallenge('analysisId', 'challengeId')
+        .then(() => {
+          expect(makeWebsocketCallSpy)
+            .toHaveBeenCalledWith('pronunciation.init_challenge', {
+              args: ['analysisId', 'challengeId'],
+            });
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -57,13 +62,15 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      analysis.alignChallenge('analysisId').then(() => {
-        expect(makeWebsocketCallSpy)
-          .toHaveBeenCalledWith('pronunciation.alignment', {
-            args: ['analysisId'],
-          });
-        done();
-      });
+      analysis.alignChallenge('analysisId')
+        .then(() => {
+          expect(makeWebsocketCallSpy)
+            .toHaveBeenCalledWith('pronunciation.alignment', {
+              args: ['analysisId'],
+            });
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -92,14 +99,16 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
 
 
     it('should call pronunciation.init_audio with audio specs', (done) => {
-      analysis.prepareAudio('analysisId', recorderStub).then(() => {
-        expect(makeWebsocketCallSpy)
-          .toHaveBeenCalledWith('pronunciation.init_audio', {
-            args: ['analysisId', 'audio/wave'],
-            kwargs: audioSpecs.audioParameters,
-          });
-        done();
-      });
+      analysis.prepareAudio('analysisId', recorderStub)
+        .then(() => {
+          expect(makeWebsocketCallSpy)
+            .toHaveBeenCalledWith('pronunciation.init_audio', {
+              args: ['analysisId', 'audio/wave'],
+              kwargs: audioSpecs.audioParameters,
+            });
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -108,11 +117,13 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
       const encodeAndSendAudioOnDataAvailableSpy = spyOn(utils, 'encodeAndSendAudioOnDataAvailable');
       encodeAndSendAudioOnDataAvailableSpy.and.returnValue(Promise.resolve());
 
-      analysis.streamAudio('analyseId', 'noRecorder').then(() => {
-        expect(encodeAndSendAudioOnDataAvailableSpy)
-          .toHaveBeenCalledWith('analyseId', 'noRecorder', 'pronunciation.write');
-        done();
-      });
+      analysis.streamAudio('analyseId', 'noRecorder')
+        .then(() => {
+          expect(encodeAndSendAudioOnDataAvailableSpy)
+            .toHaveBeenCalledWith('analyseId', 'noRecorder', 'pronunciation.write');
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
@@ -122,14 +133,16 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(Promise.resolve());
 
-      analysis.endStreamAudio('analyseId', 'progressCb').then(() => {
-        expect(makeWebsocketCallSpy)
-          .toHaveBeenCalledWith('pronunciation.analyse', {
-            args: ['analyseId'],
-            progressCb: 'progressCb',
-          });
-        done();
-      });
+      analysis.endStreamAudio('analyseId', 'progressCb')
+        .then(() => {
+          expect(makeWebsocketCallSpy)
+            .toHaveBeenCalledWith('pronunciation.analyse', {
+              args: ['analyseId'],
+              progressCb: 'progressCb',
+            });
+          done();
+        })
+        .catch(done.fail);
     });
   });
 });

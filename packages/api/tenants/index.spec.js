@@ -20,7 +20,8 @@ describe('tenants', () => {
             name: 'DEMO',
           }]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -34,7 +35,8 @@ describe('tenants', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/tenants/c4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -49,7 +51,8 @@ describe('tenants', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/tenants']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 });

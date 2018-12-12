@@ -20,7 +20,8 @@ describe('roles', () => {
             permissions: ['SPEECH_CHALLENGE_LIST'],
           }]);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -34,7 +35,8 @@ describe('roles', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/roles/c4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
   });
 
@@ -49,7 +51,8 @@ describe('roles', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/roles']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should allow filters if they are a URLSearchParams object', (done) => {
@@ -64,7 +67,8 @@ describe('roles', () => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
           expect(getRequest.args).toEqual(['GET', '/roles?parent=d4ddyc4t']);
           done();
-        }, fail);
+        })
+        .catch(done.fail);
     });
 
     it('should reject when something other than URLSearchParams is given as the filters', (done) => {

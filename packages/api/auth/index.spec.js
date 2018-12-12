@@ -62,7 +62,8 @@ describe('impersonate', () => {
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should not require a scope', (done) => {
@@ -78,14 +79,16 @@ describe('impersonate', () => {
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should return a rejected promise if the request went wrong', (done) => {
     authorisedRequestSpy.and.returnValue(Promise.reject());
 
     auth.impersonate('foo')
-      .then(fail, done);
+      .then(done.fail)
+      .catch(done);
   });
 });
 
@@ -113,7 +116,8 @@ describe('authenticate', () => {
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should not require a scope', (done) => {
@@ -130,13 +134,15 @@ describe('authenticate', () => {
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
-      }, fail);
+      })
+      .catch(done.fail);
   });
 
   it('should return a rejected promise if the request went wrong', (done) => {
     requestSpy.and.returnValue(Promise.reject());
 
     auth.authenticate('foo', 'bar')
-      .then(fail, done);
+      .then(done.fail)
+      .catch(done);
   });
 });

@@ -18,13 +18,16 @@ describe('asyncBlobToArrayBuffer', () => {
   });
 
   it('should resolve with an ArrayBuffer', (done) => {
-    utils.asyncBlobToArrayBuffer(new Blob()).then((result) => {
-      expect(result instanceof ArrayBuffer).toBeTruthy();
-      done();
-    }, () => done.fail());
+    utils.asyncBlobToArrayBuffer(new Blob())
+      .then((result) => {
+        expect(result instanceof ArrayBuffer).toBeTruthy();
+        done();
+      })
+      .catch(done.fail);
   });
 
   it('should reject when not passing a Blob', (done) => {
+    // eslint-disable-next-line func-names
     spyOn(FileReader.prototype, 'readAsArrayBuffer').and.callFake(function () {
       this.dispatchEvent(new Event('error'));
     });
@@ -34,6 +37,7 @@ describe('asyncBlobToArrayBuffer', () => {
       .then(() => done.fail(), (result) => {
         expect(result instanceof Error).toBeTruthy();
         done();
-      });
+      })
+      .catch(done.fail);
   });
 });
