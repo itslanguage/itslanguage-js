@@ -61,7 +61,7 @@ does not follow any best practices (i.e. use at your own risk):
 <html>
   <head>
     <title>Some page title</title>
-    <script src="https://unpkg.com/@itslanguage/player/dist/player.min.js"></script>
+    <script src="https://unpkg.com/@itslanguage/player@v4.0.0/dist/player.min.js"></script>
     <script>
       // The api is now available through global `itslPlayer`.
       const audioUrl = 'https://ia801605.us.archive.org/5/items/rainbowgold_1705_librivox/rainbowgold_10_various_128kb.mp3';

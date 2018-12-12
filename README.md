@@ -56,7 +56,7 @@ We do recommend usage with a package manager like [npm] or [yarn] though.
 <html>
   <head>
     <title>Some page title</title>
-    <script src="https://unpkg.com/@itslanguage/api@next/dist/api.min.js"></script>
+    <script src="https://unpkg.com/@itslanguage/api@v4.0.0/dist/api.min.js"></script>
     <script>
       // The api is now available through global `itslApi`.
       itslApi.createItslApi();
@@ -85,7 +85,7 @@ Make sure you read the [code of conduct](CODE_OF_CONDUCT.md) and the
 To get support on the SDK you can either create a [new] [issue], or e-mail your question to
 [support](mailto:support@itslanguage.nl)
 
-[build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=next
+[build logo]: https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master
 [travis]: https://travis-ci.org/itslanguage/itslanguage-js
 [ITSLanguage]: https://www.itslanguage.nl
 [npmjs.com]: https://www.npmjs.com

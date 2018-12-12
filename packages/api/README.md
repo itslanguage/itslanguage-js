@@ -78,7 +78,7 @@ asume you've installed the api package with [npm]
 <html>
   <head>
     <title>Some page title</title>
-    <script src="https://unpkg.com/@itslanguage/api/dist/api.min.js"></script>
+    <script src="https://unpkg.com/@itslanguage/api@v4.0.0/dist/api.min.js"></script>
     <script>
       // The api is now available through global `itslApi`.
       itslApi.createItslApi();
