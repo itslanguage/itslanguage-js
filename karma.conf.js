@@ -1,77 +1,81 @@
-const istanbul = require('browserify-istanbul');
-
-
-module.exports = config => {
+module.exports = (config) => {
   const configuration = {
     frameworks: [
       'browserify',
-      'jasmine'
+      'jasmine',
     ],
     files: [
-      'node_modules/babel-polyfill/dist/polyfill.min.js',
-      'test/**/*.js',
-      'src/**/*.spec.js'
+      'packages/**/*.spec.js',
     ],
     browsers: [
-      'ChromeHeadless'
+      'ChromeHeadless',
     ],
     transports: ['polling'],
     customLaunchers: {
       ChromeTravisCi: {
         base: 'ChromeHeadless',
-        flags: ['--headless --disable-gpu']
-      }
+        flags: ['--headless --disable-gpu'],
+      },
     },
     reporters: [
       'progress',
-      'coverage'
+      'coverage',
     ],
     coverageReporter: {
       check: {
         each: {
-          statements: 0,
-          branches: 0,
-          functions: 0,
-          lines: 0
+          statements: 100,
+          branches: 100,
+          functions: 100,
+          lines: 100,
         },
         global: {
-          statements: 90,
-          branches: 90,
-          functions: 90,
-          lines: 90
-        }
+          statements: 100,
+          branches: 100,
+          functions: 100,
+          lines: 100,
+        },
       },
       reporters: [
         {
           type: 'html',
           dir: 'coverage/',
-          subdir: 'report-html'
+          subdir: 'report-html',
         },
         {
-          type: 'text'
+          type: 'text',
         },
         {
-          type: 'json'
-        }
-      ]
+          type: 'json',
+        },
+      ],
+      instrumenterOptions: {
+        istanbul: {
+          noCompact: true,
+        },
+      },
     },
     preprocessors: {
-      'test/**/*.js': ['browserify'],
-      'src/**/*.spec.js': ['browserify']
+      'packages/**/*.spec.js': ['browserify'],
     },
     browserify: {
-      entries: 'src/index.js',
       debug: true,
       transform: [
-        istanbul({instrumenter: require('isparta')}),
-        'babelify'
-      ]
-    }
+        [
+          'babelify',
+          {
+            presets: [
+              '@babel/preset-env',
+            ],
+          },
+        ],
+      ],
+    },
   };
 
   if (process.env.TRAVIS) {
     configuration.browsers = [
-      'ChromeTravisCi'
+      'ChromeTravisCi',
     ];
   }
 
