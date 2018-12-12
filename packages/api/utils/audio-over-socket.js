@@ -7,7 +7,156 @@
 import autobahn from 'autobahn';
 import { getWebsocketConnection, makeWebsocketCall } from '../communication/websocket';
 import broadcaster from '../broadcaster';
-import { dataToBase64 } from '.';
+import { dataToBase64, asyncBlobToArrayBuffer } from './index';
+
+/**
+ * This class allows us to stream audio from the recorder to the backend.
+ * @private
+ */
+class StreamRecorderAudio {
+  /**
+   * @param {MediaRecorder} recorder - Recorder to use to capture data from.
+   * @param {string} rpcName - Name of the registered RPC function.
+   */
+  constructor(recorder, rpcName, websocketConnection) {
+    /**
+     * MediaRecorder to process the stream from.
+     * @type {MediaRecorder}
+     */
+    this.recorder = recorder;
+
+    /**
+     * Name of the RPC registered.
+     * This name will be prepended with 'nl.itslanguage' for better consistency.
+     * @type {string}
+     */
+    this.rpcName = `nl.itslanguage.${rpcName}`;
+
+    /**
+     * Store a reference to the websocket connection.
+     * @type {autobahn.Connection}
+     */
+    this.websocketConnection = websocketConnection;
+
+    /**
+     * The autobahn.Registration object. This is returned when you register
+     * a function through Session.register.
+     * @type {null|autobahn.Registration}
+     */
+    this.registration = null;
+
+    this.sendAudioChunks = this.sendAudioChunks.bind(this);
+    this.register = this.register.bind(this);
+    this.unregister = this.unregister.bind(this);
+  }
+
+  /**
+   * This is the function that will be registered to the autobahn realm that the backend will call
+   * to receive audio on.
+   *
+   * Once called, it will prepare the recorder to allow data transmission trough the progressive
+   * results meganism.
+   *
+   * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#register
+   * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#progressive-results
+   *
+   * @private
+   * @param {Array} args - Argument list.
+   * @param {Object} kwargs - Key-valued argument list.
+   * @param {Object} details - Details, just as the progress function.
+   * @returns {Promise} - A promise that can be resolved to end the asynchronous behaviour of this
+   * registered RCP.
+   */
+  sendAudioChunks(args, kwargs, details) {
+    const defer = new autobahn.when.defer(); // eslint-disable-line new-cap
+    let lastChunk = false;
+
+    this.recorder.addEventListener('dataavailable', ({ data }) => {
+      asyncBlobToArrayBuffer(data).then((audioData) => {
+        if (details.progress) {
+          const dataToSend = Array.from(new Uint8Array(audioData));
+          details.progress([dataToSend]);
+
+          // If the last one ends, closing time!
+          if (lastChunk) {
+            defer.resolve();
+            this.unregister();
+          }
+        }
+      });
+    });
+
+    this.recorder.addEventListener('stop', () => {
+      // When stopped, the dataavailableevent will be triggered
+      // one final time, so make sure it will cleanup afterwards
+      lastChunk = true;
+    });
+
+    return defer.promise;
+  }
+
+  /**
+   * register the RPC to the autobahn realm.
+   * @returns {Promise}
+   */
+  register() {
+    return new Promise((resolve, reject) => {
+      this.websocketConnection.session
+        .register(this.rpcName, this.sendAudioChunks)
+        .then((registration) => {
+          this.registration = registration;
+          resolve(registration);
+        }).catch(reject);
+    });
+  }
+
+  /**
+   * unregister the RPC from the autobahn realm.
+   */
+  unregister() {
+    return new Promise((resolve, reject) => {
+      this.websocketConnection.session
+        .unregister(this.registration)
+        .then(() => {
+          this.registration = null;
+          resolve();
+        }).catch(reject);
+    });
+  }
+}
+
+/**
+ * Register a RPC call to the current websocket connection. The backend will call this registered
+ * function once, an then we can send progressive results (the details.progress call) to send audio
+ * chunks to the backend. We will send those chunks as soon as we got audio from the recorder.
+ *
+ * When the recording ends we un-register the rpc.
+ *
+ * @param {MediaRecorder} recorder - Audio recorder instance.
+ * @param {string} rpcName - Name of the RPC to register. This name will be prepended with
+ * nl.itslanguage for better consistency.
+ * @fires broadcaster#websocketserverreadyforaudio
+ * @returns {Promise} - It returns a promise with the service registration as result.
+ */
+export function registerStreamForRecorder(recorder, rpcName) {
+  // Start registering a RPC call. As a result, this function will return a promise with the
+  // registration of the RPC as result.
+  return new Promise((resolve, reject) => {
+    getWebsocketConnection().then((websocketConnection) => {
+      const streamingSession = new StreamRecorderAudio(recorder, rpcName, websocketConnection);
+      streamingSession.register()
+        .then((registration) => {
+          /**
+           * Notify that we are ready to process audio.
+           * @event broadcaster#websocketserverreadyforaudio
+           */
+          broadcaster.emit('websocketserverreadyforaudio');
+          resolve(registration);
+        })
+        .catch(reject);
+    });
+  });
+}
 
 
 /**
@@ -22,131 +171,19 @@ import { dataToBase64 } from '.';
 export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
   return new Promise((resolve, reject) => {
     // When data is received from the recorder, it will be in Blob format.
-    // To be able to send it to the server, we need to use a FileReader.
-    const fileReader = new FileReader();
-
-    recorder.addEventListener('dataavailable', ({ data }) => {
-      fileReader.readAsArrayBuffer(data);
-    });
-
     // When we read the data from the Blob element, base64 it and send it to
     // the websocket server and continue with the chain.
-    // The ArrayBuffer can be read from fileReader.result, OR as we do below
-    // we read it from event.target.result.
-    fileReader.addEventListener('loadend', (event) => {
-      const encoded = dataToBase64(event.target.result);
-      makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
-        .then(resolve, reject);
-    });
-  });
-}
-
-/**
- * Register a RPC call to the current websocket connection. The backend will call this registered
- * function once, an then we can send progressive results (the details.progress call) to send audio
- * chunks to the backend. We will send those chunks as soon as we got audio from the recorder.
- *
- * When the recording ends we un-register the rpc.
- *
- * @todo make the unregistering more solid. It can break way to easy now. One way could be, for
- * example, to keep a list of registered RPC's and set a timer to unregister them.
- *
- * @param {MediaRecorder} recorder - Audio recorder instance.
- * @param {string} rpcName - Name of the RPC to register. This name will be prepended with
- * nl.itslanguage for better consistency.
- * @returns {Promise<any>} - It returns a promise with the service registration as result.
- */
-export function registerStreamForRecorder(recorder, rpcName) {
-  const rpc = `nl.itslanguage.${rpcName}`;
-  let rpcRegistration = null;
-
-  /**
-   * This is the actual RPC function that the backend will call. We need to make use of the
-   * autobahn deferred object (based on When.js, an older version) to be able to use progressive
-   * calls. Native promises don't support progressive result (it is not in the Promise A+ spec).
-   *
-   * For the audio chunks we assume to send audio according to the WAVE format. For this to happen
-   * we need to prepend our raw data with a WAVE file header. We do this as first step if data
-   * becomes available.
-   *
-   * When sending audio gets paused, which will be the case for the pause and resume functionality,
-   * we will resend the header after resuming. The API docs cover the need for this. Check there for
-   * more information.
-   *
-   * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#register
-   * @see https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#progressive-results
-   *
-   * @param {Array} args - Argument list.
-   * @param {Object} kwargs - Key-valued argument list.
-   * @param {Object} details - Details, just as the progress function.
-   * @returns {Promise} - A promise that can be resolved to end the asynchronous behaviour of this
-   * registered RCP.
-   */
-  function sendAudioChunks(args, kwargs, details) {
-    // eslint-disable-next-line new-cap
-    const defer = new autobahn.when.defer();
-    const fileReader = new FileReader();
-
-    /**
-     * Everytime we get data, push it through the fileReader
-     * to be able to use it!
-     * @param event
-     */
-    const dataAvailable = (event) => {
-      fileReader.readAsArrayBuffer(event.data);
-    };
-
-    /**
-     * FileReader is done reading. Use the result to send it to the backend!
-     * @param event
-     */
-    const processData = (event) => {
-      // Send the data chunks to the backend! Whoop whoop!
-      const dataToSend = Array.from(new Uint8Array(event.target.result));
-      details.progress([dataToSend]);
-    };
-
-    /**
-     * Recording is done. Resolve and unregister now please!
-     */
-    const stop = () => {
-      defer.resolve(); // Resolve the defer so autobahn tells wamp its over!
-      if (rpcRegistration) {
-        getWebsocketConnection()
-          .then(connection => connection.session.unregister(rpcRegistration));
-      }
-
-      // Remove some listeners we don't need anymore now!
-      fileReader.removeEventListener('loadend', processData);
-      recorder.removeEventListener('dataavailable', dataAvailable);
-      recorder.removeEventListener('stop', stop);
-    };
-
-    if (details.progress) {
-      // Listen for recording events.
-      fileReader.addEventListener('loadend', processData);
-      recorder.addEventListener('dataavailable', dataAvailable);
-      recorder.addEventListener('stop', stop);
-    }
-
-    return defer.promise;
-  }
-
-  // Start registering a RPC call. As a result, this function will return a promise with the
-  // registration of the RPC as result.
-  return new Promise((resolve) => {
-    getWebsocketConnection().then((connection) => {
-      connection.session.register(rpc, sendAudioChunks).then((registration) => {
-        // Registering done. Save it so we can un-register later on.
-        rpcRegistration = registration;
-        // We've prepped the websocket server, now it can receive audio. Broadcast
-        // that it is allowed to record.
-        broadcaster.emit('websocketserverreadyforaudio');
-        resolve(registration);
+    recorder.addEventListener('dataavailable', ({ data }) => {
+      asyncBlobToArrayBuffer(data).then((audioData) => {
+        const encoded = dataToBase64(audioData);
+        // Send the audio
+        makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
+          .then(resolve, reject);
       });
     });
   });
 }
+
 
 /**
  * Send the recorder settings to the websocket server to initialize it.
