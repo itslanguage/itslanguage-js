@@ -18,16 +18,14 @@
 set -e # Exit with nonzero exit code if anything fails
 
 SOURCE_BRANCH="master"
-NEXT_BRANCH="next"
 TARGET_BRANCH="gh-pages"
 
 # Pull requests and commits to other branches shouldn't try to deploy
-# new GitHub pages. Only allow master, next and vX.X.X branches (= a tag
-# for a new version).
+# new GitHub pages. Only allow master and vX.X.X branches (= a tag for
+# a new version).
 if [ "$TRAVIS_PULL_REQUEST" != "false" ] ||
    [ "$TRAVIS_TAG" == "" ] &&
-   [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ] &&
-   [ "$TRAVIS_BRANCH" != "$NEXT_BRANCH" ]; then
+   [ "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
     echo "Skipping deploy"
     exit 0
 fi
