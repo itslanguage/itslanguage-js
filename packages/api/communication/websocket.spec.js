@@ -7,6 +7,8 @@ import autobahn from 'autobahn';
 import * as communication from './index';
 import * as websocket from './websocket';
 
+// Set fake url to settings
+communication.settings.wsUrl = 'wss://fake.ws.url';
 
 describe('handleWebsocketAuthorisationChallenge', () => {
   /* Let it be known that this is a extremely hacky way to test internal code.
