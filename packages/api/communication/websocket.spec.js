@@ -235,4 +235,76 @@ describe('makeWebsocketCall', () => {
       done();
     }, fail);
   });
+
+  it('should set receive_progress to true if progress callback is passed', (done) => {
+    const progressCb = jasmine.createSpy('progressCb');
+
+    websocket.makeWebsocketCall('do.a.rpc', {
+      args: ['accept', 'these'],
+      kwargs: { kwarg: 'value' },
+      options: { option: 'value' },
+      progressCb,
+    }).then(() => {
+      expect(connectionOpenSpy).toHaveBeenCalled();
+      expect(connectionSessionStub.call).toHaveBeenCalledWith(
+        'nl.itslanguage.do.a.rpc',
+        ['accept', 'these'],
+        { kwarg: 'value' },
+        {
+          option: 'value',
+          receive_progress: true,
+        },
+      );
+      done();
+    }, fail);
+  });
+
+  it('should catch an error if Session.call fails', (done) => {
+    const args = {
+      args: ['accept', 'these'],
+      kwargs: { kwarg: 'value' },
+      options: { option: 'value' },
+    };
+
+    connectionSessionStub.call.and.callFake(() => {
+      // eslint-disable-next-line new-cap
+      const defer = new autobahn.when.defer();
+      defer.reject({
+        error: 'wrong',
+        ...args,
+      });
+      return defer.promise;
+    });
+
+    websocket.makeWebsocketCall('do.a.rpc', args)
+      .then(() => done.fail)
+      .catch((error) => {
+        expect(error.message).toBe('wrong');
+        expect(error.data.options).toBeUndefined();
+        expect(error.data.args).toEqual(args.args);
+        expect(error.data.kwargs).toEqual(args.kwargs);
+        done();
+      });
+  });
+
+  it('should fail when no options are passed', (done) => {
+    connectionSessionStub.call.and.callFake(() => {
+      // eslint-disable-next-line new-cap
+      const defer = new autobahn.when.defer();
+      defer.reject({
+        error: 'wrong',
+        args: [],
+        kwargs: {},
+        options: {},
+      });
+      return defer.promise;
+    });
+
+    websocket.makeWebsocketCall('do.a.rpc')
+      .then(() => done.fail)
+      .catch((error) => {
+        expect(error.message).toBe('wrong');
+        done();
+      });
+  });
 });
