@@ -35,6 +35,10 @@ matrix:
   include:
     - name: ITSLanguage API
       env: PACKAGE_LOCATION=$TRAVIS_BUILD_DIR/build/api
+    - name: ITSLanguage Player
+      env: PACKAGE_LOCATION=$TRAVIS_BUILD_DIR/build/player
+    - name: ITSLanguage Recorder
+      env: PACKAGE_LOCATION=$TRAVIS_BUILD_DIR/build/recorder
 
 before_deploy: "cd $PACKAGE_LOCATION"
 deploy:
