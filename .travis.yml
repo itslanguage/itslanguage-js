@@ -66,8 +66,8 @@ deploy:
     email: its-bot@itslanguage.nl
     api_key:
       secure: jPFWqq7/5TxgFh0sjK5fdt8mEvwwheVjy23jRpd8hZVUgS2xRaxxfrZTazEDeqd8oTEimcUMixHtCcvBVBQMg0iGqiUDeG3myf7WrE5mEgjHGYYqCpqTdTu8pRrXfdbN0GMX56/JaUC4S/qZ8sj0mgry4KdW8t7qHAsLV7csKcehrNPX53RV/UGsi4NGtHwExKgHv5plnAH1xvx1WsUq3+gYWrjvZhXx2LTlwBDp5ToffISmmNisqpsA5UDcdZhRZQ2Hs66a7CjMp/kgTQCGsbom4NPAeS0X0UQF64SvcqJBe4VkJRy9LPo14XSqpW8giyKKqmJvlm4Lj+aLG4Rbb605JQtyCDbc4neRzec63YjFS1DFamtSaPHDNfuN8nytv/vQasV6SBuS5p8EmkVfMcfVLKCedn6M3Pw/d5rxai7EQalsCbiDZPFOYpXdeGyeKNVvn5w2E3wCZ4EuZNWUXO+cNlHroD80539heUjACv4SpwEn9pbBBtXYyN9LF6J10ApEqUpYm8XCnFzrzslgKQXGHFfIACuK5NpYU6LS8zz1H4UKui45hGMAjswHIv8avNjRA0QYMt8EXOcLtp7xfMBfwswziu8SkX2sIZkMOL/ToJf2hiZcVZFGDaBr9l+8HuC6cy3ZpG09xGR7afeQPTf6wTaPe8+mWR7YeIUXp8A=
-    on:
-      tags: true
+#    on:
+#      tags: true
 
 notifications:
   slack:
