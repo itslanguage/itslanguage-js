@@ -196,11 +196,13 @@ export function makeWebsocketCall(rpc, {
       // Log the error to stderr
       error(result);
 
-      // Return a slightly simplistic version of the error that occurred
-      return Promise.reject(new Error({
-        error: wssError,
-        ...wssKwargs,
+      const customError = new Error(wssError);
+      customError.data = {
         args: [...wssArgs],
-      }));
+        kwargs: { ...wssKwargs },
+      };
+
+      // Return a slightly simplistic version of the error that occurred
+      return Promise.reject(customError);
     });
 }
