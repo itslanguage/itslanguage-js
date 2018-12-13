@@ -10,7 +10,6 @@ module.exports = (config) => {
     browsers: [
       'ChromeHeadless',
     ],
-    transports: ['polling'],
     customLaunchers: {
       ChromeTravisCi: {
         base: 'ChromeHeadless',
