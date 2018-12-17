@@ -23,43 +23,46 @@ npm install @itslanguage/recorder
 Example usage, in code:
 
 ```js
-import createRecorder from '@itslanguage/recorder';
+import { createRecorder, createMediaStream } from '@itslanguage/recorder';
 
-// Ask the user for permission and get an audio stream.
-const stream = createMediaStream();
 
-// Create a MediaRecorder instance with the stream you got.
-const recorder = createRecorder(stream);
-
-// Store audio chunks
-let audioChunks = [];
-
-// Start listening to onDataavailable to process data
-// This event will be raised per x milliseconds, per
-// recorder.requestData() call or on the end.
-recorder.addEventListener('dataavailable', (event) => {
-  audioChunks.push(event.data);
-});
-
-// Let's record approximately 25 seconds of audio, and automatically playback
-recorder.start();
-
-window.setTimeout(() => {
-  recorder.stop();
+// Ask and wait for the user to give permission and get an audio stream.
+createMediaStream().then(stream => {
   
-  // Now we can loop over the audio chunks and display them to the browser
-  audioChunks.forEach(chunk => {
-    const audioElm = document.createElement('audio');
-    audioElm.controls = true;
-    audioElm.src = URL.createObjectURL(chunk);
-    
-    // Just a quick way to display the audio element to the screen
-    document.getElementsByTagName('body')[0].appendChild(audioElm);
-    
-    // At this point you will see some audio elements on the
-    // screen which you can use to listen to the audio recorded.
+  // Create a MediaRecorder instance with the stream you got.
+  const recorder = createRecorder(stream);
+  
+  // Store audio chunks
+  let audioChunks = [];
+  
+  // Start listening to onDataavailable to process data
+  // This event will be raised per x milliseconds, per
+  // recorder.requestData() call or on the end.
+  recorder.addEventListener('dataavailable', (event) => {
+    audioChunks.push(event.data);
   });
-}, 25000);
+  
+  // Let's record approximately 25 seconds of audio, and automatically playback
+  recorder.start();
+  
+  window.setTimeout(() => {
+    recorder.stop();
+    
+    // Now we can loop over the audio chunks and display them to the browser
+    audioChunks.forEach(chunk => {
+      const audioElm = document.createElement('audio');
+      audioElm.controls = true;
+      audioElm.src = URL.createObjectURL(chunk);
+      
+      // Just a quick way to display the audio element to the screen
+      document.getElementsByTagName('body')[0].appendChild(audioElm);
+      
+      // At this point you will see some audio elements on the
+      // screen which you can use to listen to the audio recorded.
+    });
+  }, 25000);
+
+});
 ```
 
 ## API
