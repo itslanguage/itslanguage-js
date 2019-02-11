@@ -234,11 +234,12 @@ describe('Websocket API', () => {
     });
 
     it('should open a websocket connection if there isn\'t one already', (done) => {
-      websocket.makeWebsocketCall('do.a.rpc', {
-        args: ['accept', 'these'],
-        kwargs: { kwarg: 'value' },
-        options: { option: 'value' },
-      })
+      websocket.openWebsocketConnection()
+        .then(() => websocket.makeWebsocketCall('do.a.rpc', {
+          args: ['accept', 'these'],
+          kwargs: { kwarg: 'value' },
+          options: { option: 'value' },
+        }))
         .then(() => {
           expect(connectionOpenSpy).toHaveBeenCalled();
           expect(connectionSessionStub.call).toHaveBeenCalledWith(
@@ -255,12 +256,13 @@ describe('Websocket API', () => {
     it('should set receive_progress to true if progress callback is passed', (done) => {
       const progressCb = jasmine.createSpy('progressCb');
 
-      websocket.makeWebsocketCall('do.a.rpc', {
-        args: ['accept', 'these'],
-        kwargs: { kwarg: 'value' },
-        options: { option: 'value' },
-        progressCb,
-      })
+      websocket.openWebsocketConnection()
+        .then(() => websocket.makeWebsocketCall('do.a.rpc', {
+          args: ['accept', 'these'],
+          kwargs: { kwarg: 'value' },
+          options: { option: 'value' },
+          progressCb,
+        }))
         .then(() => {
           expect(connectionOpenSpy).toHaveBeenCalled();
           expect(connectionSessionStub.call).toHaveBeenCalledWith(
@@ -294,7 +296,8 @@ describe('Websocket API', () => {
         return defer.promise;
       });
 
-      websocket.makeWebsocketCall('do.a.rpc', args)
+      websocket.openWebsocketConnection()
+        .then(() => websocket.makeWebsocketCall('do.a.rpc', args))
         .then(() => done.fail)
         .catch((error) => {
           expect(error.message).toBe('wrong');
@@ -318,7 +321,8 @@ describe('Websocket API', () => {
         return defer.promise;
       });
 
-      websocket.makeWebsocketCall('do.a.rpc')
+      websocket.openWebsocketConnection()
+        .then(() => websocket.makeWebsocketCall('do.a.rpc'))
         .then(() => done.fail)
         .catch((error) => {
           expect(error.message).toBe('wrong');
