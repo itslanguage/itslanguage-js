@@ -104,9 +104,7 @@ function handleResponse(response) {
 export function request(method, url, body, headers) {
   const requestHeaders = headers || new Headers();
 
-  // Default to 'text/plain'.
   let requestBody = body;
-  requestHeaders.set('Content-Type', 'text/plain');
 
   // In case of (any) object-type
   if (!(body instanceof URLSearchParams || body instanceof FormData) && body instanceof Object) {
@@ -118,12 +116,6 @@ export function request(method, url, body, headers) {
   if (body instanceof URLSearchParams) {
     requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
     requestBody = body.toString();
-  }
-
-  // In case of FormData
-  // Note that we only need to (re)set the content-type!
-  if (body instanceof FormData) {
-    requestHeaders.set('Content-Type', 'multipart/form-data');
   }
 
   // Prepend the url with the set url or use it complete when there was no url set.
