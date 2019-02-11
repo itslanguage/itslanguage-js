@@ -13,7 +13,7 @@ module.exports = (config) => {
     customLaunchers: {
       ChromeTravisCi: {
         base: 'ChromeHeadless',
-        flags: ['--headless --disable-gpu'],
+        flags: ['--no-sandbox --disable-gpu'],
       },
     },
     reporters: [
