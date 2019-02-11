@@ -10,6 +10,11 @@ import * as utils from '.';
 import broadcaster from '../broadcaster';
 
 describe('Audio Over socket', () => {
+  beforeEach(() => {
+    // Make sure we have enough time to complete some tests.
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+  });
+
   beforeAll(() => {
     settings.wsUrl = 'wss://fake.ws.url';
   });
