@@ -29,7 +29,7 @@ describe('Websocket API', () => {
      */
     let onchallengeOption;
 
-    beforeEach((done) => {
+    beforeEach(() => {
       spyOn(autobahn.Connection.prototype, 'close');
       const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
       // We cannot use arrow functions because of this scope.
@@ -39,15 +39,12 @@ describe('Websocket API', () => {
         onchallengeOption = this._options.onchallenge;
         this.onopen();
       });
-      websocket.openWebsocketConnection()
-        .then(done);
+
+      return websocket.openWebsocketConnection();
     });
 
-    afterEach((done) => {
-      // Make sure there is no existing connection after each test.
-      websocket.closeWebsocketConnection()
-        .then(done);
-    });
+    // Make sure there is no existing connection after each test.
+    afterEach(() => websocket.closeWebsocketConnection());
 
     it('should return the `authorizationToken` when the ticket method is used', () => {
       communication.updateSettings({ authorizationToken: 'much_secure' });
@@ -65,11 +62,8 @@ describe('Websocket API', () => {
 
 
   describe('openWebsocketConnection', () => {
-    afterEach((done) => {
-      // Make sure there is no existing connection after each test.
-      websocket.closeWebsocketConnection()
-        .then(done);
-    });
+    // Make sure there is no existing connection after each test.
+    afterEach(() => websocket.closeWebsocketConnection());
 
     it('should open a connection if there isn\'t one already', (done) => {
       const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
@@ -121,11 +115,8 @@ describe('Websocket API', () => {
       });
     });
 
-    afterEach((done) => {
-      // Make sure there is no existing connection after each test.
-      websocket.closeWebsocketConnection()
-        .then(done);
-    });
+    // Make sure there is no existing connection after each test.
+    afterEach(() => websocket.closeWebsocketConnection());
 
     it('should resolve if there is no open connection', (done) => {
       websocket.closeWebsocketConnection()
@@ -205,11 +196,8 @@ describe('Websocket API', () => {
       });
     });
 
-    afterEach((done) => {
-      // Make sure there is no existing connection after each test.
-      websocket.closeWebsocketConnection()
-        .then(done);
-    });
+    // Make sure there is no existing connection after each test.
+    afterEach(() => websocket.closeWebsocketConnection());
 
     it('should prefix the `rpc` parameter and pass the rest into the websocket session call', (done) => {
       websocket.openWebsocketConnection()
