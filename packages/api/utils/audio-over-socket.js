@@ -82,6 +82,8 @@ class StreamRecorderAudio {
             defer.resolve();
             this.unregister();
           }
+        } else {
+          defer.reject('no progress function registered');
         }
       });
     });
