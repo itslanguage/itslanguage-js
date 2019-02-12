@@ -16,6 +16,11 @@ describe('Websocket API', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
   });
 
+  afterEach(async () => {
+    // Make sure there is no existing connection after each test.
+    await websocket.closeWebsocketConnection();
+  });
+
   describe('handleWebsocketAuthorisationChallenge', () => {
     /* Let it be known that this is a extremely hacky way to test internal code.
      *
@@ -43,9 +48,6 @@ describe('Websocket API', () => {
       return websocket.openWebsocketConnection();
     });
 
-    // Make sure there is no existing connection after each test.
-    afterEach(() => websocket.closeWebsocketConnection());
-
     it('should return the `authorizationToken` when the ticket method is used', () => {
       communication.updateSettings({ authorizationToken: 'much_secure' });
       const session = {};
@@ -64,9 +66,6 @@ describe('Websocket API', () => {
 
 
   describe('openWebsocketConnection', () => {
-    // Make sure there is no existing connection after each test.
-    afterEach(() => websocket.closeWebsocketConnection());
-
     it('should open a connection if there isn\'t one already', (done) => {
       const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
       // We cannot use arrow functions because of this scope.
@@ -82,24 +81,22 @@ describe('Websocket API', () => {
         .catch(done.fail);
     });
 
-    it('should reject if the connection could not be established', (done) => {
-      websocket.openWebsocketConnection()
-        .then(done.fail, (result) => {
-          expect(result).toEqual('The connection is erroneous; check if all '
-            + 'required settings have been injected using '
-            + 'the `updateSettings()` function. If the '
-            + 'problem persists please post a issue on our '
-            + 'GitHub repository.');
-          // There shouldn't be a reference to the erroneos connection. We can
-          // validate this by trying to "close" the connection. The
-          // `closeWebsocketConnection` should not pass its falsy check and thus
-          // resolve in 'There is no websocket connection to close.'.
-          return websocket.closeWebsocketConnection();
-        })
-        .then((result) => {
-          expect(result).toEqual('There is no websocket connection to close.');
-          done();
-        }, done.fail);
+    it('should reject if the connection could not be established', async () => {
+      await expectAsync(websocket.openWebsocketConnection()).toBeRejectedWith(
+        'The connection is erroneous; check if all '
+        + 'required settings have been injected using '
+        + 'the `updateSettings()` function. If the '
+        + 'problem persists please post a issue on our '
+        + 'GitHub repository.',
+      );
+
+      // There shouldn't be a reference to the erroneos connection. We can
+      // validate this by trying to "close" the connection. The
+      // `closeWebsocketConnection` should not pass its falsy check and thus
+      // resolve in 'There is no websocket connection to close.'.
+      await expectAsync(websocket.closeWebsocketConnection()).toBeResolvedTo(
+        'There is no websocket connection to close.',
+      );
     });
   });
 
@@ -117,58 +114,47 @@ describe('Websocket API', () => {
       });
     });
 
-    // Make sure there is no existing connection after each test.
-    afterEach(() => websocket.closeWebsocketConnection());
-
-    it('should resolve if there is no open connection', (done) => {
-      websocket.closeWebsocketConnection()
-        .then((result) => {
-          expect(result).toEqual('There is no websocket connection to close.');
-          done();
-        })
-        .catch(done.fail);
+    it('should resolve if there is no open connection', async () => {
+      await expectAsync(websocket.closeWebsocketConnection()).toBeResolvedTo(
+        'There is no websocket connection to close.',
+      );
     });
 
-    it('should successfully close a open connection', (done) => {
-      websocket.openWebsocketConnection()
+    it('should successfully close a open connection', async () => {
+      await websocket.openWebsocketConnection();
+
       // Now we've opened the connection; close it again.
-        .then(() => websocket.closeWebsocketConnection(), done.fail)
-        .then((result) => {
-          expect(result).toEqual('The websocket connection has been closed successfully.');
-          done();
-        })
-        .catch(done.fail);
+      await expectAsync(websocket.closeWebsocketConnection()).toBeResolvedTo(
+        'The websocket connection has been closed successfully.',
+      );
     });
 
-    it('should resolve when the connection was already closed', (done) => {
+    it('should resolve when the connection was already closed', async () => {
       connectionCloseSpy.and.callFake(() => {
         throw new Error('connection already closed');
       });
 
-      websocket.openWebsocketConnection()
+      await websocket.openWebsocketConnection();
+
       // Now we've opened the connection; close it again.
-        .then(() => websocket.closeWebsocketConnection(), done.fail)
-        .then((result) => {
-          expect(result).toEqual('The websocket connection has already been closed.');
-          done();
-        })
-        .catch(done.fail);
+      await expectAsync(websocket.closeWebsocketConnection()).toBeResolvedTo(
+        'The websocket connection has already been closed.',
+      );
     });
 
-    it('should also remove the reference to the connection once it is closed', (done) => {
-      websocket.openWebsocketConnection()
+    it('should also remove the reference to the connection once it is closed', async () => {
+      await websocket.openWebsocketConnection();
+
       // Now we've opened the connection; close it again.
-        .then(() => websocket.closeWebsocketConnection(), done.fail)
-        .then(() => websocket.closeWebsocketConnection(), done.fail)
-        .then((result) => {
-          // The internal reference is set to `null` when the connection is
-          // closed. The `closeWebsocketConnection` function would therefore not
-          // pass its falsy check. The result should therefore be the same as:
-          // `it('should resolve if there is no open connection', ...);`
-          expect(result).toEqual('There is no websocket connection to close.');
-          done();
-        })
-        .catch(done.fail);
+      await websocket.closeWebsocketConnection();
+
+      // The internal reference is set to `null` when the connection is
+      // closed. The `closeWebsocketConnection` function would therefore not
+      // pass its falsy check. The result should therefore be the same as:
+      // `it('should resolve if there is no open connection', ...);`
+      await expectAsync(websocket.closeWebsocketConnection()).toBeResolvedTo(
+        'There is no websocket connection to close.',
+      );
     });
   });
 
@@ -198,107 +184,80 @@ describe('Websocket API', () => {
       });
     });
 
-    // Make sure there is no existing connection after each test.
-    afterEach(() => websocket.closeWebsocketConnection());
-
-    it('should prefix the `rpc` parameter and pass the rest into the websocket session call', (done) => {
-      websocket.openWebsocketConnection()
-        .then(() => websocket.makeWebsocketCall(
-          'do.a.rpc',
-          {
-            args: ['accept', 'these'],
-            kwargs: { kwarg: 'value' },
-            options: { option: 'value' },
-          },
-        ))
-        .then(() => {
-          expect(connectionSessionStub.call).toHaveBeenCalledWith(
-            'nl.itslanguage.do.a.rpc',
-            ['accept', 'these'],
-            { kwarg: 'value' },
-            { option: 'value' },
-          );
-          done();
-        })
-        .catch(done.fail);
-    });
-
-    it('should open a websocket connection if there isn\'t one already', (done) => {
-      websocket.openWebsocketConnection()
-        .then(() => websocket.makeWebsocketCall('do.a.rpc', {
+    it('should prefix the `rpc` parameter and pass the rest into the websocket session call', async () => {
+      await websocket.openWebsocketConnection();
+      await websocket.makeWebsocketCall(
+        'do.a.rpc',
+        {
           args: ['accept', 'these'],
           kwargs: { kwarg: 'value' },
           options: { option: 'value' },
-        }))
-        .then(() => {
-          expect(connectionOpenSpy).toHaveBeenCalled();
-          expect(connectionSessionStub.call).toHaveBeenCalledWith(
-            'nl.itslanguage.do.a.rpc',
-            ['accept', 'these'],
-            { kwarg: 'value' },
-            { option: 'value' },
-          );
-          done();
-        })
-        .catch(done.fail);
+        },
+      );
+
+      expect(connectionSessionStub.call).toHaveBeenCalledWith(
+        'nl.itslanguage.do.a.rpc',
+        ['accept', 'these'],
+        { kwarg: 'value' },
+        { option: 'value' },
+      );
     });
 
-    it('should set receive_progress to true if progress callback is passed', (done) => {
+    it('should open a websocket connection if there isn\'t one already', async () => {
+      await websocket.openWebsocketConnection();
+      await websocket.makeWebsocketCall('do.a.rpc', {
+        args: ['accept', 'these'],
+        kwargs: { kwarg: 'value' },
+        options: { option: 'value' },
+      });
+
+      // eslint-disable-next-line jasmine/prefer-toHaveBeenCalledWith
+      expect(connectionOpenSpy).toHaveBeenCalled();
+      expect(connectionSessionStub.call).toHaveBeenCalledWith(
+        'nl.itslanguage.do.a.rpc',
+        ['accept', 'these'],
+        { kwarg: 'value' },
+        { option: 'value' },
+      );
+    });
+
+    it('should set receive_progress to true if progress callback is passed', async () => {
       const progressCb = jasmine.createSpy('progressCb');
 
-      websocket.openWebsocketConnection()
-        .then(() => websocket.makeWebsocketCall('do.a.rpc', {
-          args: ['accept', 'these'],
-          kwargs: { kwarg: 'value' },
-          options: { option: 'value' },
-          progressCb,
-        }))
-        .then(() => {
-          expect(connectionOpenSpy).toHaveBeenCalled();
-          expect(connectionSessionStub.call).toHaveBeenCalledWith(
-            'nl.itslanguage.do.a.rpc',
-            ['accept', 'these'],
-            { kwarg: 'value' },
-            {
-              option: 'value',
-              receive_progress: true,
-            },
-          );
-          done();
-        })
-        .catch(done.fail);
+      await websocket.openWebsocketConnection();
+      await websocket.makeWebsocketCall('do.a.rpc', {
+        args: ['accept', 'these'],
+        kwargs: { kwarg: 'value' },
+        options: { option: 'value' },
+        progressCb,
+      });
+
+      // eslint-disable-next-line jasmine/prefer-toHaveBeenCalledWith
+      expect(connectionOpenSpy).toHaveBeenCalled();
+      expect(connectionSessionStub.call).toHaveBeenCalledWith(
+        'nl.itslanguage.do.a.rpc',
+        ['accept', 'these'],
+        { kwarg: 'value' },
+        {
+          option: 'value',
+          receive_progress: true,
+        },
+      );
     });
 
-    it('should catch an error if Session.call fails', (done) => {
+    it('should catch an error if Session.call fails', async () => {
       const args = {
         args: ['accept', 'these'],
         kwargs: { kwarg: 'value' },
         options: { option: 'value' },
       };
 
-      connectionSessionStub.call.and.callFake(() => {
-        // eslint-disable-next-line new-cap
-        const defer = new autobahn.when.defer();
-        defer.reject({
-          error: 'wrong',
-          ...args,
-        });
-        return defer.promise;
-      });
+      const expectedError = new Error('wrong');
+      expectedError.data = {
+        args: [...args.args],
+        kwargs: { ...args.kwargs },
+      };
 
-      websocket.openWebsocketConnection()
-        .then(() => websocket.makeWebsocketCall('do.a.rpc', args))
-        .then(() => done.fail)
-        .catch((error) => {
-          expect(error.message).toBe('wrong');
-          expect(error.data.options).toBeUndefined();
-          expect(error.data.args).toEqual(args.args);
-          expect(error.data.kwargs).toEqual(args.kwargs);
-          done();
-        });
-    });
-
-    it('should fail when no options are passed', (done) => {
       connectionSessionStub.call.and.callFake(() => {
         // eslint-disable-next-line new-cap
         const defer = new autobahn.when.defer();
@@ -311,13 +270,31 @@ describe('Websocket API', () => {
         return defer.promise;
       });
 
-      websocket.openWebsocketConnection()
-        .then(() => websocket.makeWebsocketCall('do.a.rpc'))
-        .then(() => done.fail)
-        .catch((error) => {
-          expect(error.message).toBe('wrong');
-          done();
+      await websocket.openWebsocketConnection();
+      await expectAsync(websocket.makeWebsocketCall('do.a.rpc', args)).toBeRejectedWith(expectedError);
+    });
+
+    it('should fail when no options are passed', async () => {
+      const expectedError = new Error('wrong');
+      expectedError.data = {
+        args: [],
+        kwargs: {},
+      };
+
+      connectionSessionStub.call.and.callFake(() => {
+        // eslint-disable-next-line new-cap
+        const defer = new autobahn.when.defer();
+        defer.reject({
+          error: 'wrong',
+          args: [],
+          kwargs: {},
+          options: {},
         });
+        return defer.promise;
+      });
+
+      await websocket.openWebsocketConnection();
+      await expectAsync(websocket.makeWebsocketCall('do.a.rpc')).toBeRejectedWith(expectedError);
     });
   });
 });

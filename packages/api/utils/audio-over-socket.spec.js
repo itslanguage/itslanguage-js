@@ -94,6 +94,7 @@ describe('Audio Over socket', () => {
         .then((result) => {
           const detailsSpy = jasmine.createSpyObj('details', ['progress']);
           result.callback([], {}, detailsSpy).then(() => {
+            // eslint-disable-next-line jasmine/prefer-toHaveBeenCalledWith
             expect(detailsSpy.progress).toHaveBeenCalled();
           }).catch(done.fail);
           done();
