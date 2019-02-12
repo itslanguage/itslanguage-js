@@ -16,6 +16,7 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
       analysis.getById('ch4', 'r3c')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation/ch4/analyses/r3c']);
           done();
         })

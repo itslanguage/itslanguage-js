@@ -15,6 +15,7 @@ describe('categories', () => {
       categories.create({ name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/categories', { name: 'poes' }]);
           done();
         })
@@ -30,6 +31,7 @@ describe('categories', () => {
       categories.update('c4t', { name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['PUT', '/categories/c4t', { name: 'poes' }]);
           done();
         })
@@ -46,6 +48,7 @@ describe('categories', () => {
       categories.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories/c4t']);
           done();
         })
@@ -62,6 +65,7 @@ describe('categories', () => {
       categories.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories']);
           done();
         })
@@ -78,6 +82,7 @@ describe('categories', () => {
       categories.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories?parent=d4ddyc4t']);
           done();
         })
@@ -101,6 +106,7 @@ describe('categories', () => {
       categories.getAllWithParentId('poes')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories/poes/categories']);
           done();
         })

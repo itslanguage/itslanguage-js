@@ -15,6 +15,7 @@ describe('basicauth', () => {
       basicauth.create({ username: 'Mark', password: 'captain_america_is_cool' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/user/basicauths', {
             username: 'Mark',
             password: 'captain_america_is_cool',

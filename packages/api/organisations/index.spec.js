@@ -15,6 +15,7 @@ describe('organisations', () => {
       organisations.create({ name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/organisations', { name: 'poes' }]);
           done();
         })
@@ -31,6 +32,7 @@ describe('organisations', () => {
       organisations.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/organisations/c4t']);
           done();
         })
@@ -47,6 +49,7 @@ describe('organisations', () => {
       organisations.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/organisations']);
           done();
         })
@@ -63,6 +66,7 @@ describe('organisations', () => {
       organisations.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/organisations?parent=d4ddyc4t']);
           done();
         })

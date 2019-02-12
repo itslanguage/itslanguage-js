@@ -15,6 +15,7 @@ describe('Choice Challenge API', () => {
       choice.create({ question: 'poes?' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/challenges/choice', { question: 'poes?' }]);
           done();
         })
@@ -31,6 +32,7 @@ describe('Choice Challenge API', () => {
       choice.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t']);
           done();
         })
@@ -47,6 +49,7 @@ describe('Choice Challenge API', () => {
       choice.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/choice']);
           done();
         })
@@ -63,6 +66,7 @@ describe('Choice Challenge API', () => {
       choice.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/choice?theme=m30w']);
           done();
         })

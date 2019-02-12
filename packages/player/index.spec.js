@@ -11,6 +11,7 @@ describe('player', () => {
   describe('createPlayer', () => {
     it('should return an instance of HTMLAudioElement', () => {
       const player = audioPlayer.createPlayer();
+
       expect(player instanceof HTMLAudioElement).toBeTruthy();
     });
 
@@ -19,6 +20,7 @@ describe('player', () => {
       // remove window.audio temporary
       const OrgAudio = Audio;
       Audio = null;
+
       expect(audioPlayer.createPlayer).toThrowError('Your browser is not capable of playing audio.');
 
       // now restore it!
@@ -28,16 +30,19 @@ describe('player', () => {
 
     it('should not have set crossOrigin if not passed', () => {
       const player = audioPlayer.createPlayer();
+
       expect(player.crossOrigin).toBeNull();
     });
 
     it('should have set crossOrigin to anonymous if that is passed', () => {
       const player = audioPlayer.createPlayer(fakeUrl, false, 'anonymous');
+
       expect(player.crossOrigin).toBe('anonymous');
     });
 
     it('should have set crossOrigin to use-credentials if that is passed', () => {
       const player = audioPlayer.createPlayer(fakeUrl, false, 'use-credentials');
+
       expect(player.crossOrigin).toBe('use-credentials');
     });
 
@@ -48,33 +53,39 @@ describe('player', () => {
 
     it('should NOT set HTMLAudioElement.src if we don\'t pass an audioUrl', () => {
       const player = audioPlayer.createPlayer();
+
       expect(player.src).toBeFalsy();
     });
 
     it('should set HTMLAudioElement.src if we pass an audioUrl', () => {
       const player = audioPlayer.createPlayer(fakeUrl);
+
       expect(player.src).toEqual(fakeUrl);
     });
 
     it('should not add "access_token" if we do not pass audioUrl and secureLoad', () => {
       const player = audioPlayer.createPlayer();
+
       expect(player.src.includes(fakeTokenUrl)).toBeFalsy();
     });
 
     it('should not add "access_token" if we do not pass secureLoad', () => {
       const player = audioPlayer.createPlayer(fakeUrl);
+
       expect(player.src.includes(fakeTokenUrl)).toBeFalsy();
     });
 
     it('should not add "access_token" if we pass secureLoad but have no token', () => {
       communication.settings.authorizationToken = null;
       const player = audioPlayer.createPlayer(fakeUrl, secureLoad);
+
       expect(player.src.includes(fakeTokenUrl)).toBeFalsy();
     });
 
     it('should add "access_token" if we pass secureLoad', () => {
       communication.settings.authorizationToken = fakeToken;
       const player = audioPlayer.createPlayer(fakeUrl, secureLoad);
+
       expect(player.src.includes(fakeTokenUrl)).toBeTruthy();
       communication.settings.authorizationToken = null;
     });
@@ -87,11 +98,13 @@ describe('player', () => {
 
     it('should return false when player is passed but audioUrl not', () => {
       const player = audioPlayer.createPlayer();
+
       expect(audioPlayer.loadAudioUrl(player)).toBeFalsy();
     });
 
     it('should return false when player is passed but not as instanceof HTMLAudioElement', () => {
       const player = 'someString';
+
       expect(audioPlayer.loadAudioUrl(player)).toBeFalsy();
     });
 
@@ -102,6 +115,7 @@ describe('player', () => {
     it('should change the src when we provide a new one', () => {
       const player = audioPlayer.createPlayer('somefakeseomthing');
       audioPlayer.loadAudioUrl(player, fakeUrl);
+
       expect(player.src).toEqual(fakeUrl);
     });
 
@@ -109,6 +123,7 @@ describe('player', () => {
       communication.settings.authorizationToken = fakeToken;
       const player = audioPlayer.createPlayer('somefakeseomthing');
       audioPlayer.loadAudioUrl(player, fakeUrl, secureLoad);
+
       expect(player.src.includes(fakeTokenUrl)).toBeTruthy();
       communication.settings.authorizationToken = null;
     });

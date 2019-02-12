@@ -15,6 +15,7 @@ describe('groups', () => {
       groups.create({ name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/groups', { name: 'poes' }]);
           done();
         })
@@ -31,6 +32,7 @@ describe('groups', () => {
       groups.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/groups/c4t']);
           done();
         })
@@ -47,6 +49,7 @@ describe('groups', () => {
       groups.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/groups']);
           done();
         })
@@ -63,6 +66,7 @@ describe('groups', () => {
       groups.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/groups?parent=d4ddyc4t']);
           done();
         })

@@ -16,6 +16,7 @@ describe('Speech Challenge Recording API', () => {
       recordings.getById('ch4', 'r3c')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/ch4/recordings/r3c']);
           done();
         })
@@ -32,6 +33,7 @@ describe('Speech Challenge Recording API', () => {
       recordings.getAll('ch4')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/ch4/recordings']);
           done();
         })
@@ -48,6 +50,7 @@ describe('Speech Challenge Recording API', () => {
       recordings.getAll('ch4', filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/ch4/recordings?theme=m30w']);
           done();
         })

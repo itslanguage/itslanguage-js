@@ -15,6 +15,7 @@ describe('tenants', () => {
       tenants.create({ id: 'demo', name: 'DEMO' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/tenants', {
             id: 'demo',
             name: 'DEMO',
@@ -33,6 +34,7 @@ describe('tenants', () => {
       tenants.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/tenants/c4t']);
           done();
         })
@@ -49,6 +51,7 @@ describe('tenants', () => {
       tenants.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/tenants']);
           done();
         })

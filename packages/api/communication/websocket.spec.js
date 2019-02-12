@@ -49,6 +49,7 @@ describe('Websocket API', () => {
     it('should return the `authorizationToken` when the ticket method is used', () => {
       communication.updateSettings({ authorizationToken: 'much_secure' });
       const session = {};
+
       expect(onchallengeOption(session, 'ticket')).toEqual('much_secure');
     });
 
@@ -56,6 +57,7 @@ describe('Websocket API', () => {
       const session = {};
       const errorMessage = 'The websocket server tried to use the unknown '
         + 'authentication challenge: "unsupported method"';
+
       expect(() => onchallengeOption(session, 'unsupported method')).toThrowError(Error, errorMessage);
     });
   });

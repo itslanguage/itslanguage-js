@@ -95,7 +95,7 @@ describe('Audio Over socket', () => {
           const detailsSpy = jasmine.createSpyObj('details', ['progress']);
           result.callback([], {}, detailsSpy).then(() => {
             expect(detailsSpy.progress).toHaveBeenCalled();
-          });
+          }).catch(done.fail);
           done();
         })
         .catch(done.fail);
@@ -117,7 +117,7 @@ describe('Audio Over socket', () => {
           const detailsSpy = jasmine.createSpy('details');
           result.callback([], {}, detailsSpy).then(() => {
             expect(detailsSpy.progress).not.toHaveBeenCalled();
-          });
+          }).catch(done.fail);
           done();
         })
         .catch(done.fail);
@@ -207,6 +207,7 @@ describe('Audio Over socket', () => {
               ],
             },
           );
+
           expect(result).toEqual('He\'s nervous, but on the surface he looks calm and ready');
           done();
         })
@@ -241,6 +242,7 @@ describe('Audio Over socket', () => {
               ],
             },
           );
+
           expect(message).toBe('Websocket server has received and rejected the call.');
           done();
         })
@@ -281,6 +283,7 @@ describe('Audio Over socket', () => {
               },
             },
           );
+
           expect(result).toEqual('r353rv3d1d');
           expect(broadcasterSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
           done();

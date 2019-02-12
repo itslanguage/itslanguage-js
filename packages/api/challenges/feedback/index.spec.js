@@ -18,6 +18,7 @@ describe('feedback Challenge API', () => {
       })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/feedback', {
             challengeId: 'challenge12',
             errors: 1337,
@@ -37,6 +38,7 @@ describe('feedback Challenge API', () => {
       feedback.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/feedback/c4t']);
           done();
         })
@@ -53,6 +55,7 @@ describe('feedback Challenge API', () => {
       feedback.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/feedback']);
           done();
         })
