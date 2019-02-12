@@ -10,7 +10,8 @@ env:
   jasmine: true
 
 plugins:
-  ["jsdoc"]
+  - jsdoc
+  - jasmine
 
 rules:
   no-console: 0  # This project purposely uses console.
