@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
-## [v4.0.1] - 2019-02-11
+## [v4.0.1] - 2018-12-17
 
-### Fixed
+### Added
 
-- Removed adding of the Content-Type header when not needed to add it.
+- Function to take Choice Recognition without streaming.
 
 ## [v4.0.0] - 2018-12-12
 

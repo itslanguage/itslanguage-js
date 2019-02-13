@@ -11,7 +11,11 @@
  * @module api/challenges/choice/recognition
  */
 
-import { registerStreamForRecorder } from '../../utils/audio-over-socket';
+import {
+  registerStreamForRecorder,
+  encodeAndSendAudioOnDataAvailable,
+  prepareServerForAudio,
+} from '../../utils/audio-over-socket';
 import { authorisedRequest } from '../../communication';
 import { makeWebsocketCall } from '../../communication/websocket';
 
@@ -148,4 +152,31 @@ export function recognise(challengeId, recorder) {
     })
     .then(() => prepareChallenge(recognitionId, challengeId))
     .then(() => recogniseAudioStream(recognitionId, recorder).then(result => result));
+}
+
+/**
+ * Easy function to do a recognition in one go. This is the "dance of the RPC's" that needs to be
+ * done in order to get correct feedback from the backend.
+ *
+ * This function is here to support possible old backend servers where we did not use the streaming
+ * for choice challenges yet. It is deprecated and will be removed in the first minor update of the
+ * api sdk.
+ *
+ * @deprecated
+ * @param {string} challengeId - The ID of the challenge to take the recognition for.
+ * @param {MediaRecorder} recorder - Audio recorder instance.
+ * @returns {Promise<*>} - If all good it returns the actual recognition. If not, any error can be
+ * expected to be returned.
+ */
+export function recogniseNonStreaming(challengeId, recorder) {
+  let recognitionId;
+  return prepare()
+    .then((rId) => {
+      recognitionId = rId;
+      return rId;
+    })
+    .then(() => prepareChallenge(recognitionId, challengeId))
+    .then(() => prepareServerForAudio(recognitionId, recorder, 'choice.init_audio'))
+    .then(() => encodeAndSendAudioOnDataAvailable(recognitionId, recorder, 'choice.write'))
+    .then(() => makeWebsocketCall('choice.recognise', { args: [recognitionId] }));
 }

@@ -174,4 +174,48 @@ describe('Choice Recognition Challenge API', () => {
         .catch(done.fail);
     });
   });
+
+  describe('recogniseNonStreaming', () => {
+    let makeWebsocketCallSpy;
+    let encodeAndSendAudioOnDataAvailableSpy;
+    let prepareServerForAudioSpy;
+    let recorderStub;
+
+    beforeEach(() => {
+      makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
+      makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
+
+      encodeAndSendAudioOnDataAvailableSpy = spyOn(utils, 'encodeAndSendAudioOnDataAvailable');
+      encodeAndSendAudioOnDataAvailableSpy.and.returnValue(new Promise(resolve => resolve()));
+
+      prepareServerForAudioSpy = spyOn(utils, 'prepareServerForAudio');
+      prepareServerForAudioSpy.and.returnValue(new Promise(resolve => resolve()));
+
+      recorderStub = jasmine.createSpyObj('Recorder', ['addEventListener']);
+      recorderStub.addEventListener.and.callFake((event, callback) => {
+        // Pretend as if the event has been fired and thus call the callback.
+        callback({
+          data: new Blob(
+            ['Knees weak, arms are heavy.'],
+            { type: 'text/plain' },
+          ),
+        });
+      });
+    });
+
+    it('should return a promise', () => {
+      expect(recognition.recogniseNonStreaming('', null) instanceof Promise).toBeTruthy();
+    });
+
+    it('should call all the needed functions', (done) => {
+      recognition.recogniseNonStreaming('challengeId', recorderStub)
+        .then(() => {
+          expect(makeWebsocketCallSpy).toHaveBeenCalledTimes(3);
+          expect(prepareServerForAudioSpy).toHaveBeenCalledTimes(1);
+          expect(encodeAndSendAudioOnDataAvailableSpy).toHaveBeenCalledTimes(1);
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
 });
