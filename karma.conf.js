@@ -13,7 +13,7 @@ module.exports = (config) => {
     customLaunchers: {
       ChromeTravisCi: {
         base: 'ChromeHeadless',
-        flags: ['--headless --disable-gpu'],
+        flags: ['--no-sandbox --disable-gpu'],
       },
     },
     reporters: [
@@ -66,17 +66,14 @@ module.exports = (config) => {
             presets: [
               '@babel/preset-env',
             ],
+            plugins: [
+              '@babel/plugin-transform-runtime',
+            ],
           },
         ],
       ],
     },
   };
-
-  if (process.env.TRAVIS) {
-    configuration.browsers = [
-      'ChromeTravisCi',
-    ];
-  }
 
   config.set(configuration);
 };

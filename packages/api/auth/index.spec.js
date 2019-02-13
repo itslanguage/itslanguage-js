@@ -59,6 +59,7 @@ describe('impersonate', () => {
     auth.impersonate('this/is/not/a/valid/scope')
       .then(() => {
         const requestCall = authorisedRequestSpy.calls.mostRecent();
+
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
@@ -76,6 +77,7 @@ describe('impersonate', () => {
     auth.impersonate()
       .then(() => {
         const requestCall = authorisedRequestSpy.calls.mostRecent();
+
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
@@ -113,6 +115,7 @@ describe('authenticate', () => {
     auth.authenticate('foo', 'bar', 'this/is/not/a/valid/scope')
       .then(() => {
         const requestCall = requestSpy.calls.mostRecent();
+
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();
@@ -131,6 +134,7 @@ describe('authenticate', () => {
     auth.authenticate('foo', 'bar')
       .then(() => {
         const requestCall = requestSpy.calls.mostRecent();
+
         expect(requestCall.args).toEqual(['POST', '/tokens', expectedBody]);
         expect(updateSettingsSpy).toHaveBeenCalledWith({ authorizationToken: 'token' });
         done();

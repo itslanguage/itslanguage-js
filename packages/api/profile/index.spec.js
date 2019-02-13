@@ -15,6 +15,7 @@ describe('profile', () => {
       profile.create('c4t', { firstName: 'Mark' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/users/c4t/profile', { firstName: 'Mark' }]);
           done();
         })
@@ -30,6 +31,7 @@ describe('profile', () => {
       profile.getCurrent()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/user/profile']);
           done();
         })
@@ -45,6 +47,7 @@ describe('profile', () => {
       profile.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/users/c4t/profile']);
           done();
         })

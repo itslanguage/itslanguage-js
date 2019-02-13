@@ -15,6 +15,7 @@ describe('Pronunciation Challenge API', () => {
       pronunciation.create({ question: 'poes?' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/challenges/pronunciation', { question: 'poes?' }]);
           done();
         })
@@ -31,6 +32,7 @@ describe('Pronunciation Challenge API', () => {
       pronunciation.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation/c4t']);
           done();
         })
@@ -47,6 +49,7 @@ describe('Pronunciation Challenge API', () => {
       pronunciation.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation']);
           done();
         })
@@ -63,6 +66,7 @@ describe('Pronunciation Challenge API', () => {
       pronunciation.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/pronunciation?theme=m30w']);
           done();
         })
@@ -87,6 +91,7 @@ describe('Pronunciation Challenge API', () => {
       pronunciation.deleteChallenge('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['DELETE', '/challenges/pronunciation/c4t']);
           done();
         })

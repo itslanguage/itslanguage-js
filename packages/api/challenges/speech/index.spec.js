@@ -15,6 +15,7 @@ describe('Speech Challenge API', () => {
       speech.create({ question: 'poes?' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/challenges/speech', { question: 'poes?' }]);
           done();
         })
@@ -31,6 +32,7 @@ describe('Speech Challenge API', () => {
       speech.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/speech/c4t']);
           done();
         })
@@ -47,6 +49,7 @@ describe('Speech Challenge API', () => {
       speech.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/speech']);
           done();
         })
@@ -63,6 +66,7 @@ describe('Speech Challenge API', () => {
       speech.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/speech?theme=m30w']);
           done();
         })

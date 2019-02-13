@@ -1,6 +1,9 @@
 root: true
 
-extends: airbnb-base
+extends:
+  - 'plugin:jasmine/recommended'
+  - airbnb-base
+
 parser: babel-eslint
 
 env:
@@ -9,8 +12,15 @@ env:
   node: true
   jasmine: true
 
+globals:
+  expectAsync: true
+
 plugins:
-  ["jsdoc"]
+  - jsdoc
+  - jasmine
 
 rules:
   no-console: 0  # This project purposely uses console.
+  jasmine/no-spec-dupes:
+    - 1
+    - 'branch'

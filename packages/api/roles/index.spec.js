@@ -15,6 +15,7 @@ describe('roles', () => {
       roles.create({ id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST'] })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/roles', {
             id: 'Student',
             permissions: ['SPEECH_CHALLENGE_LIST'],
@@ -33,6 +34,7 @@ describe('roles', () => {
       roles.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/roles/c4t']);
           done();
         })
@@ -49,6 +51,7 @@ describe('roles', () => {
       roles.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/roles']);
           done();
         })
@@ -65,6 +68,7 @@ describe('roles', () => {
       roles.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/roles?parent=d4ddyc4t']);
           done();
         })

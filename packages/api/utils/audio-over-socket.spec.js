@@ -10,6 +10,11 @@ import * as utils from '.';
 import broadcaster from '../broadcaster';
 
 describe('Audio Over socket', () => {
+  beforeEach(() => {
+    // Make sure we have enough time to complete some tests.
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+  });
+
   beforeAll(() => {
     settings.wsUrl = 'wss://fake.ws.url';
   });
@@ -55,26 +60,53 @@ describe('Audio Over socket', () => {
       });
     });
 
-    it('should register an RPC call named nl.itslanguage.rpcName', (done) => {
-      aos.registerStreamForRecorder(recorderStub, rpcName)
-        .then((result) => {
-          expect(result.rpc).toEqual(`nl.itslanguage.${rpcName}`);
-          done();
-        })
-        .catch(done.fail);
+    it('should register an RPC call named nl.itslanguage.rpcName', async () => {
+      await expectAsync(aos.registerStreamForRecorder(recorderStub, rpcName))
+        .toBeResolvedTo(
+          {
+            id: '123',
+            rpc: `nl.itslanguage.${rpcName}`,
+            callback: jasmine.any(Function),
+          },
+        );
     });
 
-    it('should emit websocketserverreadyforaudio when ready to receive audio', (done) => {
+    it('should emit websocketserverreadyforaudio when ready to receive audio', async () => {
       const broadcastSpy = spyOn(broadcaster, 'emit');
-      aos.registerStreamForRecorder(recorderStub, rpcName)
-        .then(() => {
-          expect(broadcastSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
-          done();
-        })
-        .catch(done.fail);
+
+      await aos.registerStreamForRecorder(recorderStub, rpcName);
+
+      expect(broadcastSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
     });
 
-    it('should stream audio to the backend', (done) => {
+    it('should stream audio to the backend', async () => {
+      const data = {
+        data: new Blob(
+          ['Knees weak, arms are heavy.'],
+          { type: 'text/plain' },
+        ),
+      };
+
+      // Make sure to convert the data to what is actually being sent to the backend: an array
+      // with integers.
+      const arrayBuffer = await utils.asyncBlobToArrayBuffer(data.data);
+      const intArray = Array.from(new Uint8Array(arrayBuffer));
+
+      recorderStub.addEventListener.and.callFake((event, callback) => {
+        // Pretend as if the event has been fired and thus call the callback.
+        callback(data);
+      });
+
+      const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
+
+      const detailsSpy = jasmine.createSpyObj('details', ['progress']);
+      await result.callback([], {}, detailsSpy);
+
+      expect(detailsSpy.progress)
+        .toHaveBeenCalledWith([intArray]);
+    });
+
+    it('should not stream audio if the progress function does not exist', async () => {
       recorderStub.addEventListener.and.callFake((event, callback) => {
         // Pretend as if the event has been fired and thus call the callback.
         callback({
@@ -85,40 +117,13 @@ describe('Audio Over socket', () => {
         });
       });
 
-      aos.registerStreamForRecorder(recorderStub, rpcName)
-        .then((result) => {
-          const detailsSpy = jasmine.createSpyObj('details', ['progress']);
-          result.callback([], {}, detailsSpy).then(() => {
-            expect(detailsSpy.progress).toHaveBeenCalled();
-          });
-          done();
-        })
-        .catch(done.fail);
+      const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
+
+      await expectAsync(result.callback([], {}, {}))
+        .toBeRejectedWith('no progress function registered');
     });
 
-    it('should not stream audio if the progress function does not exist', (done) => {
-      recorderStub.addEventListener.and.callFake((event, callback) => {
-        // Pretend as if the event has been fired and thus call the callback.
-        callback({
-          data: new Blob(
-            ['Knees weak, arms are heavy.'],
-            { type: 'text/plain' },
-          ),
-        });
-      });
-
-      aos.registerStreamForRecorder(recorderStub, rpcName)
-        .then((result) => {
-          const detailsSpy = jasmine.createSpy('details');
-          result.callback([], {}, detailsSpy).then(() => {
-            expect(detailsSpy.progress).not.toHaveBeenCalled();
-          });
-          done();
-        })
-        .catch(done.fail);
-    });
-
-    it('should only resolve on the last chunk', (done) => {
+    it('should only resolve on the last chunk', async () => {
       let dataavailableCallback = null;
       let stopCallback = null;
       const blob = {
@@ -141,28 +146,24 @@ describe('Audio Over socket', () => {
         }
       });
 
-      aos.registerStreamForRecorder(recorderStub, rpcName)
-        .then((result) => {
-          const detailsSpy = jasmine.createSpyObj('details', ['progress']);
-          result.callback([], {}, detailsSpy)
-            .then(() => {
-              expect(detailsSpy.progress).toHaveBeenCalledTimes(2);
-              done();
-            })
-            .catch(done.fail);
+      const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
+      const detailsSpy = jasmine.createSpyObj('details', ['progress']);
+      result.callback([], {}, detailsSpy);
 
-          dataavailableCallback(blob);
+      dataavailableCallback(blob);
 
-          // We need to wait a bit before we can send the rest.
-          setTimeout(() => {
-            // Send the stop event
-            stopCallback();
+      // We need to wait a bit before we can send the rest.
+      setTimeout(async () => {
+        // Send the stop event
+        stopCallback();
 
-            // Send the final chunk!
-            dataavailableCallback(blob);
-          }, 1000);
-        })
-        .catch(done.fail);
+        // Send the final chunk!
+        dataavailableCallback(blob);
+      }, 1000);
+
+      await result.callback([], {}, detailsSpy);
+
+      expect(detailsSpy.progress).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -177,7 +178,7 @@ describe('Audio Over socket', () => {
       dataToBase64Spy = spyOn(utils, 'dataToBase64');
     });
 
-    it('should send the data when the recorder fires the event', (done) => {
+    it('should send the data when the recorder fires the event', async () => {
       dataToBase64Spy.and.returnValue('There\'s vomit on his sweater already, mom\'s spaghetti');
       makeWebsocketCallSpy.and.returnValue(Promise.resolve('He\'s nervous, but on the surface he looks calm and ready'));
       recorderStub.addEventListener.and.callFake((event, callback) => {
@@ -190,25 +191,23 @@ describe('Audio Over socket', () => {
         });
       });
 
-      aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
-        .then((result) => {
-          expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
-            'his.palms.are.sweaty',
-            {
-              args: [
-                'r353rv3d1d',
-                'There\'s vomit on his sweater already, mom\'s spaghetti',
-                'base64',
-              ],
-            },
-          );
-          expect(result).toEqual('He\'s nervous, but on the surface he looks calm and ready');
-          done();
-        })
-        .catch(done.fail);
+      const result = await aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty');
+
+      expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
+        'his.palms.are.sweaty',
+        {
+          args: [
+            'r353rv3d1d',
+            'There\'s vomit on his sweater already, mom\'s spaghetti',
+            'base64',
+          ],
+        },
+      );
+
+      expect(result).toEqual('He\'s nervous, but on the surface he looks calm and ready');
     });
 
-    it('should reject if the `makeWebsocketCall` rejected', (done) => {
+    it('should reject if the `makeWebsocketCall` rejected', async () => {
       dataToBase64Spy.and.returnValue('There\'s vomit on his sweater already, mom\'s spaghetti');
       makeWebsocketCallSpy.and.returnValue(Promise.reject((
         new Error('Websocket server has received and rejected the call.')
@@ -223,23 +222,22 @@ describe('Audio Over socket', () => {
         });
       });
 
-      aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty')
-        .then(done.fail)
-        .catch(({ message }) => {
-          expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
-            'his.palms.are.sweaty',
-            {
-              args: [
-                'r353rv3d1d',
-                'There\'s vomit on his sweater already, mom\'s spaghetti',
-                'base64',
-              ],
-            },
-          );
-          expect(message).toBe('Websocket server has received and rejected the call.');
-          done();
-        })
-        .catch(done.fail);
+      try {
+        await aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty');
+        fail('encodeAndSendAudioOnDataAvailable should have failed');
+      } catch ({ message }) {
+        expect(message).toBe('Websocket server has received and rejected the call.');
+        expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
+          'his.palms.are.sweaty',
+          {
+            args: [
+              'r353rv3d1d',
+              'There\'s vomit on his sweater already, mom\'s spaghetti',
+              'base64',
+            ],
+          },
+        );
+      }
     });
   });
 
@@ -254,7 +252,7 @@ describe('Audio Over socket', () => {
       broadcasterSpy = spyOn(broadcaster, 'emit');
     });
 
-    it('should broadcast when the websocket server has successfully been prepped and resolve in the reserved ID', (done) => {
+    it('should broadcast when the websocket server has successfully been prepped and resolve in the reserved ID', async () => {
       recorderStub.getAudioSpecs.and.returnValue({
         audioFormat: 'audio/ogg',
         audioParameters: {
@@ -265,25 +263,24 @@ describe('Audio Over socket', () => {
         Promise.resolve('Websocket server has received and handled the call.')
       ));
 
-      aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo')
-        .then((result) => {
-          expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
-            'write.this.down.kiddo',
-            {
-              args: ['r353rv3d1d', 'audio/ogg'],
-              kwargs: {
-                bitrate: 9001,
-              },
-            },
-          );
-          expect(result).toEqual('r353rv3d1d');
-          expect(broadcasterSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
-          done();
-        })
-        .catch(done.fail);
+      const result = await aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo');
+
+      expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
+        'write.this.down.kiddo',
+        {
+          args: ['r353rv3d1d', 'audio/ogg'],
+          kwargs: {
+            bitrate: 9001,
+          },
+        },
+      );
+
+      expect(result).toEqual('r353rv3d1d');
+
+      expect(broadcasterSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
     });
 
-    it('should reject if the `makeWebsocketCall` rejected', (done) => {
+    it('should reject if the `makeWebsocketCall` rejected', async () => {
       recorderStub.getAudioSpecs.and.returnValue({
         audioFormat: 'audio/ogg',
         audioParameters: {
@@ -294,20 +291,20 @@ describe('Audio Over socket', () => {
         new Error('Websocket server has received and rejected the call.')
       )));
 
-      aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo')
-        .then(done.fail)
-        .catch(() => {
-          expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
-            'write.this.down.kiddo',
-            {
-              args: ['r353rv3d1d', 'audio/ogg'],
-              kwargs: {
-                bitrate: 9001,
-              },
+      try {
+        await aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo');
+        fail('prepareServerForAudio should have failed');
+      } catch (error) {
+        expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
+          'write.this.down.kiddo',
+          {
+            args: ['r353rv3d1d', 'audio/ogg'],
+            kwargs: {
+              bitrate: 9001,
             },
-          );
-          done();
-        });
+          },
+        );
+      }
     });
   });
 });

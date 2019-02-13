@@ -15,6 +15,7 @@ describe('emailauth', () => {
       emailauth.create({ email: 'mark@starkindustries.marvel', password: 'captain_america_is_cool' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/user/emailauths', {
             email: 'mark@starkindustries.marvel',
             password: 'captain_america_is_cool',
@@ -31,6 +32,7 @@ describe('emailauth', () => {
       emailauth.create({ email: 'mark@starkindustries.marvel', password: 'captain_america_is_cool' }, 'mark')
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/user/mark/emailauths', {
             email: 'mark@starkindustries.marvel',
             password: 'captain_america_is_cool',

@@ -15,6 +15,7 @@ describe('progress', () => {
       progress.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress']);
           done();
         })
@@ -28,6 +29,7 @@ describe('progress', () => {
       progress.getById('c4t', ['fish'])
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?group=fish']);
           done();
         })
@@ -41,6 +43,7 @@ describe('progress', () => {
       progress.getById('c4t', ['fish', 'fork', 'net'])
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?group=fish&group=fork&group=net']);
           done();
         })
@@ -54,6 +57,7 @@ describe('progress', () => {
       progress.getById('c4t', [], 'CAPTAIN_AMERICA')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?role=CAPTAIN_AMERICA']);
           done();
         })
@@ -67,6 +71,7 @@ describe('progress', () => {
       progress.getById('c4t', ['fish'], 'CAPTAIN_AMERICA')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?group=fish&role=CAPTAIN_AMERICA']);
           done();
         })
@@ -80,6 +85,7 @@ describe('progress', () => {
       progress.getById('c4t', ['fish', 'fork', 'net'], 'CAPTAIN_AMERICA')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args)
             .toEqual(['GET', '/categories/c4t/progress?group=fish&group=fork&group=net&role=CAPTAIN_AMERICA']);
           done();

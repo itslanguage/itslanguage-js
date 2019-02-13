@@ -15,6 +15,7 @@ describe('user', () => {
       users.create({ name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual(['POST', '/users', { name: 'poes' }]);
           done();
         })
@@ -30,6 +31,7 @@ describe('user', () => {
       users.getCurrent()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/user']);
           done();
         })
@@ -45,6 +47,7 @@ describe('user', () => {
       users.getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/users/c4t']);
           done();
         })
@@ -61,6 +64,7 @@ describe('user', () => {
       users.getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/users']);
           done();
         })
@@ -77,6 +81,7 @@ describe('user', () => {
       users.getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/users?parent=d4ddyc4t']);
           done();
         })

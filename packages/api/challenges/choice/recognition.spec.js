@@ -16,6 +16,7 @@ describe('Choice Recognition Challenge API', () => {
       recognition.create('c4t', null, 'c4t')
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual([
             'POST',
             '/challenges/choice/c4t/recognitions',
@@ -36,6 +37,7 @@ describe('Choice Recognition Challenge API', () => {
       recognition.create('c4t', null, 'c4t', '123')
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(createRequest.args).toEqual([
             'POST',
             '/challenges/choice/c4t/recognitions',
@@ -60,6 +62,7 @@ describe('Choice Recognition Challenge API', () => {
       recognition.getById('c4t', 'd0g')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t/recognitions/d0g']);
           done();
         })
@@ -76,6 +79,7 @@ describe('Choice Recognition Challenge API', () => {
       recognition.getAll('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
+
           expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t/recognitions']);
           done();
         })

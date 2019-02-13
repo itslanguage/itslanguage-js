@@ -65,6 +65,7 @@ describe('request', () => {
     communication.request('POST', '/lets/go/somewhere', requestBody)
       .then((result) => {
         const request = fetchSpy.calls.mostRecent();
+
         expect(request.args).toEqual([
           `${TEST_API_URL}/lets/go/somewhere`,
           {
@@ -91,6 +92,7 @@ describe('request', () => {
     communication.request('GET', 'https://fake/url')
       .then((result) => {
         const request = fetchSpy.calls.mostRecent();
+
         expect(request.args).toEqual([
           'https://fake/url',
           {
@@ -120,6 +122,7 @@ describe('request', () => {
     communication.request('POST', '/lets/go/somewhere', requestBody)
       .then((result) => {
         const request = fetchSpy.calls.mostRecent();
+
         expect(request.args).toEqual([
           `${TEST_API_URL}/lets/go/somewhere`,
           {
@@ -149,6 +152,7 @@ describe('request', () => {
     communication.request('POST', '/lets/go/somewhere', requestBody)
       .then((result) => {
         const request = fetchSpy.calls.mostRecent();
+
         expect(request.args).toEqual([
           `${TEST_API_URL}/lets/go/somewhere`,
           {
@@ -260,6 +264,7 @@ describe('authorisedRequest', () => {
     communication.authorisedRequest('GET', '/foo')
       .then((result) => {
         const request = fetchSpy.calls.mostRecent();
+
         expect(request.args).toEqual([
           `${TEST_API_URL}/foo`,
           {
@@ -283,29 +288,34 @@ describe('addAccessToken', () => {
 
   it('should return the same url if there is no authorisation token known', () => {
     communication.settings.authorizationToken = null;
+
     expect(communication.addAccessToken(fakeUrl)).toEqual(fakeUrl);
   });
 
   it('should return the url with access_token if there an authorisation token known', () => {
     communication.settings.authorizationToken = fakeToken;
+
     expect(communication.addAccessToken(fakeUrl).includes(fakeTokenUrl)).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
 
   it('should return the url with access_token with an ? if it is the first queryparam', () => {
     communication.settings.authorizationToken = fakeToken;
+
     expect(communication.addAccessToken(fakeUrl).includes(`?${fakeTokenUrl}`)).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
 
   it('should return the url with access_token with an & if it is not the first queryparam', () => {
     communication.settings.authorizationToken = fakeToken;
+
     expect(communication.addAccessToken(`${fakeUrl}?someParam=x`).includes(`&${fakeTokenUrl}`)).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
 
   it('should add access_token when the url is not passed', () => {
     communication.settings.authorizationToken = fakeToken;
+
     expect(communication.addAccessToken().includes(fakeTokenUrl)).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
