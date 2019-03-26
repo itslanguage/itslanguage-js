@@ -9,65 +9,56 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [v4.1.0] - 2019-03-26 
 
-### Packages release
-
-- api
-
 ### Added
 
-- Added support for creating speech recordings via the SDK.
+- `api`
+  - Added support for creating speech recordings via the SDK.
 
 ## [v4.0.2] - 2019-02-11
 
-### Packages release
-
-- api
-
 ### Fixed
 
-- Removed adding of the Content-Type header when not needed to add it.
+- `api`
+  - Removed adding of the Content-Type header when not needed to add it.
 
 ## [v4.0.1] - 2018-12-17
 
 ### Packages release
 
-- api
-
 ### Added
 
-- Function to take Choice Recognition without streaming.
+- `api`
+  - Function to take Choice Recognition without streaming.
 
 ## [v4.0.0] - 2018-12-12
 
-### Packages release
-
-- api
-- recorder
-- player
-
 ### Changed
 
-- Documentation is now build with JSDoc in stead of esdoc.
-- SDK package will not be published anymore.
+- `api`, `recorder`, `player`
+  - Documentation is now build with JSDoc in stead of esdoc.
+  - SDK package will not be published anymore.
 
 ### Removed
 
-- SDK as single package
-- Stopwatch
-- VolumeMeter
+- `api`, `recorder`, `player`
+  - SDK as single package
+  - Stopwatch
+  - VolumeMeter
 
 ### Fixed
 
-- call to this.createAudioContext on AudioContext class needed to call a static member
-- WebAudio recorder can be stopped from paused state.
+- `api`, `recorder`, `player`
+  - call to this.createAudioContext on AudioContext class needed to call a static member
+  - WebAudio recorder can be stopped from paused state.
 
 ### Added
 
-- api package: available through `@itslanguage/api`.
-- player package: available through `@itslanguage/player`.
-- recorder package: available through `@itslanguage/recorder`.
-- Packages are published as UMD build to unpkg.com.
-- Feedback API, streaming audio.
+- `api`, `recorder`, `player`
+  - api package: available through `@itslanguage/api`.
+  - player package: available through `@itslanguage/player`.
+  - recorder package: available through `@itslanguage/recorder`.
+  - Packages are published as UMD build to unpkg.com.
+  - Feedback API, streaming audio.
 
 ## [v3.1.2]
 
