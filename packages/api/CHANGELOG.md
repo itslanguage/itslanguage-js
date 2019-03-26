@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v4.1.0]
+
+### Added
+
+- Added support for creating speech recordings via the SDK.
+
 ## [v4.0.2] - 2019-02-11
 
 ### Fixed
@@ -25,7 +31,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 - API as package, available through `@itslanguage/api`
 
-[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.2...HEAD
+[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.1.0...HEAD
+[v4.1.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.2...v4.1.0
 [v4.0.2]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.0...v4.0.2
 [v4.0.1]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v3.1.2...v4.0.0
