@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `api`, `recorder`, `player`
+  - Bump dependencies to the latest available versions.
+  - Update babel config to make use of the latest babel features.
+
 ## [v4.1.0] - 2019-03-27
 
 ### Added
