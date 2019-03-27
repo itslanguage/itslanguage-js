@@ -29,7 +29,7 @@
     "node": ">= 8"
   },
   "peerDependencies": {
-    "@itslanguage/api": "4.0.2"
+    "@itslanguage/api": "^4.0.0"
   },
   "main": "index.js"
 }
