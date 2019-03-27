@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## Changed
+
+- `api`, `recorder`, `player`
+  - Updated all changelog files to point at this specific file. This way all changes can be logged
+    and be visible at one location.
+
 ## [v4.1.0] - 2019-03-27
 
 ### Added
