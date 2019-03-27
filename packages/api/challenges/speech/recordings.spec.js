@@ -8,6 +8,22 @@ import * as websocket from '../../communication/websocket';
 import * as utils from '../../utils/audio-over-socket';
 
 describe('Speech Challenge Recording API', () => {
+  describe('create', () => {
+    it('should make an authorised request', (done) => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
+
+      recordings.create('ch4', { id: 'recording' })
+        .then(() => {
+          const createRequest = authorisedRequestSpy.calls.mostRecent();
+
+          expect(createRequest.args).toEqual(['POST', '/challenges/speech/ch4/recordings', { id: 'recording' }]);
+          done();
+        })
+        .catch(done.fail);
+    });
+  });
+
   describe('getById', () => {
     it('should make an authorised request', (done) => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');

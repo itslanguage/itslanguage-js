@@ -7,43 +7,58 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v4.1.0] - 2019-03-27
+
+### Added
+
+- `api`
+  - Added support for creating speech recordings via the SDK.
+
 ## [v4.0.2] - 2019-02-11
 
 ### Fixed
 
-- Removed adding of the Content-Type header when not needed to add it.
+- `api`
+  - Removed adding of the Content-Type header when not needed to add it.
 
 ## [v4.0.1] - 2018-12-17
 
+### Packages release
+
 ### Added
 
-- Function to take Choice Recognition without streaming.
+- `api`
+  - Function to take Choice Recognition without streaming.
 
 ## [v4.0.0] - 2018-12-12
 
 ### Changed
 
-- Documentation is now build with JSDoc in stead of esdoc.
-- SDK package will not be published anymore.
+- `api`, `recorder`, `player`
+  - Documentation is now build with JSDoc in stead of esdoc.
+  - SDK package will not be published anymore.
 
 ### Removed
 
-- SDK as single package
-- Stopwatch
-- VolumeMeter
+- `api`, `recorder`, `player`
+  - SDK as single package
+  - Stopwatch
+  - VolumeMeter
 
 ### Fixed
 
-- call to this.createAudioContext on AudioContext class needed to call a static member
-- WebAudio recorder can be stopped from paused state.
+- `api`, `recorder`, `player`
+  - call to this.createAudioContext on AudioContext class needed to call a static member
+  - WebAudio recorder can be stopped from paused state.
 
 ### Added
 
-- api package: available through `@itslanguage/api`.
-- player package: available through `@itslanguage/player`.
-- recorder package: available through `@itslanguage/recorder`.
-- Packages are published as UMD build to unpkg.com.
-- Feedback API, streaming audio.
+- `api`, `recorder`, `player`
+  - api package: available through `@itslanguage/api`.
+  - player package: available through `@itslanguage/player`.
+  - recorder package: available through `@itslanguage/recorder`.
+  - Packages are published as UMD build to unpkg.com.
+  - Feedback API, streaming audio.
 
 ## [v3.1.2]
 
@@ -76,7 +91,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
 
-[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.2...HEAD
+[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.1.0...HEAD
+[v4.1.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.2...v4.1.0
 [v4.0.2]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.1...v4.0.2
 [v4.0.1]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v3.1.2...v4.0.0

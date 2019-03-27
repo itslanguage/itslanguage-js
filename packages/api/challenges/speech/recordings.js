@@ -25,6 +25,19 @@ const url = challenge => `/challenges/speech/${challenge}/recordings`;
 
 
 /**
+ * Create a new speech recording.
+ *
+ * @param {Object} challengeId - The ID of the challenge to create a recording for.
+ * @param {Object} recording - The recording to create.
+ *
+ * @returns {Promise} - The recording creation promise.
+ */
+export function create(challengeId, recording) {
+  return authorisedRequest('POST', url(challengeId), recording);
+}
+
+
+/**
  * Get a single speech recording by its ID.
  *
  * @param {string} challenge - The ID of the challenge for which the recording  was made.
