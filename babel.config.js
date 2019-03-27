@@ -1,15 +1,24 @@
-module.exports = {
-  presets: [
+module.exports = (api) => {
+  const env = api.env();
+  const test = env === 'test';
+
+  const presets = [
     [
-      '@babel/preset-env', {
+      '@babel/preset-env',
+      {
+        spec: false,
+        loose: true,
+        useBuiltIns: 'usage',
+        corejs: 3,
         targets: {
           esmodules: true,
         },
         modules: false,
       },
     ],
-  ],
-  plugins: [
+  ];
+
+  const plugins = [
     ['@babel/plugin-proposal-class-properties', {
       loose: true,
     }],
@@ -17,21 +26,17 @@ module.exports = {
       loose: true,
       useBuiltIns: true,
     }],
-  ],
-  env: {
-    test: {
-      presets: [
-        '@babel/preset-env',
-      ],
-      plugins: [
-        [
-          'istanbul', {
-            exclude: [
-              '**/*.spec.js',
-            ],
-          },
+    test && [
+      'babel-plugin-istanbul', {
+        exclude: [
+          '**/*.spec.js',
         ],
-      ],
-    },
-  },
+      },
+    ],
+  ];
+
+  return {
+    presets,
+    plugins: plugins.filter(Boolean),
+  };
 };

@@ -56,6 +56,7 @@
     "babel-plugin-istanbul": "5.1.1",
     "babelify": "10.0.0",
     "browserify": "16.2.3",
+    "core-js": "3",
     "cross-env": "5.2.0",
     "docdash": "1.0.3",
     "eslint": "5.15.3",
