@@ -1,4 +1,6 @@
-/build/
-/coverage/
-/esdoc/
-/node_modules/
+!.*
+build/
+coverage/
+esdoc/
+jsdoc/
+node_modules/
