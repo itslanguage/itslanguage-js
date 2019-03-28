@@ -5,18 +5,22 @@
 import * as communication from '../communication';
 import * as profile from '.';
 
-
 describe('profile', () => {
   describe('create', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      profile.create('c4t', { firstName: 'Mark' })
+      profile
+        .create('c4t', { firstName: 'Mark' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(createRequest.args).toEqual(['POST', '/users/c4t/profile', { firstName: 'Mark' }]);
+          expect(createRequest.args).toEqual([
+            'POST',
+            '/users/c4t/profile',
+            { firstName: 'Mark' },
+          ]);
           done();
         })
         .catch(done.fail);
@@ -24,11 +28,12 @@ describe('profile', () => {
   });
 
   describe('getCurrent', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      profile.getCurrent()
+      profile
+        .getCurrent()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -40,11 +45,12 @@ describe('profile', () => {
   });
 
   describe('getById', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      profile.getById('c4t')
+      profile
+        .getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 

@@ -96,7 +96,7 @@ describe('MediaRecorder', () => {
       expect(window[CUSTOM_NS]).toEqual(MediaRecorder);
     });
 
-    it('should not set the MediaRecorder to CustomMediaRecorder if we ask for it but don\'t want to set window', () => {
+    it("should not set the MediaRecorder to CustomMediaRecorder if we ask for it but don't want to set window", () => {
       mediaRecorder.createRecorder(STREAM, dontSetWindow, CUSTOM_NS);
 
       expect(window[CUSTOM_NS]).toBeUndefined();
@@ -135,13 +135,16 @@ describe('MediaRecorder', () => {
       expect(stream instanceof Promise).toBeTruthy();
     });
 
-    it('should reject with an error if getUserMedia is not available', (done) => {
+    it('should reject with an error if getUserMedia is not available', done => {
       spyOnProperty(navigator, 'mediaDevices').and.returnValue({});
 
-      mediaRecorder.createMediaStream()
+      mediaRecorder
+        .createMediaStream()
         .then(done.fail)
         .catch(({ message }) => {
-          expect(message).toBe('navigator.mediaDevices.getUserMedia not implemented in this browser');
+          expect(message).toBe(
+            'navigator.mediaDevices.getUserMedia not implemented in this browser',
+          );
           done();
         });
     });

@@ -5,7 +5,10 @@
  */
 
 import autobahn from 'autobahn';
-import { getWebsocketConnection, makeWebsocketCall } from '../communication/websocket';
+import {
+  getWebsocketConnection,
+  makeWebsocketCall,
+} from '../communication/websocket';
 import broadcaster from '../broadcaster';
 import { dataToBase64, asyncBlobToArrayBuffer } from './index';
 
@@ -72,7 +75,7 @@ class StreamRecorderAudio {
     let lastChunk = false;
 
     this.recorder.addEventListener('dataavailable', ({ data }) => {
-      asyncBlobToArrayBuffer(data).then((audioData) => {
+      asyncBlobToArrayBuffer(data).then(audioData => {
         if (details.progress) {
           const dataToSend = Array.from(new Uint8Array(audioData));
           details.progress([dataToSend]);
@@ -105,10 +108,11 @@ class StreamRecorderAudio {
     return new Promise((resolve, reject) => {
       this.websocketConnection.session
         .register(this.rpcName, this.sendAudioChunks)
-        .then((registration) => {
+        .then(registration => {
           this.registration = registration;
           resolve(registration);
-        }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 
@@ -122,7 +126,8 @@ class StreamRecorderAudio {
         .then(() => {
           this.registration = null;
           resolve();
-        }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 }
@@ -144,10 +149,15 @@ export function registerStreamForRecorder(recorder, rpcName) {
   // Start registering a RPC call. As a result, this function will return a promise with the
   // registration of the RPC as result.
   return new Promise((resolve, reject) => {
-    getWebsocketConnection().then((websocketConnection) => {
-      const streamingSession = new StreamRecorderAudio(recorder, rpcName, websocketConnection);
-      streamingSession.register()
-        .then((registration) => {
+    getWebsocketConnection().then(websocketConnection => {
+      const streamingSession = new StreamRecorderAudio(
+        recorder,
+        rpcName,
+        websocketConnection,
+      );
+      streamingSession
+        .register()
+        .then(registration => {
           /**
            * Notify that we are ready to process audio.
            * @event broadcaster#websocketserverreadyforaudio
@@ -159,7 +169,6 @@ export function registerStreamForRecorder(recorder, rpcName) {
     });
   });
 }
-
 
 /**
  * Encode the audio as base64 and send it to the websocket server.
@@ -176,16 +185,17 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
     // When we read the data from the Blob element, base64 it and send it to
     // the websocket server and continue with the chain.
     recorder.addEventListener('dataavailable', ({ data }) => {
-      asyncBlobToArrayBuffer(data).then((audioData) => {
+      asyncBlobToArrayBuffer(data).then(audioData => {
         const encoded = dataToBase64(audioData);
         // Send the audio
-        makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
-          .then(resolve, reject);
+        makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] }).then(
+          resolve,
+          reject,
+        );
       });
     });
   });
 }
-
 
 /**
  * Send the recorder settings to the websocket server to initialize it.
@@ -203,11 +213,13 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
  */
 export function prepareServerForAudio(id, recorder, rpc) {
   const { audioFormat, audioParameters } = recorder.getAudioSpecs();
-  return makeWebsocketCall(rpc, { args: [id, audioFormat], kwargs: audioParameters })
-    .then(() => {
-      // We've prepped the websocket server, now it can receive audio. Broadcast
-      // that it is allowed to record.
-      broadcaster.emit('websocketserverreadyforaudio');
-      return id;
-    });
+  return makeWebsocketCall(rpc, {
+    args: [id, audioFormat],
+    kwargs: audioParameters,
+  }).then(() => {
+    // We've prepped the websocket server, now it can receive audio. Broadcast
+    // that it is allowed to record.
+    broadcaster.emit('websocketserverreadyforaudio');
+    return id;
+  });
 }

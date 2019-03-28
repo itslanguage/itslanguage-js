@@ -23,7 +23,6 @@ import { makeWebsocketCall } from '../../communication/websocket';
  */
 const url = challenge => `/challenges/speech/${challenge}/recordings`;
 
-
 /**
  * Create a new speech recording.
  *
@@ -36,7 +35,6 @@ export function create(challengeId, recording) {
   return authorisedRequest('POST', url(challengeId), recording);
 }
 
-
 /**
  * Get a single speech recording by its ID.
  *
@@ -48,7 +46,6 @@ export function create(challengeId, recording) {
 export function getById(challenge, id) {
   return authorisedRequest('GET', `${url(challenge)}/${id}`);
 }
-
 
 /**
  * Get a all speech recordings.
@@ -69,7 +66,9 @@ export function getAll(challenge, filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
+      return Promise.reject(
+        new Error('The filters should be a `URLSearchParams` object.'),
+      );
     }
 
     urlWithFilters += `?${filters.toString()}`;
@@ -77,7 +76,6 @@ export function getAll(challenge, filters) {
 
   return authorisedRequest('GET', urlWithFilters);
 }
-
 
 /**
  * Create a new recording for the given challenge with the data from the given recorder.
@@ -94,18 +92,30 @@ export function getAll(challenge, filters) {
 export function record(challenge, recorder) {
   let recordingId = null;
 
-  return makeWebsocketCall('recording.init_recording')
-    // Initializing the recording to give us an ID for the recording we are creating right now.
-    .then((recording) => {
-      recordingId = recording;
-      return makeWebsocketCall('recording.init_challenge', { args: [recordingId, challenge] });
-    })
-    // We've linked it to the speech challenge now. We also should have
-    // received the recording ID once again.
-    .then(() => prepareServerForAudio(recordingId, recorder, 'recording.init_audio'))
-    // We've prepped the websocket server so it knows what audio format we are
-    // using and all the extra floof that comes with it.
-    .then(() => encodeAndSendAudioOnDataAvailable(recordingId, recorder, 'recording.write'))
-    // When we are done; close the connection.
-    .then(() => makeWebsocketCall('recording.close', { args: [recordingId] }));
+  return (
+    makeWebsocketCall('recording.init_recording')
+      // Initializing the recording to give us an ID for the recording we are creating right now.
+      .then(recording => {
+        recordingId = recording;
+        return makeWebsocketCall('recording.init_challenge', {
+          args: [recordingId, challenge],
+        });
+      })
+      // We've linked it to the speech challenge now. We also should have
+      // received the recording ID once again.
+      .then(() =>
+        prepareServerForAudio(recordingId, recorder, 'recording.init_audio'),
+      )
+      // We've prepped the websocket server so it knows what audio format we are
+      // using and all the extra floof that comes with it.
+      .then(() =>
+        encodeAndSendAudioOnDataAvailable(
+          recordingId,
+          recorder,
+          'recording.write',
+        ),
+      )
+      // When we are done; close the connection.
+      .then(() => makeWebsocketCall('recording.close', { args: [recordingId] }))
+  );
 }

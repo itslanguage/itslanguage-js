@@ -41,7 +41,6 @@ export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
-
 /**
  * Get all tenants.
  *

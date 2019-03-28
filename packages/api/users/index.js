@@ -20,7 +20,6 @@ const url = '/users';
  */
 const singleUserUrl = '/user';
 
-
 /**
  * Create a new user.
  *
@@ -37,7 +36,6 @@ const singleUserUrl = '/user';
 export function create(user) {
   return authorisedRequest('POST', url, user);
 }
-
 
 /**
  * Get the current user.
@@ -59,7 +57,6 @@ export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
 
-
 /**
  * Get a all users.
  *
@@ -78,7 +75,9 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
+      return Promise.reject(
+        new Error('The filters should be a `URLSearchParams` object.'),
+      );
     }
 
     urlWithFilters += `?${filters.toString()}`;

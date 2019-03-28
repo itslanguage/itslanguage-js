@@ -13,7 +13,6 @@ import { authorisedRequest } from '../communication';
  */
 const url = '/organisations';
 
-
 /**
  * Create a new organisation.
  *
@@ -27,7 +26,6 @@ export function create(organisation) {
   return authorisedRequest('POST', url, organisation);
 }
 
-
 /**
  * Get a single organisation by its ID.
  *
@@ -38,7 +36,6 @@ export function create(organisation) {
 export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
-
 
 /**
  * Get a all organisations.
@@ -58,7 +55,9 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
+      return Promise.reject(
+        new Error('The filters should be a `URLSearchParams` object.'),
+      );
     }
 
     urlWithFilters += `?${filters.toString()}`;

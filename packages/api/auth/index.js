@@ -8,7 +8,6 @@
 
 import { authorisedRequest, request, updateSettings } from '../communication';
 
-
 /**
  * Assemble the scope form the given individual pieces.
  *
@@ -83,11 +82,10 @@ export function impersonate(scope) {
     body.set('scope', scope);
   }
 
-  return authorisedRequest('POST', '/tokens', body)
-    .then((result) => {
-      updateSettings({ authorizationToken: result.access_token });
-      return result;
-    });
+  return authorisedRequest('POST', '/tokens', body).then(result => {
+    updateSettings({ authorizationToken: result.access_token });
+    return result;
+  });
 }
 
 /**
@@ -115,9 +113,8 @@ export function authenticate(username, password, scope) {
     body.set('scope', scope);
   }
 
-  return request('POST', '/tokens', body)
-    .then((result) => {
-      updateSettings({ authorizationToken: result.access_token });
-      return result;
-    });
+  return request('POST', '/tokens', body).then(result => {
+    updateSettings({ authorizationToken: result.access_token });
+    return result;
+  });
 }

@@ -1,10 +1,5 @@
 // Files that should be available in each package
-const defaultFiles = [
-  'package.json',
-  'README.md',
-  'CHANGELOG.md',
-  'LICENSE',
-];
+const defaultFiles = ['package.json', 'README.md', 'CHANGELOG.md', 'LICENSE'];
 
 /**
  * Specify some bundle information.
@@ -23,23 +18,17 @@ const bundles = [
   {
     entry: 'api',
     library: 'itslApi',
-    files: [
-      ...defaultFiles,
-    ],
+    files: [...defaultFiles],
   },
   {
     entry: 'recorder',
     library: 'itslRecorder',
-    files: [
-      ...defaultFiles,
-    ],
+    files: [...defaultFiles],
   },
   {
     entry: 'player',
     library: 'itslPlayer',
-    files: [
-      ...defaultFiles,
-    ],
+    files: [...defaultFiles],
   },
 ];
 

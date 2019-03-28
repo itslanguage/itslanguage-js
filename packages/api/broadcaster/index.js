@@ -10,13 +10,11 @@
 
 import ee from 'event-emitter';
 
-
 /**
  * The single event channel used throughout the ITSLanguage API.
  *
  * @type {event-emitter.EventEmitter}
  */
 const broadcaster = ee();
-
 
 export default broadcaster;

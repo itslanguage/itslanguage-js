@@ -13,7 +13,6 @@ import { authorisedRequest } from '../../communication';
  */
 const url = '/feedback';
 
-
 /**
  * Create new feedback.
  *
@@ -24,7 +23,6 @@ const url = '/feedback';
 export function create(feedback) {
   return authorisedRequest('POST', url, feedback);
 }
-
 
 /**
  * Get a single feedback challenge by its ID.
@@ -39,7 +37,6 @@ export function create(feedback) {
 export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
-
 
 /**
  * Get all feedback. It will only return feedback that the user may see.

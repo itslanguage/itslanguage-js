@@ -22,7 +22,7 @@ const MINIMAL_NPM = 5.0;
  * @param {Error,Array} errors - Error or array with Error's to display.
  */
 function logErrors(errors) {
-  [].concat(errors).forEach((error) => {
+  [].concat(errors).forEach(error => {
     console.error(error);
     console.log('\n');
   });
@@ -37,7 +37,9 @@ function logErrors(errors) {
  */
 async function checkVersionFor(program = null) {
   if (!program) {
-    logErrors(new Error('You need to specify a program to check the version for'));
+    logErrors(
+      new Error('You need to specify a program to check the version for'),
+    );
   }
 
   const { err, stdout } = await exec(`${program} --version`);
@@ -53,16 +55,23 @@ async function checkVersionFor(program = null) {
  */
 async function checkVersions() {
   try {
-    const [npmVersion, nodeVersion] = await Promise.all([checkVersionFor('npm'), checkVersionFor('node')]);
+    const [npmVersion, nodeVersion] = await Promise.all([
+      checkVersionFor('npm'),
+      checkVersionFor('node'),
+    ]);
 
     const errors = [];
 
     if (parseFloat(nodeVersion.split('.')[0].replace('v', '')) < MINIMAL_NODE) {
-      errors.push(new Error(`${PACKAGE_NAME} relies on node version @>=${MINIMAL_NODE}`));
+      errors.push(
+        new Error(`${PACKAGE_NAME} relies on node version @>=${MINIMAL_NODE}`),
+      );
     }
 
     if (parseFloat(npmVersion.split('.')[0]) < MINIMAL_NPM) {
-      errors.push(new Error(`${PACKAGE_NAME} relies on node version @>=${MINIMAL_NPM}`));
+      errors.push(
+        new Error(`${PACKAGE_NAME} relies on node version @>=${MINIMAL_NPM}`),
+      );
     }
 
     if (errors.length > 0) {

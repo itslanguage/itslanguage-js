@@ -7,7 +7,6 @@ import * as communication from './index';
 
 const TEST_API_URL = 'https://api.itslanguage.nl';
 
-
 describe('settings', () => {
   it('should expose the settings object', () => {
     // Expect that the default keys are not undefined, they are either null,
@@ -17,7 +16,6 @@ describe('settings', () => {
     expect(communication.settings.authorizationToken).not.toBe(undefined);
   });
 });
-
 
 describe('updateSettings', () => {
   it('should allow to pass any object', () => {
@@ -36,13 +34,15 @@ describe('updateSettings', () => {
   });
 
   it('should throw an error when something other than a object is given', () => {
-    const faultyNewSettings = 'this is not the kind of object you are looking for';
+    const faultyNewSettings =
+      'this is not the kind of object you are looking for';
 
-    expect(() => communication.updateSettings(faultyNewSettings))
-      .toThrowError(Error, 'Please, only provide objects as settings.');
+    expect(() => communication.updateSettings(faultyNewSettings)).toThrowError(
+      Error,
+      'Please, only provide objects as settings.',
+    );
   });
 });
-
 
 describe('request', () => {
   let fetchSpy;
@@ -52,7 +52,7 @@ describe('request', () => {
     communication.updateSettings({ apiUrl: TEST_API_URL });
   });
 
-  it('should make the request for the given params and handle its response', (done) => {
+  it('should make the request for the given params and handle its response', done => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -62,8 +62,9 @@ describe('request', () => {
 
     const requestBody = { packed: 'suitcase' };
 
-    communication.request('POST', '/lets/go/somewhere', requestBody)
-      .then((result) => {
+    communication
+      .request('POST', '/lets/go/somewhere', requestBody)
+      .then(result => {
         const request = fetchSpy.calls.mostRecent();
 
         expect(request.args).toEqual([
@@ -81,7 +82,7 @@ describe('request', () => {
       .catch(done.fail);
   });
 
-  it('should leave the url of a request as if', (done) => {
+  it('should leave the url of a request as if', done => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -89,8 +90,9 @@ describe('request', () => {
     const response = new Response(JSON.stringify(responseBody), { headers });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
-    communication.request('GET', 'https://fake/url')
-      .then((result) => {
+    communication
+      .request('GET', 'https://fake/url')
+      .then(result => {
         const request = fetchSpy.calls.mostRecent();
 
         expect(request.args).toEqual([
@@ -108,7 +110,7 @@ describe('request', () => {
       .catch(done.fail);
   });
 
-  it('should send URLSearchParams body as x-www-form-urlencoded (i.e. URLSearchParams)', (done) => {
+  it('should send URLSearchParams body as x-www-form-urlencoded (i.e. URLSearchParams)', done => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -119,8 +121,9 @@ describe('request', () => {
     const requestBody = new URLSearchParams();
     requestBody.set('packed', 'suitcase');
 
-    communication.request('POST', '/lets/go/somewhere', requestBody)
-      .then((result) => {
+    communication
+      .request('POST', '/lets/go/somewhere', requestBody)
+      .then(result => {
         const request = fetchSpy.calls.mostRecent();
 
         expect(request.args).toEqual([
@@ -138,7 +141,7 @@ describe('request', () => {
       .catch(done.fail);
   });
 
-  it('should send FormData as multipart/form-data (i.e. FormData)', (done) => {
+  it('should send FormData as multipart/form-data (i.e. FormData)', done => {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -147,10 +150,15 @@ describe('request', () => {
     fetchSpy.and.returnValue(Promise.resolve(response));
 
     const requestBody = new FormData();
-    requestBody.set('memory', new Blob(), 'a nice pictrue taken on the journey');
+    requestBody.set(
+      'memory',
+      new Blob(),
+      'a nice pictrue taken on the journey',
+    );
 
-    communication.request('POST', '/lets/go/somewhere', requestBody)
-      .then((result) => {
+    communication
+      .request('POST', '/lets/go/somewhere', requestBody)
+      .then(result => {
         const request = fetchSpy.calls.mostRecent();
 
         expect(request.args).toEqual([
@@ -168,7 +176,7 @@ describe('request', () => {
       .catch(done.fail);
   });
 
-  it('should reject with the custom JSON errors from the API', (done) => {
+  it('should reject with the custom JSON errors from the API', done => {
     const responseHeaders = new Headers();
     responseHeaders.set('Content-Type', 'application/json');
     const responseBody = {
@@ -181,22 +189,24 @@ describe('request', () => {
     });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
-    communication.request('GET', '/give/me/coffee')
+    communication
+      .request('GET', '/give/me/coffee')
       .then(done.fail)
-      .catch((result) => {
+      .catch(result => {
         expect(result).toEqual(responseBody);
         done();
       });
   });
 
-  it('should reject with the plain HTTP error status if the response does have a JSON body', (done) => {
+  it('should reject with the plain HTTP error status if the response does have a JSON body', done => {
     const response = new Response('I am a teapot', {
       status: 418,
       statusText: 'I am a teapot',
     });
     fetchSpy.and.returnValue(Promise.resolve(response));
 
-    communication.request('GET', '/give/me/coffee')
+    communication
+      .request('GET', '/give/me/coffee')
       .then(done.fail)
       .catch(({ message }) => {
         expect(message).toEqual(`${response.status}: ${response.statusText}`);
@@ -204,19 +214,19 @@ describe('request', () => {
       });
   });
 
-  it('should return the response if it is an OK response, but doesn\'t have a JSON body', (done) => {
+  it("should return the response if it is an OK response, but doesn't have a JSON body", done => {
     const response = new Response('I wish I was a teapot');
     fetchSpy.and.returnValue(Promise.resolve(response));
 
-    communication.request('GET', '/give/me/coffee')
-      .then((result) => {
+    communication
+      .request('GET', '/give/me/coffee')
+      .then(result => {
         expect(result).toBe(response);
         done();
       })
       .catch(done.fail);
   });
 });
-
 
 describe('authorisedRequest', () => {
   let fetchSpy;
@@ -229,18 +239,22 @@ describe('authorisedRequest', () => {
     });
   });
 
-  it('should only allow relative urls', (done) => {
-    communication.authorisedRequest('PUT', 'https://domain.ext/path', { foo: 'bar' })
+  it('should only allow relative urls', done => {
+    communication
+      .authorisedRequest('PUT', 'https://domain.ext/path', { foo: 'bar' })
       .then(done.fail)
       .catch(({ message }) => {
-        expect(message).toEqual('Only relative ITSLanguage API URLs are allowed.');
+        expect(message).toEqual(
+          'Only relative ITSLanguage API URLs are allowed.',
+        );
         done();
       });
   });
 
-  it('should reject when there is no authorizationToken set in the settings', (done) => {
+  it('should reject when there is no authorizationToken set in the settings', done => {
     communication.updateSettings({ authorizationToken: null });
-    communication.authorisedRequest('PUT', '/path', { foo: 'bar' })
+    communication
+      .authorisedRequest('PUT', '/path', { foo: 'bar' })
       .then(done.fail)
       .catch(({ message }) => {
         expect(message).toEqual('Please authenticate first.');
@@ -248,7 +262,7 @@ describe('authorisedRequest', () => {
       });
   });
 
-  it('should set the Authorization header with the authorizationToken as a bearer token', (done) => {
+  it('should set the Authorization header with the authorizationToken as a bearer token', done => {
     const responseHeaders = new Headers();
     responseHeaders.set('Content-Type', 'application/json');
 
@@ -261,8 +275,9 @@ describe('authorisedRequest', () => {
     const expectedRequestHeaders = new Headers();
     expectedRequestHeaders.set('Authorization', 'Bearer token');
 
-    communication.authorisedRequest('GET', '/foo')
-      .then((result) => {
+    communication
+      .authorisedRequest('GET', '/foo')
+      .then(result => {
         const request = fetchSpy.calls.mostRecent();
 
         expect(request.args).toEqual([
@@ -295,21 +310,29 @@ describe('addAccessToken', () => {
   it('should return the url with access_token if there an authorisation token known', () => {
     communication.settings.authorizationToken = fakeToken;
 
-    expect(communication.addAccessToken(fakeUrl).includes(fakeTokenUrl)).toBeTruthy();
+    expect(
+      communication.addAccessToken(fakeUrl).includes(fakeTokenUrl),
+    ).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
 
   it('should return the url with access_token with an ? if it is the first queryparam', () => {
     communication.settings.authorizationToken = fakeToken;
 
-    expect(communication.addAccessToken(fakeUrl).includes(`?${fakeTokenUrl}`)).toBeTruthy();
+    expect(
+      communication.addAccessToken(fakeUrl).includes(`?${fakeTokenUrl}`),
+    ).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
 
   it('should return the url with access_token with an & if it is not the first queryparam', () => {
     communication.settings.authorizationToken = fakeToken;
 
-    expect(communication.addAccessToken(`${fakeUrl}?someParam=x`).includes(`&${fakeTokenUrl}`)).toBeTruthy();
+    expect(
+      communication
+        .addAccessToken(`${fakeUrl}?someParam=x`)
+        .includes(`&${fakeTokenUrl}`),
+    ).toBeTruthy();
     communication.settings.authorizationToken = null;
   });
 

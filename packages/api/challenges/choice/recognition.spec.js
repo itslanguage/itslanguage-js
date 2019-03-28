@@ -9,11 +9,12 @@ import * as utils from '../../utils/audio-over-socket';
 
 describe('Choice Recognition Challenge API', () => {
   describe('create', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      recognition.create('c4t', null, 'c4t')
+      recognition
+        .create('c4t', null, 'c4t')
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -30,11 +31,12 @@ describe('Choice Recognition Challenge API', () => {
         .catch(done.fail);
     });
 
-    it('should make an authorised request and pass an ID', (done) => {
+    it('should make an authorised request and pass an ID', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      recognition.create('c4t', null, 'c4t', '123')
+      recognition
+        .create('c4t', null, 'c4t', '123')
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -53,96 +55,112 @@ describe('Choice Recognition Challenge API', () => {
     });
   });
 
-
   describe('getByID', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      recognition.getById('c4t', 'd0g')
+      recognition
+        .getById('c4t', 'd0g')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t/recognitions/d0g']);
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/challenges/choice/c4t/recognitions/d0g',
+          ]);
           done();
         })
         .catch(done.fail);
     });
   });
 
-
   describe('getAll', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
-      recognition.getAll('c4t')
+      recognition
+        .getAll('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(getRequest.args).toEqual(['GET', '/challenges/choice/c4t/recognitions']);
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/challenges/choice/c4t/recognitions',
+          ]);
           done();
         })
         .catch(done.fail);
     });
   });
-
 
   describe('prepare', () => {
-    it('should call choice.init_recognition', (done) => {
+    it('should call choice.init_recognition', done => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      recognition.prepare()
+      recognition
+        .prepare()
         .then(() => {
-          expect(makeWebsocketCallSpy).toHaveBeenCalledWith('choice.init_recognition');
+          expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
+            'choice.init_recognition',
+          );
           done();
         })
         .catch(done.fail);
     });
   });
-
 
   describe('prepareChallenge', () => {
-    it('should call choice.init_challenge with recognitionId and challengeId', (done) => {
+    it('should call choice.init_challenge with recognitionId and challengeId', done => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      recognition.prepareChallenge('recognitionId', 'challengeId')
+      recognition
+        .prepareChallenge('recognitionId', 'challengeId')
         .then(() => {
-          expect(makeWebsocketCallSpy)
-            .toHaveBeenCalledWith('choice.init_challenge', {
+          expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
+            'choice.init_challenge',
+            {
               args: ['recognitionId', 'challengeId'],
-            });
+            },
+          );
           done();
         })
         .catch(done.fail);
     });
   });
-
 
   describe('recogniseAudioStream', () => {
-    it('should call choice.recognise', (done) => {
+    it('should call choice.recognise', done => {
       const makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      const registerStreamForRecorderSpy = spyOn(utils, 'registerStreamForRecorder');
-      registerStreamForRecorderSpy.and.returnValue(new Promise((resolve) => {
-        resolve({
-          procedure: 'fakeProcedure',
-        });
-      }));
+      const registerStreamForRecorderSpy = spyOn(
+        utils,
+        'registerStreamForRecorder',
+      );
+      registerStreamForRecorderSpy.and.returnValue(
+        new Promise(resolve => {
+          resolve({
+            procedure: 'fakeProcedure',
+          });
+        }),
+      );
 
-      recognition.recogniseAudioStream('recognitionId', 'nothing')
+      recognition
+        .recogniseAudioStream('recognitionId', 'nothing')
         .then(() => {
-          expect(makeWebsocketCallSpy)
-            .toHaveBeenCalledWith('choice.recognise', { args: ['recognitionId', 'fakeProcedure'] });
+          expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
+            'choice.recognise',
+            { args: ['recognitionId', 'fakeProcedure'] },
+          );
           done();
         })
         .catch(done.fail);
     });
   });
-
 
   describe('recognise', () => {
     let makeWebsocketCallSpy;
@@ -153,19 +171,22 @@ describe('Choice Recognition Challenge API', () => {
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
       registerStreamForRecorderSpy = spyOn(utils, 'registerStreamForRecorder');
-      registerStreamForRecorderSpy.and.returnValue(new Promise((resolve) => {
-        resolve({
-          procedure: 'fakeProcedure',
-        });
-      }));
+      registerStreamForRecorderSpy.and.returnValue(
+        new Promise(resolve => {
+          resolve({
+            procedure: 'fakeProcedure',
+          });
+        }),
+      );
     });
 
     it('should return a promise', () => {
       expect(recognition.recognise('', null) instanceof Promise).toBeTruthy();
     });
 
-    it('should call all the needed functions', (done) => {
-      recognition.recognise('challengeId', 'noRecorder')
+    it('should call all the needed functions', done => {
+      recognition
+        .recognise('challengeId', 'noRecorder')
         .then(() => {
           expect(makeWebsocketCallSpy).toHaveBeenCalledTimes(3);
           expect(registerStreamForRecorderSpy).toHaveBeenCalledTimes(1);
@@ -185,30 +206,39 @@ describe('Choice Recognition Challenge API', () => {
       makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
       makeWebsocketCallSpy.and.returnValue(new Promise(resolve => resolve()));
 
-      encodeAndSendAudioOnDataAvailableSpy = spyOn(utils, 'encodeAndSendAudioOnDataAvailable');
-      encodeAndSendAudioOnDataAvailableSpy.and.returnValue(new Promise(resolve => resolve()));
+      encodeAndSendAudioOnDataAvailableSpy = spyOn(
+        utils,
+        'encodeAndSendAudioOnDataAvailable',
+      );
+      encodeAndSendAudioOnDataAvailableSpy.and.returnValue(
+        new Promise(resolve => resolve()),
+      );
 
       prepareServerForAudioSpy = spyOn(utils, 'prepareServerForAudio');
-      prepareServerForAudioSpy.and.returnValue(new Promise(resolve => resolve()));
+      prepareServerForAudioSpy.and.returnValue(
+        new Promise(resolve => resolve()),
+      );
 
       recorderStub = jasmine.createSpyObj('Recorder', ['addEventListener']);
       recorderStub.addEventListener.and.callFake((event, callback) => {
         // Pretend as if the event has been fired and thus call the callback.
         callback({
-          data: new Blob(
-            ['Knees weak, arms are heavy.'],
-            { type: 'text/plain' },
-          ),
+          data: new Blob(['Knees weak, arms are heavy.'], {
+            type: 'text/plain',
+          }),
         });
       });
     });
 
     it('should return a promise', () => {
-      expect(recognition.recogniseNonStreaming('', null) instanceof Promise).toBeTruthy();
+      expect(
+        recognition.recogniseNonStreaming('', null) instanceof Promise,
+      ).toBeTruthy();
     });
 
-    it('should call all the needed functions', (done) => {
-      recognition.recogniseNonStreaming('challengeId', recorderStub)
+    it('should call all the needed functions', done => {
+      recognition
+        .recogniseNonStreaming('challengeId', recorderStub)
         .then(() => {
           expect(makeWebsocketCallSpy).toHaveBeenCalledTimes(3);
           expect(prepareServerForAudioSpy).toHaveBeenCalledTimes(1);

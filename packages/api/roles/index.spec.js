@@ -5,21 +5,25 @@
 import * as communication from '../communication';
 import * as roles from '.';
 
-
 describe('roles', () => {
   describe('create', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      roles.create({ id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST'] })
+      roles
+        .create({ id: 'Student', permissions: ['SPEECH_CHALLENGE_LIST'] })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(createRequest.args).toEqual(['POST', '/roles', {
-            id: 'Student',
-            permissions: ['SPEECH_CHALLENGE_LIST'],
-          }]);
+          expect(createRequest.args).toEqual([
+            'POST',
+            '/roles',
+            {
+              id: 'Student',
+              permissions: ['SPEECH_CHALLENGE_LIST'],
+            },
+          ]);
           done();
         })
         .catch(done.fail);
@@ -27,11 +31,12 @@ describe('roles', () => {
   });
 
   describe('getById', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      roles.getById('c4t')
+      roles
+        .getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -42,13 +47,13 @@ describe('roles', () => {
     });
   });
 
-
   describe('getAll', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
-      roles.getAll()
+      roles
+        .getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -58,14 +63,15 @@ describe('roles', () => {
         .catch(done.fail);
     });
 
-    it('should allow filters if they are a URLSearchParams object', (done) => {
+    it('should allow filters if they are a URLSearchParams object', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
 
-      roles.getAll(filters)
+      roles
+        .getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -75,8 +81,9 @@ describe('roles', () => {
         .catch(done.fail);
     });
 
-    it('should reject when something other than URLSearchParams is given as the filters', (done) => {
-      roles.getAll('this is not an instance of URLSearchParams')
+    it('should reject when something other than URLSearchParams is given as the filters', done => {
+      roles
+        .getAll('this is not an instance of URLSearchParams')
         .then(done.fail)
         .catch(() => {
           done();

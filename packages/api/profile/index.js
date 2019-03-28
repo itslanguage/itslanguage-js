@@ -21,7 +21,6 @@ import { authorisedRequest } from '../communication';
  */
 const url = userId => `/user${userId ? `s/${userId}` : ''}/profile`;
 
-
 /**
  * Link a profile to a user. If a user already has a profile, it will be overwritten.
  *
@@ -38,7 +37,6 @@ const url = userId => `/user${userId ? `s/${userId}` : ''}/profile`;
 export function create(userId, profile) {
   return authorisedRequest('POST', url(userId), profile);
 }
-
 
 /**
  * Get profile for the current user.

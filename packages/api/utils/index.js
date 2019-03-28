@@ -11,7 +11,8 @@
  *
  * @returns {string} - The base64 encoded data.
  */
-export function dataToBase64(data) { // eslint-disable-line import/prefer-default-export
+export function dataToBase64(data) {
+  // eslint-disable-line import/prefer-default-export
   let binary = '';
   const bytes = new Uint8Array(data);
   const len = bytes.byteLength;
@@ -20,7 +21,6 @@ export function dataToBase64(data) { // eslint-disable-line import/prefer-defaul
   }
   return window.btoa(binary);
 }
-
 
 /**
  * Async function to convert a Blob to an ArrayBuffer.
