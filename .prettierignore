@@ -1,0 +1,8 @@
+build/
+coverage/
+/esdoc/
+/jsdoc/
+node_modules/
+package-lock.json
+yarn.lock
+package.json
