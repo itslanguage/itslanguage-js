@@ -1,15 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-
-const prettierOptions = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '.prettierrc'), 'utf8'),
-);
-
 module.exports = {
   root: true,
   parser: 'babel-eslint',
-  extends: ['plugin:jasmine/recommended', 'airbnb-base', 'prettier'],
-  plugins: ['jasmine', 'prettier'],
+  extends: [
+    'airbnb-base',
+    'plugin:jasmine/recommended',
+    'plugin:prettier/recommended',
+  ],
+  plugins: ['jasmine'],
   env: {
     jasmine: true,
     browser: true,
@@ -20,7 +17,6 @@ module.exports = {
     expectAsync: true,
   },
   rules: {
-    'prettier/prettier': ['error', prettierOptions],
     'no-console': 0, // This project purposely uses console.
     'jasmine/no-spec-dupes': [1, 'branch'],
   },
