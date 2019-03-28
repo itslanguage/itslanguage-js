@@ -15,17 +15,23 @@
     "build": "node ./scripts/packer/build.js",
     "build:clean": "rimraf ./build",
     "lint": "$npm_execpath run lint:js",
-    "lint:eslint": "eslint --ignore-path .gitignore --fix",
-    "lint:js": "$npm_execpath run lint:eslint -- . ",
+    "lint:eslint": "eslint",
+    "lint:eslint:fix": "eslint --fix",
+    "lint:js": "$npm_execpath run lint:eslint .",
     "lint:staged": "lint-staged",
     "test": "cross-env NODE_ENV=test karma start --single-run --color",
     "test:clean": "rimraf ./coverage",
-    "clean:all": "$npm_execpath run build:clean && $npm_execpath run test:clean"
+    "clean:all": "$npm_execpath run build:clean && $npm_execpath run test:clean",
+    "prettify": "prettier --write"
   },
   "lint-staged": {
     "*.js": [
-      "eslint --ignore-path .gitignore --fix",
-      "git add"
+      "eslint --fix",
+      "git add --force"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add --force"
     ]
   },
   "pre-commit": "lint:staged",
