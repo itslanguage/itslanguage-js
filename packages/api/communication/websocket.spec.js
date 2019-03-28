@@ -37,9 +37,9 @@ describe('Websocket API', () => {
     beforeEach(() => {
       spyOn(autobahn.Connection.prototype, 'close');
       const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      // We cannot use arrow functions because of this scope.
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
       connectionOpenSpy.and.callFake(function() {
-        // eslint-disable-line func-names
         // Get a reference to the thing we actually want to test.
         // eslint-disable-next-line no-underscore-dangle
         onchallengeOption = this._options.onchallenge;
@@ -71,9 +71,9 @@ describe('Websocket API', () => {
   describe('openWebsocketConnection', () => {
     it("should open a connection if there isn't one already", done => {
       const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      // We cannot use arrow functions because of this scope.
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
       connectionOpenSpy.and.callFake(function() {
-        // eslint-disable-line func-names
         this.onopen();
       });
 
@@ -114,9 +114,9 @@ describe('Websocket API', () => {
     beforeEach(() => {
       connectionCloseSpy = spyOn(autobahn.Connection.prototype, 'close');
       connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      // We cannot use arrow functions because of this scope.
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
       connectionOpenSpy.and.callFake(function() {
-        // eslint-disable-line func-names
         this.onopen();
       });
     });
@@ -180,9 +180,9 @@ describe('Websocket API', () => {
         return defer.promise;
       });
 
-      // We cannot use arrow functions because of this scope.
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
       connectionOpenSpy.and.callFake(function() {
-        // eslint-disable-line func-names
         // This property is returned through the session "property" of a
         // connection instance. Sadly only the get is defined with the
         // `Object.defineProperty` which forces us to mock the internals.

@@ -54,9 +54,9 @@ describe('Audio Over socket', () => {
 
       connectionSessionStub.unregister.and.returnValue(Promise.resolve());
 
-      // We cannot use arrow functions because of this scope.
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
       connectionOpenSpy.and.callFake(function() {
-        // eslint-disable-line func-names
         // This property is returned through the session "property" of a
         // connection instance. Sadly only the get is defined with the
         // `Object.defineProperty` which forces us to mock the internals.
