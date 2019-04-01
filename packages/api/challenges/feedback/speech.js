@@ -56,14 +56,13 @@ export function listenAndReply(feedbackId, progressCb, recorder) {
 
   // Below we use registration.procedure instead of rpcNameToRegister. This is because the later
   // lacks some namespace information that we do need.
-  return registerStreamForRecorder(recorder, rpcNameToRegister)
-    .then(registration => makeWebsocketCall(
-      'feedback.listen_and_reply',
-      {
+  return registerStreamForRecorder(recorder, rpcNameToRegister).then(
+    registration =>
+      makeWebsocketCall('feedback.listen_and_reply', {
         args: [feedbackId, registration.procedure],
         progressCb: progressCb.bind(null, feedbackId),
-      },
-    ));
+      }),
+  );
 }
 
 /**
@@ -89,7 +88,9 @@ export function pause(feedbackId) {
  * @returns {Promise} - An error if something went wrong.
  */
 export function resume(feedbackId, sentenceId = 0) {
-  return makeWebsocketCall('feedback.resume', { args: [feedbackId, sentenceId] });
+  return makeWebsocketCall('feedback.resume', {
+    args: [feedbackId, sentenceId],
+  });
 }
 
 /**
@@ -108,6 +109,7 @@ export function resume(feedbackId, sentenceId = 0) {
  * promise will return an recording with the appropriate feedback per sentence.
  */
 export function feedback(challengeId, progressiveResultsCb, recorder) {
-  return prepare(challengeId)
-    .then(feedbackId => listenAndReply(feedbackId, progressiveResultsCb, recorder));
+  return prepare(challengeId).then(feedbackId =>
+    listenAndReply(feedbackId, progressiveResultsCb, recorder),
+  );
 }

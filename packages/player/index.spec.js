@@ -21,7 +21,9 @@ describe('player', () => {
       const OrgAudio = Audio;
       Audio = null;
 
-      expect(audioPlayer.createPlayer).toThrowError('Your browser is not capable of playing audio.');
+      expect(audioPlayer.createPlayer).toThrowError(
+        'Your browser is not capable of playing audio.',
+      );
 
       // now restore it!
       Audio = OrgAudio;
@@ -41,17 +43,22 @@ describe('player', () => {
     });
 
     it('should have set crossOrigin to use-credentials if that is passed', () => {
-      const player = audioPlayer.createPlayer(fakeUrl, false, 'use-credentials');
+      const player = audioPlayer.createPlayer(
+        fakeUrl,
+        false,
+        'use-credentials',
+      );
 
       expect(player.crossOrigin).toBe('use-credentials');
     });
 
     it('should throw an error if an invalid crossOrigin mode is passed', () => {
-      expect(() => audioPlayer.createPlayer(fakeUrl, false, 'wubalublub'))
-        .toThrowError(Error, 'Invalid value for crossOrigin passed');
+      expect(() =>
+        audioPlayer.createPlayer(fakeUrl, false, 'wubalublub'),
+      ).toThrowError(Error, 'Invalid value for crossOrigin passed');
     });
 
-    it('should NOT set HTMLAudioElement.src if we don\'t pass an audioUrl', () => {
+    it("should NOT set HTMLAudioElement.src if we don't pass an audioUrl", () => {
       const player = audioPlayer.createPlayer();
 
       expect(player.src).toBeFalsy();

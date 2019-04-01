@@ -37,7 +37,11 @@ export function addAsGlobal(ns = 'MediaRecorder') {
  * MediaRecorder.
  * @returns {MediaRecorder} - An instance of the created MediaRecorder.
  */
-export function createRecorder(stream = null, setToWindow = false, asObject = 'MediaRecorder') {
+export function createRecorder(
+  stream = null,
+  setToWindow = false,
+  asObject = 'MediaRecorder',
+) {
   if (setToWindow) {
     addAsGlobal(asObject);
   }
@@ -68,9 +72,11 @@ export function createRecorder(stream = null, setToWindow = false, asObject = 'M
  */
 export function createMediaStream() {
   if (typeof navigator.mediaDevices.getUserMedia === 'undefined') {
-    return Promise.reject((
-      new Error('navigator.mediaDevices.getUserMedia not implemented in this browser')
-    ));
+    return Promise.reject(
+      new Error(
+        'navigator.mediaDevices.getUserMedia not implemented in this browser',
+      ),
+    );
   }
   return navigator.mediaDevices.getUserMedia({ audio: true });
 }

@@ -18,7 +18,7 @@ const {
  */
 async function copyBundleFiles(files, from, to) {
   try {
-    await asyncForEach(files, async (file) => {
+    await asyncForEach(files, async file => {
       try {
         await asyncCopyTo(`${from}/${file}`, `${to}/${file}`);
       } catch (error) {
@@ -42,12 +42,14 @@ async function copyBundleFiles(files, from, to) {
  */
 async function transpileCode(entry, from, to) {
   try {
-    await asyncExecuteCommand((
-      `babel ${from} --out-dir ${to} --ignore "${from}/**/*.spec.js"`
-    ));
+    await asyncExecuteCommand(
+      `babel ${from} --out-dir ${to} --ignore "${from}/**/*.spec.js"`,
+    );
     console.log('babel done!');
   } catch (error) {
-    console.error(`something went wrong while trying to transpile some code for ${entry}`);
+    console.error(
+      `something went wrong while trying to transpile some code for ${entry}`,
+    );
     console.error(error);
   }
 }
@@ -63,12 +65,14 @@ async function transpileCode(entry, from, to) {
 async function runJsdoc(srcPath, destPath) {
   const jsdocConfig = path.resolve('jsdoc.json');
   try {
-    await asyncExecuteCommand((
-      `jsdoc ${srcPath} -c ${jsdocConfig} -d ${destPath}/jsdoc -R ${srcPath}/README.md`
-    ));
+    await asyncExecuteCommand(
+      `jsdoc ${srcPath} -c ${jsdocConfig} -d ${destPath}/jsdoc -R ${srcPath}/README.md`,
+    );
     console.log('jsdoc done!');
   } catch (error) {
-    console.error(`something went wrong while trying to run jsdoc for ${srcPath}`);
+    console.error(
+      `something went wrong while trying to run jsdoc for ${srcPath}`,
+    );
     console.error(error);
   }
 }
@@ -98,39 +102,44 @@ function pack(sourcePath, entry, library, mode = 'production') {
     }, {});
 
     // Create the bundle!
-    webpack({
-      mode,
-      entry: `${sourcePath}/index.js`,
-      output: {
-        path: `${sourcePath}/dist`,
-        filename: `${entry}.${mode === 'development' ? '' : 'min.'}js`,
-        library,
-        libraryTarget: 'umd',
+    webpack(
+      {
+        mode,
+        entry: `${sourcePath}/index.js`,
+        output: {
+          path: `${sourcePath}/dist`,
+          filename: `${entry}.${mode === 'development' ? '' : 'min.'}js`,
+          library,
+          libraryTarget: 'umd',
+        },
+        externals,
       },
-      externals,
-    }, (err, stats) => {
-      if (err) {
-        reject(err);
-      }
+      (err, stats) => {
+        if (err) {
+          reject(err);
+        }
 
-      const info = stats.toJson();
+        const info = stats.toJson();
 
-      if (stats.hasErrors()) {
-        reject(info.errors);
-      }
+        if (stats.hasErrors()) {
+          reject(info.errors);
+        }
 
-      if (stats.hasWarnings()) {
+        if (stats.hasWarnings()) {
+          console.log('Packing is done!');
+          resolve();
+        }
+
+        console.log(
+          stats.toString({
+            chunks: false,
+          }),
+        );
+
         console.log('Packing is done!');
         resolve();
-      }
-
-      console.log(stats.toString({
-        chunks: false,
-      }));
-
-      console.log('Packing is done!');
-      resolve();
-    });
+      },
+    );
   });
 }
 
@@ -176,7 +185,7 @@ async function buildAll() {
 
   try {
     // Loop over the bundles to create a.. bundle!
-    await asyncForEach(bundles, async (bundle) => {
+    await asyncForEach(bundles, async bundle => {
       try {
         await createBundle(bundle);
       } catch (error) {

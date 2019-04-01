@@ -32,7 +32,7 @@ export function getById(id, groups = [], role = '') {
 
   if (groups.length) {
     // If we have groups, add them to the searchParams!
-    groups.forEach((group) => {
+    groups.forEach(group => {
       searchParams.append('group', group);
     });
   }

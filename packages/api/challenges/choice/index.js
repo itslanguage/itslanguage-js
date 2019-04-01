@@ -13,7 +13,6 @@ import { authorisedRequest } from '../../communication';
  */
 const url = '/challenges/choice';
 
-
 /**
  * Create a new choice challenge.
  *
@@ -25,7 +24,6 @@ export function create(challenge) {
   return authorisedRequest('POST', url, challenge);
 }
 
-
 /**
  * Get a single choice challenge by its ID.
  *
@@ -36,7 +34,6 @@ export function create(challenge) {
 export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
-
 
 /**
  * Get a all choice challenges.
@@ -56,7 +53,9 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
+      return Promise.reject(
+        new Error('The filters should be a `URLSearchParams` object.'),
+      );
     }
 
     urlWithFilters += `?${filters.toString()}`;

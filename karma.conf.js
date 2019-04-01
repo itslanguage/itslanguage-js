@@ -1,25 +1,15 @@
-module.exports = (config) => {
+module.exports = config => {
   const configuration = {
-    frameworks: [
-      'browserify',
-      'jasmine',
-    ],
-    files: [
-      'packages/**/*.spec.js',
-    ],
-    browsers: [
-      'ChromeHeadless',
-    ],
+    frameworks: ['browserify', 'jasmine'],
+    files: ['packages/**/*.spec.js'],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
       ChromeTravisCi: {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox --disable-gpu'],
       },
     },
-    reporters: [
-      'progress',
-      'coverage',
-    ],
+    reporters: ['progress', 'coverage'],
     coverageReporter: {
       check: {
         each: {
@@ -63,12 +53,8 @@ module.exports = (config) => {
         [
           'babelify',
           {
-            presets: [
-              '@babel/preset-env',
-            ],
-            plugins: [
-              '@babel/plugin-transform-runtime',
-            ],
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-transform-runtime'],
           },
         ],
       ],

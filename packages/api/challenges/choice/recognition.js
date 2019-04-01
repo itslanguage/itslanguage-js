@@ -27,7 +27,6 @@ import { makeWebsocketCall } from '../../communication/websocket';
  */
 const url = challengeId => `/challenges/choice/${challengeId}/recognitions`;
 
-
 /**
  * Submit an audio fragment for recognition. The recognition is created for the current
  * authenticated user.
@@ -50,13 +49,8 @@ export function create(challengeId, audio, recognised, recognitionId = null) {
     recognition.id = recognitionId;
   }
 
-  return authorisedRequest(
-    'POST',
-    `${url(challengeId)}`,
-    recognition,
-  );
+  return authorisedRequest('POST', `${url(challengeId)}`, recognition);
 }
-
 
 /**
  * Get a single ChoiceRecognition by its ID.
@@ -70,7 +64,6 @@ export function getById(challengeId, id) {
   return authorisedRequest('GET', `${url(challengeId)}/${id}`);
 }
 
-
 /**
  * Get all Choice Recognitions for a specific Choice Challenge.
  *
@@ -81,7 +74,6 @@ export function getById(challengeId, id) {
 export function getAll(challengeId) {
   return authorisedRequest('GET', `${url(challengeId)}`);
 }
-
 
 /**
  * This is the starting point for a choice recognition. A unique recognition id is generated,
@@ -98,7 +90,6 @@ export function prepare() {
   return makeWebsocketCall('choice.init_recognition');
 }
 
-
 /**
  * Before performing the recognition, a WFST needs to be prepared for the challenge. When the RPC is
  * called, the challenge is initialised asynchronously. When the challenge is to be used, the server
@@ -111,9 +102,10 @@ export function prepare() {
  * @returns {Promise} - If succesful the promise returns nothing. On error, there will be an error.
  */
 export function prepareChallenge(recognitionId, challengeId) {
-  return makeWebsocketCall('choice.init_challenge', { args: [recognitionId, challengeId] });
+  return makeWebsocketCall('choice.init_challenge', {
+    args: [recognitionId, challengeId],
+  });
 }
-
 
 /**
  * Based on a recognitionId and a recorder register a RPC call that will be used to send the audio
@@ -127,12 +119,17 @@ export function prepareChallenge(recognitionId, challengeId) {
 export function recogniseAudioStream(recognitionId, recorder) {
   // Generate a somewhat unique RPC name
   const rpcNameToRegister = `choice.stream.${Math.floor(Date.now() / 1000)}`;
-  return registerStreamForRecorder(recorder, rpcNameToRegister)
-    // We don't use rpcNameToRegister here because it lacks some namespacing info. The
-    // registration.procedure does have the needed information.
-    .then(registration => makeWebsocketCall('choice.recognise', { args: [recognitionId, registration.procedure] }));
+  return (
+    registerStreamForRecorder(recorder, rpcNameToRegister)
+      // We don't use rpcNameToRegister here because it lacks some namespacing info. The
+      // registration.procedure does have the needed information.
+      .then(registration =>
+        makeWebsocketCall('choice.recognise', {
+          args: [recognitionId, registration.procedure],
+        }),
+      )
+  );
 }
-
 
 /**
  * Easy function to do a recognition in one go. This is the "dance of the RPC's" that needs to be
@@ -146,12 +143,14 @@ export function recogniseAudioStream(recognitionId, recorder) {
 export function recognise(challengeId, recorder) {
   let recognitionId;
   return prepare()
-    .then((rId) => {
+    .then(rId => {
       recognitionId = rId;
       return rId;
     })
     .then(() => prepareChallenge(recognitionId, challengeId))
-    .then(() => recogniseAudioStream(recognitionId, recorder).then(result => result));
+    .then(() =>
+      recogniseAudioStream(recognitionId, recorder).then(result => result),
+    );
 }
 
 /**
@@ -171,12 +170,22 @@ export function recognise(challengeId, recorder) {
 export function recogniseNonStreaming(challengeId, recorder) {
   let recognitionId;
   return prepare()
-    .then((rId) => {
+    .then(rId => {
       recognitionId = rId;
       return rId;
     })
     .then(() => prepareChallenge(recognitionId, challengeId))
-    .then(() => prepareServerForAudio(recognitionId, recorder, 'choice.init_audio'))
-    .then(() => encodeAndSendAudioOnDataAvailable(recognitionId, recorder, 'choice.write'))
-    .then(() => makeWebsocketCall('choice.recognise', { args: [recognitionId] }));
+    .then(() =>
+      prepareServerForAudio(recognitionId, recorder, 'choice.init_audio'),
+    )
+    .then(() =>
+      encodeAndSendAudioOnDataAvailable(
+        recognitionId,
+        recorder,
+        'choice.write',
+      ),
+    )
+    .then(() =>
+      makeWebsocketCall('choice.recognise', { args: [recognitionId] }),
+    );
 }

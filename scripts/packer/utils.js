@@ -12,13 +12,15 @@ const rimraf = require('rimraf'); // eslint-disable-line import/no-extraneous-de
  * @returns {Promise}
  */
 function asyncExecuteCommand(command) {
-  return new Promise((resolve, reject) => exec(command, (error, stdout) => {
-    if (error) {
-      reject(error);
-      return;
-    }
-    resolve(stdout);
-  }));
+  return new Promise((resolve, reject) =>
+    exec(command, (error, stdout) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(stdout);
+    }),
+  );
 }
 
 /**
@@ -29,15 +31,15 @@ function asyncExecuteCommand(command) {
  * @returns {Promise}
  */
 function asyncRimRaf(filepath) {
-  return new Promise((resolve, reject) => (
-    rimraf(filepath, (error) => {
+  return new Promise((resolve, reject) =>
+    rimraf(filepath, error => {
       if (error) {
         reject(error);
         return;
       }
       resolve();
-    })
-  ));
+    }),
+  );
 }
 
 /**
@@ -49,16 +51,19 @@ function asyncRimRaf(filepath) {
  * @returns {Promise}
  */
 function asyncCopyTo(from, to) {
-  return fs.ensureDir(path.dirname(to)).then(() => new Promise((resolve, reject) => {
-    ncp(from, to, (error) => {
-      if (error) {
-        // Wrap to have a useful stack trace.
-        reject(new Error(error));
-        return;
-      }
-      resolve();
-    });
-  }));
+  return fs.ensureDir(path.dirname(to)).then(
+    () =>
+      new Promise((resolve, reject) => {
+        ncp(from, to, error => {
+          if (error) {
+            // Wrap to have a useful stack trace.
+            reject(new Error(error));
+            return;
+          }
+          resolve();
+        });
+      }),
+  );
 }
 
 /**

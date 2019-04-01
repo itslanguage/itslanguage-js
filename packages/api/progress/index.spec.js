@@ -5,14 +5,14 @@
 import * as communication from '../communication';
 import * as progress from './index';
 
-
 describe('progress', () => {
   describe('getById', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      progress.getById('c4t')
+      progress
+        .getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -22,72 +22,91 @@ describe('progress', () => {
         .catch(done.fail);
     });
 
-    it('should add one group to the authorised request', (done) => {
+    it('should add one group to the authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      progress.getById('c4t', ['fish'])
+      progress
+        .getById('c4t', ['fish'])
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?group=fish']);
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/categories/c4t/progress?group=fish',
+          ]);
           done();
         })
         .catch(done.fail);
     });
 
-    it('should add multiple groups to the authorised request', (done) => {
+    it('should add multiple groups to the authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      progress.getById('c4t', ['fish', 'fork', 'net'])
+      progress
+        .getById('c4t', ['fish', 'fork', 'net'])
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?group=fish&group=fork&group=net']);
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/categories/c4t/progress?group=fish&group=fork&group=net',
+          ]);
           done();
         })
         .catch(done.fail);
     });
 
-    it('should add a role to the authorised request', (done) => {
+    it('should add a role to the authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      progress.getById('c4t', [], 'CAPTAIN_AMERICA')
+      progress
+        .getById('c4t', [], 'CAPTAIN_AMERICA')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?role=CAPTAIN_AMERICA']);
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/categories/c4t/progress?role=CAPTAIN_AMERICA',
+          ]);
           done();
         })
         .catch(done.fail);
     });
 
-    it('should add a group and a role to the authorised request', (done) => {
+    it('should add a group and a role to the authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      progress.getById('c4t', ['fish'], 'CAPTAIN_AMERICA')
+      progress
+        .getById('c4t', ['fish'], 'CAPTAIN_AMERICA')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress?group=fish&role=CAPTAIN_AMERICA']);
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/categories/c4t/progress?group=fish&role=CAPTAIN_AMERICA',
+          ]);
           done();
         })
         .catch(done.fail);
     });
 
-    it('should add multiple groups and a role to the authorised request', (done) => {
+    it('should add multiple groups and a role to the authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      progress.getById('c4t', ['fish', 'fork', 'net'], 'CAPTAIN_AMERICA')
+      progress
+        .getById('c4t', ['fish', 'fork', 'net'], 'CAPTAIN_AMERICA')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(getRequest.args)
-            .toEqual(['GET', '/categories/c4t/progress?group=fish&group=fork&group=net&role=CAPTAIN_AMERICA']);
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/categories/c4t/progress?group=fish&group=fork&group=net&role=CAPTAIN_AMERICA',
+          ]);
           done();
         })
         .catch(done.fail);

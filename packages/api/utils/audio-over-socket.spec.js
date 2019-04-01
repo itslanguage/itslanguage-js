@@ -30,7 +30,11 @@ describe('Audio Over socket', () => {
 
       spyOn(autobahn.Connection.prototype, 'close');
       connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      connectionSessionStub = jasmine.createSpyObj('Session', ['call', 'register', 'unregister']);
+      connectionSessionStub = jasmine.createSpyObj('Session', [
+        'call',
+        'register',
+        'unregister',
+      ]);
       connectionSessionStub.call.and.callFake(() => {
         // eslint-disable-next-line new-cap
         const defer = new autobahn.when.defer();
@@ -50,8 +54,9 @@ describe('Audio Over socket', () => {
 
       connectionSessionStub.unregister.and.returnValue(Promise.resolve());
 
-      // We cannot use arrow functions because of this scope.
-      connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
+      connectionOpenSpy.and.callFake(function() {
         // This property is returned through the session "property" of a
         // connection instance. Sadly only the get is defined with the
         // `Object.defineProperty` which forces us to mock the internals.
@@ -61,14 +66,13 @@ describe('Audio Over socket', () => {
     });
 
     it('should register an RPC call named nl.itslanguage.rpcName', async () => {
-      await expectAsync(aos.registerStreamForRecorder(recorderStub, rpcName))
-        .toBeResolvedTo(
-          {
-            id: '123',
-            rpc: `nl.itslanguage.${rpcName}`,
-            callback: jasmine.any(Function),
-          },
-        );
+      await expectAsync(
+        aos.registerStreamForRecorder(recorderStub, rpcName),
+      ).toBeResolvedTo({
+        id: '123',
+        rpc: `nl.itslanguage.${rpcName}`,
+        callback: jasmine.any(Function),
+      });
     });
 
     it('should emit websocketserverreadyforaudio when ready to receive audio', async () => {
@@ -81,10 +85,7 @@ describe('Audio Over socket', () => {
 
     it('should stream audio to the backend', async () => {
       const data = {
-        data: new Blob(
-          ['Knees weak, arms are heavy.'],
-          { type: 'text/plain' },
-        ),
+        data: new Blob(['Knees weak, arms are heavy.'], { type: 'text/plain' }),
       };
 
       // Make sure to convert the data to what is actually being sent to the backend: an array
@@ -102,35 +103,31 @@ describe('Audio Over socket', () => {
       const detailsSpy = jasmine.createSpyObj('details', ['progress']);
       await result.callback([], {}, detailsSpy);
 
-      expect(detailsSpy.progress)
-        .toHaveBeenCalledWith([intArray]);
+      expect(detailsSpy.progress).toHaveBeenCalledWith([intArray]);
     });
 
     it('should not stream audio if the progress function does not exist', async () => {
       recorderStub.addEventListener.and.callFake((event, callback) => {
         // Pretend as if the event has been fired and thus call the callback.
         callback({
-          data: new Blob(
-            ['Knees weak, arms are heavy.'],
-            { type: 'text/plain' },
-          ),
+          data: new Blob(['Knees weak, arms are heavy.'], {
+            type: 'text/plain',
+          }),
         });
       });
 
       const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
 
-      await expectAsync(result.callback([], {}, {}))
-        .toBeRejectedWith('no progress function registered');
+      await expectAsync(result.callback([], {}, {})).toBeRejectedWith(
+        'no progress function registered',
+      );
     });
 
     it('should only resolve on the last chunk', async () => {
       let dataavailableCallback = null;
       let stopCallback = null;
       const blob = {
-        data: new Blob(
-          ['Knees weak, arms are heavy.'],
-          { type: 'text/plain' },
-        ),
+        data: new Blob(['Knees weak, arms are heavy.'], { type: 'text/plain' }),
       };
 
       recorderStub.addEventListener.and.callFake((event, callback) => {
@@ -179,60 +176,81 @@ describe('Audio Over socket', () => {
     });
 
     it('should send the data when the recorder fires the event', async () => {
-      dataToBase64Spy.and.returnValue('There\'s vomit on his sweater already, mom\'s spaghetti');
-      makeWebsocketCallSpy.and.returnValue(Promise.resolve('He\'s nervous, but on the surface he looks calm and ready'));
+      dataToBase64Spy.and.returnValue(
+        "There's vomit on his sweater already, mom's spaghetti",
+      );
+      makeWebsocketCallSpy.and.returnValue(
+        Promise.resolve(
+          "He's nervous, but on the surface he looks calm and ready",
+        ),
+      );
       recorderStub.addEventListener.and.callFake((event, callback) => {
         // Pretend as if the event has been fired and thus call the callback.
         callback({
-          data: new Blob(
-            ['Knees weak, arms are heavy.'],
-            { type: 'text/plain' },
-          ),
+          data: new Blob(['Knees weak, arms are heavy.'], {
+            type: 'text/plain',
+          }),
         });
       });
 
-      const result = await aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty');
+      const result = await aos.encodeAndSendAudioOnDataAvailable(
+        'r353rv3d1d',
+        recorderStub,
+        'his.palms.are.sweaty',
+      );
 
       expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
         'his.palms.are.sweaty',
         {
           args: [
             'r353rv3d1d',
-            'There\'s vomit on his sweater already, mom\'s spaghetti',
+            "There's vomit on his sweater already, mom's spaghetti",
             'base64',
           ],
         },
       );
 
-      expect(result).toEqual('He\'s nervous, but on the surface he looks calm and ready');
+      expect(result).toEqual(
+        "He's nervous, but on the surface he looks calm and ready",
+      );
     });
 
     it('should reject if the `makeWebsocketCall` rejected', async () => {
-      dataToBase64Spy.and.returnValue('There\'s vomit on his sweater already, mom\'s spaghetti');
-      makeWebsocketCallSpy.and.returnValue(Promise.reject((
-        new Error('Websocket server has received and rejected the call.')
-      )));
+      dataToBase64Spy.and.returnValue(
+        "There's vomit on his sweater already, mom's spaghetti",
+      );
+      makeWebsocketCallSpy.and.returnValue(
+        Promise.reject(
+          new Error('Websocket server has received and rejected the call.'),
+        ),
+      );
       recorderStub.addEventListener.and.callFake((event, callback) => {
         // Pretend as if the event has been fired and thus call the callback.
         callback({
-          data: new Blob(
-            ['Knees weak, arms are heavy.'],
-            { type: 'text/plain' },
-          ),
+          data: new Blob(['Knees weak, arms are heavy.'], {
+            type: 'text/plain',
+          }),
         });
       });
 
       try {
-        await aos.encodeAndSendAudioOnDataAvailable('r353rv3d1d', recorderStub, 'his.palms.are.sweaty');
+        await aos.encodeAndSendAudioOnDataAvailable(
+          'r353rv3d1d',
+          recorderStub,
+          'his.palms.are.sweaty',
+        );
         fail('encodeAndSendAudioOnDataAvailable should have failed');
       } catch ({ message }) {
-        expect(message).toBe('Websocket server has received and rejected the call.');
+        expect(message).toBe(
+          'Websocket server has received and rejected the call.',
+        );
+
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
           'his.palms.are.sweaty',
           {
             args: [
               'r353rv3d1d',
-              'There\'s vomit on his sweater already, mom\'s spaghetti',
+              "There's vomit on his sweater already, mom's spaghetti",
               'base64',
             ],
           },
@@ -259,11 +277,15 @@ describe('Audio Over socket', () => {
           bitrate: 9001,
         },
       });
-      makeWebsocketCallSpy.and.returnValue((
-        Promise.resolve('Websocket server has received and handled the call.')
-      ));
+      makeWebsocketCallSpy.and.returnValue(
+        Promise.resolve('Websocket server has received and handled the call.'),
+      );
 
-      const result = await aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo');
+      const result = await aos.prepareServerForAudio(
+        'r353rv3d1d',
+        recorderStub,
+        'write.this.down.kiddo',
+      );
 
       expect(makeWebsocketCallSpy).toHaveBeenCalledWith(
         'write.this.down.kiddo',
@@ -277,7 +299,9 @@ describe('Audio Over socket', () => {
 
       expect(result).toEqual('r353rv3d1d');
 
-      expect(broadcasterSpy).toHaveBeenCalledWith('websocketserverreadyforaudio');
+      expect(broadcasterSpy).toHaveBeenCalledWith(
+        'websocketserverreadyforaudio',
+      );
     });
 
     it('should reject if the `makeWebsocketCall` rejected', async () => {
@@ -287,12 +311,18 @@ describe('Audio Over socket', () => {
           bitrate: 9001,
         },
       });
-      makeWebsocketCallSpy.and.returnValue(Promise.reject((
-        new Error('Websocket server has received and rejected the call.')
-      )));
+      makeWebsocketCallSpy.and.returnValue(
+        Promise.reject(
+          new Error('Websocket server has received and rejected the call.'),
+        ),
+      );
 
       try {
-        await aos.prepareServerForAudio('r353rv3d1d', recorderStub, 'write.this.down.kiddo');
+        await aos.prepareServerForAudio(
+          'r353rv3d1d',
+          recorderStub,
+          'write.this.down.kiddo',
+        );
         fail('prepareServerForAudio should have failed');
       } catch (error) {
         expect(makeWebsocketCallSpy).toHaveBeenCalledWith(

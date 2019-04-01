@@ -13,7 +13,6 @@ import { authorisedRequest } from '../../communication';
  */
 const url = '/challenges/pronunciation';
 
-
 /**
  * Create a new pronunciation challenge.
  *
@@ -25,7 +24,6 @@ export function create(challenge) {
   return authorisedRequest('POST', url, challenge);
 }
 
-
 /**
  * Get a single pronunciation challenge by its ID.
  *
@@ -36,7 +34,6 @@ export function create(challenge) {
 export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
-
 
 /**
  * Get a all pronunciation challenges.
@@ -56,7 +53,9 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
+      return Promise.reject(
+        new Error('The filters should be a `URLSearchParams` object.'),
+      );
     }
 
     urlWithFilters += `?${filters.toString()}`;
@@ -64,7 +63,6 @@ export function getAll(filters) {
 
   return authorisedRequest('GET', urlWithFilters);
 }
-
 
 /**
  * Delete the pronunciation challenge with the given ID.

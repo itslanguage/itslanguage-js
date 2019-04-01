@@ -51,7 +51,9 @@ export function prepare() {
  * @returns {Promise<*>} - Promise with the result of the init_challenge call.
  */
 export function prepareChallenge(analysisId, challengeId) {
-  return makeWebsocketCall('pronunciation.init_challenge', { args: [analysisId, challengeId] });
+  return makeWebsocketCall('pronunciation.init_challenge', {
+    args: [analysisId, challengeId],
+  });
 }
 
 /**
@@ -84,7 +86,11 @@ export function prepareAudio(analyseId, recorder) {
  * @returns {Promise} - Stream result.
  */
 export function streamAudio(analyseId, recorder) {
-  return encodeAndSendAudioOnDataAvailable(analyseId, recorder, 'pronunciation.write');
+  return encodeAndSendAudioOnDataAvailable(
+    analyseId,
+    recorder,
+    'pronunciation.write',
+  );
 }
 
 /**
@@ -96,5 +102,8 @@ export function streamAudio(analyseId, recorder) {
  * @returns {Promise<*>} - The result will return the analysis.
  */
 export function endStreamAudio(analyseId, progressCb) {
-  return makeWebsocketCall('pronunciation.analyse', { args: [analyseId], progressCb });
+  return makeWebsocketCall('pronunciation.analyse', {
+    args: [analyseId],
+    progressCb,
+  });
 }

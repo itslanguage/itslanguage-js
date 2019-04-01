@@ -16,7 +16,6 @@ import { authorisedRequest } from '../communication';
  */
 const url = '/groups';
 
-
 /**
  * Create a new group.
  *
@@ -30,7 +29,6 @@ export function create(group) {
   return authorisedRequest('POST', url, group);
 }
 
-
 /**
  * Get a single group by its ID.
  *
@@ -41,7 +39,6 @@ export function create(group) {
 export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
-
 
 /**
  * Get a all groups.
@@ -61,7 +58,9 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
+      return Promise.reject(
+        new Error('The filters should be a `URLSearchParams` object.'),
+      );
     }
 
     urlWithFilters += `?${filters.toString()}`;

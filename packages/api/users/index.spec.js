@@ -5,18 +5,22 @@
 import * as communication from '../communication';
 import * as users from '.';
 
-
 describe('user', () => {
   describe('create', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      users.create({ name: 'poes' })
+      users
+        .create({ name: 'poes' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(createRequest.args).toEqual(['POST', '/users', { name: 'poes' }]);
+          expect(createRequest.args).toEqual([
+            'POST',
+            '/users',
+            { name: 'poes' },
+          ]);
           done();
         })
         .catch(done.fail);
@@ -24,11 +28,12 @@ describe('user', () => {
   });
 
   describe('getCurrent', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      users.getCurrent()
+      users
+        .getCurrent()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -40,11 +45,12 @@ describe('user', () => {
   });
 
   describe('getById', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      users.getById('c4t')
+      users
+        .getById('c4t')
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -55,13 +61,13 @@ describe('user', () => {
     });
   });
 
-
   describe('getAll', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
-      users.getAll()
+      users
+        .getAll()
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -71,14 +77,15 @@ describe('user', () => {
         .catch(done.fail);
     });
 
-    it('should allow filters if they are a URLSearchParams object', (done) => {
+    it('should allow filters if they are a URLSearchParams object', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve([{ id: 'c4t' }]));
 
       const filters = new URLSearchParams();
       filters.set('parent', 'd4ddyc4t');
 
-      users.getAll(filters)
+      users
+        .getAll(filters)
         .then(() => {
           const getRequest = authorisedRequestSpy.calls.mostRecent();
 
@@ -88,8 +95,9 @@ describe('user', () => {
         .catch(done.fail);
     });
 
-    it('should reject when something other than URLSearchParams is given as the filters', (done) => {
-      users.getAll('this is not an instance of URLSearchParams')
+    it('should reject when something other than URLSearchParams is given as the filters', done => {
+      users
+        .getAll('this is not an instance of URLSearchParams')
         .then(done.fail)
         .catch(() => {
           done();

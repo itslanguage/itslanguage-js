@@ -17,7 +17,6 @@ log.log = console.log.bind(console);
  */
 let bundesautobahn;
 
-
 /**
  * Allow the `autobahn.Connection` to challenge the provided authentication.
  *
@@ -31,11 +30,12 @@ function handleWebsocketAuthorisationChallenge(session, method) {
     case 'ticket':
       return settings.authorizationToken;
     default:
-      throw new Error('The websocket server tried to use the unknown '
-                      + `authentication challenge: "${method}"`);
+      throw new Error(
+        'The websocket server tried to use the unknown ' +
+          `authentication challenge: "${method}"`,
+      );
   }
 }
-
 
 /**
  * Set {@link bundesautobahn} to a new Promise which resolves into a `autobahn.Connection` object
@@ -69,10 +69,11 @@ function establishNewBundesbahn() {
       // When the connection failed to open a reason is given with some details.
       // Sadly these are very un-descriptive. Therefore hint/warn the developer
       // about potential erroneous settings or to contact us.
-      const message = 'The connection is erroneous; check if all required '
-                      + 'settings have been injected using the '
-                      + '`updateSettings()` function. If the problem persists '
-                      + 'please post a issue on our GitHub repository.';
+      const message =
+        'The connection is erroneous; check if all required ' +
+        'settings have been injected using the ' +
+        '`updateSettings()` function. If the problem persists ' +
+        'please post a issue on our GitHub repository.';
       reject(message);
     };
 
@@ -90,7 +91,7 @@ function establishNewBundesbahn() {
   // Return the promise to make it this function chainable. In case the
   // `bundesautobahn` is rejected; remove the reference so we can use simple
   // falsy checks to determine if there is a connection.
-  return bundesautobahn.catch((reason) => {
+  return bundesautobahn.catch(reason => {
     bundesautobahn = null;
     return Promise.reject(reason);
   });
@@ -107,25 +108,24 @@ export function closeWebsocketConnection() {
     return Promise.resolve('There is no websocket connection to close.');
   }
 
-  return bundesautobahn
-    .then((bahn) => {
-      try {
-        bahn.close();
-        bundesautobahn = null;
-        const message = 'The websocket connection has been closed successfully.';
-        log(message);
-        return message;
-      } catch (reason) {
-        // `autobahn.Connection.close()` throws a string when the connection is
-        // already closed. The connection is not exposed and therefore cannot be
-        // closed by anyone using the SDK. Regardless, when it happens just
-        // return a resolved promise.
-        bundesautobahn = null;
-        const message = 'The websocket connection has already been closed.';
-        error(message);
-        return message;
-      }
-    });
+  return bundesautobahn.then(bahn => {
+    try {
+      bahn.close();
+      bundesautobahn = null;
+      const message = 'The websocket connection has been closed successfully.';
+      log(message);
+      return message;
+    } catch (reason) {
+      // `autobahn.Connection.close()` throws a string when the connection is
+      // already closed. The connection is not exposed and therefore cannot be
+      // closed by anyone using the SDK. Regardless, when it happens just
+      // return a resolved promise.
+      bundesautobahn = null;
+      const message = 'The websocket connection has already been closed.';
+      error(message);
+      return message;
+    }
+  });
 }
 
 /**
@@ -137,14 +137,15 @@ export function closeWebsocketConnection() {
  * successfully created and opened.
  */
 export function openWebsocketConnection() {
-  return closeWebsocketConnection()
-    .then(() => establishNewBundesbahn())
-    // `bundesautobahn` actually resolved with the `autobahn.Connection`
-    // object. This is only meant for internal usage and therefore should not
-    // be exposed to the users of the SDK.
-    .then(() => 'Successfully established a websocket connection.');
+  return (
+    closeWebsocketConnection()
+      .then(() => establishNewBundesbahn())
+      // `bundesautobahn` actually resolved with the `autobahn.Connection`
+      // object. This is only meant for internal usage and therefore should not
+      // be exposed to the users of the SDK.
+      .then(() => 'Successfully established a websocket connection.')
+  );
 }
-
 
 /**
  * Get the current websocket connection, or open a new one.
@@ -161,7 +162,6 @@ export function getWebsocketConnection() {
   return bundesautobahn;
 }
 
-
 /**
  * Make a rpc call to the ITSLanguage websocket server.
  *
@@ -177,9 +177,10 @@ export function getWebsocketConnection() {
  *
  * @returns {Promise<*>} - The response of the websocket call.
  */
-export function makeWebsocketCall(rpc, {
-  args, kwargs, options, progressCb,
-} = {}) {
+export function makeWebsocketCall(
+  rpc,
+  { args, kwargs, options, progressCb } = {},
+) {
   let mergedOptions = options;
   if (progressCb) {
     mergedOptions = {
@@ -188,9 +189,12 @@ export function makeWebsocketCall(rpc, {
     };
   }
   return getWebsocketConnection()
-    .then(connection => connection.session.call(`nl.itslanguage.${rpc}`, args, kwargs, mergedOptions)
-      .progress(progressCb))
-    .catch((result) => {
+    .then(connection =>
+      connection.session
+        .call(`nl.itslanguage.${rpc}`, args, kwargs, mergedOptions)
+        .progress(progressCb),
+    )
+    .catch(result => {
       const { error: wssError, kwargs: wssKwargs, args: wssArgs } = result;
 
       // Log the error to stderr

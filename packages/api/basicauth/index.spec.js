@@ -5,21 +5,25 @@
 import * as basicauth from '.';
 import * as communication from '../communication';
 
-
 describe('basicauth', () => {
   describe('create', () => {
-    it('should make an authorised request', (done) => {
+    it('should make an authorised request', done => {
       const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
       authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
 
-      basicauth.create({ username: 'Mark', password: 'captain_america_is_cool' })
+      basicauth
+        .create({ username: 'Mark', password: 'captain_america_is_cool' })
         .then(() => {
           const createRequest = authorisedRequestSpy.calls.mostRecent();
 
-          expect(createRequest.args).toEqual(['POST', '/user/basicauths', {
-            username: 'Mark',
-            password: 'captain_america_is_cool',
-          }]);
+          expect(createRequest.args).toEqual([
+            'POST',
+            '/user/basicauths',
+            {
+              username: 'Mark',
+              password: 'captain_america_is_cool',
+            },
+          ]);
           done();
         })
         .catch(done.fail);

@@ -22,7 +22,6 @@ const AUTHORIZATION = 'Authorization';
  */
 const APPLICATION_JSON = 'application/json';
 
-
 /**
  * The settings to use for the communication with the ITSLanguage API.
  */
@@ -31,7 +30,6 @@ export const settings = {
   wsUrl: null,
   authorizationToken: null,
 };
-
 
 /**
  * Update the settings with the `newSettings`.
@@ -47,7 +45,6 @@ export function updateSettings(newSettings) {
 
   Object.assign(settings, newSettings);
 }
-
 
 /**
  * Parse the response of a fetch request.
@@ -68,7 +65,7 @@ function handleResponse(response) {
 
   // The ITSLanguage API should return JSON. If t
   if (responseContentType && responseContentType.includes(APPLICATION_JSON)) {
-    return response.json().then((json) => {
+    return response.json().then(json => {
       if (response.ok) {
         return json;
       }
@@ -78,12 +75,13 @@ function handleResponse(response) {
   }
 
   if (!response.ok) {
-    return Promise.reject(new Error(`${response.status}: ${response.statusText}`));
+    return Promise.reject(
+      new Error(`${response.status}: ${response.statusText}`),
+    );
   }
 
   return response;
 }
-
 
 /**
  * Perform an HTTP request for the given method, url, body, and headers.
@@ -107,7 +105,10 @@ export function request(method, url, body, headers) {
   let requestBody = body;
 
   // In case of (any) object-type
-  if (!(body instanceof URLSearchParams || body instanceof FormData) && body instanceof Object) {
+  if (
+    !(body instanceof URLSearchParams || body instanceof FormData) &&
+    body instanceof Object
+  ) {
     requestHeaders.set('Content-Type', 'application/json');
     requestBody = JSON.stringify(body);
   }
@@ -135,7 +136,6 @@ export function request(method, url, body, headers) {
   return fetch(requestURL, requestOptions).then(handleResponse);
 }
 
-
 /**
  * Build a bearer token from the `authorizationToken` in the settings object.
  *
@@ -162,11 +162,9 @@ export function addAccessToken(url = '') {
     return url;
   }
 
-  return (
-    `${url}${url.includes('?') ? '&' : '?'}access_token=${
-      encodeURIComponent(settings.authorizationToken)
-    }`
-  );
+  return `${url}${
+    url.includes('?') ? '&' : '?'
+  }access_token=${encodeURIComponent(settings.authorizationToken)}`;
 }
 
 /**
@@ -192,7 +190,9 @@ export function authorisedRequest(method, url, body, headers) {
   // a complete url by themselves using the "private" settings object of their
   // connection reference.
   if (url && (!url.startsWith('/') && !url.startsWith(settings.apiUrl))) {
-    return Promise.reject(new Error('Only relative ITSLanguage API URLs are allowed.'));
+    return Promise.reject(
+      new Error('Only relative ITSLanguage API URLs are allowed.'),
+    );
   }
 
   try {

@@ -37,8 +37,9 @@ describe('Websocket API', () => {
     beforeEach(() => {
       spyOn(autobahn.Connection.prototype, 'close');
       const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      // We cannot use arrow functions because of this scope.
-      connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
+      connectionOpenSpy.and.callFake(function() {
         // Get a reference to the thing we actually want to test.
         // eslint-disable-next-line no-underscore-dangle
         onchallengeOption = this._options.onchallenge;
@@ -57,25 +58,31 @@ describe('Websocket API', () => {
 
     it('should throw a Error when a unsupported method is used', () => {
       const session = {};
-      const errorMessage = 'The websocket server tried to use the unknown '
-        + 'authentication challenge: "unsupported method"';
+      const errorMessage =
+        'The websocket server tried to use the unknown ' +
+        'authentication challenge: "unsupported method"';
 
-      expect(() => onchallengeOption(session, 'unsupported method')).toThrowError(Error, errorMessage);
+      expect(() =>
+        onchallengeOption(session, 'unsupported method'),
+      ).toThrowError(Error, errorMessage);
     });
   });
 
-
   describe('openWebsocketConnection', () => {
-    it('should open a connection if there isn\'t one already', (done) => {
+    it("should open a connection if there isn't one already", done => {
       const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      // We cannot use arrow functions because of this scope.
-      connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
+      connectionOpenSpy.and.callFake(function() {
         this.onopen();
       });
 
-      websocket.openWebsocketConnection()
-        .then((result) => {
-          expect(result).toEqual('Successfully established a websocket connection.');
+      websocket
+        .openWebsocketConnection()
+        .then(result => {
+          expect(result).toEqual(
+            'Successfully established a websocket connection.',
+          );
           done();
         })
         .catch(done.fail);
@@ -83,11 +90,11 @@ describe('Websocket API', () => {
 
     it('should reject if the connection could not be established', async () => {
       await expectAsync(websocket.openWebsocketConnection()).toBeRejectedWith(
-        'The connection is erroneous; check if all '
-        + 'required settings have been injected using '
-        + 'the `updateSettings()` function. If the '
-        + 'problem persists please post a issue on our '
-        + 'GitHub repository.',
+        'The connection is erroneous; check if all ' +
+          'required settings have been injected using ' +
+          'the `updateSettings()` function. If the ' +
+          'problem persists please post a issue on our ' +
+          'GitHub repository.',
       );
 
       // There shouldn't be a reference to the erroneos connection. We can
@@ -100,7 +107,6 @@ describe('Websocket API', () => {
     });
   });
 
-
   describe('closeWebsocketConnection', () => {
     let connectionOpenSpy;
     let connectionCloseSpy;
@@ -108,8 +114,9 @@ describe('Websocket API', () => {
     beforeEach(() => {
       connectionCloseSpy = spyOn(autobahn.Connection.prototype, 'close');
       connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      // We cannot use arrow functions because of this scope.
-      connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
+      connectionOpenSpy.and.callFake(function() {
         this.onopen();
       });
     });
@@ -158,7 +165,6 @@ describe('Websocket API', () => {
     });
   });
 
-
   describe('makeWebsocketCall', () => {
     let connectionOpenSpy;
     let connectionSessionStub;
@@ -174,8 +180,9 @@ describe('Websocket API', () => {
         return defer.promise;
       });
 
-      // We cannot use arrow functions because of this scope.
-      connectionOpenSpy.and.callFake(function () { // eslint-disable-line func-names
+      // We cannot use arrow functions because of `this` scope.
+      // eslint-disable-next-line func-names
+      connectionOpenSpy.and.callFake(function() {
         // This property is returned through the session "property" of a
         // connection instance. Sadly only the get is defined with the
         // `Object.defineProperty` which forces us to mock the internals.
@@ -186,14 +193,11 @@ describe('Websocket API', () => {
 
     it('should prefix the `rpc` parameter and pass the rest into the websocket session call', async () => {
       await websocket.openWebsocketConnection();
-      await websocket.makeWebsocketCall(
-        'do.a.rpc',
-        {
-          args: ['accept', 'these'],
-          kwargs: { kwarg: 'value' },
-          options: { option: 'value' },
-        },
-      );
+      await websocket.makeWebsocketCall('do.a.rpc', {
+        args: ['accept', 'these'],
+        kwargs: { kwarg: 'value' },
+        options: { option: 'value' },
+      });
 
       expect(connectionSessionStub.call).toHaveBeenCalledWith(
         'nl.itslanguage.do.a.rpc',
@@ -203,7 +207,7 @@ describe('Websocket API', () => {
       );
     });
 
-    it('should open a websocket connection if there isn\'t one already', async () => {
+    it("should open a websocket connection if there isn't one already", async () => {
       await websocket.openWebsocketConnection();
       await websocket.makeWebsocketCall('do.a.rpc', {
         args: ['accept', 'these'],
@@ -271,7 +275,9 @@ describe('Websocket API', () => {
       });
 
       await websocket.openWebsocketConnection();
-      await expectAsync(websocket.makeWebsocketCall('do.a.rpc', args)).toBeRejectedWith(expectedError);
+      await expectAsync(
+        websocket.makeWebsocketCall('do.a.rpc', args),
+      ).toBeRejectedWith(expectedError);
     });
 
     it('should fail when no options are passed', async () => {
@@ -294,7 +300,9 @@ describe('Websocket API', () => {
       });
 
       await websocket.openWebsocketConnection();
-      await expectAsync(websocket.makeWebsocketCall('do.a.rpc')).toBeRejectedWith(expectedError);
+      await expectAsync(
+        websocket.makeWebsocketCall('do.a.rpc'),
+      ).toBeRejectedWith(expectedError);
     });
   });
 });

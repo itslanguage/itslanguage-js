@@ -15,8 +15,10 @@ describe('api', () => {
     });
 
     it('should throw an error when passing something different than an object', () => {
-      expect(() => itslApi.createItslApi('wubaluba'))
-        .toThrowError(Error, 'Please, only provide objects as settings.');
+      expect(() => itslApi.createItslApi('wubaluba')).toThrowError(
+        Error,
+        'Please, only provide objects as settings.',
+      );
     });
   });
 });

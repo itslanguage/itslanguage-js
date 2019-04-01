@@ -29,7 +29,11 @@ export const CORS_MODE = {
  * @throws {Error} If window.Audio does not exist.
  * @returns {HTMLAudioElement}
  */
-export function createPlayer(audioUrl = null, secureLoad = false, crossOrigin = null) {
+export function createPlayer(
+  audioUrl = null,
+  secureLoad = false,
+  crossOrigin = null,
+) {
   if (!Audio) {
     throw new Error('Your browser is not capable of playing audio.');
   }
@@ -50,9 +54,7 @@ export function createPlayer(audioUrl = null, secureLoad = false, crossOrigin = 
   }
 
   if (audioUrl) {
-    audio.src = secureLoad
-      ? communication.addAccessToken(audioUrl)
-      : audioUrl;
+    audio.src = secureLoad ? communication.addAccessToken(audioUrl) : audioUrl;
   }
 
   return audio;
@@ -91,9 +93,7 @@ export function loadAudioUrl(player, audioUrl, secureLoad = false) {
   // it here.
 
   // eslint-disable-next-line no-param-reassign
-  player.src = secureLoad
-    ? communication.addAccessToken(audioUrl)
-    : audioUrl;
+  player.src = secureLoad ? communication.addAccessToken(audioUrl) : audioUrl;
 
   return player.src;
 }

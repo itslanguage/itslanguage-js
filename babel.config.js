@@ -1,4 +1,4 @@
-module.exports = (api) => {
+module.exports = api => {
   const env = api.env();
   const test = env === 'test';
 
@@ -19,18 +19,23 @@ module.exports = (api) => {
   ];
 
   const plugins = [
-    ['@babel/plugin-proposal-class-properties', {
-      loose: true,
-    }],
-    ['@babel/plugin-proposal-object-rest-spread', {
-      loose: true,
-      useBuiltIns: true,
-    }],
+    [
+      '@babel/plugin-proposal-class-properties',
+      {
+        loose: true,
+      },
+    ],
+    [
+      '@babel/plugin-proposal-object-rest-spread',
+      {
+        loose: true,
+        useBuiltIns: true,
+      },
+    ],
     test && [
-      'babel-plugin-istanbul', {
-        exclude: [
-          '**/*.spec.js',
-        ],
+      'babel-plugin-istanbul',
+      {
+        exclude: ['**/*.spec.js'],
       },
     ],
   ];

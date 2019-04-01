@@ -17,7 +17,6 @@ import { authorisedRequest } from '../communication';
  */
 const url = '/categories';
 
-
 /**
  * Create a new category.
  *
@@ -41,7 +40,6 @@ export function create(category) {
   return authorisedRequest('POST', url, category);
 }
 
-
 /**
  * Update one or more properties of an existing category.
  *
@@ -62,7 +60,6 @@ export function update(id, properties) {
   return authorisedRequest('PUT', `${url}/${id}`, properties);
 }
 
-
 /**
  * Get a single category by its ID.
  *
@@ -73,7 +70,6 @@ export function update(id, properties) {
 export function getById(id) {
   return authorisedRequest('GET', `${url}/${id}`);
 }
-
 
 /**
  * Get a all top level categories.
@@ -94,7 +90,9 @@ export function getAll(filters) {
 
   if (filters) {
     if (!(filters instanceof URLSearchParams)) {
-      return Promise.reject(new Error('The filters should be a `URLSearchParams` object.'));
+      return Promise.reject(
+        new Error('The filters should be a `URLSearchParams` object.'),
+      );
     }
 
     urlWithFilters += `?${filters.toString()}`;

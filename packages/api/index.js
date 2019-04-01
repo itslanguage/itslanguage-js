@@ -23,7 +23,6 @@ import * as users from './users';
  */
 export const version = '4.0.0';
 
-
 /**
  * Represents the ITSLanguage API package.
  * It allows the user to make every call to the API with a single function.
