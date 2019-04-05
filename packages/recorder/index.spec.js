@@ -107,6 +107,14 @@ describe('MediaRecorder', () => {
 
       expect(recorder.getAudioSpecs).toBeDefined();
     });
+
+    it('should create a recorder with a plugin', async () => {
+      const stream = await mediaRecorder.createMediaStream();
+      const amplitudePlugin = mediaRecorder.createAmplitudePlugin();
+      const recorder = mediaRecorder.createRecorder(stream, [amplitudePlugin]);
+
+      expect(recorder.plugins[0]).toEqual(amplitudePlugin);
+    });
   });
 
   describe('getAudioSpecs', () => {

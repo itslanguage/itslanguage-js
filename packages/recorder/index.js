@@ -3,6 +3,7 @@
  */
 
 import MediaRecorder from 'audio-recorder-polyfill';
+import AmplitudePlugin from './plugins/amplitude';
 
 export const DEFAULT_AUDIO_FORMAT = 'audio/wave';
 export const DEFAULT_CHANNELS = 1;
@@ -100,4 +101,15 @@ export function createMediaStream() {
     );
   }
   return navigator.mediaDevices.getUserMedia({ audio: true });
+}
+
+/**
+ * Factory function to create an AmplitudePlugin. Use the result of this
+ * function to pass to the plugin list of the recorder.
+ *
+ * @param {object} [options = {}] - Options to pass to the AmplitudePlugin.
+ * @returns { AmplitudePlugin } - Instance of the AmplitudePlugin.
+ */
+export function createAmplitudePlugin(options = {}) {
+  return new AmplitudePlugin(options);
 }
