@@ -37,7 +37,7 @@ export function addAsGlobal(ns = 'MediaRecorder') {
  * @param {boolean} [setToWindow=false] - Override or set MediaRecorder to the
  * window object.
  * @param {string} [asObject='MediaRecorder'] - Optionally give the object
- * another name then MediaRecorder.
+ * another name than MediaRecorder.
  * @returns {MediaRecorder} - An instance of the created MediaRecorder.
  */
 export function createRecorder(

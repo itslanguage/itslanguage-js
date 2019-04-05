@@ -67,11 +67,11 @@ createMediaStream().then(stream => {
 
 ## Plugins
 
-The recorder is prepared to extend with plugins. For example, we have written a
-plugin called `AmplitudePlugin` that will output (emit) volume information
-directly on the recorder. This information can, for example, be used to create
-a volume meter to indicate recording to an end user. For more information on 
-this plugin, check the [plugin](./plugins/amplitude) itself.
+The recorder is prepared to be extended with plugins. For example, we have
+written a plugin called `AmplitudePlugin` that will output (emit) volume
+information directly via the recorder. This information can, for example, be
+used to create a volume meter to indicate recording to an end user. For more
+information on this plugin, check the [plugin](./plugins/amplitude) itself.
 
 Plugins can be used to create an instance of the plugin, and then add it to the
 recorder. The recorder will then call the `apply` function of the plugin.
