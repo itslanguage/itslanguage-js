@@ -13,7 +13,7 @@ module.exports = api => {
         targets: {
           esmodules: true,
         },
-        modules: false,
+        modules: test && 'auto',
       },
     ],
   ];
@@ -32,6 +32,7 @@ module.exports = api => {
         useBuiltIns: true,
       },
     ],
+    test && ['@babel/plugin-transform-runtime'],
     test && [
       'babel-plugin-istanbul',
       {
