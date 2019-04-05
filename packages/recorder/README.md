@@ -90,7 +90,7 @@ of the object you want to store the `MediaRecorder` object to.
 ### createRecorder
 
 ```js
-createRecorder([stream], [setToWindow=false], [asObject='MediaRecorder'])
+createRecorder([stream], [plugins], [setToWindow=false], [asObject='MediaRecorder'])
 ```
 
 This function is a factory method that just instantiates a `MediaRecorder` object.
@@ -100,6 +100,7 @@ This function is a factory method that just instantiates a `MediaRecorder` objec
 - ```[stream : MediaStream]```: Pass a `MediaStream` object to the constructor
 of `MediaStream`. This param is not required, even though if you would omit it,
 recording would not work obviously (no stream = no data).
+- ```[plugins: Array]```: Pass plugins to the recorder to initialize.
 - ```[setToWindow = false : boolean]```: Set the imported `MediaRecorder` also to
 the `window` object. Default behavious is not doing that. Could be usefull in some
 cases but in general you probably won't need this.
