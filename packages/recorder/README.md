@@ -65,6 +65,48 @@ createMediaStream().then(stream => {
 });
 ```
 
+## Plugins
+
+The recorder is prepared to extend with plugins. For example, we have written a
+plugin called `AmplitudePlugin` that will output (emit) volume information
+directly on the recorder. This information can, for example, be used to create
+a volume meter to indicate recording to an end user. For more information on 
+this plugin, check the [plugin](./plugins/amplitude) itself.
+
+Plugins can be used to create an instance of the plugin, and then add it to the
+recorder. The recorder will then call the `apply` function of the plugin.
+
+This is an example on how one could use the `AmplitudePlugin`. 
+
+```js
+import {
+  createRecorder,
+  createMediaStream,
+  createAmplitudePlugin
+} from '@itslanguage/recorder';
+
+
+// Ask and wait for the user to give permission and get an audio stream.
+createMediaStream().then(stream => {
+  const amplitudePlugin = createAmplitudePlugin(/* options here*/);
+  
+  // Create a MediaRecorder instance with the stream you got. Also, pass the
+  // plugins as the second argument.
+  const recorder = createRecorder(stream, [amplitudePlugin]);
+  
+  
+  // Start listening to amplitudelevels. Once fired, it will return
+  // an object with volume information.
+  recorder.addEventListener('amplitudelevels', (event) => {
+    // log the current volume of the recorder to the console.
+    console.log(event.data.volume);
+  });
+  
+  // Start recording!
+  recorder.start();
+});
+```
+
 ## API
 
 ### addAsGlobal
