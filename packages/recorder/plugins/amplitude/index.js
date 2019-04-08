@@ -1,26 +1,33 @@
 import { createAmplitude } from './amplitude';
 
 /**
- * This object defines the Amplitude plugin.
- *
- * @param {object} options - Options to pass to the plugin.
- * @param {boolean} options.immediateStart - Immediately start emitting the
- * `amplitudelevels` events, or wait for the recorder to start.
- * @param {boolean} options.stopAfterRecording - Stop emitting the events after the
- * recorder stops recording.
- * information.
+ * This class defines the Amplitude plugin.
  */
-function AmplitudePlugin({
-  immediateStart = false,
-  stopAfterRecording = true,
-}) {
-  this.immediateStart = immediateStart;
-  this.stopAfterRecording = stopAfterRecording;
+class AmplitudePlugin {
+  /**
+   * Constructor method.
+   *
+   * @param {object} options - Options to pass to the plugin.
+   * @param {boolean} options.immediateStart - Immediately start emitting the
+   * `amplitudelevels` events, or wait for the recorder to start.
+   * @param {boolean} options.stopAfterRecording - Stop emitting the events after the
+   * recorder stops recording.
+   */
+  constructor({ immediateStart = false, stopAfterRecording = true }) {
+    this.immediateStart = immediateStart;
+    this.stopAfterRecording = stopAfterRecording;
 
-  this.animationFrameStarted = false;
-  this.animationFrame = null;
-  this.amplitudeNode = null;
-  this.recorder = null;
+    this.animationFrameStarted = false;
+    this.animationFrame = null;
+    this.amplitudeNode = null;
+    this.recorder = null;
+
+    this.startDispatching = this.startDispatching.bind(this);
+    this.recordingStopped = this.recordingStopped.bind(this);
+    this.dispatchLevelsAnimationLoop = this.dispatchLevelsAnimationLoop.bind(
+      this,
+    );
+  }
 
   /**
    * This is the loop, based on `requestAnimationFrame`, that will run to query
@@ -29,7 +36,7 @@ function AmplitudePlugin({
    * @fires AmplitudePlugin#amplitudlevels - Fires an event on the recorder with
    * the Amplitude levels computed from the audio source.
    */
-  this.dispatchLevelsAnimationLoop = () => {
+  dispatchLevelsAnimationLoop() {
     // Get the levels from the Amplitude object;
     const levels = this.amplitudeNode.getCurrentLevels();
 
@@ -44,43 +51,43 @@ function AmplitudePlugin({
     this.animationFrame = requestAnimationFrame(
       this.dispatchLevelsAnimationLoop,
     );
-  };
+  }
 
   /**
    * Start the loop, only if it is not already running.
    */
-  this.startDispatching = () => {
+  startDispatching() {
     if (!this.animationFrameStarted) {
       this.animationFrame = requestAnimationFrame(
         this.dispatchLevelsAnimationLoop,
       );
       this.animationFrameStarted = true;
     }
-  };
+  }
 
   /**
    * Stop and reset the loop.
    */
-  this.stopDispatching = () => {
+  stopDispatching() {
     cancelAnimationFrame(this.animationFrame);
     this.animationFrameStarted = false;
-  };
+  }
 
   /**
    * Handler for the recorder, this gets executed as soon as the recorder stops
    * recording. Based on the options it will stop the loop that emits the
    * Amplitude levels.
    */
-  this.recordingStopped = () => {
+  recordingStopped() {
     if (this.stopAfterRecording) {
       this.stopDispatching();
     }
-  };
+  }
 
   /**
    * Start the plugin.
    */
-  this.startPlugin = () => {
+  startPlugin() {
     this.amplitudeNode = createAmplitude(this.recorder.stream);
 
     if (this.immediateStart) {
@@ -89,20 +96,19 @@ function AmplitudePlugin({
 
     this.recorder.addEventListener('start', this.startDispatching);
     this.recorder.addEventListener('stop', this.recordingStopped);
-  };
-}
+  }
 
-/**
- * This function gets called from itslanguage recorder side. It will pass
- * the recorder to it so we can use it.
- *
- * @param {MediaRecorder} recorder - Recorder for which this plugin needs to be
- * active on.
- */
-// eslint-disable-next-line func-names
-AmplitudePlugin.prototype.apply = function(recorder) {
-  this.recorder = recorder;
-  this.startPlugin();
-};
+  /**
+   * This function gets called from itslanguage recorder side. It will pass
+   * the recorder to it so we can use it.
+   *
+   * @param {MediaRecorder} recorder - Recorder for which this plugin needs to be
+   * active on.
+   */
+  applyPlugin(recorder) {
+    this.recorder = recorder;
+    this.startPlugin();
+  }
+}
 
 export default AmplitudePlugin;

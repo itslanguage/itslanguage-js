@@ -61,8 +61,8 @@ export function createRecorder(
     // Try to initialize the plugin.
     // And yes, if there is no `initPlugin` method, nothing happens!
     /* istanbul ignore else */
-    if (plugin.apply) {
-      plugin.apply(recorder);
+    if (plugin.applyPlugin) {
+      plugin.applyPlugin(recorder);
 
       // Store the plugin!
       recorder.plugins.push(plugin);
