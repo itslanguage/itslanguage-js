@@ -2,11 +2,16 @@ module.exports = config => {
   const configuration = {
     frameworks: ['browserify', 'jasmine'],
     files: ['packages/**/*.spec.js'],
-    browsers: ['ChromeHeadless'],
+    browsers: ['CustomChromeHeadLess'],
     customLaunchers: {
-      ChromeTravisCi: {
+      CustomChromeHeadLess: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox --disable-gpu'],
+        flags: [
+          '--no-sandbox',
+          '--disable-gpu',
+          '--use-fake-device-for-media-stream',
+          '--use-fake-ui-for-media-stream',
+        ],
       },
     },
     reporters: ['progress', 'coverage'],
@@ -49,15 +54,7 @@ module.exports = config => {
     },
     browserify: {
       debug: true,
-      transform: [
-        [
-          'babelify',
-          {
-            presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-transform-runtime'],
-          },
-        ],
-      ],
+      transform: [['babelify', { configFile: './babel.config.js' }]],
     },
   };
 

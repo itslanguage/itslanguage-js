@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
-## Changed
+### Added
+
+- `recorder`
+  - Made it possible to load plugins.
+  - Added the Amplitude plugin.
+
+### Changed
 
 - `api`, `recorder`, `player`
   - Bump dependencies to the latest available versions.

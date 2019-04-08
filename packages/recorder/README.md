@@ -65,6 +65,48 @@ createMediaStream().then(stream => {
 });
 ```
 
+## Plugins
+
+The recorder is prepared to be extended with plugins. For example, we have
+written a plugin called `AmplitudePlugin` that will output (emit) volume
+information directly via the recorder. This information can, for example, be
+used to create a volume meter to indicate recording to an end user. For more
+information on this plugin, check the [plugin](./plugins/amplitude) itself.
+
+Plugins can be used to create an instance of the plugin, and then add it to the
+recorder. The recorder will then call the `apply` function of the plugin.
+
+This is an example on how one could use the `AmplitudePlugin`. 
+
+```js
+import {
+  createRecorder,
+  createMediaStream,
+  createAmplitudePlugin
+} from '@itslanguage/recorder';
+
+
+// Ask and wait for the user to give permission and get an audio stream.
+createMediaStream().then(stream => {
+  const amplitudePlugin = createAmplitudePlugin(/* options here*/);
+  
+  // Create a MediaRecorder instance with the stream you got. Also, pass the
+  // plugins as the second argument.
+  const recorder = createRecorder(stream, [amplitudePlugin]);
+  
+  
+  // Start listening to amplitudelevels. Once fired, it will return
+  // an object with volume information.
+  recorder.addEventListener('amplitudelevels', (event) => {
+    // log the current volume of the recorder to the console.
+    console.log(event.data.volume);
+  });
+  
+  // Start recording!
+  recorder.start();
+});
+```
+
 ## API
 
 ### addAsGlobal
@@ -90,7 +132,7 @@ of the object you want to store the `MediaRecorder` object to.
 ### createRecorder
 
 ```js
-createRecorder([stream], [setToWindow=false], [asObject='MediaRecorder'])
+createRecorder([stream], [plugins], [setToWindow=false], [asObject='MediaRecorder'])
 ```
 
 This function is a factory method that just instantiates a `MediaRecorder` object.
@@ -100,6 +142,7 @@ This function is a factory method that just instantiates a `MediaRecorder` objec
 - ```[stream : MediaStream]```: Pass a `MediaStream` object to the constructor
 of `MediaStream`. This param is not required, even though if you would omit it,
 recording would not work obviously (no stream = no data).
+- ```[plugins: Array]```: Pass plugins to the recorder to initialize.
 - ```[setToWindow = false : boolean]```: Set the imported `MediaRecorder` also to
 the `window` object. Default behavious is not doing that. Could be usefull in some
 cases but in general you probably won't need this.

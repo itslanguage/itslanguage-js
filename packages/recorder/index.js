@@ -3,6 +3,7 @@
  */
 
 import MediaRecorder from 'audio-recorder-polyfill';
+import AmplitudePlugin from './plugins/amplitude';
 
 export const DEFAULT_AUDIO_FORMAT = 'audio/wave';
 export const DEFAULT_CHANNELS = 1;
@@ -27,18 +28,21 @@ export function addAsGlobal(ns = 'MediaRecorder') {
  * Note that the browser default is NOT used. This is because the support of the MediaRecorder API
  * is still not large.
  *
- * Another reason to not want to use the default is that the ITSLanguage backend currently only
- * supports WAVE as input.
+ * Another reason to not want to use the default is that the ITSLanguage backend
+ * currently only supports WAVE as input.
  *
  * @param {MediaStream} stream - Stream to record from.
- * @param {boolean} [setToWindow=false] - Override or set MediaRecorder to the window object,
- * defaults to false.
- * @param {string} [asObject='MediaRecorder'] - Optionally give the object another name then
- * MediaRecorder.
+ * @param {Object[]} [plugins = []] - Optionally an array with plugins to enable
+ * on the recorder created.
+ * @param {boolean} [setToWindow=false] - Override or set MediaRecorder to the
+ * window object.
+ * @param {string} [asObject='MediaRecorder'] - Optionally give the object
+ * another name than MediaRecorder.
  * @returns {MediaRecorder} - An instance of the created MediaRecorder.
  */
 export function createRecorder(
   stream = null,
+  plugins = [],
   setToWindow = false,
   asObject = 'MediaRecorder',
 ) {
@@ -46,7 +50,24 @@ export function createRecorder(
     addAsGlobal(asObject);
   }
 
+  // Create the MediaRecorder object.
   const recorder = new MediaRecorder(stream);
+
+  // Prepare the plugins object, here we store an instance of a plugin.
+  recorder.plugins = [];
+
+  // Enhance the recorder with some (or none) plugins.
+  plugins.forEach(plugin => {
+    // Try to initialize the plugin.
+    // And yes, if there is no `initPlugin` method, nothing happens!
+    /* istanbul ignore else */
+    if (plugin.applyPlugin) {
+      plugin.applyPlugin(recorder);
+
+      // Store the plugin!
+      recorder.plugins.push(plugin);
+    }
+  });
 
   // We need to add a function "getAudioSpecs" to be compliant with the itslanguage backend...
   recorder.getAudioSpecs = () => ({
@@ -79,4 +100,15 @@ export function createMediaStream() {
     );
   }
   return navigator.mediaDevices.getUserMedia({ audio: true });
+}
+
+/**
+ * Factory function to create an AmplitudePlugin. Use the result of this
+ * function to pass to the plugin list of the recorder.
+ *
+ * @param {object} [options = {}] - Options to pass to the AmplitudePlugin.
+ * @returns { AmplitudePlugin } - Instance of the AmplitudePlugin.
+ */
+export function createAmplitudePlugin(options = {}) {
+  return new AmplitudePlugin(options);
 }

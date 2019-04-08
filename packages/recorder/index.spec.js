@@ -85,19 +85,19 @@ describe('MediaRecorder', () => {
     });
 
     it('should set window.MediaRecorder as instance of MediaRecorder', () => {
-      mediaRecorder.createRecorder(STREAM, setWindow);
+      mediaRecorder.createRecorder(STREAM, [], setWindow);
 
       expect(window.MediaRecorder).toEqual(MediaRecorder);
     });
 
     it('should set the MediaRecorder to CustomMediaRecorder if we ask for it', () => {
-      mediaRecorder.createRecorder(STREAM, setWindow, CUSTOM_NS);
+      mediaRecorder.createRecorder(STREAM, [], setWindow, CUSTOM_NS);
 
       expect(window[CUSTOM_NS]).toEqual(MediaRecorder);
     });
 
     it("should not set the MediaRecorder to CustomMediaRecorder if we ask for it but don't want to set window", () => {
-      mediaRecorder.createRecorder(STREAM, dontSetWindow, CUSTOM_NS);
+      mediaRecorder.createRecorder(STREAM, [], dontSetWindow, CUSTOM_NS);
 
       expect(window[CUSTOM_NS]).toBeUndefined();
     });
@@ -106,6 +106,14 @@ describe('MediaRecorder', () => {
       const recorder = mediaRecorder.createRecorder(STREAM);
 
       expect(recorder.getAudioSpecs).toBeDefined();
+    });
+
+    it('should create a recorder with a plugin', async () => {
+      const stream = await mediaRecorder.createMediaStream();
+      const amplitudePlugin = mediaRecorder.createAmplitudePlugin();
+      const recorder = mediaRecorder.createRecorder(stream, [amplitudePlugin]);
+
+      expect(recorder.plugins[0]).toEqual(amplitudePlugin);
     });
   });
 
