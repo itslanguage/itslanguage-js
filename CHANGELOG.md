@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - `recorder`
   - Made it possible to load plugins.
   - Added the Amplitude plugin.
+- `examples`
+  - Add an example project to demonstrate the `AmplitudePlugin`.
 
 ### Changed
 
@@ -104,8 +106,7 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-
-[Unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.1.0...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.1.0...HEAD
 [v4.1.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.2...v4.1.0
 [v4.0.2]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.1...v4.0.2
 [v4.0.1]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.0...v4.0.1
