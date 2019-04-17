@@ -9,18 +9,18 @@ It provides easy interfaces to communicate with our [REST and WebSocket API]. We
 packages through the [npmjs.com] ecosystem that can be used together. See the table below for all
 the packages we deliver.
 
-| Package name | Description |
-| :----------- | :---------- |
-| [api](packages/api/README.md) | Implements the interface to the ITSLanguage backend as described in our [API docs] |
-| [player](packages/player/README.md) | ITSLanguage compatible HTMLAudioElement |
-| [recorder](packages/recorder/README.md) | ITSLanguage compatible MediaRecorder |
+| Package name                            | Description                                                                        |
+| :-------------------------------------- | :--------------------------------------------------------------------------------- |
+| [api](packages/api/README.md)           | Implements the interface to the ITSLanguage backend as described in our [API docs] |
+| [player](packages/player/README.md)     | ITSLanguage compatible HTMLAudioElement                                            |
+| [recorder](packages/recorder/README.md) | ITSLanguage compatible MediaRecorder                                               |
 
 Besides npm an umd build of each package is also available on unpkg.com.
 
-| Package name | npm | unpkg |
-| :----------- | :-- | :---- |
-| [api](packages/api/README.md) | [@itslanguage/api] | [unpkg.com/@itslanguage/api/dist/] |
-| [player](packages/player/README.md) | [@itslanguage/player] | [unpkg.com/@itslanguage/player/dist/] |
+| Package name                            | npm                     | unpkg                                   |
+| :-------------------------------------- | :---------------------- | :-------------------------------------- |
+| [api](packages/api/README.md)           | [@itslanguage/api]      | [unpkg.com/@itslanguage/api/dist/]      |
+| [player](packages/player/README.md)     | [@itslanguage/player]   | [unpkg.com/@itslanguage/player/dist/]   |
 | [recorder](packages/recorder/README.md) | [@itslanguage/recorder] | [unpkg.com/@itslanguage/recorder/dist/] |
 
 ## Installation
@@ -28,12 +28,12 @@ Besides npm an umd build of each package is also available on unpkg.com.
 All the available packages of the SDK will be distributed as npm packages. Package managers that can
 can work with the [npmjs.com] registry, like [npm] and [yarn] do, can be used to add SDK packages to
 your project. For simplicity this readme assumes [npm] as package manager.
- 
+
 Adding ITSLanguage packages into your project is as easy as instructing [npm] to do so. In the case
 of npm this will automatically add an entry in your package.json file. If that does not happen, you
 are probably using an older [npm] version (< 5.x). Consider upgrading to at least > 5.x.. Note that
 ITSLanguage publishes its packages scoped, which means that all packages should be prefixed with
-`@itslanguage/PACKAGE_NAME`. 
+`@itslanguage/PACKAGE_NAME`.
 
 ```bash
 # Example installation of the api package
@@ -52,7 +52,7 @@ use it.
 We do recommend usage with a package manager like [npm] or [yarn] though.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Some page title</title>
@@ -66,7 +66,6 @@ We do recommend usage with a package manager like [npm] or [yarn] though.
     Hello, world!
   </body>
 </html>
-
 ```
 
 ## Package usage
@@ -82,10 +81,10 @@ Make sure you read the [code of conduct](CODE_OF_CONDUCT.md) and the
 
 ## Support
 
-To get support on the SDK you can either create a [new] [issue], or e-mail your question to
+To get support on the SDK you can either create a [new][issue], or e-mail your question to
 [support](mailto:support@itslanguage.nl)
 
-[ITSLanguage]: https://www.itslanguage.nl
+[itslanguage]: https://www.itslanguage.nl
 [npmjs.com]: https://www.npmjs.com
 [unpkg.com]: https://unpkg.com
 [npm]: https://docs.npmjs.com/cli-documentation
@@ -97,7 +96,7 @@ To get support on the SDK you can either create a [new] [issue], or e-mail your 
 [unpkg.com/@itslanguage/api/dist/]: https://unpkg.com/@itslanguage/api/dist/
 [unpkg.com/@itslanguage/player/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
 [unpkg.com/@itslanguage/recorder/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
-[API docs]: https://itslanguage.github.io/itslanguage-docs
-[REST and WebSocket API]: https://itslanguage.github.io/itslanguage-docs
+[api docs]: https://itslanguage.github.io/itslanguage-docs
+[rest and websocket api]: https://itslanguage.github.io/itslanguage-docs
 [new]: https://github.com/itslanguage/itslanguage-js/issues/new
 [issue]: https://github.com/itslanguage/itslanguage-js/issues

@@ -14,11 +14,11 @@ so called "reference audio", or audio that you have recorded with our recorder.
 ## Getting started
 
 The package is available on npm. This is the preferred way of usage. Installing the package is as
-easy as running `npm install` in the project root where you want to use it. 
+easy as running `npm install` in the project root where you want to use it.
 
 ```sh
 npm install @itslanguage/player
-``` 
+```
 
 An example usage, in code:
 
@@ -26,7 +26,8 @@ An example usage, in code:
 import createPlayer from '@itslanguage/player';
 
 // Choose an URL to play.
-const audioUrl = 'https://ia801605.us.archive.org/5/items/rainbowgold_1705_librivox/rainbowgold_10_various_128kb.mp3';
+const audioUrl =
+  'https://ia801605.us.archive.org/5/items/rainbowgold_1705_librivox/rainbowgold_10_various_128kb.mp3';
 
 // Create a HTMLAudioElement instance.
 const player = createPlayer(audioUrl);
@@ -45,7 +46,7 @@ In a more realistic use case, one would let a user click a button (like a play b
 some audio.
 
 Autoplay _is_ allowed when the audio track is muted. This makes sense for video of course, but for
-audio this will not help. 
+audio this will not help.
 
 More information here: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#attr-autoplay
 
@@ -57,16 +58,17 @@ this library exposes will be set to the global `itslPlayer` object. A simplistic
 does not follow any best practices (i.e. use at your own risk):
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Some page title</title>
     <script src="https://unpkg.com/@itslanguage/player@v4.0.0/dist/player.min.js"></script>
     <script>
       // The api is now available through global `itslPlayer`.
-      const audioUrl = 'https://ia801605.us.archive.org/5/items/rainbowgold_1705_librivox/rainbowgold_10_various_128kb.mp3';
+      const audioUrl =
+        'https://ia801605.us.archive.org/5/items/rainbowgold_1705_librivox/rainbowgold_10_various_128kb.mp3';
       const player = itslPlayer.createPlayer(audioUrl);
-      
+
       // We will use this function as the event handler for the button on the page
       function playAudio() {
         player.play();
@@ -77,7 +79,6 @@ does not follow any best practices (i.e. use at your own risk):
     <button onClick="playAudio">Play</button>
   </body>
 </html>
-
 ```
 
 ## API
@@ -85,24 +86,28 @@ does not follow any best practices (i.e. use at your own risk):
 ### createPlayer
 
 ```js
-createPlayer([audioUrl=null], [secureLoad=false], [crossOrigin=null])
+createPlayer(
+  [(audioUrl = null)],
+  [(secureLoad = false)],
+  [(crossOrigin = null)],
+);
 ```
 
 Create a new instance of a HTMLAudioElement (i.e. `new Audio()` or `<audio></audio>`).
 
 #### Arguments
 
-- ```[audioUrl = null: string]```: optionally, pass an URL to load. 
-- ```[secureLoad = false: boolean]```: optionally, add an authorization to the request to download
-the audio fragment. This is needed to load audio from the ITSLanguage backend where you need to be
-authorised to listen to. Note that if you don't pass an audioUrl, it will skip this flag.
-- ```[crossOrigin = null: CorsMode]```: optionally pass the crossOrigin mode that needs to be set
-on the audio player. Valid values are defined by the CorsMode object.
+- `[audioUrl = null: string]`: optionally, pass an URL to load.
+- `[secureLoad = false: boolean]`: optionally, add an authorization to the request to download
+  the audio fragment. This is needed to load audio from the ITSLanguage backend where you need to be
+  authorised to listen to. Note that if you don't pass an audioUrl, it will skip this flag.
+- `[crossOrigin = null: CorsMode]`: optionally pass the crossOrigin mode that needs to be set
+  on the audio player. Valid values are defined by the CorsMode object.
 
 ### loadAudioUrl
 
 ```js
-loadAudioUrl(player, audioUrl, [secureLoad=false])
+loadAudioUrl(player, audioUrl, [(secureLoad = false)]);
 ```
 
 Load a (new) url to an instance of a HTMLAudioElement. Main purpose of this function is to support
@@ -110,13 +115,12 @@ a way to add a new url with an "access_token". But it also works for url's in ge
 
 #### Arguments
 
-- ```player: HTMLAudioElement```: the element to change src on. Element is expected to be an
-instance of HTMLAudioElement 
-- ```audioUrl: string```: pass the url to set as src. 
-- ```[secureLoad = false: boolean]```: optionally, add an authorization to the request to download
-the audio fragment. This is needed to load audio from the ITSLanguage backend where you need to be
-authorised to listen to. Note that if you don't pass an audioUrl, it will skip this flag.
-
+- `player: HTMLAudioElement`: the element to change src on. Element is expected to be an
+  instance of HTMLAudioElement
+- `audioUrl: string`: pass the url to set as src.
+- `[secureLoad = false: boolean]`: optionally, add an authorization to the request to download
+  the audio fragment. This is needed to load audio from the ITSLanguage backend where you need to be
+  authorised to listen to. Note that if you don't pass an audioUrl, it will skip this flag.
 
 ## Read more
 
