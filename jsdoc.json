@@ -7,9 +7,7 @@
     "includePattern": ".js$",
     "excludePattern": "(.spec.js?$|node_modules/)"
   },
-  "plugins": [
-    "plugins/markdown"
-  ],
+  "plugins": ["plugins/markdown"],
   "opts": {
     "template": "node_modules/docdash",
     "encoding": "utf8",
@@ -38,12 +36,12 @@
     "typedefs": true,
     "removeQuotes": "none",
     "scripts": [],
-    "menu":{
-      "Github repo":{
-        "href":"https://github.com/itslanguage/itslanguage-js",
-        "target":"_blank",
-        "class":"menu-item",
-        "id":"repository"
+    "menu": {
+      "Github repo": {
+        "href": "https://github.com/itslanguage/itslanguage-js",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "repository"
       }
     },
     "openGraph": {
