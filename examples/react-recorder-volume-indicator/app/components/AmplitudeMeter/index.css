@@ -1,0 +1,16 @@
+.AmplitudeMeter {
+  margin: 2rem;
+}
+
+.AmplitudeMeter:hover circle:last-child {
+  fill: #eeeeee;
+}
+
+.AmplitudeMeter circle {
+  user-select: none;
+  transition: all 0.1s;
+}
+
+.AmplitudeMeter text {
+  user-select: none;
+}
