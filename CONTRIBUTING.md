@@ -126,7 +126,6 @@ console.log('some log statement');
 console.log('some log statement');
 ```
 
-
 ## Testing
 
 Test files are placed in the same location as the file that’s under test, except that the test file
@@ -197,17 +196,15 @@ any notable changes.
 
 [github issue tracker]: https://github.com/itslanguage/itslanguage-js/issues
 [airbnb javascript style guide]: https://github.com/airbnb/javascript
-[angular commit message convention]:
-  https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
+[angular commit message convention]: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
 [eslint]: https://eslint.org
 [editorconfig.org]: https://editorconfig.org
 [nvm]: https://github.com/creationix/nvm
 [.nvmrc]: https://github.com/creationix/nvm#nvmrc
 [travis-ci.org]: https;//travis-ci.org
 [babel]: https://babeljs.io
-[JSDoc]: http://usejsdoc.org/index.html
+[jsdoc]: http://usejsdoc.org/index.html
 [karma]: https://karma-runner.github.io/latest/index.html
 [yarn]: https://yarnpkg.com
 [keep a changelog]: https://keepachangelog.com/en/1.0.0
-[Contributor Covenant]: https://www.contributor-covenant.org
-
+[contributor covenant]: https://www.contributor-covenant.org

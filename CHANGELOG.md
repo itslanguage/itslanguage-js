@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ### Added
 
+- `api`, `recorder`, `player`, `examples`, `sdk`
+  - Added prettier to the project.
 - `recorder`
   - Made it possible to load plugins.
   - Added the Amplitude plugin.
