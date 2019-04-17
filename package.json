@@ -30,7 +30,7 @@
       "eslint --fix",
       "git add --force"
     ],
-    "*.json": [
+    "*.{json,md,yml.yaml,css}": [
       "prettier --write",
       "git add --force"
     ]
