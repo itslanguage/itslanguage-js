@@ -17,17 +17,17 @@ not working by using the [issue tracker]. And of course, we accept pull requests
 
 ITSLanguage JavaScript API package uses:
 
-1. [The `fetch` API][MDN fetch]
-1. [URLSearchParams][MDN URLSearchParams]
-1. [FormData][MDN FormData]
-1. [WebSocket][MDN WebSocket]
+1. [The `fetch` API][mdn fetch]
+1. [URLSearchParams][mdn urlsearchparams]
+1. [FormData][mdn formdata]
+1. [WebSocket][mdn websocket]
 
 It is expected that these are accessible through their `global` accessors (i.e. by simply calling
 `new FormData()`, `fetch(...)`, etc.).
 
 Modern browsers support these (at least to the capacity we use it). Older browsers as well as `Node`
-don't necessarily support these because the are, as of writing this, still seen as experimental 
-(browser) features. They are living standards and therefore expected to be implemented in the 
+don't necessarily support these because the are, as of writing this, still seen as experimental
+(browser) features. They are living standards and therefore expected to be implemented in the
 future.
 
 In the mean time; you might want to look at a few libraries which will add these APIs to your
@@ -35,28 +35,28 @@ environment. Here are a few we found useful.
 
 ### Browser
 
-- [whatwg-fetch][NPM whatwg-fetch]
-- [url-search-params-polyfill][NPM url-search-params-polyfill]
+- [whatwg-fetch][npm whatwg-fetch]
+- [url-search-params-polyfill][npm url-search-params-polyfill]
 
 ### Node.js
 
-- [node-fetch][NPM node-fetch]
-- [url-search-params][NPM url-search-params]
-- [form-data][NPM form-data]
+- [node-fetch][npm node-fetch]
+- [url-search-params][npm url-search-params]
+- [form-data][npm form-data]
 
 #### Both
 
-- [isomorphic-fetch][NPM isomorphic-fetch]
+- [isomorphic-fetch][npm isomorphic-fetch]
 
 ## Installation
 
 The ITSLanguage Javascript API pacakge will be distributed as a [npm package]. Package managers that
 can read this registry (like [npm] and [yarn]) can be used to add the api to your project's
 package.json file. For simplicity this readme assumes [npm] as package manager.
- 
+
 Adding the api package into your project is as easy as instructing [npm] to do so. This will
 automatically add an entry in your package.json file. If not, you are probably using an older [npm]
-version (< 5.x). Consider upgrading to at least > 5.x. 
+version (< 5.x). Consider upgrading to at least > 5.x.
 
 ```shell
 npm install @itslanguage/api
@@ -74,11 +74,11 @@ We do recommend usage with a package manager like [npm] or [yarn] though. The ex
 asume you've installed the api package with [npm]
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Some page title</title>
-    <script src="https://unpkg.com/@itslanguage/api@v4.0.0/dist/api.min.js"></script>
+    <script src="https://unpkg.com/@itslanguage/api@v4.2.0/dist/api.min.js"></script>
     <script>
       // The api is now available through global `itslApi`.
       itslApi.createItslApi();
@@ -88,7 +88,6 @@ asume you've installed the api package with [npm]
     Hello, world!
   </body>
 </html>
-
 ```
 
 ## Usage
@@ -114,10 +113,12 @@ connect to. As part of a user registration we will provide you with the details 
 For demonstration purposes we use the following details:
 
 Connection details
+
 - REST API url: https://api.itslanguage.io (url does not exist, just here for demo purposes!)
 - WebSocket API url: wss://ws.itslanguage.io (url does not exist, just here for demo purposes!)
 
 Authentication details
+
 - Tenant: `demo-tenant`
 - Organisation: `demo-school`
 - Student user: `student`
@@ -133,10 +134,9 @@ For more information about [roles], [permissions] and or [access tokens] consult
 
 You can use the api to obtain the access token, or you can pass the access token yourself to the
 factory function. In the next example we will instruct the api to get the token for us. The api will
-then store the token so next requests will automatically use the previously obtained token. 
+then store the token so next requests will automatically use the previously obtained token.
 
 ```js
-
 import { createItslApi } from '@itslanguage/api';
 
 // Prepare the options
@@ -149,15 +149,22 @@ const options = {
 const itslApi = createItslApi(options);
 
 // Prepare a user scope
-const scope = itslApi.authentication.assembleScope('demo-tenant', 'demo-school', 'student');
+const scope = itslApi.authentication.assembleScope(
+  'demo-tenant',
+  'demo-school',
+  'student',
+);
 
 // Authenticate to our backend, returns a promise
-const auth = itslApi.authentication.authenticate('student', 'student-password', scope);
+const auth = itslApi.authentication.authenticate(
+  'student',
+  'student-password',
+  scope,
+);
 
-auth.then((authResult) => {
+auth.then(authResult => {
   console.log(authResult); // Will output the token, user and scope for the user obtained.
 });
-
 ```
 
 ### Example: get current user details
@@ -165,13 +172,12 @@ auth.then((authResult) => {
 As said in the previous example, it is also possible to pass a previously obtained token to the api.
 Lets get the current user details from the server.
 
-For more information about the [current user] consult our API docs. 
+For more information about the [current user] consult our API docs.
 
 The following example presumes the token to use is `wubbaLubbaDubDub-token`. This token is already
-valid for a user with a valid scope. 
+valid for a user with a valid scope.
 
 ```js
-
 import { createItslApi } from '@itslanguage/api';
 
 // Prepare the options
@@ -184,30 +190,29 @@ const options = {
 // Instantiate the api object
 const itslApi = createItslApi(options);
 
-itslApi.users.getCurrent().then((currentUser) => {
+itslApi.users.getCurrent().then(currentUser => {
   console.log(currentUser); // Will output the details of the current user.
 });
-
 ```
 
-[ITSLanguage]: https://www.itslanguage.nl
-[REST and WebSocket API]: https://itslanguage.github.io/itslanguage-docs
+[itslanguage]: https://www.itslanguage.nl
+[rest and websocket api]: https://itslanguage.github.io/itslanguage-docs
 [issue tracker]: https://github.com/itslanguage/itslanguage-js/issues
 [unpkg.com]: https://unpkg.com
 [npm]: https://www.npmjs.com/get-npm
 [yarn]: https://yarnpkg.com
 [yarn workspaces]: https://yarnpkg.com/blog/2017/08/02/introducing-workspaces
 [npm package]: https://npmjs.org/package/@itslanguage/api
-[MDN fetch]: https://developer.mozilla.org/en/docs/Web/API/Fetch_API
-[MDN URLSearchParams]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-[MDN FormData]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
-[MDN WebSocket]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
-[NPM isomorphic-fetch]: https://www.npmjs.com/package/isomorphic-fetch
-[NPM form-data]: https://www.npmjs.com/package/form-data
-[NPM node-fetch]: https://www.npmjs.com/package/node-fetch
-[NPM url-search-params]: https://www.npmjs.com/package/url-search-params
-[NPM whatwg-fetch]: https://www.npmjs.com/package/whatwg-fetch
-[NPM url-search-params-polyfill]: https://www.npmjs.com/package/url-search-params-polyfill
+[mdn fetch]: https://developer.mozilla.org/en/docs/Web/API/Fetch_API
+[mdn urlsearchparams]: https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+[mdn formdata]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
+[mdn websocket]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+[npm isomorphic-fetch]: https://www.npmjs.com/package/isomorphic-fetch
+[npm form-data]: https://www.npmjs.com/package/form-data
+[npm node-fetch]: https://www.npmjs.com/package/node-fetch
+[npm url-search-params]: https://www.npmjs.com/package/url-search-params
+[npm whatwg-fetch]: https://www.npmjs.com/package/whatwg-fetch
+[npm url-search-params-polyfill]: https://www.npmjs.com/package/url-search-params-polyfill
 [roles]: https://itslanguage.github.io/itslanguage-docs/api/roles/index.html
 [permissions]: https://itslanguage.github.io/itslanguage-docs/api/permissions/index.html
 [access tokens]: https://itslanguage.github.io/itslanguage-docs/api/oauth2/index.html
