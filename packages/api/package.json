@@ -30,7 +30,7 @@
   "main": "index.js",
   "modules": "index.js",
   "dependencies": {
-    "autobahn": "18.10.2",
+    "autobahn": "19.4.1",
     "debug": "4.1.1",
     "event-emitter": "0.3.5"
   }
