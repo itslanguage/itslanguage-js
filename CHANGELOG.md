@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `api`
+  - Allow multiple writes for speech recordings by using the `timeslice` feature
+    of the recorder.
+
 ## [v4.2.0] - 2019-04-17
 
 ### Added
