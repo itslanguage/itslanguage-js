@@ -181,6 +181,8 @@ export function registerStreamForRecorder(recorder, rpcName) {
  */
 export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
   return new Promise((resolve, reject) => {
+    let lastChunk = false;
+
     // When data is received from the recorder, it will be in Blob format.
     // When we read the data from the Blob element, base64 it and send it to
     // the websocket server and continue with the chain.
@@ -188,11 +190,22 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
       asyncBlobToArrayBuffer(data).then(audioData => {
         const encoded = dataToBase64(audioData);
         // Send the audio
-        makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] }).then(
-          resolve,
-          reject,
-        );
+        makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
+          .then(result => {
+            if (lastChunk) {
+              resolve(result);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
       });
+    });
+
+    recorder.addEventListener('stop', () => {
+      // When stopped, the dataavailableevent will be triggered
+      // one final time, so make sure it will cleanup afterwards
+      lastChunk = true;
     });
   });
 }
