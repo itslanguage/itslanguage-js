@@ -5,10 +5,14 @@
 import MediaRecorder from 'audio-recorder-polyfill';
 import AmplitudePlugin from './plugins/amplitude';
 
-export const DEFAULT_AUDIO_FORMAT = 'audio/wave';
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContext();
+const BYTES_PER_SAMPLE = 2;
+
+export const DEFAULT_AUDIO_FORMAT = 'audio/wav';
 export const DEFAULT_CHANNELS = 1;
-export const DEFAULT_SAMPLE_WIDTH = 16;
-export const DEFAULT_SAMPLE_RATE = 48000;
+export const DEFAULT_SAMPLE_WIDTH = 8 * BYTES_PER_SAMPLE;
+export const DEFAULT_SAMPLE_RATE = audioContext.sampleRate;
 
 /**
  * Override or set the MediaRecorder to the window object.
@@ -71,7 +75,7 @@ export function createRecorder(
 
   // We need to add a function "getAudioSpecs" to be compliant with the itslanguage backend...
   recorder.getAudioSpecs = () => ({
-    audioFormat: DEFAULT_AUDIO_FORMAT,
+    audioFormat: recorder.mimeType || DEFAULT_AUDIO_FORMAT,
     audioParameters: {
       channels: DEFAULT_CHANNELS,
       sampleWidth: DEFAULT_SAMPLE_WIDTH,

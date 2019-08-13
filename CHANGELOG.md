@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v4.2.2] - 2019-08-13
+
+### Fixed
+
+- `recorder`
+  - The `recorder.getAudioSpecs()` was returning some hard-coded values that
+    where not true on some devices. If the recorded and processed audio sounded
+    like it was speedup: this was why.
+
 ## [v4.2.1] - 2019-06-21
 
 ### Changed
@@ -118,7 +127,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.1...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.2...HEAD
+[v4.2.2]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.1...v4.2.2
 [v4.2.1]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.0...v4.2.1
 [v4.2.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.1.0...v4.2.0
 [v4.1.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.0.2...v4.1.0
