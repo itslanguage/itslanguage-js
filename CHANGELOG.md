@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `recorder`
+  - Allow the default browser media types for recording, not just `audio/wav`.
+
+### Added
+
+- `examples`
+  - Added the `react-recorder` example. This example shows how the recorder can
+    be used.
+
 ## [v4.2.2] - 2019-08-13
 
 ### Fixed
