@@ -5,57 +5,55 @@
 import MediaRecorder from 'audio-recorder-polyfill';
 import AmplitudePlugin from './plugins/amplitude';
 
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioContext = new AudioContext();
-const BYTES_PER_SAMPLE = 2;
-
-export const DEFAULT_AUDIO_FORMAT = 'audio/wav';
-export const DEFAULT_CHANNELS = 1;
-export const DEFAULT_SAMPLE_WIDTH = 8 * BYTES_PER_SAMPLE;
-export const DEFAULT_SAMPLE_RATE = audioContext.sampleRate;
-
 /**
- * Override or set the MediaRecorder to the window object.
+ * If the recorder is imported we rely on the MediaRecorder interface. In some
+ * (important) browsers, like safari on IOS, that is not available. So with
+ * the construct bellow we enforce to be able to use a MediaRecorder.
  *
- * @param {string} [ns='MediaRecorder'] - Give the object another name if required.
+ * Note though that this MediaRecorder enforces WAV as mimeType.
  */
-export function addAsGlobal(ns = 'MediaRecorder') {
-  if (window[ns]) {
-    window[`Original${ns}`] = window[ns];
-  }
-
-  window[ns] = MediaRecorder;
+/* istanbul ignore if */
+if (!window.MediaRecorder) {
+  window.MediaRecorder = MediaRecorder;
 }
 
 /**
- * Uses the imported MediaRecorder to create a new MediaRecorder object from.
- * Note that the browser default is NOT used. This is because the support of the MediaRecorder API
- * is still not large.
- *
- * Another reason to not want to use the default is that the ITSLanguage backend
- * currently only supports WAVE as input.
+ * Factory function to create a new MediaRecorder object. Note that if the
+ * browser does not have a MediaRecorder it will use a polyfill. Also note that
+ * by default we use the polyfill anyway. Our backend is currently best at
+ * using audio/wav.
  *
  * @param {MediaStream} stream - Stream to record from.
  * @param {Object[]} [plugins = []] - Optionally an array with plugins to enable
  * on the recorder created.
- * @param {boolean} [setToWindow=false] - Override or set MediaRecorder to the
- * window object.
- * @param {string} [asObject='MediaRecorder'] - Optionally give the object
- * another name than MediaRecorder.
+ * @param {string} [mimeType=audio/wav] - The mimeType to use for the recorder.
  * @returns {MediaRecorder} - An instance of the created MediaRecorder.
  */
 export function createRecorder(
   stream = null,
   plugins = [],
-  setToWindow = false,
-  asObject = 'MediaRecorder',
+  mimeType = 'audio/wav',
 ) {
-  if (setToWindow) {
-    addAsGlobal(asObject);
-  }
-
   // Create the MediaRecorder object.
-  const recorder = new MediaRecorder(stream);
+  let recorder;
+
+  if (mimeType && mimeType === 'audio/wav') {
+    // In case someone insists on wanting wav, we use the polyfill.
+    recorder = new MediaRecorder(
+      stream,
+      mimeType && {
+        mimeType,
+      },
+    );
+  } else {
+    // Otherwise, use the browser native MediaRecorder
+    recorder = new window.MediaRecorder(
+      stream,
+      mimeType && {
+        mimeType,
+      },
+    );
+  }
 
   // Prepare the plugins object, here we store an instance of a plugin.
   recorder.plugins = [];
@@ -73,16 +71,51 @@ export function createRecorder(
     }
   });
 
-  // We need to add a function "getAudioSpecs" to be compliant with the itslanguage backend...
-  recorder.getAudioSpecs = () => ({
-    audioFormat: recorder.mimeType || DEFAULT_AUDIO_FORMAT,
-    audioParameters: {
-      channels: DEFAULT_CHANNELS,
-      sampleWidth: DEFAULT_SAMPLE_WIDTH,
-      frameRate: DEFAULT_SAMPLE_RATE,
-      sampleRate: DEFAULT_SAMPLE_RATE,
-    },
-  });
+  /**
+   * For compliancy with the ITSLanguage backend this function still exists.
+   * Once the nl.itslanguage.<challenge>.init_audio calls are removed we will
+   * drop this function asap.
+   *
+   * Please don't use this in your code. If you need information about the
+   * recorder and the settings it uses do it with your own logic.
+   *
+   * @returns {object} - An object that holds information about the specs or
+   * settings of the current recorder.
+   */
+  recorder.getAudioSpecs = () => {
+    let sampleRate;
+    let sampleSize;
+    let channels;
+
+    if (recorder.mimeType === 'audio/wav') {
+      const AudioContext =
+        window.AudioContext ||
+        /* istanbul ignore next */ window.webkitAudioContext;
+      const audioContext = new AudioContext();
+      // eslint-disable-next-line prefer-destructuring
+      sampleRate = audioContext.sampleRate;
+      sampleSize = 16;
+      channels = 1;
+    } else {
+      const [audioTrack] = recorder.stream.getAudioTracks();
+      const settings = audioTrack.getSettings();
+      /* eslint-disable prefer-destructuring */
+      sampleRate = settings.sampleRate;
+      sampleSize = settings.sampleSize;
+      /* eslint-enable prefer-destructuring */
+      channels = settings.channelCount;
+    }
+
+    return {
+      audioFormat: recorder.mimeType,
+      audioParameters: {
+        channels,
+        sampleWidth: sampleSize,
+        frameRate: sampleRate,
+        sampleRate,
+      },
+    };
+  };
 
   return recorder;
 }
