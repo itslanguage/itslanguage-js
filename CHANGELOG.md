@@ -11,12 +11,22 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 - `recorder`
   - Allow the default browser media types for recording, not just `audio/wav`.
+    This can be done through the `mimeType` param on the `createRecorder`
+    function
 
 ### Added
 
 - `examples`
   - Added the `react-recorder` example. This example shows how the recorder can
     be used.
+
+### Removed
+
+- `recorder`
+  - The `addAsGlobal` function is removed.
+  - The signature for `createRecorder` is changed. The params `setToWindow` and
+    `asObject` are removed.
+  - Several exported defaults are removed.
 
 ## [v4.2.2] - 2019-08-13
 
