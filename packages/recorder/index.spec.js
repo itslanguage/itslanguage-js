@@ -51,13 +51,22 @@ describe('MediaRecorder', () => {
       const recorder = mediaRecorder.createRecorder(STREAM);
       const audioSpecs = recorder.getAudioSpecs();
 
+      const AudioContext =
+        window.AudioContext ||
+        /* istanbul ignore next */ window.webkitAudioContext;
+      const audioContext = new AudioContext();
+      // eslint-disable-next-line prefer-destructuring
+      const sampleRate = audioContext.sampleRate;
+      const sampleWidth = 16;
+      const channels = 1;
+
       const specsMock = {
         audioFormat: 'audio/wav',
         audioParameters: {
-          channels: 1,
-          sampleWidth: 16,
-          frameRate: 44100,
-          sampleRate: 44100,
+          channels,
+          sampleWidth,
+          sampleRate,
+          frameRate: sampleRate,
         },
       };
 
