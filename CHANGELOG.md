@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - `api`, `recorder`, `player`, `examples`, `sdk`
   - Bumped used package versions.
   - Upgraded yarn.lock file.
+  - Set core-js@3 as peerDependency.
 - `recorder`
   - Allow the default browser media types for recording, not just `audio/wav`.
     This can be done through the `mimeType` param on the `createRecorder`
