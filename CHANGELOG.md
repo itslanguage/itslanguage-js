@@ -9,10 +9,19 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ### Changed
 
+- `api`, `recorder`, `player`, `examples`, `sdk`
+  - Bumped used package versions.
+  - Upgraded yarn.lock file.
 - `recorder`
   - Allow the default browser media types for recording, not just `audio/wav`.
     This can be done through the `mimeType` param on the `createRecorder`
-    function
+    function.
+
+### Fixed
+
+- `recorder`
+  - Failing test after bumping versions. Fixed by using non hardcoded value for
+    the recorder getSpecs call.
 
 ### Added
 
