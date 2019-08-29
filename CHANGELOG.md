@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v5.0.0] - 2019-08-29
+
 ### Changed
 
 - `api`, `recorder`, `player`, `examples`, `sdk`
@@ -157,7 +159,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.2...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.0.0...HEAD
+[v5.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.2...v5.0.0
 [v4.2.2]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.1...v4.2.2
 [v4.2.1]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.0...v4.2.1
 [v4.2.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.1.0...v4.2.0
