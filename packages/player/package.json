@@ -29,6 +29,7 @@
     "node": ">= 8"
   },
   "peerDependencies": {
+    "core-js": "^3.2.1",
     "@itslanguage/api": "^4.2.1"
   },
   "main": "index.js"

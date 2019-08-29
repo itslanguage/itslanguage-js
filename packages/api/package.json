@@ -33,5 +33,8 @@
     "autobahn": "19.7.3",
     "debug": "4.1.1",
     "event-emitter": "0.3.5"
+  },
+  "peerDependencies": {
+    "core-js": "^3.2.1"
   }
 }
