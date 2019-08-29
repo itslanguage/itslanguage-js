@@ -1,6 +1,6 @@
 {
   "name": "@itslanguage/player",
-  "version": "4.2.0",
+  "version": "5.0.0",
   "description": "JavaScript audio player compatible with the ITSLanguage SDK.",
   "author": "ITSLanguage (https://www.itslanguage.nl) <support@itslanguage.nl>",
   "contributors": [
@@ -29,6 +29,7 @@
     "node": ">= 8"
   },
   "peerDependencies": {
+    "core-js": "^3.2.1",
     "@itslanguage/api": "^4.2.1"
   },
   "main": "index.js"

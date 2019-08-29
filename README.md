@@ -56,7 +56,7 @@ We do recommend usage with a package manager like [npm] or [yarn] though.
 <html>
   <head>
     <title>Some page title</title>
-    <script src="https://unpkg.com/@itslanguage/api@v4.0.0/dist/api.min.js"></script>
+    <script src="https://unpkg.com/@itslanguage/api@v5.0.0/dist/api.min.js"></script>
     <script>
       // The api is now available through global `itslApi`.
       itslApi.createItslApi();

@@ -1,6 +1,6 @@
 {
   "name": "@itslanguage/recorder",
-  "version": "4.2.2",
+  "version": "5.0.0",
   "description": "JavaScript Recorder based on MediaRecorder from ITSLanguage.",
   "author": "ITSLanguage (https://www.itslanguage.nl) <support@itslanguage.nl>",
   "contributors": [
@@ -31,5 +31,8 @@
   "main": "index.js",
   "dependencies": {
     "audio-recorder-polyfill": "0.1.6"
+  },
+  "peerDependencies": {
+    "core-js": "^3.2.1"
   }
 }
