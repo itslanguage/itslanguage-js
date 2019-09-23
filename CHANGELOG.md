@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `sdk`
+  - Updated .gitignore file with more common patterns.
+
 ## [v5.0.1] - 2019-08-29
 
 ### Fixed
