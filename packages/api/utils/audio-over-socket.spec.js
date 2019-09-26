@@ -28,6 +28,7 @@ describe('Audio Over socket', () => {
     beforeEach(() => {
       recorderStub = jasmine.createSpyObj('Recorder', [
         'addEventListener',
+        'removeEventListener',
         'dispatchEvent',
       ]);
 
@@ -44,6 +45,8 @@ describe('Audio Over socket', () => {
         defer.resolve();
         return defer.promise;
       });
+
+      connectionSessionStub.registrations = [];
 
       connectionSessionStub.register.and.callFake((...args) => {
         const [rpc, callback] = args;
@@ -175,6 +178,7 @@ describe('Audio Over socket', () => {
     beforeEach(() => {
       recorderStub = jasmine.createSpyObj('Recorder', [
         'addEventListener',
+        'removeEventListener',
         'dispatchEvent',
       ]);
       makeWebsocketCallSpy = spyOn(communication, 'makeWebsocketCall');
