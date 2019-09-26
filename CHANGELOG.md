@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Added
+
+- `examples`
+  - Added the `react-speechchallenge` example. This example shows a speech
+    challenge example and uses the recorder to record audio for it. It is also
+    possible to listen back to the recorded audio.
+
 ### Changed
 
 - `sdk`
