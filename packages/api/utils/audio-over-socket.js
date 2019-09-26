@@ -118,13 +118,20 @@ class StreamRecorderAudio {
    */
   register() {
     return new Promise((resolve, reject) => {
-      this.websocketConnection.session
-        .register(this.rpcName, this.sendAudioChunks)
-        .then(registration => {
-          this.registration = registration;
-          resolve(registration);
-        })
-        .catch(reject);
+      const { session } = this.websocketConnection;
+
+      // First cleanup previously created registrations on this session;
+      Promise.all(
+        session.registrations.map(reg => session.unregister(reg)),
+      ).then(() => {
+        session
+          .register(this.rpcName, this.sendAudioChunks)
+          .then(registration => {
+            this.registration = registration;
+            resolve(registration);
+          })
+          .catch(reject);
+      });
     });
   }
 
