@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ### Changed
 
+- `api`
+  - The broadcaster event on `websocketserverreadyforaudio` is a bit confusing.
+    So the event is now also dispatched on the recorder itself and in the future
+    the broadcaster message will be removed.
 - `sdk`
   - Updated .gitignore file with more common patterns.
 
