@@ -26,7 +26,15 @@ describe('Audio Over socket', () => {
     let connectionSessionStub;
 
     beforeEach(() => {
-      recorderStub = jasmine.createSpyObj('Recorder', ['addEventListener']);
+      recorderStub = jasmine.createSpyObj('Recorder', [
+        'addEventListener',
+        'dispatchEvent',
+      ]);
+
+      // recorderStub.dispatchEvent.and.callFake((event, callback) => {
+      //   Pretend as if the event has been fired and thus call the callback.
+      // callback(event.type);
+      // });
 
       spyOn(autobahn.Connection.prototype, 'close');
       connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
@@ -170,7 +178,10 @@ describe('Audio Over socket', () => {
     let dataToBase64Spy;
 
     beforeEach(() => {
-      recorderStub = jasmine.createSpyObj('Recorder', ['addEventListener']);
+      recorderStub = jasmine.createSpyObj('Recorder', [
+        'addEventListener',
+        'dispatchEvent',
+      ]);
       makeWebsocketCallSpy = spyOn(communication, 'makeWebsocketCall');
       dataToBase64Spy = spyOn(utils, 'dataToBase64');
     });
@@ -265,7 +276,10 @@ describe('Audio Over socket', () => {
     let broadcasterSpy;
 
     beforeEach(() => {
-      recorderStub = jasmine.createSpyObj('Recorder', ['getAudioSpecs']);
+      recorderStub = jasmine.createSpyObj('Recorder', [
+        'getAudioSpecs',
+        'dispatchEvent',
+      ]);
       makeWebsocketCallSpy = spyOn(communication, 'makeWebsocketCall');
       broadcasterSpy = spyOn(broadcaster, 'emit');
     });

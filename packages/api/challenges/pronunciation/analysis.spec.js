@@ -100,7 +100,10 @@ describe('Pronunciation Analysis Challenge Recording API', () => {
     };
 
     beforeEach(() => {
-      recorderStub = jasmine.createSpyObj('Recorder', ['getAudioSpecs']);
+      recorderStub = jasmine.createSpyObj('Recorder', [
+        'getAudioSpecs',
+        'dispatchEvent',
+      ]);
       makeWebsocketCallSpy = spyOn(websocket, 'makeWebsocketCall');
 
       recorderStub.getAudioSpecs.and.returnValue(audioSpecs);
