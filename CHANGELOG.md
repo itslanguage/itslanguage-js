@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ### Added
 
+- `api`
+  - Better inform the user of the recorder when we are ready to process audio.
+    We now send out an `recorderready` event.
 - `examples`
   - Added the `react-speechchallenge` example. This example shows a speech
     challenge example and uses the recorder to record audio for it. It is also

@@ -97,6 +97,9 @@ class StreamRecorderAudio {
       lastChunk = true;
     });
 
+    // Notify listeners that we are ready to process audio;
+    this.recorder.dispatchEvent(new Event('recorderready'));
+
     return defer.promise;
   }
 
@@ -207,6 +210,9 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
       // one final time, so make sure it will cleanup afterwards
       lastChunk = true;
     });
+
+    // Notify listeners that we are ready to process audio;
+    recorder.dispatchEvent(new Event('recorderready'));
   });
 }
 
