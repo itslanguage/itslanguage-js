@@ -97,6 +97,9 @@ class StreamRecorderAudio {
       lastChunk = true;
     });
 
+    // Notify listeners that we are ready to process audio;
+    this.recorder.dispatchEvent(new Event('recorderready'));
+
     return defer.promise;
   }
 
@@ -161,8 +164,10 @@ export function registerStreamForRecorder(recorder, rpcName) {
           /**
            * Notify that we are ready to process audio.
            * @event broadcaster#websocketserverreadyforaudio
+           * @deprecated will be removed in a future version
            */
           broadcaster.emit('websocketserverreadyforaudio');
+          recorder.dispatchEvent(new Event('websocketserverreadyforaudio'));
           resolve(registration);
         })
         .catch(reject);
@@ -207,6 +212,9 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
       // one final time, so make sure it will cleanup afterwards
       lastChunk = true;
     });
+
+    // Notify listeners that we are ready to process audio;
+    recorder.dispatchEvent(new Event('recorderready'));
   });
 }
 
@@ -232,7 +240,10 @@ export function prepareServerForAudio(id, recorder, rpc) {
   }).then(() => {
     // We've prepped the websocket server, now it can receive audio. Broadcast
     // that it is allowed to record.
+    // This call is deprecated and will be removed in a future version, the
+    // event on the recorder will stay.
     broadcaster.emit('websocketserverreadyforaudio');
+    recorder.dispatchEvent(new Event('websocketserverreadyforaudio'));
     return id;
   });
 }
