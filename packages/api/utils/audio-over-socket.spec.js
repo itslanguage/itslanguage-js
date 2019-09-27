@@ -50,12 +50,23 @@ describe('Audio Over socket', () => {
 
       connectionSessionStub.register.and.callFake((...args) => {
         const [rpc, callback] = args;
-
-        return Promise.resolve({
+        const registration = {
           id: '123',
           rpc,
           callback,
-        });
+        };
+        connectionSessionStub.registrations.push(registration);
+        return Promise.resolve(registration);
+      });
+
+      connectionSessionStub.unregister.and.callFake((...args) => {
+        const [registration] = args;
+        const { registrations } = connectionSessionStub;
+        registrations.splice(
+          registrations.findIndex(reg => reg.id === registration.id),
+          1,
+        );
+        return Promise.resolve();
       });
 
       connectionSessionStub.unregister.and.returnValue(Promise.resolve());
@@ -79,6 +90,19 @@ describe('Audio Over socket', () => {
         rpc: `nl.itslanguage.${rpcName}`,
         callback: jasmine.any(Function),
       });
+    });
+
+    it('should remove a previously registered RCP', async () => {
+      const reg = {
+        id: '123',
+        rpc: `nl.itslanguage.${rpcName}`,
+        callback: Function,
+      };
+
+      connectionSessionStub.registrations = [reg];
+      await aos.registerStreamForRecorder(recorderStub, rpcName);
+
+      expect(connectionSessionStub.unregister).toHaveBeenCalledTimes(1);
     });
 
     it('should emit websocketserverreadyforaudio when ready to receive audio', async () => {
