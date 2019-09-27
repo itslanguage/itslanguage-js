@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v5.1.0] - 2019-09-27
+
 ### Added
 
 - `api`
@@ -193,7 +195,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.0.1...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.1.0...HEAD
+[v5.1.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.0.1...v5.1.0
 [v5.0.1]: https://github.com/itslanguage/itslanguage-js/compare/v5.0.0...v5.0.1
 [v5.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.2...v5.0.0
 [v4.2.2]: https://github.com/itslanguage/itslanguage-js/compare/v4.2.1...v4.2.2
