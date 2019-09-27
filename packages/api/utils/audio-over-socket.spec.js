@@ -69,8 +69,6 @@ describe('Audio Over socket', () => {
         return Promise.resolve();
       });
 
-      connectionSessionStub.unregister.and.returnValue(Promise.resolve());
-
       // We cannot use arrow functions because of `this` scope.
       // eslint-disable-next-line func-names
       connectionOpenSpy.and.callFake(function() {
@@ -94,7 +92,7 @@ describe('Audio Over socket', () => {
 
     it('should remove a previously registered RCP', async () => {
       const reg = {
-        id: '123',
+        id: '456',
         rpc: `nl.itslanguage.${rpcName}`,
         callback: Function,
       };
@@ -102,7 +100,7 @@ describe('Audio Over socket', () => {
       connectionSessionStub.registrations = [reg];
       await aos.registerStreamForRecorder(recorderStub, rpcName);
 
-      expect(connectionSessionStub.unregister).toHaveBeenCalledTimes(1);
+      expect(connectionSessionStub.registrations.length).toBe(1);
     });
 
     it('should emit websocketserverreadyforaudio when ready to receive audio', async () => {
