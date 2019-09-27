@@ -119,7 +119,6 @@ class StreamRecorderAudio {
   register() {
     return new Promise((resolve, reject) => {
       const { session } = this.websocketConnection;
-
       // First cleanup previously created registrations on this session;
       Promise.all(
         session.registrations.map(reg => session.unregister(reg)),
@@ -213,6 +212,7 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
         // Send the audio
         makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
           .then(result => {
+            /* istanbul ignore else */
             if (lastChunk) {
               resolve(result);
             }
