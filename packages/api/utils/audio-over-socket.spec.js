@@ -28,6 +28,7 @@ describe('Audio Over socket', () => {
     beforeEach(() => {
       recorderStub = jasmine.createSpyObj('Recorder', [
         'addEventListener',
+        'removeEventListener',
         'dispatchEvent',
       ]);
 
@@ -45,17 +46,28 @@ describe('Audio Over socket', () => {
         return defer.promise;
       });
 
+      connectionSessionStub.registrations = [];
+
       connectionSessionStub.register.and.callFake((...args) => {
         const [rpc, callback] = args;
-
-        return Promise.resolve({
+        const registration = {
           id: '123',
           rpc,
           callback,
-        });
+        };
+        connectionSessionStub.registrations.push(registration);
+        return Promise.resolve(registration);
       });
 
-      connectionSessionStub.unregister.and.returnValue(Promise.resolve());
+      connectionSessionStub.unregister.and.callFake((...args) => {
+        const [registration] = args;
+        const { registrations } = connectionSessionStub;
+        registrations.splice(
+          registrations.findIndex(reg => reg.id === registration.id),
+          1,
+        );
+        return Promise.resolve();
+      });
 
       // We cannot use arrow functions because of `this` scope.
       // eslint-disable-next-line func-names
@@ -76,6 +88,19 @@ describe('Audio Over socket', () => {
         rpc: `nl.itslanguage.${rpcName}`,
         callback: jasmine.any(Function),
       });
+    });
+
+    it('should remove a previously registered RCP', async () => {
+      const reg = {
+        id: '456',
+        rpc: `nl.itslanguage.${rpcName}`,
+        callback: Function,
+      };
+
+      connectionSessionStub.registrations = [reg];
+      await aos.registerStreamForRecorder(recorderStub, rpcName);
+
+      expect(connectionSessionStub.registrations.length).toBe(1);
     });
 
     it('should emit websocketserverreadyforaudio when ready to receive audio', async () => {
@@ -175,6 +200,7 @@ describe('Audio Over socket', () => {
     beforeEach(() => {
       recorderStub = jasmine.createSpyObj('Recorder', [
         'addEventListener',
+        'removeEventListener',
         'dispatchEvent',
       ]);
       makeWebsocketCallSpy = spyOn(communication, 'makeWebsocketCall');

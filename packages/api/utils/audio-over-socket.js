@@ -74,7 +74,7 @@ class StreamRecorderAudio {
     const defer = new autobahn.when.defer(); // eslint-disable-line new-cap
     let lastChunk = false;
 
-    this.recorder.addEventListener('dataavailable', ({ data }) => {
+    const processData = ({ data }) => {
       asyncBlobToArrayBuffer(data).then(audioData => {
         if (details.progress) {
           const dataToSend = Array.from(new Uint8Array(audioData));
@@ -89,13 +89,22 @@ class StreamRecorderAudio {
           defer.reject('no progress function registered');
         }
       });
-    });
+    };
 
-    this.recorder.addEventListener('stop', () => {
+    const recorderStopped = () => {
       // When stopped, the dataavailableevent will be triggered
       // one final time, so make sure it will cleanup afterwards
       lastChunk = true;
-    });
+    };
+
+    // Before adding the events, let's make sure they have not been added
+    // on a previous session;
+    this.recorder.removeEventListener('dataavailable', processData);
+    this.recorder.removeEventListener('stop', recorderStopped);
+
+    // Now add the event listeners!
+    this.recorder.addEventListener('dataavailable', processData);
+    this.recorder.addEventListener('stop', recorderStopped);
 
     // Notify listeners that we are ready to process audio;
     this.recorder.dispatchEvent(new Event('recorderready'));
@@ -109,13 +118,19 @@ class StreamRecorderAudio {
    */
   register() {
     return new Promise((resolve, reject) => {
-      this.websocketConnection.session
-        .register(this.rpcName, this.sendAudioChunks)
-        .then(registration => {
-          this.registration = registration;
-          resolve(registration);
-        })
-        .catch(reject);
+      const { session } = this.websocketConnection;
+      // First cleanup previously created registrations on this session;
+      Promise.all(
+        session.registrations.map(reg => session.unregister(reg)),
+      ).then(() => {
+        session
+          .register(this.rpcName, this.sendAudioChunks)
+          .then(registration => {
+            this.registration = registration;
+            resolve(registration);
+          })
+          .catch(reject);
+      });
     });
   }
 
@@ -191,12 +206,13 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
     // When data is received from the recorder, it will be in Blob format.
     // When we read the data from the Blob element, base64 it and send it to
     // the websocket server and continue with the chain.
-    recorder.addEventListener('dataavailable', ({ data }) => {
+    const processData = ({ data }) => {
       asyncBlobToArrayBuffer(data).then(audioData => {
         const encoded = dataToBase64(audioData);
         // Send the audio
         makeWebsocketCall(rpc, { args: [id, encoded, 'base64'] })
           .then(result => {
+            /* istanbul ignore else */
             if (lastChunk) {
               resolve(result);
             }
@@ -205,13 +221,22 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
             reject(error);
           });
       });
-    });
+    };
 
-    recorder.addEventListener('stop', () => {
-      // When stopped, the dataavailableevent will be triggered
+    const recorderStopped = () => {
+      // When stopped, the dataavailable event will be triggered
       // one final time, so make sure it will cleanup afterwards
       lastChunk = true;
-    });
+    };
+
+    // Before adding the events, let's make sure they have not been added
+    // on a previous session;
+    recorder.removeEventListener('dataavailable', processData);
+    recorder.removeEventListener('stop', recorderStopped);
+
+    // Now add the event listeners!
+    recorder.addEventListener('dataavailable', processData);
+    recorder.addEventListener('stop', recorderStopped);
 
     // Notify listeners that we are ready to process audio;
     recorder.dispatchEvent(new Event('recorderready'));

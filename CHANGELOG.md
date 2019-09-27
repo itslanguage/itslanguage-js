@@ -20,6 +20,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 ### Changed
 
 - `api`
+  - The `dataavailable` and `stop` event that will be used by the sdk to send
+    data to the backend will now remove the event handlers upon adding them.
+    Just the handlers that it would add. This to make sure the recorder can be
+    reused in stead of just once.
+  - Before registering an RPC to the autobahn session, all the current
+    registered functions will be unregistered, if there are any. This to make
+    sure only one registration is active at the time.
   - The broadcaster event `websocketserverreadyforaudio` is a bit confusing.
     Sending it through the event emitter is deprecated and will be removed in a
     future version.
