@@ -31,11 +31,6 @@ describe('Audio Over socket', () => {
         'dispatchEvent',
       ]);
 
-      // recorderStub.dispatchEvent.and.callFake((event, callback) => {
-      //   Pretend as if the event has been fired and thus call the callback.
-      // callback(event.type);
-      // });
-
       spyOn(autobahn.Connection.prototype, 'close');
       connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
       connectionSessionStub = jasmine.createSpyObj('Session', [
