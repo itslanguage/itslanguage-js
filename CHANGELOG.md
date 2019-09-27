@@ -10,8 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 ### Added
 
 - `api`
-  - Better inform the user of the recorder when we are ready to process audio.
-    We now send out an `recorderready` event.
+  - Better inform the user when the recorder is prepared and ready to process
+    audio. We now send out an `recorderready` event if ready.
 - `examples`
   - Added the `react-speechchallenge` example. This example shows a speech
     challenge example and uses the recorder to record audio for it. It is also
@@ -20,9 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 ### Changed
 
 - `api`
-  - The broadcaster event on `websocketserverreadyforaudio` is a bit confusing.
-    So the event is now also dispatched on the recorder itself and in the future
-    the broadcaster message will be removed.
+  - The broadcaster event `websocketserverreadyforaudio` is a bit confusing.
+    Sending it through the event emitter is deprecated and will be removed in a
+    future version.
 - `sdk`
   - Updated .gitignore file with more common patterns.
 
