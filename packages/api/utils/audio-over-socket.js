@@ -140,13 +140,17 @@ class StreamRecorderAudio {
    */
   unregister() {
     return new Promise((resolve, reject) => {
-      this.websocketConnection.session
-        .unregister(this.registration)
-        .then(() => {
-          this.registration = null;
-          resolve();
-        })
-        .catch(reject);
+      if (!this.registration) {
+        resolve(); // There is no registration to unregister!
+      } else {
+        this.websocketConnection.session
+          .unregister(this.registration)
+          .then(() => {
+            this.registration = null;
+            resolve();
+          })
+          .catch(reject);
+      }
     });
   }
 }
