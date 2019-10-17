@@ -84,6 +84,7 @@ class StreamRecorderAudio {
           if (lastChunk) {
             defer.resolve();
             this.unregister();
+            lastChunk = false;
           }
         } else {
           defer.reject('no progress function registered');
