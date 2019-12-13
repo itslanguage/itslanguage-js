@@ -17,9 +17,14 @@ function encodeBuffer(buffer) {
   for (let count = 0; count < length; count += 1) {
     const index = count * BYTES_PER_SAMPLE;
     let sample = buffer[count];
+
+    /* istanbul ignore if */
     if (sample > 1) {
       sample = 1;
-    } else if (sample < -1) {
+    }
+
+    /* istanbul ignore if */
+    if (sample < -1) {
       sample = -1;
     }
     sample *= 32768;
