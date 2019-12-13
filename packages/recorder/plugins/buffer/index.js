@@ -28,7 +28,6 @@ class BufferPlugin {
     this.recorder = null;
 
     this.startBuffering = this.startBuffering.bind(this);
-    this.stopBuffering = this.stopBuffering.bind(this);
     this.recordingStopped = this.recordingStopped.bind(this);
   }
 
