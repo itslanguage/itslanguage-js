@@ -4,6 +4,7 @@
 
 import MediaRecorder from 'audio-recorder-polyfill';
 import AmplitudePlugin from './plugins/amplitude';
+import BufferPlugin from './plugins/buffer';
 
 /**
  * If the recorder is imported we rely on the MediaRecorder interface. In some
@@ -148,4 +149,15 @@ export function createMediaStream() {
  */
 export function createAmplitudePlugin(options = {}) {
   return new AmplitudePlugin(options);
+}
+
+/**
+ * Factory function to create a BufferPlugin. Use the returned value of this
+ * function to pass to the plugin list of the recorder.
+ *
+ * @param {object} [options = {}] - Options to pass to the BufferPlugin.
+ * @returns {BufferPlugin} - Instance of the BufferPlugin.
+ */
+export function createBufferPlugin(options = {}) {
+  return new BufferPlugin(options);
 }
