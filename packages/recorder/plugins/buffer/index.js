@@ -18,7 +18,7 @@ class BufferPlugin {
   constructor({
     immediateStart = false,
     stopAfterRecording = true,
-    secondsToBuffer = 30,
+    secondsToBuffer,
   }) {
     this.immediateStart = immediateStart;
     this.stopAfterRecording = stopAfterRecording;
