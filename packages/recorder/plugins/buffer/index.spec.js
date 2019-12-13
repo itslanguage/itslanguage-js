@@ -91,4 +91,43 @@ describe('BufferPlugin', () => {
 
     expect(dispatchEventSpy).toHaveBeenCalledTimes(0);
   });
+
+  it('should return 3 seconds of the buffer', async done => {
+    const stream = await createMediaStream();
+    const bufferPlugin = createBufferPlugin({
+      immediateStart: true,
+    });
+    const recorder = createRecorder(stream, [bufferPlugin]);
+
+    recorder.addEventListener('bufferdataavailable', async ({ data }) => {
+      const audio = new Audio(URL.createObjectURL(data));
+      await wait(2);
+
+      expect(audio.duration).toBe(3);
+      done();
+    });
+
+    recorder.requestBufferedData(3);
+    await wait(2);
+  });
+
+  it('should return everything in the buffer', async done => {
+    const stream = await createMediaStream();
+    const bufferPlugin = createBufferPlugin({
+      immediateStart: true,
+      secondsToBuffer: 30,
+    });
+    const recorder = createRecorder(stream, [bufferPlugin]);
+
+    recorder.addEventListener('bufferdataavailable', async ({ data }) => {
+      const audio = new Audio(URL.createObjectURL(data));
+      await wait(2);
+
+      expect(audio.duration).toBe(30);
+      done();
+    });
+
+    recorder.requestBufferedData();
+    await wait(2);
+  });
 });
