@@ -1,5 +1,7 @@
 import MediaRecorder from 'audio-recorder-polyfill';
 import * as mediaRecorder from './index';
+import AmplitudePlugin from './plugins/amplitude';
+import BufferPlugin from './plugins/buffer';
 
 const STREAM = null;
 
@@ -112,6 +114,22 @@ describe('MediaRecorder', () => {
           );
           done();
         });
+    });
+  });
+
+  describe('createAmplitudePlugin', () => {
+    it('should return a AmplitudePlugin instance', () => {
+      const amplitudePlugin = mediaRecorder.createAmplitudePlugin();
+
+      expect(amplitudePlugin instanceof AmplitudePlugin).toBeTruthy();
+    });
+  });
+
+  describe('createBufferPlugin', () => {
+    it('should return a BufferPlugin instance', () => {
+      const bufferPlugin = mediaRecorder.createBufferPlugin();
+
+      expect(bufferPlugin instanceof BufferPlugin).toBeTruthy();
     });
   });
 });
