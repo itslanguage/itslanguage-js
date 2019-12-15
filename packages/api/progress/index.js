@@ -28,9 +28,10 @@ const url = '/categories';
 // eslint-disable-next-line import/prefer-default-export
 export function getById(id, groups = [], role = '') {
   let filters = '';
+  const hasGroups = Array.isArray(groups) && groups.length;
   const searchParams = new URLSearchParams();
 
-  if (groups.length) {
+  if (hasGroups) {
     // If we have groups, add them to the searchParams!
     groups.forEach(group => {
       searchParams.append('group', group);
@@ -42,7 +43,7 @@ export function getById(id, groups = [], role = '') {
     searchParams.append('role', role);
   }
 
-  if (groups.length || role) {
+  if (hasGroups || role) {
     // If we had groups or roles, construct a querystring based on searchParams.
     filters = `?${searchParams.toString()}`;
   }

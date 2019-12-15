@@ -111,5 +111,20 @@ describe('progress', () => {
         })
         .catch(done.fail);
     });
+
+    it('should not fail if the groups parameter is not an array', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
+
+      progress
+        .getById('c4t', 'not-an-array')
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+
+          expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress']);
+          done();
+        })
+        .catch(done.fail);
+    });
   });
 });
