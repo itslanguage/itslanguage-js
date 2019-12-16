@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Added
+
+- `recorder`
+  - Added a new plugin: BufferPlugin. This plugin buffers the microphone input
+    for a given number of seconds. It also exposes an api to get (part of) the
+    buffer.
+- `examples`
+  - Added the `react-recorder-buffer` example. This example shows an example of
+    the recorder with buffer plugin enabled.
+
 ## [v5.1.0] - 2019-09-27
 
 ### Added
