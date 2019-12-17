@@ -130,4 +130,21 @@ describe('BufferPlugin', () => {
     recorder.requestBufferedData();
     await wait(2);
   });
+
+  it('should dispatch a custsom event when requesting buffered data', async done => {
+    const stream = await createMediaStream();
+    const bufferPlugin = createBufferPlugin({
+      immediateStart: true,
+      eventToDispatch: 'blablabla',
+    });
+
+    const recorder = createRecorder(stream, [bufferPlugin]);
+
+    recorder.addEventListener('blablabla', () => {
+      done();
+    });
+
+    recorder.requestBufferedData(1);
+    await wait(2);
+  });
 });

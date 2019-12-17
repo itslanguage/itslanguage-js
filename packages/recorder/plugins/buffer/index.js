@@ -14,15 +14,21 @@ class BufferPlugin {
    * @param {boolean} options.stopAfterRecording - Stop buffering when the
    * recorder stops recording.
    * @param {number} options.secondsToBuffer - Number of seconds to buffer.
+   * @param {string} [options.eventToDispatch=bufferdatavailable] - The event to
+   * use to dispatch buffered audio. By default we will use
+   * `bufferdataavailable` but it could be, as example, convenient to use the
+   * regular `dataavailable` event.
    */
   constructor({
     immediateStart = false,
     stopAfterRecording = true,
     secondsToBuffer,
+    eventToDispatch = 'bufferdataavailable',
   }) {
     this.immediateStart = immediateStart;
     this.stopAfterRecording = stopAfterRecording;
     this.secondsToBuffer = secondsToBuffer;
+    this.eventToDispatch = eventToDispatch;
 
     this.bufferNode = null;
     this.recorder = null;
@@ -39,7 +45,7 @@ class BufferPlugin {
    */
   readBufferAsWAV(secondsToRead) {
     const data = this.bufferNode.readBufferAsWAV(secondsToRead);
-    const event = new Event('bufferdataavailable');
+    const event = new Event(this.eventToDispatch);
 
     if (data) {
       event.data = data;
