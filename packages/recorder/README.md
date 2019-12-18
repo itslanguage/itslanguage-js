@@ -236,12 +236,12 @@ createMediaStream().then(stream => {
 
   // Create a MediaRecorder instance with the stream you got. Also, pass the
   // plugins as the second argument.
-  const recorder = createRecorder(stream, [amplitudePlugin]);
+  const recorder = createRecorder(stream, [bufferPlugin]);
 
   // Start listening to bufferdataavailable. Once fired, it will return
-  // an object with volume information.
+  // a Blob with the requested audio from the buffer.
   recorder.addEventListener('bufferdataavailable', event => {
-    console.log(event.data); // Outputs a Blob;
+    console.log(event.data); // Outputs a Blob {};
   });
 
   // Start recording!
