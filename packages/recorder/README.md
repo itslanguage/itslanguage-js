@@ -104,38 +104,14 @@ createMediaStream().then(stream => {
 
 ## API
 
-### addAsGlobal
-
-```js
-addAsGlobal([(ns = 'MediaRecorder')]);
-```
-
-Add the imported `MediaRecorder` to the specified namespace. The default namespace
-will be set to `MediaRecorder`. Any object already defined will be copied and
-prefixed with `Original` (i.e. `OriginalMediaRecorder`).
-
-If you want to set the imported `MediaRecorder` to a custom object, just pass a
-string to `addAsGloabl`. See the arguments below.
-
-The reference to the imported `MediaRecorder` is the polyfill this package uses.
-
-#### Arguments
-
-- `[ns = 'MediaRecorder: string]`: Use this parameter to pass in the name
-  of the object you want to store the `MediaRecorder` object to.
-
 ### createRecorder
 
 ```js
-createRecorder(
-  [stream],
-  [plugins],
-  [(setToWindow = false)],
-  [(asObject = 'MediaRecorder')],
-);
+createRecorder([stream], [plugins], [(mimeType = 'audio/wav')]);
 ```
 
-This function is a factory method that just instantiates a `MediaRecorder` object.
+This function is a factory method that just instantiates and returns a
+`MediaRecorder` object.
 
 #### Arguments
 
@@ -143,11 +119,9 @@ This function is a factory method that just instantiates a `MediaRecorder` objec
   of `MediaStream`. This param is not required, even though if you would omit it,
   recording would not work obviously (no stream = no data).
 - `[plugins: Array]`: Pass plugins to the recorder to initialize.
-- `[setToWindow = false : boolean]`: Set the imported `MediaRecorder` also to
-  the `window` object. Default behavious is not doing that. Could be usefull in some
-  cases but in general you probably won't need this.
-- `[asObject = 'MediaRecorder': string]`: If `setToWindow` is true, you can
-  use this param to override the object where you want the `MediaRecorder` to live.
+- `[mimeType: 'audio/wav' : String]`: Override the default mimeType for the
+  recorder. Whether a mimeType is valid or not can be checked with
+  `MediaRecorder.isTypeSupported()`. Defaults to `audio/wav`.
 
 ### createMediaStream
 
@@ -160,6 +134,123 @@ give you the required (authorized) stream to use with the `MediaRecorder` object
 
 Also, this function will trigger the browser to ask the user for permission to
 access the microphone.
+
+It returns a promise and if all good the promise resolve with a `MediaStream`
+object
+
+### createAmplitudePlugin
+
+```js
+createAmplitudePlugin(
+  (options = { immediateStart: false, stopAfterRecording: true }),
+);
+```
+
+Factory function to create an amplitude plugin. It will accept some options and
+if all good it will return an `AmplitudePlugin` object that can be passed to the
+plugin array for `createRecorder`.
+
+The amplitude plugin wil dispatch `amplitudelevels` events on the recorder with
+information about the volume levels (per input channel if possible).
+
+#### Arguments
+
+- `[options: Object]`: Pass an object with options to control how the plugin
+  behaves.
+- `[options.immediateStart: false : Boolean]`: Start dispatching volume levels
+  when instantiating the plugin. If false (default value) it will start when
+  the recording is started.
+- `[options.stopAfterRecording: true : Boolean]`: Stop dispatching volume levels
+  when the recorder is stopped, which is the default behaviour.
+
+### createBufferPlugin
+
+```js
+createBufferPlugin(
+  (options = {
+    immediateStart: false,
+    stopAfterRecording: true,
+    secondsToBuffer: 30,
+    eventToDispatch: 'bufferdataavailable',
+  }),
+);
+```
+
+Factory function to create a buffer plugin. It will accept some options and if
+all good it will return a `BufferPlugin` object that can be passed to the plugin
+array for `createRecorder`.
+
+The buffer plugin will dispatch buffered audio as `audio/wav` blob to the
+recorder via the `bufferdataavailable` event. When instantiated it will register
+a function `requestBufferedData` on the recorder. When invoking that function the
+configured event will be dispatched with the requested data. See below for the
+API of `requestBufferedData`.
+
+#### Arguments
+
+- `[options: Object]`: Pass an object with options to control how the plugin
+  behaves.
+- `[options.immediateStart: false : Boolean]`: Start buffering audio when
+  instantiating the plugin. If false (default value) it will start when
+  the recording is started.
+- `[options.stopAfterRecording: true : Boolean]`: Stop buffering audio when the
+  recorder is stopped, which is the default behaviour.
+- `[options.secondsToBuffer: 30: Number]`: Value that controls how many seconds
+  of audio will always be in the buffer. Defaults to 30 seconds.
+- `[options.eventToDispatch: bufferdataavailable: String]`: The event that is
+  used to dispatch the buffered audio on when requested. Use this option to
+  override the default value.
+
+##### requestBufferedData
+
+```js
+requestBufferedData((secondsToRead = 3));
+```
+
+This function will be registered on a recorder and allow you to get the buffered
+data. When invoked it will make sure the configured event (by default
+`bufferdataavailable`) will be dispatched.
+
+The function will be registered when audio buffering is started, and will be
+deleted once the buffering stops.
+
+###### Arguments
+
+- `[secondsToRead: 3: Number]`: Use this param to define how may seconds there
+  will be read from the buffer. By default there will be gathered 3 seconds of
+  audio. If the value of `secondsToRead` is 0 or equal or larger than the amount
+  of audio in the buffer the buffer will be returned completely.
+
+###### Example
+
+```js
+import {
+  createRecorder,
+  createMediaStream,
+  createNufferPlugin,
+} from '@itslanguage/recorder';
+
+// Ask and wait for the user to give permission and get an audio stream.
+createMediaStream().then(stream => {
+  const bufferPlugin = createNufferPlugin(/* options here*/);
+
+  // Create a MediaRecorder instance with the stream you got. Also, pass the
+  // plugins as the second argument.
+  const recorder = createRecorder(stream, [bufferPlugin]);
+
+  // Start listening to bufferdataavailable. Once fired, it will return
+  // a Blob with the requested audio from the buffer.
+  recorder.addEventListener('bufferdataavailable', event => {
+    console.log(event.data); // Outputs a Blob {};
+  });
+
+  // Start recording!
+  recorder.start();
+
+  // At a certain point in time you will want to get some audio from the buffer
+  recorder.requestBufferedData();
+});
+```
 
 ## Read more
 

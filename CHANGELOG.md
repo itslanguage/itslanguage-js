@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](http://semver.org).
   - Added the `react-recorder-buffer` example. This example shows an example of
     the recorder with buffer plugin enabled.
 
+### Changed
+
+- `recorder`
+  - Updated the recorder readme file to be more accurate.
+
 ## [v5.1.0] - 2019-09-27
 
 ### Added
