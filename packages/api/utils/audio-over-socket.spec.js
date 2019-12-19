@@ -9,6 +9,89 @@ import * as communication from '../communication/websocket';
 import * as utils from '.';
 import broadcaster from '../broadcaster';
 
+const rpcName = 'rpcName';
+
+function setupStubsSimple() {
+  const recorderStub = jasmine.createSpyObj('Recorder', [
+    'addEventListener',
+    'removeEventListener',
+    'dispatchEvent',
+    'getAudioSpecs',
+  ]);
+
+  const makeWebsocketCallSpy = spyOn(communication, 'makeWebsocketCall');
+  const dataToBase64Spy = spyOn(utils, 'dataToBase64');
+  const broadcasterSpy = spyOn(broadcaster, 'emit');
+
+  return {
+    recorderStub,
+    makeWebsocketCallSpy,
+    dataToBase64Spy,
+    broadcasterSpy,
+  };
+}
+
+function setupStubs() {
+  const recorderStub = jasmine.createSpyObj('Recorder', [
+    'addEventListener',
+    'removeEventListener',
+    'dispatchEvent',
+  ]);
+
+  spyOn(autobahn.Connection.prototype, 'close');
+  const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
+  const connectionSessionStub = jasmine.createSpyObj('Session', [
+    'call',
+    'register',
+    'unregister',
+  ]);
+  connectionSessionStub.call.and.callFake(() => {
+    // eslint-disable-next-line new-cap
+    const defer = new autobahn.when.defer();
+    defer.resolve();
+    return defer.promise;
+  });
+
+  connectionSessionStub.registrations = [];
+
+  connectionSessionStub.register.and.callFake((...args) => {
+    const [rpc, callback] = args;
+    const registration = {
+      id: '123',
+      rpc,
+      callback,
+    };
+    connectionSessionStub.registrations.push(registration);
+    return Promise.resolve(registration);
+  });
+
+  connectionSessionStub.unregister.and.callFake((...args) => {
+    const [registration] = args;
+    const { registrations } = connectionSessionStub;
+    registrations.splice(
+      registrations.findIndex(reg => reg.id === registration.id),
+      1,
+    );
+    return Promise.resolve();
+  });
+
+  // We cannot use arrow functions because of `this` scope.
+  // eslint-disable-next-line func-names
+  connectionOpenSpy.and.callFake(function() {
+    // This property is returned through the session "property" of a
+    // connection instance. Sadly only the get is defined with the
+    // `Object.defineProperty` which forces us to mock the internals.
+    this._session = connectionSessionStub; // eslint-disable-line no-underscore-dangle
+    this.onopen();
+  });
+
+  return {
+    recorderStub,
+    connectionOpenSpy,
+    connectionSessionStub,
+  };
+}
+
 describe('Audio Over socket', () => {
   beforeEach(() => {
     // Make sure we have enough time to complete some tests.
@@ -20,67 +103,8 @@ describe('Audio Over socket', () => {
   });
 
   describe('registerStreamForRecorder', () => {
-    const rpcName = 'rpcName';
-    let recorderStub;
-    let connectionOpenSpy;
-    let connectionSessionStub;
-
-    beforeEach(() => {
-      recorderStub = jasmine.createSpyObj('Recorder', [
-        'addEventListener',
-        'removeEventListener',
-        'dispatchEvent',
-      ]);
-
-      spyOn(autobahn.Connection.prototype, 'close');
-      connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      connectionSessionStub = jasmine.createSpyObj('Session', [
-        'call',
-        'register',
-        'unregister',
-      ]);
-      connectionSessionStub.call.and.callFake(() => {
-        // eslint-disable-next-line new-cap
-        const defer = new autobahn.when.defer();
-        defer.resolve();
-        return defer.promise;
-      });
-
-      connectionSessionStub.registrations = [];
-
-      connectionSessionStub.register.and.callFake((...args) => {
-        const [rpc, callback] = args;
-        const registration = {
-          id: '123',
-          rpc,
-          callback,
-        };
-        connectionSessionStub.registrations.push(registration);
-        return Promise.resolve(registration);
-      });
-
-      connectionSessionStub.unregister.and.callFake((...args) => {
-        const [registration] = args;
-        const { registrations } = connectionSessionStub;
-        registrations.splice(
-          registrations.findIndex(reg => reg.id === registration.id),
-          1,
-        );
-        return Promise.resolve();
-      });
-
-      // We cannot use arrow functions because of `this` scope.
-      // eslint-disable-next-line func-names
-      connectionOpenSpy.and.callFake(function() {
-        // This property is returned through the session "property" of a
-        // connection instance. Sadly only the get is defined with the
-        // `Object.defineProperty` which forces us to mock the internals.
-        this._session = connectionSessionStub; // eslint-disable-line no-underscore-dangle
-        this.onopen();
-      });
-    });
-
     it('should register an RPC call named nl.itslanguage.rpcName', async () => {
+      const { recorderStub } = setupStubs();
       await expectAsync(
         aos.registerStreamForRecorder(recorderStub, rpcName),
       ).toBeResolvedTo({
@@ -91,6 +115,7 @@ describe('Audio Over socket', () => {
     });
 
     it('should remove a previously registered RCP', async () => {
+      const { recorderStub, connectionSessionStub } = setupStubs();
       const reg = {
         id: '456',
         rpc: `nl.itslanguage.${rpcName}`,
@@ -104,6 +129,7 @@ describe('Audio Over socket', () => {
     });
 
     it('should emit websocketserverreadyforaudio when ready to receive audio', async () => {
+      const { recorderStub } = setupStubs();
       const broadcastSpy = spyOn(broadcaster, 'emit');
 
       await aos.registerStreamForRecorder(recorderStub, rpcName);
@@ -112,6 +138,7 @@ describe('Audio Over socket', () => {
     });
 
     it('should stream audio to the backend', async () => {
+      const { recorderStub } = setupStubs();
       const data = {
         data: new Blob(['Knees weak, arms are heavy.'], { type: 'text/plain' }),
       };
@@ -135,6 +162,8 @@ describe('Audio Over socket', () => {
     });
 
     it('should not stream audio if the progress function does not exist', async () => {
+      const { recorderStub } = setupStubs();
+
       recorderStub.addEventListener.and.callFake((event, callback) => {
         // Pretend as if the event has been fired and thus call the callback.
         callback({
@@ -152,6 +181,7 @@ describe('Audio Over socket', () => {
     });
 
     it('should only resolve on the last chunk', async () => {
+      const { recorderStub } = setupStubs();
       let dataavailableCallback = null;
       let stopCallback = null;
       const blob = {
@@ -193,21 +223,13 @@ describe('Audio Over socket', () => {
   });
 
   describe('encodeAndSendAudioOnDataAvailable', () => {
-    let recorderStub;
-    let makeWebsocketCallSpy;
-    let dataToBase64Spy;
-
-    beforeEach(() => {
-      recorderStub = jasmine.createSpyObj('Recorder', [
-        'addEventListener',
-        'removeEventListener',
-        'dispatchEvent',
-      ]);
-      makeWebsocketCallSpy = spyOn(communication, 'makeWebsocketCall');
-      dataToBase64Spy = spyOn(utils, 'dataToBase64');
-    });
-
     it('should send the data when the recorder fires the event', async () => {
+      const {
+        recorderStub,
+        makeWebsocketCallSpy,
+        dataToBase64Spy,
+      } = setupStubsSimple();
+
       dataToBase64Spy.and.returnValue(
         "There's vomit on his sweater already, mom's spaghetti",
       );
@@ -248,6 +270,12 @@ describe('Audio Over socket', () => {
     });
 
     it('should reject if the `makeWebsocketCall` rejected', async () => {
+      const {
+        recorderStub,
+        makeWebsocketCallSpy,
+        dataToBase64Spy,
+      } = setupStubsSimple();
+
       dataToBase64Spy.and.returnValue(
         "There's vomit on his sweater already, mom's spaghetti",
       );
@@ -292,20 +320,13 @@ describe('Audio Over socket', () => {
   });
 
   describe('prepareServerForAudio', () => {
-    let recorderStub;
-    let makeWebsocketCallSpy;
-    let broadcasterSpy;
-
-    beforeEach(() => {
-      recorderStub = jasmine.createSpyObj('Recorder', [
-        'getAudioSpecs',
-        'dispatchEvent',
-      ]);
-      makeWebsocketCallSpy = spyOn(communication, 'makeWebsocketCall');
-      broadcasterSpy = spyOn(broadcaster, 'emit');
-    });
-
     it('should broadcast when the websocket server has successfully been prepped and resolve in the reserved ID', async () => {
+      const {
+        recorderStub,
+        makeWebsocketCallSpy,
+        broadcasterSpy,
+      } = setupStubsSimple();
+
       recorderStub.getAudioSpecs.and.returnValue({
         audioFormat: 'audio/ogg',
         audioParameters: {
@@ -340,6 +361,8 @@ describe('Audio Over socket', () => {
     });
 
     it('should reject if the `makeWebsocketCall` rejected', async () => {
+      const { recorderStub, makeWebsocketCallSpy } = setupStubsSimple();
+
       recorderStub.getAudioSpecs.and.returnValue({
         audioFormat: 'audio/ogg',
         audioParameters: {

@@ -20,7 +20,14 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 ### Changed
 
 - `recorder`
+
   - Updated the recorder readme file to be more accurate.
+
+### Fixed
+
+- `api`
+  - Fix the stability of the test by taking the asynchronous approach that was
+    used into account.
 
 ## [v5.1.0] - 2019-09-27
 
