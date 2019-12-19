@@ -10,6 +10,35 @@ import * as websocket from './websocket';
 // Set fake url to settings
 communication.settings.wsUrl = 'wss://fake.ws.url';
 
+function prepareConnectionStubs() {
+  const connectionCloseSpy = spyOn(autobahn.Connection.prototype, 'close');
+  const connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
+  const connectionSessionStub = jasmine.createSpyObj('Session', ['call']);
+
+  connectionSessionStub.call.and.callFake(() => {
+    // eslint-disable-next-line new-cap
+    const defer = new autobahn.when.defer();
+    defer.resolve();
+    return defer.promise;
+  });
+
+  // We cannot use arrow functions because of `this` scope.
+  // eslint-disable-next-line func-names
+  connectionOpenSpy.and.callFake(function() {
+    // This property is returned through the session "property" of a
+    // connection instance. Sadly only the get is defined with the
+    // `Object.defineProperty` which forces us to mock the internals.
+    this._session = connectionSessionStub; // eslint-disable-line no-underscore-dangle
+    this.onopen();
+  });
+
+  return {
+    connectionOpenSpy,
+    connectionCloseSpy,
+    connectionSessionStub,
+  };
+}
+
 describe('Websocket API', () => {
   beforeEach(() => {
     // Make sure we have enough time to complete some tests.
@@ -108,26 +137,15 @@ describe('Websocket API', () => {
   });
 
   describe('closeWebsocketConnection', () => {
-    let connectionOpenSpy;
-    let connectionCloseSpy;
-
-    beforeEach(() => {
-      connectionCloseSpy = spyOn(autobahn.Connection.prototype, 'close');
-      connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      // We cannot use arrow functions because of `this` scope.
-      // eslint-disable-next-line func-names
-      connectionOpenSpy.and.callFake(function() {
-        this.onopen();
-      });
-    });
-
     it('should resolve if there is no open connection', async () => {
+      prepareConnectionStubs();
       await expectAsync(websocket.closeWebsocketConnection()).toBeResolvedTo(
         'There is no websocket connection to close.',
       );
     });
 
     it('should successfully close a open connection', async () => {
+      prepareConnectionStubs();
       await websocket.openWebsocketConnection();
 
       // Now we've opened the connection; close it again.
@@ -137,6 +155,8 @@ describe('Websocket API', () => {
     });
 
     it('should resolve when the connection was already closed', async () => {
+      const { connectionCloseSpy } = prepareConnectionStubs();
+
       connectionCloseSpy.and.callFake(() => {
         throw new Error('connection already closed');
       });
@@ -150,6 +170,7 @@ describe('Websocket API', () => {
     });
 
     it('should also remove the reference to the connection once it is closed', async () => {
+      prepareConnectionStubs();
       await websocket.openWebsocketConnection();
 
       // Now we've opened the connection; close it again.
@@ -166,32 +187,8 @@ describe('Websocket API', () => {
   });
 
   describe('makeWebsocketCall', () => {
-    let connectionOpenSpy;
-    let connectionSessionStub;
-
-    beforeEach(() => {
-      spyOn(autobahn.Connection.prototype, 'close');
-      connectionOpenSpy = spyOn(autobahn.Connection.prototype, 'open');
-      connectionSessionStub = jasmine.createSpyObj('Session', ['call']);
-      connectionSessionStub.call.and.callFake(() => {
-        // eslint-disable-next-line new-cap
-        const defer = new autobahn.when.defer();
-        defer.resolve();
-        return defer.promise;
-      });
-
-      // We cannot use arrow functions because of `this` scope.
-      // eslint-disable-next-line func-names
-      connectionOpenSpy.and.callFake(function() {
-        // This property is returned through the session "property" of a
-        // connection instance. Sadly only the get is defined with the
-        // `Object.defineProperty` which forces us to mock the internals.
-        this._session = connectionSessionStub; // eslint-disable-line no-underscore-dangle
-        this.onopen();
-      });
-    });
-
     it('should prefix the `rpc` parameter and pass the rest into the websocket session call', async () => {
+      const { connectionSessionStub } = prepareConnectionStubs();
       await websocket.openWebsocketConnection();
       await websocket.makeWebsocketCall('do.a.rpc', {
         args: ['accept', 'these'],
@@ -208,6 +205,11 @@ describe('Websocket API', () => {
     });
 
     it("should open a websocket connection if there isn't one already", async () => {
+      const {
+        connectionOpenSpy,
+        connectionSessionStub,
+      } = prepareConnectionStubs();
+
       await websocket.openWebsocketConnection();
       await websocket.makeWebsocketCall('do.a.rpc', {
         args: ['accept', 'these'],
@@ -226,6 +228,11 @@ describe('Websocket API', () => {
     });
 
     it('should set receive_progress to true if progress callback is passed', async () => {
+      const {
+        connectionOpenSpy,
+        connectionSessionStub,
+      } = prepareConnectionStubs();
+
       const progressCb = jasmine.createSpy('progressCb');
 
       await websocket.openWebsocketConnection();
@@ -250,6 +257,8 @@ describe('Websocket API', () => {
     });
 
     it('should catch an error if Session.call fails', async () => {
+      const { connectionSessionStub } = prepareConnectionStubs();
+
       const args = {
         args: ['accept', 'these'],
         kwargs: { kwarg: 'value' },
@@ -281,6 +290,8 @@ describe('Websocket API', () => {
     });
 
     it('should fail when no options are passed', async () => {
+      const { connectionSessionStub } = prepareConnectionStubs();
+
       const expectedError = new Error('wrong');
       expectedError.data = {
         args: [],
