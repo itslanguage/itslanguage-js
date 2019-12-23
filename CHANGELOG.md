@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `api`, `recorder`, `player`, `examples`, `sdk`
+  - Bumped used package versions.
+  - Upgraded yarn.lock file.
+
 ## [v5.2.0] - 2019-12-19
 
 ### Added
