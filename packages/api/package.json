@@ -30,11 +30,11 @@
   "main": "index.js",
   "modules": "index.js",
   "dependencies": {
-    "autobahn": "19.7.3",
+    "autobahn": "19.12.1",
     "debug": "4.1.1",
     "event-emitter": "0.3.5"
   },
   "peerDependencies": {
-    "core-js": "^3.2.1"
+    "core-js": "3.6.0"
   }
 }
