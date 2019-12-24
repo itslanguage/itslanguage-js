@@ -219,6 +219,7 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
           .then(result => {
             /* istanbul ignore else */
             if (lastChunk) {
+              lastChunk = false;
               resolve(result);
             }
           })
