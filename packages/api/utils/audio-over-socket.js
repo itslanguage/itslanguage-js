@@ -140,7 +140,10 @@ class StreamRecorderAudio {
    */
   unregister() {
     return new Promise((resolve, reject) => {
+      /* istanbul ignore if */
       if (!this.registration) {
+        // Because the unregister method is hidden by the private StreamAudio
+        // class it is impossible to test this path right now.
         resolve(); // There is no registration to unregister!
       } else {
         this.websocketConnection.session
