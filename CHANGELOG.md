@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Fixed
+
+- `api`
+  - Only unregister an autobahn registration if there is actually an
+    registration registered.
+  - Reset the `lastChunk` after it is used.
+  - Really cleanup some event listeners on the recorder after they have been
+    used for streaming audio to the backend.
+
 ### Changed
 
 - `api`, `recorder`, `player`, `examples`, `sdk`
