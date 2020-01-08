@@ -20,8 +20,17 @@ class StreamRecorderAudio {
   /**
    * @param {MediaRecorder} recorder - Recorder to use to capture data from.
    * @param {string} rpcName - Name of the registered RPC function.
+   * @param {object} websocketConnection - The websocket connection to use.
+   * @param {string} [dataEvent=dataavailable] - Optional, the name of the event
+   * to receive audio data on. Defaults to `dataavailable` but can be overridden
+   * (for example when you want to use the BufferPlugin`.
    */
-  constructor(recorder, rpcName, websocketConnection) {
+  constructor(
+    recorder,
+    rpcName,
+    websocketConnection,
+    dataEvent = 'dataavailable',
+  ) {
     /**
      * MediaRecorder to process the stream from.
      * @type {MediaRecorder}
@@ -40,6 +49,8 @@ class StreamRecorderAudio {
      * @type {autobahn.Connection}
      */
     this.websocketConnection = websocketConnection;
+
+    this.dataEvent = dataEvent;
 
     /**
      * The autobahn.Registration object. This is returned when you register
@@ -98,12 +109,12 @@ class StreamRecorderAudio {
       lastChunk = true;
 
       // Recording done; clean up!;
-      this.recorder.removeEventListener('dataavailable', processData);
+      this.recorder.removeEventListener(this.dataEvent, processData);
       this.recorder.removeEventListener('stop', recorderStopped);
     };
 
     // Now add the event listeners!
-    this.recorder.addEventListener('dataavailable', processData);
+    this.recorder.addEventListener(this.dataEvent, processData);
     this.recorder.addEventListener('stop', recorderStopped);
 
     // Notify listeners that we are ready to process audio;
@@ -168,9 +179,12 @@ class StreamRecorderAudio {
  * @param {string} rpcName - Name of the RPC to register. This name will be prepended with
  * nl.itslanguage for better consistency.
  * @fires broadcaster#websocketserverreadyforaudio
+ * @param {string} [dataEven] - Optional, the name of the event to receive audio
+ * data on. Can be overridden, for example when you want to use the
+ * `BufferPlugin`.
  * @returns {Promise} - It returns a promise with the service registration as result.
  */
-export function registerStreamForRecorder(recorder, rpcName) {
+export function registerStreamForRecorder(recorder, rpcName, dataEvent) {
   // Start registering a RPC call. As a result, this function will return a promise with the
   // registration of the RPC as result.
   return new Promise((resolve, reject) => {
@@ -179,6 +193,7 @@ export function registerStreamForRecorder(recorder, rpcName) {
         recorder,
         rpcName,
         websocketConnection,
+        dataEvent,
       );
       streamingSession
         .register()
