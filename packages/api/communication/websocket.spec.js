@@ -289,6 +289,32 @@ describe('Websocket API', () => {
       ).toBeRejectedWith(expectedError);
     });
 
+    it('should throw "TypeError: wssArgs is not iterable"', async () => {
+      const { connectionSessionStub } = prepareConnectionStubs();
+
+      const args = {
+        args: ['accept', 'these'],
+        kwargs: { kwarg: 'value' },
+        options: { option: 'value' },
+      };
+
+      const expectedError = new Error('wrong error');
+
+      connectionSessionStub.call.and.callFake(() => {
+        // eslint-disable-next-line new-cap
+        const defer = new autobahn.when.defer();
+        defer.reject({
+          error: 'wrong error',
+        });
+        return defer.promise;
+      });
+
+      await websocket.openWebsocketConnection();
+      await expectAsync(
+        websocket.makeWebsocketCall('do.a.rpc', args),
+      ).toBeRejectedWith(expectedError);
+    });
+
     it('should fail when no options are passed', async () => {
       const { connectionSessionStub } = prepareConnectionStubs();
 
