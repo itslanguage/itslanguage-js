@@ -96,12 +96,11 @@ class StreamRecorderAudio {
       // When stopped, the dataavailableevent will be triggered
       // one final time, so make sure it will cleanup afterwards
       lastChunk = true;
-    };
 
-    // Before adding the events, let's make sure they have not been added
-    // on a previous session;
-    this.recorder.removeEventListener('dataavailable', processData);
-    this.recorder.removeEventListener('stop', recorderStopped);
+      // Recording done; clean up!;
+      this.recorder.removeEventListener('dataavailable', processData);
+      this.recorder.removeEventListener('stop', recorderStopped);
+    };
 
     // Now add the event listeners!
     this.recorder.addEventListener('dataavailable', processData);
@@ -236,12 +235,11 @@ export function encodeAndSendAudioOnDataAvailable(id, recorder, rpc) {
       // When stopped, the dataavailable event will be triggered
       // one final time, so make sure it will cleanup afterwards
       lastChunk = true;
-    };
 
-    // Before adding the events, let's make sure they have not been added
-    // on a previous session;
-    recorder.removeEventListener('dataavailable', processData);
-    recorder.removeEventListener('stop', recorderStopped);
+      // Recording done, self cleanup!
+      recorder.removeEventListener('dataavailable', processData);
+      recorder.removeEventListener('stop', recorderStopped);
+    };
 
     // Now add the event listeners!
     recorder.addEventListener('dataavailable', processData);
