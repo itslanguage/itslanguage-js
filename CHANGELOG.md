@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org).
   - Reset the `lastChunk` after it is used.
   - Really cleanup some event listeners on the recorder after they have been
     used for streaming audio to the backend.
+  - TypeError raised by makeWebsocketCall.
 
 ### Changed
 

@@ -202,8 +202,8 @@ export function makeWebsocketCall(
 
       const customError = new Error(wssError);
       customError.data = {
-        args: [...wssArgs],
-        kwargs: { ...wssKwargs },
+        args: wssArgs || [],
+        kwargs: wssKwargs || {},
       };
 
       // Return a slightly simplistic version of the error that occurred
