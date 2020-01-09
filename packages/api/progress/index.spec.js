@@ -111,5 +111,56 @@ describe('progress', () => {
         })
         .catch(done.fail);
     });
+
+    it('should allow passing groups a string in stead of array', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
+
+      progress
+        .getById('c4t', 'group', 'GROUP_ROLE')
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/categories/c4t/progress?group=group&role=GROUP_ROLE',
+          ]);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should not get a group by id when groups is neither string or array', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
+
+      progress
+        .getById('c4t', null)
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+
+          expect(getRequest.args).toEqual(['GET', '/categories/c4t/progress']);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should only get progress by id for a role when no valid group is passed', done => {
+      const authorisedRequestSpy = spyOn(communication, 'authorisedRequest');
+      authorisedRequestSpy.and.returnValue(Promise.resolve({ id: 'c4t' }));
+
+      progress
+        .getById('c4t', null, 'SOME_ROLE')
+        .then(() => {
+          const getRequest = authorisedRequestSpy.calls.mostRecent();
+
+          expect(getRequest.args).toEqual([
+            'GET',
+            '/categories/c4t/progress?role=SOME_ROLE',
+          ]);
+          done();
+        })
+        .catch(done.fail);
+    });
   });
 });
