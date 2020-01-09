@@ -20,7 +20,8 @@ const url = '/categories';
  * is passed it will return progress for all users from that group.
  *
  * @param {string} id - The category id.
- * @param {Array} [groups=[]] - The id's of the groups to get progress on.
+ * @param {Array|string} [groups=[]] - The id's or id  of the groups to get
+ * progress on.
  * @param {string} [role=''] - The id of the role that a user should be in.
  *
  * @returns {Promise} - The promise for the organisation.
@@ -29,10 +30,17 @@ const url = '/categories';
 export function getById(id, groups = [], role = '') {
   let filters = '';
   const searchParams = new URLSearchParams();
+  let groupIds = [];
 
-  if (groups.length) {
+  if (typeof groups === 'string') {
+    groupIds = groups.split(); // convert 'STRING' to ['STRING'];
+  } else if (Array.isArray(groups)) {
+    groupIds = groups;
+  }
+
+  if (groupIds.length > 0) {
     // If we have groups, add them to the searchParams!
-    groups.forEach(group => {
+    groupIds.forEach(group => {
       searchParams.append('group', group);
     });
   }
@@ -42,7 +50,7 @@ export function getById(id, groups = [], role = '') {
     searchParams.append('role', role);
   }
 
-  if (groups.length || role) {
+  if (groupIds.length > 0 || role) {
     // If we had groups or roles, construct a querystring based on searchParams.
     filters = `?${searchParams.toString()}`;
   }
