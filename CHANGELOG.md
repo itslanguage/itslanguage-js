@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
   - Really cleanup some event listeners on the recorder after they have been
     used for streaming audio to the backend.
   - TypeError raised by makeWebsocketCall.
+  - Allow to pass groups as a string (next to an array) and disallow other
+    types. This is for the getById function of the Progress API.
 
 ### Changed
 
