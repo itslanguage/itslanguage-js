@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `api`
+  - Make sure to allow overriding the dataEvent to listen on a recorder.
+
 ## [v5.3.0] - 2020-01-10
 
 ### Fixed
