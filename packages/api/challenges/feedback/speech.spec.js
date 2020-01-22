@@ -50,6 +50,26 @@ describe('Feedback Speech Challenge API', () => {
           expect(registerStreamForRecorderSpy).toHaveBeenCalledWith(
             'recorder',
             jasmine.stringMatching('feedback.stream.'),
+            undefined,
+          );
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should call registerStreamForRecorder with recorder, rpcNameToRegister and custom dataEvent', done => {
+      speech
+        .listenAndReply(
+          'feedbackId',
+          progressCbSpy,
+          'recorder',
+          'this-is-custom',
+        )
+        .then(() => {
+          expect(registerStreamForRecorderSpy).toHaveBeenCalledWith(
+            'recorder',
+            jasmine.stringMatching('feedback.stream.'),
+            'this-is-custom',
           );
           done();
         })
