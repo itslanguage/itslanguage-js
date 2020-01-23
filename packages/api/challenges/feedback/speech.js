@@ -46,17 +46,18 @@ export function prepare(challengeId) {
  * @param {string} feedbackId - The Id of the Feedback Challenge.
  * @param {Function} progressCb - A callback which will be used to receive progress on.
  * @param {MediaRecorder} recorder - Audio recorder instance.
+ * @param {string} [dataEvent] - Optional the event to collect data from.
  * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This
  * feedback will be given through the progressiveResultsCb function. When the rpc is done, the
  * promise will return an recording with the appropriate feedback per sentence.
  */
-export function listenAndReply(feedbackId, progressCb, recorder) {
+export function listenAndReply(feedbackId, progressCb, recorder, dataEvent) {
   // Generate a somewhat unique RPC name
   const rpcNameToRegister = `feedback.stream.${Math.floor(Date.now() / 1000)}`;
 
   // Below we use registration.procedure instead of rpcNameToRegister. This is because the later
   // lacks some namespace information that we do need.
-  return registerStreamForRecorder(recorder, rpcNameToRegister).then(
+  return registerStreamForRecorder(recorder, rpcNameToRegister, dataEvent).then(
     registration =>
       makeWebsocketCall('feedback.listen_and_reply', {
         args: [feedbackId, registration.procedure],
@@ -104,12 +105,18 @@ export function resume(feedbackId, sentenceId = 0) {
  * @param {string} challengeId - The Id of the Challenge to get feedback on.
  * @param {Function} progressiveResultsCb - A callback which will be used to receive progress on.
  * @param {MediaRecorder} recorder - Audio recorder instance.
+ * @param {string} dataEvent - The event to use to collect data from.
  * @returns {Promise} - After each sentence there will be real-time feedback on that sentence. This
  * feedback will be given through the progressiveResultsCb function. When the rpc is done, the
  * promise will return an recording with the appropriate feedback per sentence.
  */
-export function feedback(challengeId, progressiveResultsCb, recorder) {
+export function feedback(
+  challengeId,
+  progressiveResultsCb,
+  recorder,
+  dataEvent,
+) {
   return prepare(challengeId).then(feedbackId =>
-    listenAndReply(feedbackId, progressiveResultsCb, recorder),
+    listenAndReply(feedbackId, progressiveResultsCb, recorder, dataEvent),
   );
 }
