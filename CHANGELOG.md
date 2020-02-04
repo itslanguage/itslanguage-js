@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ### Changed
 
-- `api`
+- `api`, `sdk`
+  - Update the travis configuration.
   - Make sure to allow overriding the dataEvent to listen on a recorder.
 
 ## [v5.3.0] - 2020-01-10
