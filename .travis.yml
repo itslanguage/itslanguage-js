@@ -59,7 +59,8 @@ deploy:
   #      condition: $TRAVIS_BRANCH =~ ^master|next
 
   - provider: npm
-    skip_cleanup: true
+    edge: true
+    cleanup: false
     email: its-bot@itslanguage.nl
     on:
       tags: true
