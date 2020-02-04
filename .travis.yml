@@ -1,8 +1,10 @@
 language: node_js
 
 node_js:
-  - 'lts/carbon'
+  # NodeJS v10
   - 'lts/dubnium'
+  # NodeJS v12
+  - 'lts/erbium'
 
 env:
   global:
