@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v5.4.1] - 2020-02-11
+
+### Changed
+
+- `api`
+  - Close the WebSocket connection after using it with feedback.
+
 ## [v5.4.0] - 2020-02-04
 
 ### Changed
