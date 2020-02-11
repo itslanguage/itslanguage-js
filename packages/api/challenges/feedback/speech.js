@@ -21,7 +21,10 @@
  */
 
 import { registerStreamForRecorder } from '../../utils/audio-over-socket';
-import { makeWebsocketCall } from '../../communication/websocket';
+import {
+  makeWebsocketCall,
+  closeWebsocketConnection,
+} from '../../communication/websocket';
 
 /**
  * Prepare a new Speech Feedback.
@@ -116,7 +119,22 @@ export function feedback(
   recorder,
   dataEvent,
 ) {
-  return prepare(challengeId).then(feedbackId =>
-    listenAndReply(feedbackId, progressiveResultsCb, recorder, dataEvent),
-  );
+  return prepare(challengeId)
+    .then(feedbackId =>
+      listenAndReply(
+        feedbackId,
+        progressiveResultsCb,
+        recorder,
+        dataEvent,
+      ).then(result => {
+        // Close the connection before returning the result;
+        closeWebsocketConnection();
+        return result;
+      }),
+    )
+    .catch(error => {
+      // Try to close the connection before returning the error;
+      closeWebsocketConnection();
+      return error;
+    });
 }
