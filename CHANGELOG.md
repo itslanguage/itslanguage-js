@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `api`
+  - Add closing of the WebSocket connection to the finally handler
+    in stead of doing it in both the then and catch.
+
 ## [v5.4.1] - 2020-02-11
 
 ### Changed

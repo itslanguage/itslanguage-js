@@ -152,5 +152,21 @@ describe('Feedback Speech Challenge API', () => {
         })
         .catch(done.fail);
     });
+
+    it('should call to close the websocket connection', done => {
+      const closeWebsocketConnectionSpy = spyOn(
+        websocket,
+        'closeWebsocketConnection',
+      );
+      closeWebsocketConnectionSpy.and.resolveTo(true);
+
+      speech
+        .feedback('challengeId', progressCbSpy, 'recorder')
+        .then(() => {
+          expect(closeWebsocketConnectionSpy).toHaveBeenCalled();
+          done();
+        })
+        .catch(done.fail);
+    });
   });
 });
