@@ -8,6 +8,7 @@ import autobahn from 'autobahn';
 import {
   getWebsocketConnection,
   makeWebsocketCall,
+  closeWebsocketConnection,
 } from '../communication/websocket';
 import broadcaster from '../broadcaster';
 import { dataToBase64, asyncBlobToArrayBuffer } from './index';
@@ -84,18 +85,21 @@ class StreamRecorderAudio {
   sendAudioChunks(args, kwargs, details) {
     const defer = new autobahn.when.defer(); // eslint-disable-line new-cap
     let lastChunk = false;
+    let audioSent = false;
 
     const processData = ({ data }) => {
       asyncBlobToArrayBuffer(data).then(audioData => {
         if (details.progress) {
           const dataToSend = Array.from(new Uint8Array(audioData));
           details.progress([dataToSend]);
+          audioSent = true;
 
           // If the last one ends, closing time!
           if (lastChunk) {
             defer.resolve();
             this.unregister();
             lastChunk = false;
+            audioSent = false;
           }
         } else {
           defer.reject('no progress function registered');
@@ -107,6 +111,15 @@ class StreamRecorderAudio {
       // When stopped, the dataavailableevent will be triggered
       // one final time, so make sure it will cleanup afterwards
       lastChunk = true;
+
+      // If we call stop without having sent data; make sure to cleanup here;
+      // As an extra step we close the websocket connection!
+      if (!audioSent) {
+        defer.resolve();
+        this.unregister().finally(() => {
+          closeWebsocketConnection();
+        });
+      }
 
       // Recording done; clean up!;
       this.recorder.removeEventListener(this.dataEvent, processData);
