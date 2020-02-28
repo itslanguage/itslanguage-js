@@ -8,10 +8,13 @@ import autobahn from 'autobahn';
 import {
   getWebsocketConnection,
   makeWebsocketCall,
-  closeWebsocketConnection,
 } from '../communication/websocket';
 import broadcaster from '../broadcaster';
-import { dataToBase64, asyncBlobToArrayBuffer } from './index';
+import {
+  dataToBase64,
+  asyncBlobToArrayBuffer,
+  checkAudioIsNotEmpty,
+} from './index';
 
 /**
  * This class allows us to stream audio from the recorder to the backend.
@@ -87,38 +90,40 @@ class StreamRecorderAudio {
     let lastChunk = false;
     let audioSent = false;
 
-    const processData = ({ data }) => {
-      asyncBlobToArrayBuffer(data).then(audioData => {
-        if (details.progress) {
-          const dataToSend = Array.from(new Uint8Array(audioData));
-          details.progress([dataToSend]);
-          audioSent = true;
+    const resolve = () => {
+      defer.resolve();
+      lastChunk = false;
+      audioSent = false;
+      this.unregister();
+    };
 
-          // If the last one ends, closing time!
-          if (lastChunk) {
-            defer.resolve();
-            this.unregister();
-            lastChunk = false;
-            audioSent = false;
+    const processData = ({ data }) => {
+      if (checkAudioIsNotEmpty(data.size, this.recorder.mimeType)) {
+        asyncBlobToArrayBuffer(data).then(audioData => {
+          if (details.progress) {
+            const dataToSend = Array.from(new Uint8Array(audioData));
+            details.progress([dataToSend]);
+            audioSent = true;
+
+            // If the last one ends, closing time!
+            if (lastChunk) {
+              resolve();
+            }
+          } else {
+            defer.reject('no progress function registered');
           }
-        } else {
-          defer.reject('no progress function registered');
-        }
-      });
+        });
+      }
     };
 
     const recorderStopped = () => {
-      // When stopped, the dataavailableevent will be triggered
-      // one final time, so make sure it will cleanup afterwards
-      lastChunk = true;
-
-      // If we call stop without having sent data; make sure to cleanup here;
-      // As an extra step we close the websocket connection!
+      // If we call stop without sending data we will resolve the autobahn rpc.
       if (!audioSent) {
-        defer.resolve();
-        this.unregister().finally(() => {
-          closeWebsocketConnection();
-        });
+        resolve();
+      } else {
+        // When stopped, the dataavailableevent will be triggered
+        // one final time, so make sure it will cleanup afterwards
+        lastChunk = true;
       }
 
       // Recording done; clean up!;
