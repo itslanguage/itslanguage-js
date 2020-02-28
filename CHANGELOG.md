@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Fixed
+
+- `api`
+  - Version number in the main index.js file updated.
+  - Exposed websocket connection which apparently was hidden.
+
 ## [v5.5.0] - 2020-02-28
 
 ### Fixed
