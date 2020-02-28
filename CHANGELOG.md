@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
   - Do not auto reconnect the websocket connection by default.
   - Add closing of the WebSocket connection to the finally handler
     in stead of doing it in both the then and catch.
+  - Check the size of the audio blob to send. If it seems to only have a header
+    it wont sent it (true for wave). Any other mimeType will check for size > 0.
 
 ## [v5.4.1] - 2020-02-11
 
