@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Fixed
+
+- `api`
+  - When stopping the recorder if no audio was send, make sure to clean up and
+    close the websocket connection.
+
 ### Changed
 
 - `api`
+  - Do not auto reconnect the websocket connection by default.
   - Add closing of the WebSocket connection to the finally handler
     in stead of doing it in both the then and catch.
 
