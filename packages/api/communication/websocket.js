@@ -60,6 +60,7 @@ function establishNewBundesbahn() {
       details: {
         ticket: settings.authorizationToken,
       },
+      max_retries: 0,
       onchallenge: handleWebsocketAuthorisationChallenge,
     });
 

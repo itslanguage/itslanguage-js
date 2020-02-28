@@ -11,6 +11,14 @@ import broadcaster from '../broadcaster';
 
 const rpcName = 'rpcName';
 
+function wait(seconds = 2) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, seconds * 1000);
+  });
+}
+
 function setupStubsSimple() {
   const recorderStub = jasmine.createSpyObj('Recorder', [
     'addEventListener',
@@ -139,6 +147,8 @@ describe('Audio Over socket', () => {
 
     it('should stream audio to the backend', async () => {
       const { recorderStub } = setupStubs();
+      let dataavailableCallback = null;
+      let stopCallback = null;
       const data = {
         data: new Blob(['Knees weak, arms are heavy.'], { type: 'text/plain' }),
       };
@@ -149,32 +159,47 @@ describe('Audio Over socket', () => {
       const intArray = Array.from(new Uint8Array(arrayBuffer));
 
       recorderStub.addEventListener.and.callFake((event, callback) => {
-        // Pretend as if the event has been fired and thus call the callback.
-        callback(data);
+        switch (event) {
+          case 'dataavailable':
+            dataavailableCallback = callback;
+            break;
+          case 'stop':
+            stopCallback = callback;
+            break;
+          default:
+            break;
+        }
       });
 
       const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
-
       const detailsSpy = jasmine.createSpyObj('details', ['progress']);
-      await result.callback([], {}, detailsSpy);
+
+      result.callback([], {}, detailsSpy);
+
+      dataavailableCallback(data);
+
+      await wait(1); // Wait a second before sending stop;
+      stopCallback();
+
+      // Add a wait to make sure the events are properly processed.
+      await wait();
 
       expect(detailsSpy.progress).toHaveBeenCalledWith([intArray]);
     });
 
     it('should not stream audio if the progress function does not exist', async () => {
       const { recorderStub } = setupStubs();
+      const data = {
+        data: new Blob(['Knees weak, arms are heavy.'], { type: 'text/plain' }),
+      };
 
       recorderStub.addEventListener.and.callFake((event, callback) => {
-        // Pretend as if the event has been fired and thus call the callback.
-        callback({
-          data: new Blob(['Knees weak, arms are heavy.'], {
-            type: 'text/plain',
-          }),
-        });
+        if (event === 'dataavailable') {
+          callback(data);
+        }
       });
 
       const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
-
       await expectAsync(result.callback([], {}, {})).toBeRejectedWith(
         'no progress function registered',
       );
@@ -203,22 +228,72 @@ describe('Audio Over socket', () => {
 
       const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
       const detailsSpy = jasmine.createSpyObj('details', ['progress']);
-      result.callback([], {}, detailsSpy);
+      const resultCB = result.callback([], {}, detailsSpy);
 
       dataavailableCallback(blob);
 
-      // We need to wait a bit before we can send the rest.
-      setTimeout(async () => {
-        // Send the stop event
-        stopCallback();
+      await wait(1); // Wait a second before sending stop;
+      stopCallback();
 
-        // Send the final chunk!
-        dataavailableCallback(blob);
-      }, 1000);
+      await wait(1); // Wait a second before sending stop;
+      dataavailableCallback(blob);
 
-      await result.callback([], {}, detailsSpy);
+      await expectAsync(resultCB).toBeResolved();
+    });
 
-      expect(detailsSpy.progress).toHaveBeenCalledTimes(2);
+    it('should resolve if stopped without sending data', async () => {
+      const { recorderStub } = setupStubs();
+      let stopCallback = null;
+
+      recorderStub.addEventListener.and.callFake((event, callback) => {
+        if (event === 'stop') {
+          stopCallback = callback;
+        }
+      });
+
+      const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
+      const detailsSpy = jasmine.createSpyObj('details', ['progress']);
+      const resultCB = result.callback([], {}, detailsSpy);
+
+      stopCallback();
+      await expectAsync(resultCB).toBeResolved();
+    });
+
+    it('should not send data to the backend if no data is passed to send', async () => {
+      const { recorderStub } = setupStubs();
+      let dataavailableCallback = null;
+      let stopCallback = null;
+
+      recorderStub.addEventListener.and.callFake((event, callback) => {
+        switch (event) {
+          case 'dataavailable':
+            dataavailableCallback = callback;
+            break;
+          case 'stop':
+            stopCallback = callback;
+            break;
+          default:
+            break;
+        }
+      });
+
+      const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
+      const detailsSpy = jasmine.createSpyObj('details', ['progress']);
+      const resultCB = result.callback([], {}, detailsSpy);
+
+      // Send empty file;
+      dataavailableCallback({
+        data: new Blob(),
+      });
+
+      await wait(1); // Wait a second before sending stop;
+      stopCallback();
+
+      // Add a wait to make sure the events are properly processed.
+      await wait();
+
+      expect(detailsSpy.progress).not.toHaveBeenCalled();
+      await expectAsync(resultCB).toBeResolved();
     });
   });
 

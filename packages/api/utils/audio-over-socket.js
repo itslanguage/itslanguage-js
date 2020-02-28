@@ -10,7 +10,11 @@ import {
   makeWebsocketCall,
 } from '../communication/websocket';
 import broadcaster from '../broadcaster';
-import { dataToBase64, asyncBlobToArrayBuffer } from './index';
+import {
+  dataToBase64,
+  asyncBlobToArrayBuffer,
+  checkAudioIsNotEmpty,
+} from './index';
 
 /**
  * This class allows us to stream audio from the recorder to the backend.
@@ -84,29 +88,43 @@ class StreamRecorderAudio {
   sendAudioChunks(args, kwargs, details) {
     const defer = new autobahn.when.defer(); // eslint-disable-line new-cap
     let lastChunk = false;
+    let audioSent = false;
+
+    const resolve = () => {
+      defer.resolve();
+      lastChunk = false;
+      audioSent = false;
+      this.unregister();
+    };
 
     const processData = ({ data }) => {
-      asyncBlobToArrayBuffer(data).then(audioData => {
-        if (details.progress) {
-          const dataToSend = Array.from(new Uint8Array(audioData));
-          details.progress([dataToSend]);
+      if (checkAudioIsNotEmpty(data.size, this.recorder.mimeType)) {
+        asyncBlobToArrayBuffer(data).then(audioData => {
+          if (details.progress) {
+            const dataToSend = Array.from(new Uint8Array(audioData));
+            details.progress([dataToSend]);
+            audioSent = true;
 
-          // If the last one ends, closing time!
-          if (lastChunk) {
-            defer.resolve();
-            this.unregister();
-            lastChunk = false;
+            // If the last one ends, closing time!
+            if (lastChunk) {
+              resolve();
+            }
+          } else {
+            defer.reject('no progress function registered');
           }
-        } else {
-          defer.reject('no progress function registered');
-        }
-      });
+        });
+      }
     };
 
     const recorderStopped = () => {
-      // When stopped, the dataavailableevent will be triggered
-      // one final time, so make sure it will cleanup afterwards
-      lastChunk = true;
+      // If we call stop without sending data we will resolve the autobahn rpc.
+      if (!audioSent) {
+        resolve();
+      } else {
+        // When stopped, the dataavailableevent will be triggered
+        // one final time, so make sure it will cleanup afterwards
+        lastChunk = true;
+      }
 
       // Recording done; clean up!;
       this.recorder.removeEventListener(this.dataEvent, processData);

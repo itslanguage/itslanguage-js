@@ -43,3 +43,26 @@ export function asyncBlobToArrayBuffer(blob) {
     fileReader.readAsArrayBuffer(blob);
   });
 }
+
+/**
+ * A Cheap test to check if the provided audio file has just the header, or that
+ * it can be assumed to be "audio". The mimeType is used to do make a best
+ * guess. Currently only WAV is supported.
+ *
+ * @param {number} filesize - Size of the file to check.
+ * @param {string} mimeType - Type of the provided blob.
+ * @returns {boolean} - Has audio.
+ */
+export function checkAudioIsNotEmpty(filesize, mimeType) {
+  let result;
+
+  switch (mimeType) {
+    case 'audio/wav':
+      result = filesize > 44;
+      break;
+    default:
+      result = filesize > 0;
+  }
+
+  return result;
+}
