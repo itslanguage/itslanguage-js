@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v5.5.1] - 2020-02-28
+
+### Fixed
+
+- `api`
+  - Version number in the main index.js file updated.
+  - Exposed websocket connection which apparently was hidden.
+
 ## [v5.5.0] - 2020-02-28
 
 ### Fixed
@@ -271,7 +279,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.5.0...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.5.1...HEAD
+[v5.5.1]: https://github.com/itslanguage/itslanguage-js/compare/v5.5.0...v5.5.1
 [v5.5.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.4.1...v5.5.0
 [v5.4.1]: https://github.com/itslanguage/itslanguage-js/compare/v5.4.0...v5.4.1
 [v5.4.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.3.0...v5.4.0
