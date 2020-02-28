@@ -258,6 +258,43 @@ describe('Audio Over socket', () => {
       stopCallback();
       await expectAsync(resultCB).toBeResolved();
     });
+
+    it('should not send data to the backend if no data is passed to send', async () => {
+      const { recorderStub } = setupStubs();
+      let dataavailableCallback = null;
+      let stopCallback = null;
+
+      recorderStub.addEventListener.and.callFake((event, callback) => {
+        switch (event) {
+          case 'dataavailable':
+            dataavailableCallback = callback;
+            break;
+          case 'stop':
+            stopCallback = callback;
+            break;
+          default:
+            break;
+        }
+      });
+
+      const result = await aos.registerStreamForRecorder(recorderStub, rpcName);
+      const detailsSpy = jasmine.createSpyObj('details', ['progress']);
+      const resultCB = result.callback([], {}, detailsSpy);
+
+      // Send empty file;
+      dataavailableCallback({
+        data: new Blob(),
+      });
+
+      await wait(1); // Wait a second before sending stop;
+      stopCallback();
+
+      // Add a wait to make sure the events are properly processed.
+      await wait();
+
+      expect(detailsSpy.progress).not.toHaveBeenCalled();
+      await expectAsync(resultCB).toBeResolved();
+    });
   });
 
   describe('encodeAndSendAudioOnDataAvailable', () => {
