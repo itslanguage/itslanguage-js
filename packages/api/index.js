@@ -8,6 +8,7 @@ import broadcaster from './broadcaster';
 import * as categories from './categories';
 import * as challenges from './challenges';
 import * as communication from './communication';
+import * as websocket from './communication/websocket';
 import * as emailauth from './emailauth';
 import * as groups from './groups';
 import * as organisations from './organisations';
@@ -73,6 +74,11 @@ export class Itslanguage {
      * @type module:api/communication
      */
     this.communication = communication;
+
+    /**
+     * @type module:api/communication/websocket
+     */
+    this.websocket = websocket;
 
     /**
      * @type module:api/emailauth
@@ -149,3 +155,9 @@ export { broadcaster };
  * @type module:api/communication
  */
 export { communication };
+
+/**
+ * Export websocket communication. It can be used without the need of the Itslanguage object.
+ * @type module:api/communication/websocket
+ */
+export { websocket };
