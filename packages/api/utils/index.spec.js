@@ -48,3 +48,25 @@ describe('asyncBlobToArrayBuffer', () => {
       .catch(done.fail);
   });
 });
+
+describe('checkAudioIsNotEmpty', () => {
+  it('should return false if size is 0', () => {
+    expect(utils.checkAudioIsNotEmpty(0, '')).toBe(false);
+  });
+
+  it('should return true if size is > 0', () => {
+    expect(utils.checkAudioIsNotEmpty(1, '')).toBe(true);
+  });
+
+  it('should return false if size is 0 and mimetype is audio/wav', () => {
+    expect(utils.checkAudioIsNotEmpty(0, 'audio/wav')).toBe(false);
+  });
+
+  it('should return false if size is 44 and mimetype is audio/wav', () => {
+    expect(utils.checkAudioIsNotEmpty(44, 'audio/wav')).toBe(false);
+  });
+
+  it('should return true if size is > 44 and mimetype is audio/wav', () => {
+    expect(utils.checkAudioIsNotEmpty(45, 'audio/wav')).toBe(true);
+  });
+});
