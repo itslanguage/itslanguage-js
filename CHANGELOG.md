@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `recorder`
+  - Add constraints to the call of `createMediaStream`. This way we can be sure
+    a recording session will be done with the minimum recording quality
+    (sampleRate) that the ITSLanguage backend needs to perform analysis on.
+
 ## [v5.5.1] - 2020-02-28
 
 ### Fixed
