@@ -2,9 +2,12 @@
  * @module recorder
  */
 
+import debug from 'debug';
 import MediaRecorder from 'audio-recorder-polyfill';
 import AmplitudePlugin from './plugins/amplitude';
 import BufferPlugin from './plugins/buffer';
+
+const logger = debug('its-sdk:recorder');
 
 /**
  * If the recorder is imported we rely on the MediaRecorder interface. In some
@@ -169,6 +172,22 @@ export function createMediaStream(mediaStreamConstraints = {}) {
       ),
     );
   }
+
+  // Because we do want to allow overriding settings we need to make sure we log
+  // something to the user because we want to be sure it is intentional.
+  if (
+    mediaStreamConstraints &&
+    mediaStreamConstraints.audio &&
+    mediaStreamConstraints.audio.sampleRate &&
+    (mediaStreamConstraints.audio.sampleRate.min ||
+      mediaStreamConstraints.audio.sampleRate.ideal)
+  ) {
+    logger(
+      'It is not recommended to override the sampleRate.min or sampleRate.ideal' +
+        ' value. Make sure this is what you meant to do.',
+    );
+  }
+
   return navigator.mediaDevices.getUserMedia({
     audio: {
       sampleRate: {
