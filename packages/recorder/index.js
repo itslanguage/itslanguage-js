@@ -156,9 +156,12 @@ export function createRecorder(
  * @throws {TypeError} The list of constraints specified is empty, or has all
  * constraints set to false.
  *
+ * @param {MediaStreamConstraints} mediaStreamConstraints - Allow
+ * MediaStreamConstraints. This also makes it possible to override the default
+ * set by us. Note that we do not advice this!
  * @returns {Promise} - Promise which resolves the stream if successful.
  */
-export function createMediaStream() {
+export function createMediaStream(mediaStreamConstraints = {}) {
   if (typeof navigator.mediaDevices.getUserMedia === 'undefined') {
     return Promise.reject(
       new Error(
@@ -173,6 +176,7 @@ export function createMediaStream() {
         ideal: 44100,
       },
     },
+    ...mediaStreamConstraints,
   });
 }
 
