@@ -137,7 +137,14 @@ export function createMediaStream() {
       ),
     );
   }
-  return navigator.mediaDevices.getUserMedia({ audio: true });
+  return navigator.mediaDevices.getUserMedia({
+    audio: {
+      sampleRate: {
+        min: 16000,
+        ideal: 44100,
+      },
+    },
+  });
 }
 
 /**
