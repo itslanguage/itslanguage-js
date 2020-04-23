@@ -2,9 +2,12 @@
  * @module recorder
  */
 
+import debug from 'debug';
 import MediaRecorder from 'audio-recorder-polyfill';
 import AmplitudePlugin from './plugins/amplitude';
 import BufferPlugin from './plugins/buffer';
+
+const logger = debug('its-sdk:recorder');
 
 /**
  * If the recorder is imported we rely on the MediaRecorder interface. In some
@@ -123,13 +126,45 @@ export function createRecorder(
 
 /**
  * Create a stream to connect the MediaRecorder to.
- * Note, if this functions throws an error that getUserMedia is not implemented, consider
- * adding a polyfill to your project that adds support for the getUserMedia function.
+ * Note, if this functions throws an error that getUserMedia is not implemented,
+ * consider adding a polyfill to your project that adds support for the
+ * getUserMedia function.
+ *
+ * We have set one constraint to the stream that is important for the
+ * ITSLanguage speech technology to work on. We require a minimum sampleRate of
+ * 16kHz. If that requirement is not met, the call to this function will throw
+ * an `OverconstrainedError` exception. A client should then handle the error.
+ *
+ * There can be a bunch of errors thrown when calling getUserMedia. See the list
+ * below for a short summary and a short description. Check the link below for
+ * more comprehensive explaination on the errors.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
- * @returns {Promise} - Promise with either the stream, or else an error message.
+ *
+ * @throes {Error} If navigator.mediaDevices.getUserMedia not implemented in
+ * this browser
+ * @throws {AbortError} Some problem occurred which prevented the device from
+ * being used.
+ * @throws {NotAllowedError} One or more of the requested source devices cannot
+ * be used at this time.
+ * @throws {NotFoundError} No media tracks of the type specified were found that
+ * satisfy the given constraints.
+ * @throws {NotReadableError} Although the user granted permission to use the
+ * matching devices, a hardware error occurred at the operating system, browser,
+ * or Web page level which prevented access to the device.
+ * @throws {OverconstrainedError} The specified constraints resulted in no
+ * candidate devices which met the criteria requested.
+ * @throws {SecurityError} User media support is disabled on the Document on
+ * which getUserMedia() was called.
+ * @throws {TypeError} The list of constraints specified is empty, or has all
+ * constraints set to false.
+ *
+ * @param {MediaStreamConstraints} mediaStreamConstraints - Allow
+ * MediaStreamConstraints. This also makes it possible to override the default
+ * set by us. Note that we do not advice this!
+ * @returns {Promise} - Promise which resolves the stream if successful.
  */
-export function createMediaStream() {
+export function createMediaStream(mediaStreamConstraints = {}) {
   if (typeof navigator.mediaDevices.getUserMedia === 'undefined') {
     return Promise.reject(
       new Error(
@@ -137,7 +172,31 @@ export function createMediaStream() {
       ),
     );
   }
-  return navigator.mediaDevices.getUserMedia({ audio: true });
+
+  // Because we do want to allow overriding settings we need to make sure we log
+  // something to the user because we want to be sure it is intentional.
+  if (
+    mediaStreamConstraints &&
+    mediaStreamConstraints.audio &&
+    mediaStreamConstraints.audio.sampleRate &&
+    (mediaStreamConstraints.audio.sampleRate.min ||
+      mediaStreamConstraints.audio.sampleRate.ideal)
+  ) {
+    logger(
+      'It is not recommended to override the sampleRate.min or sampleRate.ideal' +
+        ' value. Make sure this is what you meant to do.',
+    );
+  }
+
+  return navigator.mediaDevices.getUserMedia({
+    audio: {
+      sampleRate: {
+        min: 16000,
+        ideal: 44100,
+      },
+    },
+    ...mediaStreamConstraints,
+  });
 }
 
 /**

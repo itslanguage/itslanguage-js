@@ -30,7 +30,8 @@
   },
   "main": "index.js",
   "dependencies": {
-    "audio-recorder-polyfill": "0.1.6"
+    "audio-recorder-polyfill": "0.1.6",
+    "debug": "4.1.1"
   },
   "peerDependencies": {
     "core-js": "3.6.0"
