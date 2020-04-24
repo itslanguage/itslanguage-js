@@ -1,4 +1,5 @@
 import MediaRecorder from 'audio-recorder-polyfill';
+import debug from 'debug';
 import * as mediaRecorder from './index';
 import AmplitudePlugin from './plugins/amplitude';
 import BufferPlugin from './plugins/buffer';
@@ -96,6 +97,14 @@ describe('MediaRecorder', () => {
   });
 
   describe('createMediaStream', () => {
+    beforeEach(() => {
+      debug.enable('its-sdk:recorder');
+    });
+
+    afterEach(() => {
+      debug.disable('its-sdk:recorder');
+    });
+
     it('should returnn a Promise object', () => {
       const stream = mediaRecorder.createMediaStream();
 
@@ -114,6 +123,70 @@ describe('MediaRecorder', () => {
           );
           done();
         });
+    });
+
+    it('should log a warning when overriding sampleRate min via capabilities', done => {
+      const loggerSpy = spyOn(console, 'log');
+
+      mediaRecorder
+        .createMediaStream({
+          audio: {
+            sampleRate: { min: 1 },
+          },
+        })
+        .then(() => {
+          expect(loggerSpy).toHaveBeenCalledTimes(1);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should log a warning when overriding sampleRate ideal via capabilities', done => {
+      const loggerSpy = spyOn(console, 'log');
+
+      mediaRecorder
+        .createMediaStream({
+          audio: {
+            sampleRate: { ideal: 1 },
+          },
+        })
+        .then(() => {
+          expect(loggerSpy).toHaveBeenCalledTimes(1);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should log a warning when overriding sampleRate min and ideal via capabilities', done => {
+      const loggerSpy = spyOn(console, 'log');
+
+      mediaRecorder
+        .createMediaStream({
+          audio: {
+            sampleRate: { min: 1, ideal: 1 },
+          },
+        })
+        .then(() => {
+          expect(loggerSpy).toHaveBeenCalledTimes(1);
+          done();
+        })
+        .catch(done.fail);
+    });
+
+    it('should not log a warning when not overriding sampleRate via capabilities', done => {
+      const loggerSpy = spyOn(console, 'log');
+
+      mediaRecorder
+        .createMediaStream({
+          audio: {
+            someFakeSampleRate: { min: 1, ideal: 1 },
+          },
+        })
+        .then(() => {
+          expect(loggerSpy).toHaveBeenCalledTimes(0);
+          done();
+        })
+        .catch(done.fail);
     });
   });
 
