@@ -81,8 +81,6 @@ function establishNewBundesbahn() {
     // Connection got established; lets us it.
     bahn.onopen = () => {
       log('Successfully established a websocket connection.');
-      // Remove the `onclose` handler as it is no longer of interest to us.
-      delete bahn.onclose;
       resolve(bahn);
     };
 
