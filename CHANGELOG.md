@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `api`
+  - Improved the connection and more specifically the disconnection. It will
+    show an error if it was not closed normally. Previously the reason for
+    closure was swallowed and not visible for the user.
+
 ## [v5.6.0] - 2020-04-24
 
 ### Changed
