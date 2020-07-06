@@ -64,25 +64,24 @@ function establishNewBundesbahn() {
       onchallenge: handleWebsocketAuthorisationChallenge,
     });
 
-    // `autobahn.Connection` calls its `onclose` method, if it exists, when it
-    // was not able to open a connection.
-    bahn.onclose = (/* reason, details */) => {
-      // When the connection failed to open a reason is given with some details.
-      // Sadly these are very un-descriptive. Therefore hint/warn the developer
-      // about potential erroneous settings or to contact us.
-      const message =
-        'The connection is erroneous; check if all required ' +
-        'settings have been injected using the ' +
-        '`updateSettings()` function. If the problem persists ' +
-        'please post a issue on our GitHub repository.';
-      reject(message);
+    // The connection close callback is fired when the connection has been
+    // closed explicitly, was lost or could not be established in the first
+    // place. For more information on the connection callbacks go to
+    // https://github.com/crossbario/autobahn-js/blob/master/doc/reference.md#connection-callbacks
+    bahn.onclose = (reason, details) => {
+      if (reason === 'closed' && details.reason === 'wamp.close.normal') {
+        // A normal disconnect! No need to error out here;
+        resolve(reason);
+      } else {
+        // Several errors might be true here
+        // closed, lost, unreachable or unsupported
+        reject(reason);
+      }
     };
 
     // Connection got established; lets us it.
     bahn.onopen = () => {
       log('Successfully established a websocket connection.');
-      // Remove the `onclose` handler as it is no longer of interest to us.
-      delete bahn.onclose;
       resolve(bahn);
     };
 

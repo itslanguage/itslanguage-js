@@ -32,6 +32,13 @@ function prepareConnectionStubs() {
     this.onopen();
   });
 
+  connectionCloseSpy.and.callFake(function() {
+    const reason = 'closed';
+    const message = 'wamp.close.normal';
+
+    this.onclose(reason, { reason: message });
+  });
+
   return {
     connectionOpenSpy,
     connectionCloseSpy,
@@ -119,11 +126,7 @@ describe('Websocket API', () => {
 
     it('should reject if the connection could not be established', async () => {
       await expectAsync(websocket.openWebsocketConnection()).toBeRejectedWith(
-        'The connection is erroneous; check if all ' +
-          'required settings have been injected using ' +
-          'the `updateSettings()` function. If the ' +
-          'problem persists please post a issue on our ' +
-          'GitHub repository.',
+        'unreachable',
       );
 
       // There shouldn't be a reference to the erroneos connection. We can

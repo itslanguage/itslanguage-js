@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v5.6.1] - 2020-07-06
+
+### Changed
+
+- `api`
+  - Improved the connection and more specifically the disconnection. It will
+    show an error if it was not closed normally. Previously the reason for
+    closure was swallowed and not visible for the user.
+
 ## [v5.6.0] - 2020-04-24
 
 ### Changed
@@ -288,7 +297,8 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.6.0...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.6.1...HEAD
+[v5.6.1]: https://github.com/itslanguage/itslanguage-js/compare/v5.6.0...v5.6.1
 [v5.6.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.5.1...v5.6.0
 [v5.5.1]: https://github.com/itslanguage/itslanguage-js/compare/v5.5.0...v5.5.1
 [v5.5.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.4.1...v5.5.0
