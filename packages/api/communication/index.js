@@ -56,9 +56,13 @@ function parseLinkHeader(linkHeader) {
   const links = linkHeader.split(',');
   return links.reduce((acc, link) => {
     let [url, rel] = link.split(';');
+    const cursor = new URLSearchParams(url).get('cursor');
     url = url.replace(/<(.*)>/, '$1').trim();
     rel = rel.replace(/rel="(.*)"/, '$1').trim();
-    acc[rel] = url;
+    acc[rel] = {
+      url,
+      cursor,
+    };
     return acc;
   }, {});
 }
@@ -93,7 +97,7 @@ function handleResponse(response) {
         if (responseLink) {
           return {
             data: json,
-            pagination: parsedLinkHeader,
+            ...parsedLinkHeader,
           };
         }
         return json;
