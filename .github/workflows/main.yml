@@ -26,6 +26,4 @@ jobs:
           timeout_minutes: 10
           max_attempts: 3
           retry_on: error
-          command: yarn run test
-          env:
-            CI: true
+          command: CI=true yarn run test
