@@ -32,7 +32,8 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
           scope: '@itslanguage'
-      - run: cd "build/${{ matrix.package }}"
+      - run: cd "${GITHUB_WORKSPACE}/build/${PACKAGE_NAME}"
       - run: npm publish
         env:
+          PACKAGE_NAME: ${{ matrix.package }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
