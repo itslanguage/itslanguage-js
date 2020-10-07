@@ -1,0 +1,38 @@
+name: Release npm packages
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Building
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: yarn install --frozen-lockfile
+      - run: yarn run build
+
+  release:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        package: [api, player, recorder]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Releasing ${{ matrix.package }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@itslanguage'
+      - run: cd "build/${{ matrix.package }}"
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
