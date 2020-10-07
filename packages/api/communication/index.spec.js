@@ -226,6 +226,27 @@ describe('request', () => {
       })
       .catch(done.fail);
   });
+
+  it('should return pagination information that is being send via a LINK header', done => {
+    const linkUrl = `${TEST_API_URL}/lets/go/somewhere?cursor=fake_cursor&per_page=1`;
+    const linkValue = `<${linkUrl}>; rel="next"`;
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    headers.set('link', linkValue);
+
+    const responseBody = { location: 'South East Asia' };
+    const response = new Response(JSON.stringify(responseBody), { headers });
+    fetchSpy.and.returnValue(Promise.resolve(response));
+
+    communication
+      .request('GET', '/lets/go/somewhere')
+      .then(result => {
+        expect(result.next).toBeDefined();
+        expect(result.next.url).toEqual(linkUrl);
+        done();
+      })
+      .catch(done.fail);
+  });
 });
 
 describe('authorisedRequest', () => {
