@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+### Changed
+
+- `sdk`
+  - Switch from travis-ci to github actions.
+
+### Fixed
+
+- `api`
+  - Make sure a `link` header will be passed down the line.
+
 ## [v5.6.1] - 2020-07-06
 
 ### Changed
