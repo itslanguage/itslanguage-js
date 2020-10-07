@@ -21,6 +21,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --frozen-lockfile
-      - run: yarn run test
+      - uses: nick-invision/retry@v2
+        timeout_minutes: 10
+        max_attempts: 3
+        retry_on: error
+        command: yarn run test
         env:
           CI: true
