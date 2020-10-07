@@ -23,6 +23,12 @@ const AUTHORIZATION = 'Authorization';
 const APPLICATION_JSON = 'application/json';
 
 /**
+ * Link header value.
+ * @type {string}
+ */
+const LINK = 'link';
+
+/**
  * The settings to use for the communication with the ITSLanguage API.
  */
 export const settings = {
@@ -46,6 +52,19 @@ export function updateSettings(newSettings) {
   Object.assign(settings, newSettings);
 }
 
+function parseLinkHeader(linkHeader) {
+  const links = linkHeader.split(',');
+  return links.reduce((acc, link) => {
+    let [url, rel] = link.split(';');
+    url = url.replace(/<(.*)>/, '$1').trim();
+    rel = rel.replace(/rel="(.*)"/, '$1').trim();
+    acc[rel] = {
+      url,
+    };
+    return acc;
+  }, {});
+}
+
 /**
  * Parse the response of a fetch request.
  *
@@ -62,11 +81,23 @@ export function updateSettings(newSettings) {
  */
 function handleResponse(response) {
   const responseContentType = response.headers.get(CONTENT_TYPE);
+  const responseLink = response.headers.get(LINK);
+  let parsedLinkHeader = {};
+
+  if (responseLink) {
+    parsedLinkHeader = parseLinkHeader(responseLink);
+  }
 
   // The ITSLanguage API should return JSON. If t
   if (responseContentType && responseContentType.includes(APPLICATION_JSON)) {
     return response.json().then(json => {
       if (response.ok) {
+        if (responseLink) {
+          return {
+            data: json,
+            ...parsedLinkHeader,
+          };
+        }
         return json;
       }
 
@@ -189,7 +220,7 @@ export function authorisedRequest(method, url, body, headers) {
   // XXX remove the URL truthy check when all parts of the SDK no longer build
   // a complete url by themselves using the "private" settings object of their
   // connection reference.
-  if (url && (!url.startsWith('/') && !url.startsWith(settings.apiUrl))) {
+  if (url && !url.startsWith('/') && !url.startsWith(settings.apiUrl)) {
     return Promise.reject(
       new Error('Only relative ITSLanguage API URLs are allowed.'),
     );
