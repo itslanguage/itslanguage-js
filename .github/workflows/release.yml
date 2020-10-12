@@ -45,10 +45,10 @@ jobs:
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: ${{ matrix.package }}
+          package: ./${{ matrix.package }}/package.json
           check-version: true
-        env:
-          PACKAGE_NAME: ${{ matrix.package }}
       - if: steps.publish.outputs.old-version != steps.publish.outputs.version
         run: |
           echo "@itslanguage/${PACKAGE_NAME} version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
+        env:
+          PACKAGE_NAME: ${{ matrix.package }}
