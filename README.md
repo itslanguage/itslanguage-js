@@ -2,7 +2,8 @@
 
 Speech technology for language education. 📣
 
-[![Build Status](https://travis-ci.org/itslanguage/itslanguage-js.svg?branch=master)](https://travis-ci.org/itslanguage/itslanguage-js)
+![Testing](https://github.com/itslanguage/itslanguage-js/workflows/Testing/badge.svg)
+![Release npm packages](https://github.com/itslanguage/itslanguage-js/workflows/Release%20npm%20packages/badge.svg)
 
 The ITSLanguage JavaScript SDK aims to help in building applications for the [ITSLanguage] platform.
 It provides easy interfaces to communicate with our [REST and WebSocket API]. We serve several
