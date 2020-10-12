@@ -31,18 +31,21 @@ jobs:
         package: [api, player, recorder]
 
     steps:
-      - name: Download build output
-        uses: actions/download-artifact@v2
-        with:
-          name: build-output
       - name: Releasing ${{ matrix.package }}
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
           scope: '@itslanguage'
-      - run: cd "./build/${PACKAGE_NAME}"
-      - run: npm publish
+      - name: Download build output
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
+      - shell: bash
+        run: |
+          ls -l .
+          cd "./build/${PACKAGE_NAME}"
+          npm publish
         env:
           PACKAGE_NAME: ${{ matrix.package }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
