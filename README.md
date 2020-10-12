@@ -2,8 +2,8 @@
 
 Speech technology for language education. 📣
 
-![Testing](https://github.com/itslanguage/itslanguage-js/workflows/Testing/badge.svg)
-![Release npm packages](https://github.com/itslanguage/itslanguage-js/workflows/Release%20npm%20packages/badge.svg)
+![Testing](https://github.com/itslanguage/itslanguage-js/workflows/Testing/badge.svg?branch=master)
+![Release npm packages](https://github.com/itslanguage/itslanguage-js/workflows/Release%20npm%20packages/badge.svg?event=release)
 
 The ITSLanguage JavaScript SDK aims to help in building applications for the [ITSLanguage] platform.
 It provides easy interfaces to communicate with our [REST and WebSocket API]. We serve several
