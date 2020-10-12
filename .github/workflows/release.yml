@@ -25,13 +25,11 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build
-
-    strategy:
-      matrix:
-        package: [api, player, recorder]
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     steps:
-      - name: Releasing ${{ matrix.package }}
+      - name: Releasing packages
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
@@ -41,11 +39,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-output
-      - shell: bash
-        run: |
-          ls -l .
-          cd "./build/${PACKAGE_NAME}"
-          npm publish
-        env:
-          PACKAGE_NAME: ${{ matrix.package }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Release @itslanguage/api
+        run: npm publish --dry-run ./api
+      - name: Release @itslanguage/player
+        run: npm publish --dry-run ./player
+      - name: Release @itslanguage/recorder
+        run: npm publish --dry-run ./recorder
