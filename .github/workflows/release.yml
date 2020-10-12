@@ -40,8 +40,8 @@ jobs:
         with:
           name: build-output
       - name: Release @itslanguage/api
-        run: npm publish --dry-run ./api
+        run: npm publish ./api
       - name: Release @itslanguage/player
-        run: npm publish --dry-run ./player
+        run: npm publish ./player
       - name: Release @itslanguage/recorder
-        run: npm publish --dry-run ./recorder
+        run: npm publish ./recorder
