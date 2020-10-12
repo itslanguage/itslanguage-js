@@ -45,7 +45,7 @@ jobs:
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: ./${PACKAGE_NAME}/package.json
+          package: ${{ matrix.package }}
           check-version: true
         env:
           PACKAGE_NAME: ${{ matrix.package }}
