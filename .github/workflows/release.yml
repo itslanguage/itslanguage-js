@@ -16,6 +16,11 @@ jobs:
           node-version: '12.x'
       - run: yarn install --frozen-lockfile
       - run: yarn run build
+      - name: Store build output
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-output
+          path: build
 
   release:
     runs-on: ubuntu-latest
@@ -26,14 +31,17 @@ jobs:
         package: [api, player, recorder]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Download build output
+        uses: actions/download-artifact@v2
+        with:
+          name: build-output
       - name: Releasing ${{ matrix.package }}
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
           scope: '@itslanguage'
-      - run: cd "${GITHUB_WORKSPACE}/build/${PACKAGE_NAME}"
+      - run: cd "./build/${PACKAGE_NAME}"
       - run: npm publish
         env:
           PACKAGE_NAME: ${{ matrix.package }}
