@@ -26,8 +26,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
+    strategy:
+      matrix:
+        package: [api, player, recorder]
+
     steps:
-      - name: Releasing packages
+      - name: Releasing @itslanguage/${{ matrix.package }}
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
@@ -37,15 +41,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-output
-      - name: Release @itslanguage/api
-        run: npm publish ./api
+      - name: Release @itslanguage/${{ matrix.package }}
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          package: './${PACKAGE_NAME}/package.json'
+          check-version: true
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Release @itslanguage/player
-        run: npm publish ./player
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Release @itslanguage/recorder
-        run: npm publish ./recorder
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PACKAGE_NAME: ${{ matrix.package }}
+      - if: steps.publish.outputs.old-version != steps.publish.outputs.version
+        run: |
+          echo "@itslanguage/${PACKAGE_NAME} version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
