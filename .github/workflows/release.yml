@@ -28,7 +28,7 @@ jobs:
 
     strategy:
       matrix:
-        package: [websocket, player, recorder]
+        package: [websocket, recorder]
 
     steps:
       - name: Releasing @itslanguage/${{ matrix.package }}

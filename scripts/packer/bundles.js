@@ -16,18 +16,13 @@ const defaultFiles = ['package.json', 'README.md', 'CHANGELOG.md', 'LICENSE'];
  */
 const bundles = [
   {
-    entry: 'api',
-    library: 'itslApi',
+    entry: 'websocket',
+    library: 'itslWebsocket',
     files: [...defaultFiles],
   },
   {
     entry: 'recorder',
     library: 'itslRecorder',
-    files: [...defaultFiles],
-  },
-  {
-    entry: 'player',
-    library: 'itslPlayer',
     files: [...defaultFiles],
   },
 ];
