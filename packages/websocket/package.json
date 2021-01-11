@@ -1,12 +1,8 @@
 {
-  "name": "@itslanguage/api",
-  "version": "5.7.0",
-  "description": "The JavaScript API SDK for ITSLanguage.",
+  "name": "@itslanguage/websocket",
+  "version": "1.0.0",
+  "description": "Websocket helper functions.",
   "author": "ITSLanguage (https://www.itslanguage.nl) <support@itslanguage.nl>",
-  "contributors": [
-    "Jogchum Koerts <jogchum.koerts@itslanguage.nl>",
-    "Mathijs van den Worm <mathijs@d-centralize.nl>"
-  ],
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
   "repository": {
     "type": "git",
@@ -16,25 +12,20 @@
     "url": "https://github.com/itslanguage/itslanguage-js/issues",
     "email": "support@itslanguage.nl"
   },
-  "license": "MIT",
   "keywords": [
     "itslanguage",
     "itslanguage api",
     "itslanguage sdk",
     "speech",
-    "speech technology"
+    "speech technology",
+    "recorder",
+    "MediaRecorder"
   ],
   "engines": {
     "node": ">= 8"
   },
   "main": "index.js",
-  "modules": "index.js",
   "dependencies": {
-    "autobahn": "19.12.1",
-    "debug": "4.1.1",
-    "event-emitter": "0.3.5"
-  },
-  "peerDependencies": {
-    "core-js": "3.6.0"
+    "socket.io-client": "^3.0.5"
   }
 }
