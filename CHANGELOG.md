@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v6.0.0] - 2021-01-11
+
+### Added
+
+- `websocket`
+  - its-api websocket helper functions.
+
+### Removed
+
+- `api`
+  - Removed its-gae API
+
 ## [v5.7.0] - 2020-10-12
 
 ### Changed
