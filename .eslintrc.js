@@ -26,5 +26,7 @@ module.exports = {
   ],
   rules: {
     'no-console': 0,
+    'import/no-unresolved': 0,
+    'react/jsx-filename-extension': 0,
   },
 };

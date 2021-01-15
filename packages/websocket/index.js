@@ -39,7 +39,7 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
     console.error(error);
   }
   recorder = rec;
-  socket.on('start-recording', e => {
+  socket.on('start-recording', (e) => {
     if (e === 'OK') {
       recorder.start(1000);
       canStop = false;
@@ -47,12 +47,12 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
   });
   socket.on('feedback', feedbackFunc);
   // Execute the users function and the cleanup function
-  socket.on('end-recording', recordingId => {
+  socket.on('end-recording', (recordingId) => {
     endFunc(recordingId);
     cleanup();
   });
 
-  recorder.addEventListener('dataavailable', e => {
+  recorder.addEventListener('dataavailable', (e) => {
     const chunks = [];
     if (e.data.size > 44) {
       chunks.push(e.data);

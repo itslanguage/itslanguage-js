@@ -1,4 +1,4 @@
-module.exports = config => {
+module.exports = (config) => {
   const configuration = {
     frameworks: ['browserify', 'jasmine'],
     files: ['packages/**/*.spec.js'],

@@ -1,5 +1,4 @@
-const AudioContext =
-  window.AudioContext || /* istanbul ignore next */ window.webkitAudioContext;
+const AudioContext = window.AudioContext || /* istanbul ignore next */ window.webkitAudioContext;
 let audioContext;
 
 /**
@@ -105,8 +104,7 @@ class Amplitude {
     inputChannels = 2,
   ) {
     // Prepare (or re-use) this file its global audioContext;
-    audioContext =
-      audioContext || /* istanbul ignore next */ new AudioContext();
+    audioContext = audioContext || /* istanbul ignore next */ new AudioContext();
 
     /**
      * Size of the buffer that will be filled with audio data.

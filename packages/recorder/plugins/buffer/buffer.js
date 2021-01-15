@@ -1,5 +1,4 @@
-const AudioContext =
-  window.AudioContext || /* istanbul ignore next */ window.webkitAudioContext;
+const AudioContext = window.AudioContext || /* istanbul ignore next */ window.webkitAudioContext;
 let audioContext;
 
 const BYTES_PER_SAMPLE = 2;
@@ -116,9 +115,9 @@ class BufferPlugin {
     let rawBuffer;
 
     if (
-      !secondsToRead ||
-      secondsToRead >= this.secondsToBuffer ||
-      secondsToRead === 0
+      !secondsToRead
+      || secondsToRead >= this.secondsToBuffer
+      || secondsToRead === 0
     ) {
       // In this case we return the complete buffer;
       rawBuffer = this.buffer;
@@ -139,8 +138,7 @@ class BufferPlugin {
    */
   constructor(audioSource, secondsToBuffer = 30) {
     // Prepare (or re-use) this file its global audioContext;
-    audioContext =
-      audioContext || /* istanbul ignore next */ new AudioContext();
+    audioContext = audioContext || /* istanbul ignore next */ new AudioContext();
 
     /**
      * In seconds, how large (or how long) will be buffer?

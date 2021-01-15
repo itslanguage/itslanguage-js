@@ -54,9 +54,8 @@ describe('MediaRecorder', () => {
       const recorder = mediaRecorder.createRecorder(STREAM);
       const audioSpecs = recorder.getAudioSpecs();
 
-      const AudioContext =
-        window.AudioContext ||
-        /* istanbul ignore next */ window.webkitAudioContext;
+      const AudioContext = window.AudioContext
+      /* istanbul ignore next */ || window.webkitAudioContext;
       const audioContext = new AudioContext();
       // eslint-disable-next-line prefer-destructuring
       const sampleRate = audioContext.sampleRate;
@@ -111,7 +110,7 @@ describe('MediaRecorder', () => {
       expect(stream instanceof Promise).toBeTruthy();
     });
 
-    it('should reject with an error if getUserMedia is not available', done => {
+    it('should reject with an error if getUserMedia is not available', (done) => {
       spyOnProperty(navigator, 'mediaDevices').and.returnValue({});
 
       mediaRecorder
@@ -125,7 +124,7 @@ describe('MediaRecorder', () => {
         });
     });
 
-    it('should log a warning when overriding sampleRate min via capabilities', done => {
+    it('should log a warning when overriding sampleRate min via capabilities', (done) => {
       const loggerSpy = spyOn(console, 'log');
 
       mediaRecorder
@@ -141,7 +140,7 @@ describe('MediaRecorder', () => {
         .catch(done.fail);
     });
 
-    it('should log a warning when overriding sampleRate ideal via capabilities', done => {
+    it('should log a warning when overriding sampleRate ideal via capabilities', (done) => {
       const loggerSpy = spyOn(console, 'log');
 
       mediaRecorder
@@ -157,7 +156,7 @@ describe('MediaRecorder', () => {
         .catch(done.fail);
     });
 
-    it('should log a warning when overriding sampleRate min and ideal via capabilities', done => {
+    it('should log a warning when overriding sampleRate min and ideal via capabilities', (done) => {
       const loggerSpy = spyOn(console, 'log');
 
       mediaRecorder
@@ -173,7 +172,7 @@ describe('MediaRecorder', () => {
         .catch(done.fail);
     });
 
-    it('should not log a warning when not overriding sampleRate via capabilities', done => {
+    it('should not log a warning when not overriding sampleRate via capabilities', (done) => {
       const loggerSpy = spyOn(console, 'log');
 
       mediaRecorder

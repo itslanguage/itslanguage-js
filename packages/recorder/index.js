@@ -63,7 +63,7 @@ export function createRecorder(
   recorder.plugins = [];
 
   // Enhance the recorder with some (or none) plugins.
-  plugins.forEach(plugin => {
+  plugins.forEach((plugin) => {
     // Try to initialize the plugin.
     // And yes, if there is no `initPlugin` method, nothing happens!
     /* istanbul ignore else */
@@ -92,9 +92,8 @@ export function createRecorder(
     let channels;
 
     if (recorder.mimeType === 'audio/wav') {
-      const AudioContext =
-        window.AudioContext ||
-        /* istanbul ignore next */ window.webkitAudioContext;
+      const AudioContext = window.AudioContext
+      /* istanbul ignore next */ || window.webkitAudioContext;
       const audioContext = new AudioContext();
       // eslint-disable-next-line prefer-destructuring
       sampleRate = audioContext.sampleRate;
@@ -176,15 +175,15 @@ export function createMediaStream(mediaStreamConstraints = {}) {
   // Because we do want to allow overriding settings we need to make sure we log
   // something to the user because we want to be sure it is intentional.
   if (
-    mediaStreamConstraints &&
-    mediaStreamConstraints.audio &&
-    mediaStreamConstraints.audio.sampleRate &&
-    (mediaStreamConstraints.audio.sampleRate.min ||
-      mediaStreamConstraints.audio.sampleRate.ideal)
+    mediaStreamConstraints
+    && mediaStreamConstraints.audio
+    && mediaStreamConstraints.audio.sampleRate
+    && (mediaStreamConstraints.audio.sampleRate.min
+      || mediaStreamConstraints.audio.sampleRate.ideal)
   ) {
     logger(
-      'It is not recommended to override the sampleRate.min or sampleRate.ideal' +
-        ' value. Make sure this is what you meant to do.',
+      'It is not recommended to override the sampleRate.min or sampleRate.ideal'
+        + ' value. Make sure this is what you meant to do.',
     );
   }
 
