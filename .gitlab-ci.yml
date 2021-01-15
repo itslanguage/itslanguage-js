@@ -1,0 +1,40 @@
+stages:
+  - test
+  - deploy
+
+image: node:dubnium
+
+cache:
+  key ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules
+
+include:
+  template: Dependency-Scanning.gitlab-ci.yml
+
+.test: &test
+  stage: test
+  script:
+    - npm ci
+    - npm run lint
+    - npm run test
+
+.deploy:
+  stage: deploy
+  script:
+    - npm publish
+
+test merge request:
+  <<: *test
+  only:
+    - merge_request
+
+test master:
+  <<: *test
+  only:
+    - master
+
+test tag:
+  <<: *test
+  only:
+    - tags
