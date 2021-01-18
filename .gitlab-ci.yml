@@ -13,10 +13,10 @@ include:
   template: Dependency-Scanning.gitlab-ci.yml
 
 .test: &test
-  image: weltn24/up-docker-node-chrome-headless
+  image: zenika/alpine-chrome:with-node
   stage: test
   script:
-    - npm install
+    - npm ci
     - npm run lint
     - npm run test
 
