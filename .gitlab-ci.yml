@@ -16,7 +16,7 @@ include:
   image: weltn24/up-docker-node-chrome-headless
   stage: test
   script:
-    - npm ci
+    - npm install
     - npm run lint
     - npm run test
 
