@@ -1,6 +1,6 @@
 stages:
   - test
-  - deploy
+  - publish
 
 image: node:dubnium
 
@@ -16,10 +16,11 @@ include:
     - npm run lint
     - npm run test
 
-.deploy:
-  stage: deploy
+.publish:
+  stage: publish
   script:
-    - npm publish
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}">.npmrc
+    - npm publish --access public
 
 test merge request:
   <<: *test
@@ -33,5 +34,10 @@ test master:
 
 test tag:
   <<: *test
+  only:
+    - tags
+
+publish tag:
+  <<: *publish
   only:
     - tags
