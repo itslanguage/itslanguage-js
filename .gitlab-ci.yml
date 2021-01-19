@@ -20,7 +20,7 @@ include:
   stage: publish
   script:
     - pushd packages/websocket
-    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}">.npmrc
+    - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
 
 test merge request:
