@@ -16,7 +16,7 @@ include:
     - npm run lint
     - npm run test
 
-.publish:
+.publish: &publish
   stage: publish
   script:
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}">.npmrc
