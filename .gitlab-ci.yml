@@ -21,6 +21,12 @@ include:
   script:
     - pushd packages/websocket
     - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
+    # NOTE: Returns 403 when version is already published! And returns 404 when
+    #       the authentication is incorrect.
+    - npm publish --access public
+    - popd
+    - pushd packages/recorder
+    - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
     - npm publish --access public
 
 test merge request:
