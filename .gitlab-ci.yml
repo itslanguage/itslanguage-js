@@ -19,6 +19,7 @@ include:
 .publish: &publish
   stage: publish
   script:
+    - pushd packages/websocket
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}">.npmrc
     - npm publish --access public
 
