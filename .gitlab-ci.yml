@@ -1,0 +1,50 @@
+stages:
+  - test
+  - publish
+
+image: node:dubnium
+
+include:
+  template: Dependency-Scanning.gitlab-ci.yml
+
+.test: &test
+  image: zenika/alpine-chrome:with-node
+  stage: test
+  script:
+    - npm ci
+    - cd packages/recorder && npm ci && cd -
+    - npm run lint
+    - npm run test
+
+.publish: &publish
+  stage: publish
+  script:
+    - pushd packages/websocket
+    - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
+    # NOTE: Returns 403 when version is already published! And returns 404 when
+    #       the authentication is incorrect.
+    - npm publish --access public
+    - popd
+    - pushd packages/recorder
+    - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
+    - npm publish --access public
+
+test merge request:
+  <<: *test
+  only:
+    - merge_request
+
+test master:
+  <<: *test
+  only:
+    - master
+
+test tag:
+  <<: *test
+  only:
+    - tags
+
+publish tag:
+  <<: *publish
+  only:
+    - tags

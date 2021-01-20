@@ -1,22 +1,32 @@
 module.exports = {
   parser: 'babel-eslint',
-  extends: [
-    'airbnb-base',
-    'plugin:jasmine/recommended',
-    'plugin:prettier/recommended',
-  ],
-  plugins: ['jasmine'],
   env: {
-    jasmine: true,
     browser: true,
     node: true,
     es6: true,
+    jasmine: true,
   },
   globals: {
     expectAsync: true,
   },
+  extends: [
+    'plugin:react/recommended',
+    'airbnb',
+  ],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 12,
+    sourceType: 'module',
+  },
+  plugins: [
+    'react',
+    'jasmine',
+  ],
   rules: {
-    'no-console': 0, // This project purposely uses console.
-    'jasmine/no-spec-dupes': [1, 'branch'],
+    'no-console': 0,
+    'import/no-unresolved': 0,
+    'react/jsx-filename-extension': 0,
   },
 };

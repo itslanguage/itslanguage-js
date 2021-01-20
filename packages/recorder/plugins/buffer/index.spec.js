@@ -5,7 +5,7 @@ import {
 } from '../../index';
 
 function wait(seconds = 2) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
     }, seconds * 1000);
@@ -62,7 +62,7 @@ describe('BufferPlugin', () => {
     expect(stopBufferingSpy).toHaveBeenCalledTimes(0);
   });
 
-  it('should dispatch an event when requesting buffered data', async done => {
+  it('should dispatch an event when requesting buffered data', async (done) => {
     const stream = await createMediaStream();
     const bufferPlugin = createBufferPlugin({
       immediateStart: true,
@@ -92,7 +92,7 @@ describe('BufferPlugin', () => {
     expect(dispatchEventSpy).toHaveBeenCalledTimes(0);
   });
 
-  it('should return 3 seconds of the buffer', async done => {
+  it('should return 3 seconds of the buffer', async (done) => {
     const stream = await createMediaStream();
     const bufferPlugin = createBufferPlugin({
       immediateStart: true,
@@ -111,7 +111,7 @@ describe('BufferPlugin', () => {
     await wait(2);
   });
 
-  it('should return everything in the buffer', async done => {
+  it('should return everything in the buffer', async (done) => {
     const stream = await createMediaStream();
     const bufferPlugin = createBufferPlugin({
       immediateStart: true,
@@ -131,7 +131,7 @@ describe('BufferPlugin', () => {
     await wait(2);
   });
 
-  it('should dispatch a custsom event when requesting buffered data', async done => {
+  it('should dispatch a custsom event when requesting buffered data', async (done) => {
     const stream = await createMediaStream();
     const bufferPlugin = createBufferPlugin({
       immediateStart: true,

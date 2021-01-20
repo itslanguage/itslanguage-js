@@ -26,7 +26,7 @@ function App() {
 
   function handleChange(event) {
     event.persist();
-    setValues(oldValues => ({
+    setValues((oldValues) => ({
       ...oldValues,
       [event.target.name]: event.target.value,
     }));
@@ -81,10 +81,10 @@ function App() {
 
       speechRecording
         .record(challenge.id, recorder)
-        .then(result => {
+        .then((result) => {
           setRecording(result);
         })
-        .catch(error => {
+        .catch((error) => {
           // eslint-disable-next-line no-console
           console.error(error);
         });
@@ -121,8 +121,10 @@ function App() {
           Challenge.
         </p>
         <p>
-          With this example you can create a recording for a challenge with ID{' '}
-          <code>speechChallenge_demo_1</code>. If you want to try it out
+          With this example you can create a recording for a challenge with ID
+          {' '}
+          <code>speechChallenge_demo_1</code>
+          . If you want to try it out
           yourself, you will have to make sure you are able to connect to an
           ITSLanguage backend and have that challenge available for you.
         </p>
@@ -167,7 +169,9 @@ function App() {
       <div>
         {me && (
           <p>
-            Authenticated as: <b>{me.id}</b>
+            Authenticated as:
+            {' '}
+            <b>{me.id}</b>
             <br />
             You may record audio now.
           </p>
@@ -179,7 +183,9 @@ function App() {
             <p>Click on the button to start recording</p>
             <p>
               <Button onClick={takeChallenge}>
-                {recordingState ? 'Stop' : 'Start'} recording
+                {recordingState ? 'Stop' : 'Start'}
+                {' '}
+                recording
               </Button>
             </p>
           </>

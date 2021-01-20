@@ -60,7 +60,7 @@ class BufferPlugin {
    */
   startBuffering() {
     this.bufferNode = createBuffer(this.recorder.stream, this.secondsToBuffer);
-    this.recorder.requestBufferedData = secondsToRead => {
+    this.recorder.requestBufferedData = (secondsToRead) => {
       this.readBufferAsWAV(secondsToRead);
     };
   }
