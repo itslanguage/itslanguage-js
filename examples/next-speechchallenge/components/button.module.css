@@ -7,10 +7,11 @@
   cursor: pointer;
   padding: 0.5rem 1rem;
   margin-top: 0.2rem;
+  font: inherit;
 }
 
 .Button:hover {
-  background: #2d5b71;
+  background: #8888cc;
 }
 
 .Button:focus {
@@ -18,5 +19,5 @@
 }
 
 .Button:active {
-  transform: scale(0.99);
+  transform: scale(0.97);
 }
