@@ -2,27 +2,22 @@
 
 Speech technology for language education. 📣
 
-![Testing](https://github.com/itslanguage/itslanguage-js/workflows/Testing/badge.svg?branch=master)
-![Release npm packages](https://github.com/itslanguage/itslanguage-js/workflows/Release%20npm%20packages/badge.svg?event=release)
-
 The ITSLanguage JavaScript SDK aims to help in building applications for the [ITSLanguage] platform.
 It provides easy interfaces to communicate with our [REST and WebSocket API]. We serve several
 packages through the [npmjs.com] ecosystem that can be used together. See the table below for all
 the packages we deliver.
 
-| Package name                            | Description                                                                        |
-| :-------------------------------------- | :--------------------------------------------------------------------------------- |
-| [api](packages/api/README.md)           | Implements the interface to the ITSLanguage backend as described in our [API docs] |
-| [player](packages/player/README.md)     | ITSLanguage compatible HTMLAudioElement                                            |
-| [recorder](packages/recorder/README.md) | ITSLanguage compatible MediaRecorder                                               |
+| Package name                              | Description                          |
+| :---------------------------------------- | :----------------------------------- |
+| [recorder](packages/recorder/README.md)   | ITSLanguage compatible MediaRecorder |
+| [websocket](packages/websocket/README.md) | ITSLanguage Socketio helper          |
 
 Besides npm an umd build of each package is also available on unpkg.com.
 
-| Package name                            | npm                     | unpkg                                   |
-| :-------------------------------------- | :---------------------- | :-------------------------------------- |
-| [api](packages/api/README.md)           | [@itslanguage/api]      | [unpkg.com/@itslanguage/api/dist/]      |
-| [player](packages/player/README.md)     | [@itslanguage/player]   | [unpkg.com/@itslanguage/player/dist/]   |
-| [recorder](packages/recorder/README.md) | [@itslanguage/recorder] | [unpkg.com/@itslanguage/recorder/dist/] |
+| Package name                              | npm                      | unpkg                                    |
+| :---------------------------------------- | :----------------------- | :--------------------------------------- |
+| [recorder](packages/recorder/README.md)   | [@itslanguage/recorder]  | [unpkg.com/@itslanguage/recorder/dist/]  |
+| [websocket](packages/websocket/README.md) | [@itslanguage/websocket] | [unpkg.com/@itslanguage/websocket/dist/] |
 
 ## Installation
 
@@ -37,14 +32,9 @@ ITSLanguage publishes its packages scoped, which means that all packages should 
 `@itslanguage/PACKAGE_NAME`.
 
 ```bash
-# Example installation of the api package
-npm install @itslanguage/api
+# Example installation of the recorder package
+npm install @itslanguage/recorder
 ```
-
-**note**: While we describe usage like installing packages through [npm], the ITSLanguage SDK itself
-has been build as a so called monorepository managed by [yarn workspaces]. For using the SDK in your
-project [yarn] is not a requirement! You can use the package manager which is most comfortable for
-you and your project.
 
 **note**: As shown in the table above, all the packages are also published as an UMD bundle via
 [unpkg.com]. This makes it possible to install or download the packages _without_ [npm]. All needed
@@ -91,13 +81,8 @@ To get support on the SDK you can either create a [new][issue], or e-mail your q
 [npm]: https://docs.npmjs.com/cli-documentation
 [yarn]: https://yarnpkg.com/en/docs/cli
 [yarn workspaces]: https://yarnpkg.com/blog/2017/08/02/introducing-workspaces
-[@itslanguage/api]: https://npmjs.com/@itslanguage/api
-[@itslanguage/player]: https://npmjs.com/@itslanguage/player
 [@itslanguage/recorder]: https://npmjs.com/@itslanguage/recorder
-[unpkg.com/@itslanguage/api/dist/]: https://unpkg.com/@itslanguage/api/dist/
-[unpkg.com/@itslanguage/player/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
+[@itslanguage/websocket]: https://npmjs.com/@itslanguage/websocket
 [unpkg.com/@itslanguage/recorder/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
-[api docs]: https://itslanguage.github.io/itslanguage-docs
-[rest and websocket api]: https://itslanguage.github.io/itslanguage-docs
-[new]: https://github.com/itslanguage/itslanguage-js/issues/new
-[issue]: https://github.com/itslanguage/itslanguage-js/issues
+[unpkg.com/@itslanguage/websocket/dist/]: https://unpkg.com/@itslanguage/websocket/dist/
+[api docs]: https://amazing.itsapi.com/ui
