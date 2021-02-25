@@ -1,6 +1,6 @@
 {
   "name": "@itslanguage/websocket",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Websocket helper functions.",
   "author": "ITSLanguage (https://www.itslanguage.nl) <support@itslanguage.nl>",
   "homepage": "https://github.com/itslanguage/itslanguage-js#readme",
