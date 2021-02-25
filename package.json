@@ -86,9 +86,7 @@
     "prettier": "1.19.1",
     "rimraf": "3.0.0",
     "watchify": "3.11.1",
-    "webpack": "4.41.5"
-  },
-  "dependencies": {
+    "webpack": "4.41.5",
     "karma": "^6.1.1",
     "karma-browserify": "^8.0.0"
   }
