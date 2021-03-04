@@ -26,12 +26,8 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
   }
   try {
     socket = socketIOClient(apiUrl, {
-      transportOptions: {
-        polling: {
-          extraHeaders: {
-            authorization: `Bearer ${token}`,
-          },
-        },
+      extraHeaders: {
+        Authorization: `Bearer ${token}`,
       },
     });
   } catch (error) {
@@ -39,7 +35,7 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
     console.error(error);
   }
   recorder = rec;
-  socket.on('start-recording', (e) => {
+  socket.on('start_recording', (e) => {
     if (e === 'OK') {
       recorder.start(1000);
       canStop = false;
@@ -47,7 +43,7 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
   });
   socket.on('feedback', feedbackFunc);
   // Execute the users function and the cleanup function
-  socket.on('end-recording', (recordingId) => {
+  socket.on('end_recording', (recordingId) => {
     endFunc(recordingId);
     cleanup();
   });
@@ -58,14 +54,14 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
       chunks.push(e.data);
       const blob = new Blob(chunks, { type: 'audio/wav' });
       if (first === true) {
-        socket.emit('write-audio', blob);
+        socket.emit('write_audio', blob);
         first = false;
       } else {
-        socket.emit('write-audio', blob.slice(44));
+        socket.emit('write_audio', blob.slice(44));
       }
     }
     if (canStop) {
-      socket.emit('end-recording');
+      socket.emit('end_recording');
       canStop = false;
       first = true;
     }
@@ -73,12 +69,16 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
 }
 
 export function start(challenge, age) {
-  socket.emit('start-recording', {
-    text: challenge.srt,
-    language: challenge.language,
-    age_group: age,
-    prompt_id: challenge.id,
-  });
+  if (challenge) {
+    socket.emit('start_recording', {
+      text: challenge.srt,
+      language: challenge.language,
+      age_group: age,
+      prompt_id: challenge.id,
+    });
+  } else {
+    socket.emit('start_recording');
+  }
 }
 
 export function stop() {
