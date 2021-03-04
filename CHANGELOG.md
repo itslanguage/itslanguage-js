@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v7.0.0] - 2021-03-04
+
+### Changed
+
+- `websocket`
+  - its-api websocket recording endpoint
+
 ## [v6.0.0] - 2021-01-11
 
 ### Added
@@ -321,7 +328,9 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v5.7.0...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v7.0.0...HEAD
+[v7.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v6.0.0...v7.0.0
+[v6.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.7.0...v6.0.0
 [v5.7.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.6.1...v5.7.0
 [v5.6.1]: https://github.com/itslanguage/itslanguage-js/compare/v5.6.0...v5.6.1
 [v5.6.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.5.1...v5.6.0
