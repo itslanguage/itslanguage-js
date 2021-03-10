@@ -36,7 +36,7 @@ function Challenge({ apiHost }) {
       const token = await fetch('api/wstoken');
       establishConnection(
         token,
-        apiHost,
+        `${apiHost}/prompt`,
         recorder,
         (feedback) => {
           // eslint-disable-next-line no-console
