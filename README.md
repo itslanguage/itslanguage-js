@@ -2,6 +2,7 @@
 
 Speech technology for language education. 📣
 
+
 The ITSLanguage JavaScript SDK aims to help in building applications for the [ITSLanguage] platform.
 It provides easy interfaces to communicate with our [REST and WebSocket API]. We serve several
 packages through the [npmjs.com] ecosystem that can be used together. See the table below for all
@@ -18,6 +19,15 @@ Besides npm an umd build of each package is also available on unpkg.com.
 | :---------------------------------------- | :----------------------- | :--------------------------------------- |
 | [recorder](packages/recorder/README.md)   | [@itslanguage/recorder]  | [unpkg.com/@itslanguage/recorder/dist/]  |
 | [websocket](packages/websocket/README.md) | [@itslanguage/websocket] | [unpkg.com/@itslanguage/websocket/dist/] |
+
+## Browser Compatibility
+
+The browser compatibility relies on the socket.io support. Version below the minimal supported
+version are not guaranteed to work.
+
+|                 | Chrome | Safari | Firefox | IE | Edge |
+| --------------- | ------ | ------ | ------- | -- | ---- |
+| Minimal Version | 84     | 13     | 78      | 9  | 83   |
 
 ## Installation
 
