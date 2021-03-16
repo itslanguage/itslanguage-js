@@ -2,7 +2,6 @@
 
 Speech technology for language education. 📣
 
-
 The ITSLanguage JavaScript SDK aims to help in building applications for the [ITSLanguage] platform.
 It provides easy interfaces to communicate with our [REST and WebSocket API]. We serve several
 packages through the [npmjs.com] ecosystem that can be used together. See the table below for all
