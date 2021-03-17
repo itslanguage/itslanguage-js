@@ -22,7 +22,8 @@ Besides npm an umd build of each package is also available on unpkg.com.
 ## Browser Compatibility
 
 The browser compatibility relies on the socket.io support. Version below the minimal supported
-version are not guaranteed to work.
+version are not guaranteed to work. Please see the [caniuse page](https://caniuse.com/?search=socket.io) for socket.io for
+more information
 
 |                 | Chrome | Safari | Firefox | IE | Edge |
 | --------------- | ------ | ------ | ------- | -- | ---- |
