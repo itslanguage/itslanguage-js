@@ -84,10 +84,10 @@ describe('MediaRecorder', () => {
       const specsMock = {
         audioFormat: mimeType,
         audioParameters: {
-          channels: 1,
+          channels: 2,
           sampleWidth: 16,
-          frameRate: 48000,
-          sampleRate: 48000,
+          frameRate: 44100,
+          sampleRate: 44100,
         },
       };
 
