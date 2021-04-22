@@ -16,7 +16,6 @@ describe('MediaRecorder', () => {
       const recorder = await mediaRecorder.createRecorder(stream);
 
       expect(recorder instanceof MediaRecorder).toBeTruthy();
-      console.log(recorder);
     });
 
     it('should have a function getAudioSpecs', async () => {

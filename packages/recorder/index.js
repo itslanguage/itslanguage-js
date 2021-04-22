@@ -5,6 +5,7 @@
 import debug from 'debug';
 import { MediaRecorder, register } from 'extendable-media-recorder';
 import { connect } from 'extendable-media-recorder-wav-encoder';
+import BufferPlugin from './plugins/buffer';
 import AmplitudePlugin from './plugins/amplitude';
 
 const logger = debug('its-sdk:recorder');
@@ -206,4 +207,15 @@ export function createMediaStream(mediaStreamConstraints = {}) {
  */
 export function createAmplitudePlugin(options = {}) {
   return new AmplitudePlugin(options);
+}
+
+/**
+ * Factory function to create a BufferPlugin. Use the returned value of this
+ * function to pass to the plugin list of the recorder.
+ *
+ * @param {object} [options = {}] - Options to pass to the BufferPlugin.
+ * @returns {BufferPlugin} - Instance of the BufferPlugin.
+ */
+export function createBufferPlugin(options = {}) {
+  return new BufferPlugin(options);
 }

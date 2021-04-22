@@ -91,8 +91,12 @@ class BufferPlugin {
       this.startBuffering();
     }
 
-    this.recorder.addEventListener('start', this.startBuffering);
-    this.recorder.addEventListener('stop', this.recordingStopped);
+    this.recorder.addEventListener('dataavailable', () => {
+      this.startBuffering();
+      if (this.recorder.state === 'inactive') {
+        this.recordingStopped();
+      }
+    });
   }
 
   /**
