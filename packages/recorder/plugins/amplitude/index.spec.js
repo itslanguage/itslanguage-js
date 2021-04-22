@@ -11,10 +11,11 @@ describe('AmplitudePlugin', () => {
       immediateStart: true,
     });
     const startDispatchingSpy = spyOn(amplitudePlugin, 'startDispatching');
-    const recorder = createRecorder(stream, [amplitudePlugin]);
+    const recorder = await createRecorder(stream, [amplitudePlugin]);
 
     expect(startDispatchingSpy).toHaveBeenCalledTimes(1);
     recorder.start();
+    recorder.dispatchEvent(new Event('dataavailable'));
     recorder.stop();
 
     expect(startDispatchingSpy).toHaveBeenCalledTimes(2);
@@ -26,7 +27,7 @@ describe('AmplitudePlugin', () => {
       stopAfterRecording: false,
     });
     const stopDispatchingSpy = spyOn(amplitudePlugin, 'stopDispatching');
-    const recorder = createRecorder(stream, [amplitudePlugin]);
+    const recorder = await createRecorder(stream, [amplitudePlugin]);
     recorder.start();
     recorder.stop();
 
@@ -41,7 +42,7 @@ describe('AmplitudePlugin', () => {
 
     const requestAnimationFrameSpy = spyOn(window, 'requestAnimationFrame');
 
-    const recorder = createRecorder(stream, [amplitudePlugin]);
+    const recorder = await createRecorder(stream, [amplitudePlugin]);
     recorder.start();
     recorder.stop();
 

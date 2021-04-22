@@ -1,10 +1,7 @@
-import MediaRecorder from 'audio-recorder-polyfill';
+import { MediaRecorder } from 'extendable-media-recorder';
 import debug from 'debug';
 import * as mediaRecorder from './index';
 import AmplitudePlugin from './plugins/amplitude';
-import BufferPlugin from './plugins/buffer';
-
-const STREAM = null;
 
 describe('MediaRecorder', () => {
   describe('general', () => {
@@ -14,20 +11,17 @@ describe('MediaRecorder', () => {
   });
 
   describe('createRecorder', () => {
-    it('should return a recorder based on MediaRecorder', () => {
-      const recorder = mediaRecorder.createRecorder(STREAM);
+    it('should return a recorder based on MediaRecorder', async () => {
+      const stream = await mediaRecorder.createMediaStream();
+      const recorder = await mediaRecorder.createRecorder(stream);
 
       expect(recorder instanceof MediaRecorder).toBeTruthy();
+      console.log(recorder);
     });
 
-    it('should return a recorder based on MediaRecorder without passing a stream', () => {
-      const recorder = mediaRecorder.createRecorder();
-
-      expect(recorder instanceof MediaRecorder).toBeTruthy();
-    });
-
-    it('should have a function getAudioSpecs', () => {
-      const recorder = mediaRecorder.createRecorder(STREAM);
+    it('should have a function getAudioSpecs', async () => {
+      const stream = await mediaRecorder.createMediaStream();
+      const recorder = await mediaRecorder.createRecorder(stream);
 
       expect(recorder.getAudioSpecs).toBeDefined();
     });
@@ -35,7 +29,7 @@ describe('MediaRecorder', () => {
     it('should create a recorder with a plugin', async () => {
       const stream = await mediaRecorder.createMediaStream();
       const amplitudePlugin = mediaRecorder.createAmplitudePlugin();
-      const recorder = mediaRecorder.createRecorder(stream, [amplitudePlugin]);
+      const recorder = await mediaRecorder.createRecorder(stream, [amplitudePlugin]);
 
       expect(recorder.plugins[0]).toEqual(amplitudePlugin);
     });
@@ -43,15 +37,16 @@ describe('MediaRecorder', () => {
     it('should create a recorder with different mimeType', async () => {
       const mimeType = 'audio/webm;codecs=opus';
       const stream = await mediaRecorder.createMediaStream();
-      const recorder = mediaRecorder.createRecorder(stream, [], mimeType);
+      const recorder = await mediaRecorder.createRecorder(stream, [], mimeType);
 
       expect(recorder.mimeType).toEqual(mimeType);
     });
   });
 
   describe('getAudioSpecs', () => {
-    it('should return an object with audio specs', () => {
-      const recorder = mediaRecorder.createRecorder(STREAM);
+    it('should return an object with audio specs', async () => {
+      const stream = await mediaRecorder.createMediaStream();
+      const recorder = await mediaRecorder.createRecorder(stream);
       const audioSpecs = recorder.getAudioSpecs();
 
       const AudioContext = window.AudioContext
@@ -78,7 +73,7 @@ describe('MediaRecorder', () => {
     it('should return an object with audio specs when a different mimeType is used', async () => {
       const mimeType = 'audio/webm;codecs=opus';
       const stream = await mediaRecorder.createMediaStream();
-      const recorder = mediaRecorder.createRecorder(stream, [], mimeType);
+      const recorder = await mediaRecorder.createRecorder(stream, [], mimeType);
       const audioSpecs = recorder.getAudioSpecs();
 
       const specsMock = {
@@ -194,14 +189,6 @@ describe('MediaRecorder', () => {
       const amplitudePlugin = mediaRecorder.createAmplitudePlugin();
 
       expect(amplitudePlugin instanceof AmplitudePlugin).toBeTruthy();
-    });
-  });
-
-  describe('createBufferPlugin', () => {
-    it('should return a BufferPlugin instance', () => {
-      const bufferPlugin = mediaRecorder.createBufferPlugin();
-
-      expect(bufferPlugin instanceof BufferPlugin).toBeTruthy();
     });
   });
 });

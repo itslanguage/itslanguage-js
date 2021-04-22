@@ -3,11 +3,12 @@
  */
 
 import debug from 'debug';
-import MediaRecorder from 'audio-recorder-polyfill';
+import { MediaRecorder, register } from 'extendable-media-recorder';
+import { connect } from 'extendable-media-recorder-wav-encoder';
 import AmplitudePlugin from './plugins/amplitude';
-import BufferPlugin from './plugins/buffer';
 
 const logger = debug('its-sdk:recorder');
+let connected = false;
 
 /**
  * If the recorder is imported we rely on the MediaRecorder interface. In some
@@ -19,6 +20,13 @@ const logger = debug('its-sdk:recorder');
 /* istanbul ignore if */
 if (!window.MediaRecorder) {
   window.MediaRecorder = MediaRecorder;
+}
+
+export async function connectEncoders() {
+  if (!connected) {
+    await register(await connect());
+    connected = true;
+  }
 }
 
 /**
@@ -33,31 +41,22 @@ if (!window.MediaRecorder) {
  * @param {string} [mimeType=audio/wav] - The mimeType to use for the recorder.
  * @returns {MediaRecorder} - An instance of the created MediaRecorder.
  */
-export function createRecorder(
+export async function createRecorder(
   stream = null,
   plugins = [],
   mimeType = 'audio/wav',
 ) {
+  await connectEncoders();
   // Create the MediaRecorder object.
-  let recorder;
+  const recorder = new MediaRecorder(
+    stream,
+    mimeType && {
+      mimeType,
+    },
+  );
 
-  if (mimeType && mimeType === 'audio/wav') {
-    // In case someone insists on wanting wav, we use the polyfill.
-    recorder = new MediaRecorder(
-      stream,
-      mimeType && {
-        mimeType,
-      },
-    );
-  } else {
-    // Otherwise, use the browser native MediaRecorder
-    recorder = new window.MediaRecorder(
-      stream,
-      mimeType && {
-        mimeType,
-      },
-    );
-  }
+  // Add stream to the recorder for amplitude plugin
+  recorder.stream = stream;
 
   // Prepare the plugins object, here we store an instance of a plugin.
   recorder.plugins = [];
@@ -207,15 +206,4 @@ export function createMediaStream(mediaStreamConstraints = {}) {
  */
 export function createAmplitudePlugin(options = {}) {
   return new AmplitudePlugin(options);
-}
-
-/**
- * Factory function to create a BufferPlugin. Use the returned value of this
- * function to pass to the plugin list of the recorder.
- *
- * @param {object} [options = {}] - Options to pass to the BufferPlugin.
- * @returns {BufferPlugin} - Instance of the BufferPlugin.
- */
-export function createBufferPlugin(options = {}) {
-  return new BufferPlugin(options);
 }
