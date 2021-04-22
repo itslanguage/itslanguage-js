@@ -8,7 +8,6 @@ import socketIOClient from 'socket.io-client';
 let socket = null;
 let recorder = null;
 
-let first = true;
 let canStop = false;
 
 export function cleanup() {
@@ -49,21 +48,19 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
   });
 
   recorder.addEventListener('dataavailable', (e) => {
+    if (e.data === undefined) {
+      canStop = true;
+      return;
+    }
     const chunks = [];
     if (e.data.size > 44) {
+      console.log(e.data.size);
       chunks.push(e.data);
       const blob = new Blob(chunks, { type: 'audio/wav' });
-      if (first === true) {
-        socket.emit('write_audio', blob);
-        first = false;
-      } else {
-        socket.emit('write_audio', blob.slice(44));
+      socket.emit('write_audio', blob);
+      if (canStop) {
+        socket.emit('end_recording');
       }
-    }
-    if (canStop) {
-      socket.emit('end_recording');
-      canStop = false;
-      first = true;
     }
   });
 }
@@ -82,7 +79,6 @@ export function start(challenge, age) {
 }
 
 export function stop() {
-  recorder.requestData();
   recorder.stop();
-  canStop = true;
+  recorder.dispatchEvent(new Event('dataavailable'));
 }
