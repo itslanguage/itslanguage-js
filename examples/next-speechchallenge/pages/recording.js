@@ -57,8 +57,9 @@ function Recording({ apiHost }) {
     } else {
       prepareRecording().then(() => {
         // Start recording audio
-        start();
-        setRecordingState(true);
+        start().then(() => {
+          setRecordingState(true);
+        });
       });
     }
   }

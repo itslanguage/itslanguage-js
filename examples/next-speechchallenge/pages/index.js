@@ -63,8 +63,9 @@ function Challenge({ apiHost }) {
     } else {
       prepareRecording().then(() => {
         // Start recording audio
-        start(prompt, 'adult');
-        setRecordingState(true);
+        start(prompt, 'adult').then(() => {
+          setRecordingState(true);
+        });
       });
     }
   }
