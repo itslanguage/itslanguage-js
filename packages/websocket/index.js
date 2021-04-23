@@ -95,7 +95,7 @@ export function start(challenge, age) {
       }
     }));
   } else {
-    promise = new Promise((resolve, reject) => socket.emit('start_recording', null, () => {
+    promise = new Promise((resolve, reject) => socket.emit('start_recording', () => {
       if (!canStop) {
         recorder.start(1000);
         resolve();
