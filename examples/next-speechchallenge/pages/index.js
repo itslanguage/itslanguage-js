@@ -31,7 +31,9 @@ function Challenge({ apiHost }) {
 
   async function prepareRecording() {
     try {
-      recorder = await getRecorder();
+      if (!recorder) {
+        recorder = await getRecorder();
+      }
 
       const token = await fetch('api/wstoken');
       establishConnection(
