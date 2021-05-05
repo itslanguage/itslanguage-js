@@ -86,6 +86,7 @@ export function start(challenge, age) {
       prompt_id: challenge.id,
     }, () => {
       if (!canStop) {
+        // Start the recorder and send audio every 1000 milliseconds
         recorder.start(1000);
         resolve();
       } else {
@@ -97,6 +98,7 @@ export function start(challenge, age) {
   } else {
     promise = new Promise((resolve, reject) => socket.emit('start_recording', () => {
       if (!canStop) {
+        // Start the recorder and send audio every 1000 milliseconds
         recorder.start(1000);
         resolve();
       } else {
