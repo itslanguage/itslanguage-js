@@ -19,10 +19,11 @@ describe('BufferPlugin', () => {
       immediateStart: true,
     });
     const startBufferingSpy = spyOn(bufferPlugin, 'startBuffering');
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
 
     expect(startBufferingSpy).toHaveBeenCalledTimes(1);
     recorder.start();
+    recorder.dispatchEvent(new Event('dataavailable'));
     recorder.stop();
 
     expect(startBufferingSpy).toHaveBeenCalledTimes(2);
@@ -31,7 +32,7 @@ describe('BufferPlugin', () => {
   it('should default to stop the plugin after recording ends', async () => {
     const stream = await createMediaStream();
     const bufferPlugin = createBufferPlugin();
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
 
     const stopBufferingSpy = spyOn(bufferPlugin, 'stopBuffering');
 
@@ -51,7 +52,7 @@ describe('BufferPlugin', () => {
     });
     const stopBufferingSpy = spyOn(bufferPlugin, 'stopBuffering');
 
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
 
     recorder.start();
     await wait(1); // Record for 1 second;
@@ -68,7 +69,7 @@ describe('BufferPlugin', () => {
       immediateStart: true,
     });
 
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
 
     recorder.addEventListener('bufferdataavailable', () => {
       done();
@@ -83,7 +84,7 @@ describe('BufferPlugin', () => {
     const bufferPlugin = createBufferPlugin({
       immediateStart: true,
     });
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
     const dispatchEventSpy = spyOn(recorder, 'dispatchEvent');
 
     spyOn(bufferPlugin.bufferNode, 'readBufferAsWAV').and.returnValue(null);
@@ -97,7 +98,7 @@ describe('BufferPlugin', () => {
     const bufferPlugin = createBufferPlugin({
       immediateStart: true,
     });
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
 
     recorder.addEventListener('bufferdataavailable', async ({ data }) => {
       const audio = new Audio(URL.createObjectURL(data));
@@ -117,7 +118,7 @@ describe('BufferPlugin', () => {
       immediateStart: true,
       secondsToBuffer: 30,
     });
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
 
     recorder.addEventListener('bufferdataavailable', async ({ data }) => {
       const audio = new Audio(URL.createObjectURL(data));
@@ -138,7 +139,7 @@ describe('BufferPlugin', () => {
       eventToDispatch: 'blablabla',
     });
 
-    const recorder = createRecorder(stream, [bufferPlugin]);
+    const recorder = await createRecorder(stream, [bufferPlugin]);
 
     recorder.addEventListener('blablabla', () => {
       done();

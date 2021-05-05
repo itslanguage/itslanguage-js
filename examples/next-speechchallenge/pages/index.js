@@ -31,7 +31,9 @@ function Challenge({ apiHost }) {
 
   async function prepareRecording() {
     try {
-      recorder = await getRecorder();
+      if (!recorder) {
+        recorder = await getRecorder();
+      }
 
       const token = await fetch('api/wstoken');
       establishConnection(
@@ -61,8 +63,9 @@ function Challenge({ apiHost }) {
     } else {
       prepareRecording().then(() => {
         // Start recording audio
-        start(prompt, 'adult');
-        setRecordingState(true);
+        start(prompt, 'adult').then(() => {
+          setRecordingState(true);
+        });
       });
     }
   }

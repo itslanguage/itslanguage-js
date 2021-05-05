@@ -8,12 +8,53 @@ import socketIOClient from 'socket.io-client';
 let socket = null;
 let recorder = null;
 
-let first = true;
 let canStop = false;
 
+export function stop() {
+  try {
+    recorder.stop();
+  } catch (error) {
+    console.error(error);
+  }
+  canStop = true;
+}
+
 export function cleanup() {
-  socket.close();
-  socket = null;
+  stop();
+}
+
+function connect(apiUrl, auth) {
+  if (!socket) {
+    try {
+      socket = socketIOClient(apiUrl, {
+        extraHeaders: {
+          Authorization: `Bearer ${auth}`,
+        },
+      });
+      socket.on('error', (error) => {
+        console.error(error);
+      });
+      socket.on('connect_error', (error) => {
+        console.error(error);
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }
+}
+
+function linkSocketRecorder(feedbackFunc, endFunc) {
+  socket.on('feedback', feedbackFunc);
+  socket.on('end_recording', (recordingId) => {
+    endFunc(recordingId);
+  });
+  recorder.addEventListener('dataavailable', (e) => {
+    socket.emit('write_audio', new Blob([e.data], { type: 'audio/wav' }));
+    if (canStop) {
+      socket.emit('end_recording');
+    }
+  });
 }
 
 /**
@@ -21,68 +62,51 @@ export function cleanup() {
  * @return {socketio.WebSocket} - The socket.
  */
 export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
-  if (socket !== null) {
-    return;
+  connect(apiUrl, token);
+  if (!recorder) {
+    recorder = rec;
+    linkSocketRecorder(feedbackFunc, endFunc);
   }
-  try {
-    socket = socketIOClient(apiUrl, {
-      extraHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-  }
-  recorder = rec;
-  socket.on('start_recording', (e) => {
-    if (e === 'OK') {
-      recorder.start(1000);
-      canStop = false;
-    }
-  });
-  socket.on('feedback', feedbackFunc);
-  // Execute the users function and the cleanup function
-  socket.on('end_recording', (recordingId) => {
-    endFunc(recordingId);
-    cleanup();
-  });
-
-  recorder.addEventListener('dataavailable', (e) => {
-    const chunks = [];
-    if (e.data.size > 44) {
-      chunks.push(e.data);
-      const blob = new Blob(chunks, { type: 'audio/wav' });
-      if (first === true) {
-        socket.emit('write_audio', blob);
-        first = false;
-      } else {
-        socket.emit('write_audio', blob.slice(44));
-      }
-    }
-    if (canStop) {
-      socket.emit('end_recording');
-      canStop = false;
-      first = true;
-    }
-  });
+  return socket;
 }
 
+/**
+  * Request to start the recording. Returns a promise which is fulfilled once the
+  * backend confirms that it is able to receive audio.
+  */
 export function start(challenge, age) {
+  let promise;
+
+  canStop = false;
   if (challenge) {
-    socket.emit('start_recording', {
+    promise = new Promise((resolve, reject) => socket.emit('start_recording', {
       text: challenge.srt,
       language: challenge.language,
       age_group: age,
       prompt_id: challenge.id,
-    });
+    }, () => {
+      if (!canStop) {
+        // Start the recorder and send audio every 1000 milliseconds
+        recorder.start(1000);
+        resolve();
+      } else {
+        // Stop was called early
+        socket.emit('end_recording');
+        reject();
+      }
+    }));
   } else {
-    socket.emit('start_recording');
+    promise = new Promise((resolve, reject) => socket.emit('start_recording', () => {
+      if (!canStop) {
+        // Start the recorder and send audio every 1000 milliseconds
+        recorder.start(1000);
+        resolve();
+      } else {
+        // Stop was called early
+        socket.emit('end_recording');
+        reject();
+      }
+    }));
   }
-}
-
-export function stop() {
-  recorder.requestData();
-  recorder.stop();
-  canStop = true;
+  return promise;
 }

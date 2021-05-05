@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v8.0.0] - 2021-04-23
+
+### Changed
+
+- `recorder`
+  - Changed the recorder from audio-recorder-polyfill which uses only
+    ScriptProcessorNode to extended-media-recorder which can use AudioWorkers.
+- `websocket`
+  - Depracted `cleanup`
+  - `start` now return a promise which is fulfilled when the backend actually is
+    able to receive audio.
+
 ## [v7.0.0] - 2021-03-04
 
 ### Changed

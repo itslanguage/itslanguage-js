@@ -28,7 +28,9 @@ function Recording({ apiHost }) {
 
   async function prepareRecording() {
     try {
-      recorder = await getRecorder();
+      if (!recorder) {
+        recorder = await getRecorder();
+      }
 
       const token = await fetch('api/wstoken');
       establishConnection(
@@ -55,8 +57,9 @@ function Recording({ apiHost }) {
     } else {
       prepareRecording().then(() => {
         // Start recording audio
-        start();
-        setRecordingState(true);
+        start().then(() => {
+          setRecordingState(true);
+        });
       });
     }
   }

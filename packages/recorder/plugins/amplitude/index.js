@@ -94,8 +94,12 @@ class AmplitudePlugin {
       this.startDispatching();
     }
 
-    this.recorder.addEventListener('start', this.startDispatching);
-    this.recorder.addEventListener('stop', this.recordingStopped);
+    this.recorder.addEventListener('dataavailable', () => {
+      this.startDispatching();
+      if (this.recorder.state === 'inactive') {
+        this.recordingStopped();
+      }
+    });
   }
 
   /**
