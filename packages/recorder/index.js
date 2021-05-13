@@ -193,6 +193,7 @@ export function createMediaStream(mediaStreamConstraints = {}) {
         min: 16000,
         ideal: 44100,
       },
+      channelCount: 1,
     },
     ...mediaStreamConstraints,
   });
