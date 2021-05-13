@@ -75,51 +75,6 @@ export async function createRecorder(
     }
   });
 
-  /**
-   * For compliancy with the ITSLanguage backend this function still exists.
-   * Once the nl.itslanguage.<challenge>.init_audio calls are removed we will
-   * drop this function asap.
-   *
-   * Please don't use this in your code. If you need information about the
-   * recorder and the settings it uses do it with your own logic.
-   *
-   * @returns {object} - An object that holds information about the specs or
-   * settings of the current recorder.
-   */
-  recorder.getAudioSpecs = () => {
-    let sampleRate;
-    let sampleSize;
-    let channels;
-
-    if (recorder.mimeType === 'audio/wav') {
-      const AudioContext = window.AudioContext
-      /* istanbul ignore next */ || window.webkitAudioContext;
-      const audioContext = new AudioContext();
-      // eslint-disable-next-line prefer-destructuring
-      sampleRate = audioContext.sampleRate;
-      sampleSize = 16;
-      channels = 1;
-    } else {
-      const [audioTrack] = recorder.stream.getAudioTracks();
-      const settings = audioTrack.getSettings();
-      /* eslint-disable prefer-destructuring */
-      sampleRate = settings.sampleRate;
-      sampleSize = settings.sampleSize;
-      /* eslint-enable prefer-destructuring */
-      channels = settings.channelCount;
-    }
-
-    return {
-      audioFormat: recorder.mimeType,
-      audioParameters: {
-        channels,
-        sampleWidth: sampleSize,
-        frameRate: sampleRate,
-        sampleRate,
-      },
-    };
-  };
-
   return recorder;
 }
 
