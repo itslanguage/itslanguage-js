@@ -23,11 +23,11 @@ include:
     - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
     # NOTE: Returns 403 when version is already published! And returns 404 when
     #       the authentication is incorrect.
-    - npm publish --access public
+    - npm publish --access public || true
     - popd
     - pushd packages/recorder
     - npm set //registry.npmjs.org/:_authToken $NPM_TOKEN
-    - npm publish --access public
+    - npm publish --access public || true
 
 test merge request:
   <<: *test
