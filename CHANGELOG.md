@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v8.0.1] - 2021-05-13
+
+### Fixed
+
+- `recorder`
+  - Firefox and Safari browser will now record with the correct channel count
+
 ## [v8.0.0] - 2021-04-23
 
 ### Changed
@@ -340,7 +347,9 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v7.0.0...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.1...HEAD
+[v8.0.1]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.0...v8.0.1
+[v8.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v7.0.0...v8.0.0
 [v7.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v6.0.0...v7.0.0
 [v6.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.7.0...v6.0.0
 [v5.7.0]: https://github.com/itslanguage/itslanguage-js/compare/v5.6.1...v5.7.0

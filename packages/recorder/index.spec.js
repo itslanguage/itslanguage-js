@@ -18,13 +18,6 @@ describe('MediaRecorder', () => {
       expect(recorder instanceof MediaRecorder).toBeTruthy();
     });
 
-    it('should have a function getAudioSpecs', async () => {
-      const stream = await mediaRecorder.createMediaStream();
-      const recorder = await mediaRecorder.createRecorder(stream);
-
-      expect(recorder.getAudioSpecs).toBeDefined();
-    });
-
     it('should create a recorder with a plugin', async () => {
       const stream = await mediaRecorder.createMediaStream();
       const amplitudePlugin = mediaRecorder.createAmplitudePlugin();
@@ -39,53 +32,6 @@ describe('MediaRecorder', () => {
       const recorder = await mediaRecorder.createRecorder(stream, [], mimeType);
 
       expect(recorder.mimeType).toEqual(mimeType);
-    });
-  });
-
-  describe('getAudioSpecs', () => {
-    it('should return an object with audio specs', async () => {
-      const stream = await mediaRecorder.createMediaStream();
-      const recorder = await mediaRecorder.createRecorder(stream);
-      const audioSpecs = recorder.getAudioSpecs();
-
-      const AudioContext = window.AudioContext
-      /* istanbul ignore next */ || window.webkitAudioContext;
-      const audioContext = new AudioContext();
-      // eslint-disable-next-line prefer-destructuring
-      const sampleRate = audioContext.sampleRate;
-      const sampleWidth = 16;
-      const channels = 1;
-
-      const specsMock = {
-        audioFormat: 'audio/wav',
-        audioParameters: {
-          channels,
-          sampleWidth,
-          sampleRate,
-          frameRate: sampleRate,
-        },
-      };
-
-      expect(audioSpecs).toEqual(specsMock);
-    });
-
-    it('should return an object with audio specs when a different mimeType is used', async () => {
-      const mimeType = 'audio/webm;codecs=opus';
-      const stream = await mediaRecorder.createMediaStream();
-      const recorder = await mediaRecorder.createRecorder(stream, [], mimeType);
-      const audioSpecs = recorder.getAudioSpecs();
-
-      const specsMock = {
-        audioFormat: mimeType,
-        audioParameters: {
-          channels: 2,
-          sampleWidth: 16,
-          frameRate: 44100,
-          sampleRate: 44100,
-        },
-      };
-
-      expect(audioSpecs).toEqual(specsMock);
     });
   });
 
