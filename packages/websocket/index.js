@@ -30,6 +30,7 @@ function connect(apiUrl, auth) {
         extraHeaders: {
           Authorization: `Bearer ${auth}`,
         },
+        reconnection: false,
       });
       socket.on('error', (error) => {
         console.error(error);
