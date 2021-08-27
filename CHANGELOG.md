@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v8.0.2] - 2021-08-26
+
+### Fixed
+
+- `websocket`
+  - Don't reconnect on connect failure
+
 ## [v8.0.1] - 2021-05-13
 
 ### Fixed
