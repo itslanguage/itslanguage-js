@@ -43,12 +43,8 @@ export async function createRecorder(
   try {
     await register(await connect());
   } catch (e) {
-    if (e.message.includes('There is already an encoder stored')) {
-      // This happends when you try to make more than one recorder
-      logger('Tried registering an encoder when there is already one stored');
-    } else {
-      throw e;
-    }
+    // This happends when you try to make more than one recorder
+    logger('Tried registering an encoder when there is already one stored');
   }
 
   // Create the MediaRecorder object.
