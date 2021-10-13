@@ -9,7 +9,6 @@ import BufferPlugin from './plugins/buffer';
 import AmplitudePlugin from './plugins/amplitude';
 
 const logger = debug('its-sdk:recorder');
-let connected = false;
 
 /**
  * If the recorder is imported we rely on the MediaRecorder interface. In some
@@ -21,13 +20,6 @@ let connected = false;
 /* istanbul ignore if */
 if (!window.MediaRecorder) {
   window.MediaRecorder = MediaRecorder;
-}
-
-export async function connectEncoders() {
-  if (!connected) {
-    await register(await connect());
-    connected = true;
-  }
 }
 
 /**
@@ -47,7 +39,14 @@ export async function createRecorder(
   plugins = [],
   mimeType = 'audio/wav',
 ) {
-  await connectEncoders();
+  // Register the wav encoder
+  try {
+    await register(await connect());
+  } catch (e) {
+    // This happends when you try to make more than one recorder
+    logger('Tried registering an encoder when there is already one stored');
+  }
+
   // Create the MediaRecorder object.
   const recorder = new MediaRecorder(
     stream,
