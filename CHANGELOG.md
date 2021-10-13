@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v8.0.3] - 2021-10-13
+
+### Fixed
+
+- `websocket`
+  - Cleanup now removes listeners
+- `recorder`
+  - Trying to initialize twice will no longer throw an error
+
 ## [v8.0.2] - 2021-08-26
 
 ### Fixed
