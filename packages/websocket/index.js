@@ -19,8 +19,18 @@ export function stop() {
   canStop = true;
 }
 
+function sendRecorderData({ data }) {
+  socket.emit('write_audio', new Blob([data], { type: 'audio/wav' }));
+  if (canStop) {
+    socket.emit('end_recording');
+  }
+}
+
 export function cleanup() {
-  stop();
+  recorder.removeEventListener('dataavailable', sendRecorderData);
+  socket.disconnect();
+  socket.off();
+  socket = null;
 }
 
 function connect(apiUrl, auth) {
@@ -45,19 +55,6 @@ function connect(apiUrl, auth) {
   }
 }
 
-function linkSocketRecorder(feedbackFunc, endFunc) {
-  socket.on('feedback', feedbackFunc);
-  socket.on('end_recording', (recordingId) => {
-    endFunc(recordingId);
-  });
-  recorder.addEventListener('dataavailable', (e) => {
-    socket.emit('write_audio', new Blob([e.data], { type: 'audio/wav' }));
-    if (canStop) {
-      socket.emit('end_recording');
-    }
-  });
-}
-
 /**
  *
  * @return {socketio.WebSocket} - The socket.
@@ -66,8 +63,12 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
   connect(apiUrl, token);
   if (!recorder) {
     recorder = rec;
-    linkSocketRecorder(feedbackFunc, endFunc);
   }
+  socket.on('feedback', feedbackFunc);
+  socket.on('end_recording', (recordingId) => {
+    endFunc(recordingId);
+  });
+  recorder.addEventListener('dataavailable', sendRecorderData);
   return socket;
 }
 
