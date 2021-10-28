@@ -227,12 +227,12 @@ deleted once the buffering stops.
 import {
   createRecorder,
   createMediaStream,
-  createNufferPlugin,
+  createBufferPlugin,
 } from '@itslanguage/recorder';
 
 // Ask and wait for the user to give permission and get an audio stream.
 createMediaStream().then(stream => {
-  const bufferPlugin = createNufferPlugin(/* options here*/);
+  const bufferPlugin = createBufferPlugin(/* options here*/);
 
   // Create a MediaRecorder instance with the stream you got. Also, pass the
   // plugins as the second argument.
