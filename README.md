@@ -25,9 +25,9 @@ The browser compatibility relies on the socket.io support. Version below the min
 version are not guaranteed to work. Please see the [caniuse page](https://caniuse.com/?search=socket.io) for socket.io for
 more information
 
-|                 | Chrome | Safari | Firefox | IE | Edge |
-| --------------- | ------ | ------ | ------- | -- | ---- |
-| Minimal Version | 84     | 13     | 78      | 9  | 83   |
+|                 | Chrome | Safari | Firefox | IE  | Edge |
+| --------------- | ------ | ------ | ------- | --- | ---- |
+| Minimal Version | 84     | 13     | 78      | 9   | 83   |
 
 ## Installation
 
@@ -95,4 +95,4 @@ To get support on the SDK you can either create a [new][issue], or e-mail your q
 [@itslanguage/websocket]: https://npmjs.com/@itslanguage/websocket
 [unpkg.com/@itslanguage/recorder/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
 [unpkg.com/@itslanguage/websocket/dist/]: https://unpkg.com/@itslanguage/websocket/dist/
-[api docs]: https://amazing.itsapi.com/ui
+[api docs]: https://api.itslanguage.dev/ui
