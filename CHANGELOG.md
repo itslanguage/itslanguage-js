@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v8.0.4] - 2022-02-09
+
+### Added
+
+- `websocket`
+  - Optional text index start parameter for prompts
+
 ## [v8.0.3] - 2021-10-13
 
 ### Fixed

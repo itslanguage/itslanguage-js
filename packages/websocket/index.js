@@ -76,7 +76,7 @@ export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
   * Request to start the recording. Returns a promise which is fulfilled once the
   * backend confirms that it is able to receive audio.
   */
-export function start(challenge, age) {
+export function start(challenge, age, textIndex = 0) {
   let promise;
 
   canStop = false;
@@ -86,6 +86,7 @@ export function start(challenge, age) {
       language: challenge.language,
       age_group: age,
       prompt_id: challenge.id,
+      text_index: textIndex,
     }, () => {
       if (!canStop) {
         // Start the recorder and send audio every 1000 milliseconds
