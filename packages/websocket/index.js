@@ -28,9 +28,11 @@ function sendRecorderData({ data }) {
 
 export function cleanup() {
   recorder.removeEventListener('dataavailable', sendRecorderData);
-  socket.disconnect();
-  socket.off();
-  socket = null;
+  if (socket) {
+    socket.disconnect();
+    socket.off();
+    socket = null;
+  }
 }
 
 function connect(apiUrl, auth) {

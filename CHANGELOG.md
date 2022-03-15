@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v8.0.5] - 2022-03-15
+
+### Fixed
+
+- `websocket`
+  - Fixed crash when calling cleanup with an undefined socket
+
 ## [v8.0.4] - 2022-02-09
 
 ### Added
@@ -370,7 +377,11 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 - Improve README.md documentation.
 - Changed the getUserAuth and getOAuth2Token to use the new API auth functions.
 
-[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.1...HEAD
+[unreleased]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.5...HEAD
+[v8.0.5]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.4...v8.0.5
+[v8.0.4]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.3...v8.0.4
+[v8.0.3]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.2...v8.0.3
+[v8.0.2]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.1...v8.0.2
 [v8.0.1]: https://github.com/itslanguage/itslanguage-js/compare/v8.0.0...v8.0.1
 [v8.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v7.0.0...v8.0.0
 [v7.0.0]: https://github.com/itslanguage/itslanguage-js/compare/v6.0.0...v7.0.0
