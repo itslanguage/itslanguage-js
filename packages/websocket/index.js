@@ -115,3 +115,21 @@ export function start(challenge, age, textIndex = 0) {
   }
   return promise;
 }
+
+export function startASR(language) {
+  canStop = false;
+  const promise = new Promise((resolve, reject) => socket.emit('start_recording', {
+    language,
+  }, () => {
+    if (!canStop) {
+      // Start the recorder and send audio every 1000 milliseconds
+      recorder.start(1000);
+      resolve();
+    } else {
+      // Stop was called early
+      socket.emit('end_recording');
+      reject();
+    }
+  }));
+  return promise;
+}
