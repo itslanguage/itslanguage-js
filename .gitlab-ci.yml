@@ -8,7 +8,7 @@ include:
   template: Dependency-Scanning.gitlab-ci.yml
 
 .test: &test
-  image: zenika/alpine-chrome:with-node
+  image: node:16
   stage: test
   script:
     - npm ci
