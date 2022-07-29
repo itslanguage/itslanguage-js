@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Layout from '../components/layout';
@@ -28,6 +28,7 @@ function Challenge({ apiHost }) {
   function loadPrompt() {
     fetch('api/prompt').then((data) => setPrompt(data[0]));
   }
+  const loadPromptClick = useCallback(() => loadPrompt(), []);
 
   async function prepareRecording() {
     try {
@@ -69,6 +70,7 @@ function Challenge({ apiHost }) {
       });
     }
   }
+  const recordClick = useCallback(() => record(), []);
 
   return (
     <Layout>
@@ -83,14 +85,14 @@ function Challenge({ apiHost }) {
               </b>
               is loaded
             </p>
-            <Button onClick={record}>
+            <Button onClick={recordClick}>
               {recordingState ? 'Stop' : 'Start'}
             </Button>
           </div>
         ) : (
           <div>
             <p>
-              <Button onClick={loadPrompt}>Load Prompt</Button>
+              <Button onClick={loadPromptClick}>Load Prompt</Button>
             </p>
           </div>
         )}
