@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Layout from '../components/layout';
@@ -65,12 +65,14 @@ function Challenge({ apiHost }) {
     }
   }
 
+  const recordClick = useCallback(() => record(), []);
+
   return (
     <Layout>
       <div>
         <p>Click the button to start the speech challenge.</p>
         <div>
-          <Button onClick={record}>
+          <Button onClick={recordClick}>
             {recordingState ? 'Stop' : 'Start'}
           </Button>
         </div>
