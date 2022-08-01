@@ -95,4 +95,4 @@ To get support on the SDK you can either create a [new][issue], or e-mail your q
 [@itslanguage/websocket]: https://npmjs.com/@itslanguage/websocket
 [unpkg.com/@itslanguage/recorder/dist/]: https://unpkg.com/@itslanguage/recorder/dist/
 [unpkg.com/@itslanguage/websocket/dist/]: https://unpkg.com/@itslanguage/websocket/dist/
-[api docs]: https://api.itslanguage.dev/ui
+[api docs]: https://api.itslanguage.nl/ui
