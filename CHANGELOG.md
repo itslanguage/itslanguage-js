@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 
 ## [Unreleased]
 
+## [v8.0.6] - 2022-10-07
+
+## Added
+
+- `websocket`
+  - Added possibility to override recorder
+
 ## [v8.0.5] - 2022-03-15
 
 ### Fixed

@@ -61,9 +61,16 @@ function connect(apiUrl, auth) {
  *
  * @return {socketio.WebSocket} - The socket.
  */
-export function establishConnection(token, apiUrl, rec, feedbackFunc, endFunc) {
+export function establishConnection(
+  token,
+  apiUrl,
+  rec,
+  feedbackFunc,
+  endFunc,
+  overrideRecorder = false,
+) {
   connect(apiUrl, token);
-  if (!recorder) {
+  if (!recorder || overrideRecorder) {
     recorder = rec;
   }
   socket.on('feedback', feedbackFunc);
