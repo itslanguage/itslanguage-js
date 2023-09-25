@@ -4,7 +4,7 @@
 # Inspiration from https://gist.github.com/domenic/ec8b0fc8ab45f39403dd
 #
 # The script should potentially do two things. It should either update
-# the documentation for master, or add a version to it.
+# the documentation for main, or add a version to it.
 #
 # NOTE:
 # Travis has a convenient "pages" provider. This provider works awesome
@@ -17,11 +17,11 @@
 
 set -e # Exit with nonzero exit code if anything fails
 
-SOURCE_BRANCH="master"
+SOURCE_BRANCH="main"
 TARGET_BRANCH="gh-pages"
 
 # Pull requests and commits to other branches shouldn't try to deploy
-# new GitHub pages. Only allow master and vX.X.X branches (= a tag for
+# new GitHub pages. Only allow main and vX.X.X branches (= a tag for
 # a new version).
 if [ "$TRAVIS_PULL_REQUEST" != "false" ] ||
    [ "$TRAVIS_TAG" == "" ] &&
