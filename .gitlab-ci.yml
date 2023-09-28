@@ -34,10 +34,10 @@ test merge request:
   only:
     - merge_request
 
-test master:
+test main:
   <<: *test
   only:
-    - master
+    - main
 
 test tag:
   <<: *test
