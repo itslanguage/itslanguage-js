@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-unfetch';
-
 const apiHost = process.env.API_HOST;
 const accessToken = process.env.ACCESS_TOKEN;
 
@@ -12,5 +10,5 @@ export default async function recordingHandler({ query: { id } }, res) {
     headers: header,
   });
   res.setHeader('Content-Type', 'audio/wav');
-  res.end(await recording.buffer(), 'binary');
+  res.end(await Buffer.from(await recording.arrayBuffer()), 'binary');
 }

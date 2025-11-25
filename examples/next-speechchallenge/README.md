@@ -11,18 +11,24 @@ API_HOST=https://api.itslanguage.nl
 ACCESS_TOKEN=IRaFqpwe03UF4EhVJwg0MJZwzt6F1AjwU4e7UuRuuz
 ```
 
+The first page allows you to test the prompt functionality.
+
+![prompt](prompt.png)
+
 To use the example you will need to have a prompt. A prompt consists of a text and a language.
 Please refer to https://api.itslanguage.nl/ui/#/Prompt/itsapi.api.prompt.post on how to make
 a prompt.
+
+The second page can be accessed by visiting `localhost:3000/recording`. Here you can test
+the recording functionality.
+
+![recording](recording.png)
 
 Then install the dependencies and run the development server:
 
 ```bash
 npm install
 npm run dev
-# or
-yarn install
-yarn dev
 ```
 
 Visit `localhost:3000` in your browser to see the webpage. Click on load prompt. If the prompt

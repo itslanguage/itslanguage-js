@@ -1,4 +1,4 @@
-import { React, useCallback } from 'react';
+import { React, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Layout from '../components/layout';
@@ -21,15 +21,26 @@ export async function getStaticProps() {
 }
 
 function Recording({ apiHost }) {
-  const [recordingState, setRecordingState] = React.useState(false);
-  const [recordingUrl, setRecordingUrl] = React.useState(null);
+  const [recordingUrl, setRecordingUrl] = useState(null);
+  const [volumeLevel, setVolumeLevel] = useState(0);
+
+  let recordingState = false;
 
   const apiUrl = `${apiHost}/recording`;
+  function volumeLevelChanged({ data }) {
+    // Volume level will be a value between 0.00 and 1.00
+    const volume = Math.min(
+      Math.max(parseInt(data.volume * 30 * 64, 10), 4),
+      24,
+    );
+    setVolumeLevel(volume);
+  }
 
   async function prepareRecording() {
     try {
       if (!recorder) {
         recorder = await getRecorder();
+        recorder.addEventListener('amplitudelevels', volumeLevelChanged);
       }
 
       const token = await fetch('api/wstoken');
@@ -53,12 +64,12 @@ function Recording({ apiHost }) {
     if (recorder && recordingState) {
       stop();
       recorder.stop();
-      setRecordingState(false);
+      recordingState = false;
     } else {
       prepareRecording().then(() => {
         // Start recording audio
         start().then(() => {
-          setRecordingState(true);
+          recordingState = true;
         });
       });
     }
@@ -69,6 +80,27 @@ function Recording({ apiHost }) {
     <Layout>
       <div>
         <p>Click the button to start the recording.</p>
+        <svg
+          className="AmplitudeMeter"
+          width="64px"
+          height="64px"
+          viewBox="0 0 536 716"
+        >
+          <circle cx="256" cy="256" r="256" fill="#dadada" />
+          <circle cx="256" cy="256" r={volumeLevel} fill="#e9573e" />
+          <text
+            x="50%"
+            y="100%"
+            textAnchor="middle"
+            stroke="#000000"
+            strokeWidth="2px"
+            fontSize="120px"
+            fontFamily="Fira Mono"
+          >
+            {volumeLevel}
+          </text>
+        </svg>
+        <br />
         <Button onClick={recordClick}>
           {recordingState ? 'Stop' : 'Start'}
         </Button>
